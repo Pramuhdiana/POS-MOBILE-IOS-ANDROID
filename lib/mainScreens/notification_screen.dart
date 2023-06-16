@@ -1,0 +1,27 @@
+import 'package:flutter/material.dart';
+
+class NotificationScreen extends StatefulWidget {
+  const NotificationScreen({super.key});
+
+  @override
+  State<NotificationScreen> createState() => _NotificationScreenState();
+}
+
+class _NotificationScreenState extends State<NotificationScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: 0,
+      ),
+      backgroundColor: Colors.white,
+      body: const Center(
+        child: Icon(
+          Icons.notifications,
+          size: 150,
+        ),
+      ),
+    );
+  }
+}
