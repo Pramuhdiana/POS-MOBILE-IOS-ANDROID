@@ -93,7 +93,7 @@ class DbAlldetailtransaksi {
     id;
     final db = await database;
     final res = await db.rawQuery(
-        'SELECT * FROM alldetailtransaksi WHERE invoices_number LIKE ? and user_id=?',
+        'SELECT * FROM alldetailtransaksi WHERE name LIKE ? and user_id=?',
         ['%$name%', id]);
 
     List<ModelAlldetailtransaksi> list = res.isNotEmpty

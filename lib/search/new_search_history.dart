@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, unnecessary_import, unused_element
 
 import 'package:e_shop/database/db_alldetailtransaksi.dart';
-import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/model_alldetailtransaksi.dart';
 import 'package:e_shop/history/history_invoice_screen.dart';
 import 'package:e_shop/history/history_kembalibarang_screen.dart';

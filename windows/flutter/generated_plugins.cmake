@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus_windows
+  file_selector_windows
   firebase_core
   printing
   syncfusion_pdfviewer_windows
