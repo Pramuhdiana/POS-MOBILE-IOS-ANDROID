@@ -81,24 +81,24 @@ class _MySplashScreenState extends State<MySplashScreen> {
     });
   }
 
-  _loadAllDataApi() async {
-    setState(() {
-      isLoading = true;
-    });
+  // _loadAllDataApi() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
 
-    var apiProvider = ApiServicesFirebase();
-    await apiProvider.getAllItems();
-    await apiProvider.getAllItemsToko();
-    await apiProvider.getAllDetailTransaksi();
-    // await apiProvider.getAllTransaksi();
+  //   var apiProvider = ApiServicesFirebase();
+  //   await apiProvider.getAllItems();
+  //   await apiProvider.getAllItemsToko();
+  //   await apiProvider.getAllDetailTransaksi();
+  //   // await apiProvider.getAllTransaksi();
 
-    // wait for 2 seconds to simulate loading of data
-    await Future.delayed(const Duration(seconds: 2));
+  //   // wait for 2 seconds to simulate loading of data
+  //   await Future.delayed(const Duration(seconds: 2));
 
-    setState(() {
-      isLoading = false;
-    });
-  }
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  // }
 
   @override
   void
