@@ -26,8 +26,6 @@ import 'package:e_shop/testing/CRM/model/category.dart';
 import 'package:e_shop/toko/main_addToko_screen.dart';
 import 'package:e_shop/widgets/alert_dialog.dart';
 import 'package:e_shop/widgets/fake_search.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -104,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void main() async {
     WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
+    // await Firebase.initializeApp();
     // FirebaseMessaging.onBackgroundMessage(_messageHandler);
   }
 
@@ -232,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               //     .deleteAlldetailtransaksi();
                               prefs.clear();
                               prefs.setString('token', 'null');
-                              FirebaseAuth.instance.signOut();
+                              // FirebaseAuth.instance.signOut();
                               await Navigator.push(
                                   context,
                                   MaterialPageRoute(

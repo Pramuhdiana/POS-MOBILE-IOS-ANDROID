@@ -412,10 +412,10 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                     // });
 
                                     // delete all items id
-                                    FirebaseFirestore.instance
-                                        .collection('allitems')
-                                        .doc(item.name)
-                                        .delete();
+                                    // FirebaseFirestore.instance
+                                    //     .collection('allitems')
+                                    //     .doc(item.name)
+                                    //     .delete();
                                   }
                                   print('delete data firebase berhasil');
                                   context
@@ -456,10 +456,10 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                       'updated_at': DateTime.now()
                                     });
                                     // delete all items id
-                                    FirebaseFirestore.instance
-                                        .collection('allitems')
-                                        .doc(item.name)
-                                        .delete();
+                                    // FirebaseFirestore.instance
+                                    //     .collection('allitems')
+                                    //     .doc(item.name)
+                                    //     .delete();
                                   }
                                   print('delete data firebase berhasil');
                                   context.read<PCart>().clearCart();
@@ -499,10 +499,10 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                     });
 
                                     // delete all items id
-                                    FirebaseFirestore.instance
-                                        .collection('allitems')
-                                        .doc(item.name)
-                                        .delete();
+                                    // FirebaseFirestore.instance
+                                    //     .collection('allitems')
+                                    //     .doc(item.name)
+                                    //     .delete();
                                   }
                                   print('delete data firebase berhasil');
 

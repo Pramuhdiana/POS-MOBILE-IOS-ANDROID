@@ -74,12 +74,12 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
 
   splashScreenTimer() {
     Timer(const Duration(seconds: 1), () async {
-      await _deleteAlldetailtransaksifirebase();
-      await _deleteAllitemsfirebase();
-      await _deleteAllitemstokofirebase();
-      await _deleteAlltransaksifirebase();
+      // await _deleteAlldetailtransaksifirebase();
+      // await _deleteAllitemsfirebase();
+      // await _deleteAllitemstokofirebase();
+      // await _deleteAlltransaksifirebase();
       await _loadFromApi();
-      await _loadAllDataApi();
+      // await _loadAllDataApi();
       await Navigator.push(
           context, MaterialPageRoute(builder: (c) => MainScreen()));
     });

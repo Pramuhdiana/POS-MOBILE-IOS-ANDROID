@@ -31,12 +31,12 @@ class _MySplashScreenState extends State<MySplashScreen> {
       if (sharedPreferences!.getString("token").toString() != "null") {
         var hour = DateTime.now().hour;
         if (hour > 10 && hour < 13) {
-          await _loadAllDataApi();
+          // await _loadAllDataApi();
           await _loadFromApi();
           Navigator.push(
               context, MaterialPageRoute(builder: (c) => const MainScreen()));
         } else if (hour == 16) {
-          await _loadAllDataApi();
+          // await _loadAllDataApi();
           await _loadFromApi();
           Navigator.push(
               context, MaterialPageRoute(builder: (c) => const MainScreen()));
