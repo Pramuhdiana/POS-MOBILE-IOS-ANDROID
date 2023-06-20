@@ -1,12 +1,15 @@
-// ignore_for_file: prefer_final_fields, unused_field, duplicate_ignore
+// ignore_for_file: prefer_final_fields, unused_field, duplicate_ignore, unused_element
 
+import 'package:dio/dio.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/model_allitems.dart';
 import 'package:e_shop/mainScreens/help_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
+import 'package:e_shop/models/kode_keluarbarang.dart';
 import 'package:e_shop/posSales/pos_sales_screen_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../cartScreens/db_helper.dart';
 import '../global/global.dart';
@@ -72,6 +75,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
   DBHelper dbHelper = DBHelper();
   String? title = '';
   String query = '';
+  String kodeRefrensi = 'null';
   List<Products> products = [];
   // List<ModelAllitems> allitems = <ModelAllitems>[];
   // List<ModelAllitems> filteredAllitems = <ModelAllitems>[];
@@ -79,6 +83,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
 
   @override
   void initState() {
+    print(kodeRefrensi);
     super.initState();
     // futureItems = _fecthDataItems();
     title = 'POS ${sharedPreferences!.getString("name")!}';
@@ -108,8 +113,40 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                   padding: EdgeInsets.all(8.0),
                   child: FakeSearch(),
                 ),
-                Text(
-                    '${sharedPreferences!.getString("total_product_sales")!} product '),
+                DropdownSearch<KodeKeluarbarang>(
+                  asyncItems: (String? filter) => getData(filter),
+                  popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                    showSelectedItems: true,
+                    itemBuilder: _lostKodebarangkeluar,
+                    showSearchBox: true,
+                  ),
+                  compareFn: (item, sItem) =>
+                      item.kode_refrensi == sItem.kode_refrensi,
+                  onChanged: (item) {
+                    setState(() {
+                      kodeRefrensi = item.toString();
+                      // sharedPreferences!
+                      //     .setString('customer_id', idtoko.toString());
+                      // loadCartFromApiPOSTOKO();
+                      DbAllitems.db.getAllitemsBykode(kodeRefrensi);
+                    });
+                  },
+                  dropdownDecoratorProps: DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(
+                      labelText: 'Kode Keluar Barang',
+                      filled: true,
+                      fillColor:
+                          // Colors.white,
+                          Theme.of(context).inputDecorationTheme.fillColor,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  child: Text(
+                    '${sharedPreferences!.getString("total_product_sales")!} product ',
+                    style: const TextStyle(fontSize: 20, color: Colors.blue),
+                  ),
+                ),
                 Expanded(
                   // child: CustomScrollView(
                   // slivers: [
@@ -121,7 +158,9 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                   //       .snapshots(),
                   // isEqualTo: sharedPreferences!.getString("uid")!)
                   child: FutureBuilder(
-                    future: DbAllitems.db.getAllitems(),
+                    future: kodeRefrensi == 'null'
+                        ? DbAllitems.db.getAllitems()
+                        : DbAllitems.db.getAllitemsBykode(kodeRefrensi),
                     builder:
                         (BuildContext context, AsyncSnapshot dataSnapshot) {
                       // dataSnapshot.data.length;
@@ -245,6 +284,43 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
       //     size: 50,
       //   ),
       // )),
+    );
+  }
+
+  Future<List<KodeKeluarbarang>> getData(filter) async {
+    String token = sharedPreferences!.getString("token").toString();
+    var response = await Dio().get(
+      ApiConstants.baseUrl + ApiConstants.GETposSalesendpoint,
+      options: Options(headers: {"Authorization": 'Bearer $token'}),
+      queryParameters: {"filter": filter},
+    );
+
+    final data = response.data;
+    if (data != null) {
+      return KodeKeluarbarang.fromJsonList(data);
+    }
+
+    return [];
+  }
+
+  Widget _lostKodebarangkeluar(
+    BuildContext context,
+    KodeKeluarbarang? item,
+    bool isSelected,
+  ) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: !isSelected
+          ? null
+          : BoxDecoration(
+              border: Border.all(color: Theme.of(context).primaryColor),
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white,
+            ),
+      child: ListTile(
+        selected: isSelected,
+        title: Text(item?.kode_refrensi ?? ''), // menampilkan nama
+      ),
     );
   }
 }
