@@ -680,6 +680,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
                             prefs.setString('customer_id', 0.toString());
+                            prefs.setString('total_product', 0.toString());
                             context.read<PCartToko>().clearCart();
                             Navigator.push(
                                 context,
@@ -695,6 +696,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               prefs.setString('customer_id', 0.toString());
+                              prefs.setString('total_product', 0.toString());
+
                               context.read<PCartToko>().clearCart();
                               Navigator.push(
                                   context,

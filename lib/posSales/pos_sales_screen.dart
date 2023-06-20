@@ -6,6 +6,7 @@ import 'package:e_shop/mainScreens/help_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
 import 'package:e_shop/posSales/pos_sales_screen_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../cartScreens/db_helper.dart';
 import '../global/global.dart';
@@ -107,6 +108,8 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                   padding: EdgeInsets.all(8.0),
                   child: FakeSearch(),
                 ),
+                Text(
+                    '${sharedPreferences!.getString("total_product_sales")!} product '),
                 Expanded(
                   // child: CustomScrollView(
                   // slivers: [
@@ -121,6 +124,8 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                     future: DbAllitems.db.getAllitems(),
                     builder:
                         (BuildContext context, AsyncSnapshot dataSnapshot) {
+                      // dataSnapshot.data.length;
+
                       if (dataSnapshot.hasData) //if brands exists
                       {
                         // return ListView.separated(
@@ -162,7 +167,8 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                         // itemCount: (dataSnapshot.data as List<Items>).length);
                         // return Text('oke');
                         //display brands
-
+                        sharedPreferences!.setString('total_product_sales',
+                            dataSnapshot.data.length.toString());
                         return GridView.builder(
                           // physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -203,9 +209,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                               // model: itemsModel,
                             );
                           },
-                          // itemCount: (dataSnapshot.data as List<Items>).length,
                           itemCount: dataSnapshot.data.length,
-                          // itemCount: dataSnapshot.data.docs.length,
                         );
                       } else if (dataSnapshot.hasError) {
                         return const CircularProgressIndicator();
