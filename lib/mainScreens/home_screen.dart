@@ -21,7 +21,7 @@ import 'package:e_shop/provider/provider_cart.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
 import 'package:e_shop/qr/qr_scanner.dart';
-import 'package:e_shop/report/home_report.dart';
+import 'package:e_shop/report/main_report_screen.dart';
 import 'package:e_shop/testing/CRM/model/category.dart';
 import 'package:e_shop/toko/main_addToko_screen.dart';
 import 'package:e_shop/widgets/alert_dialog.dart';
@@ -434,7 +434,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (c) => HomeReport()));
+                                    builder: (c) => MainReportScreen()));
                           },
                           style: OutlinedButton.styleFrom(
                             side: const BorderSide(color: Colors.blueAccent),
@@ -447,7 +447,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (c) => HomeReport()));
+                                      builder: (c) => MainReportScreen()));
                             },
                             icon: Image.asset(
                               "images/seo-report.png",

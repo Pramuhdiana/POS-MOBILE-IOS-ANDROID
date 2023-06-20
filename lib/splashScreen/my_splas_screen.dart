@@ -62,14 +62,14 @@ class _MySplashScreenState extends State<MySplashScreen> {
     await DbAllitems.db.deleteAllitems();
     await DbAllitemsToko.db.deleteAllitemsToko();
     await DbAlltransaksi.db.deleteAlltransaksi();
-    // await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
+    await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
     await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
     await apiProvider.getAllItems();
     await apiProvider.getAllItemsToko();
     await apiProvider.getAllTransaksi();
     await apiProvider.getAllItemsRetur();
     await apiProvider.getAllDetailTransaksi();
-    // await apiProvider.getAllKodekeluarbarang();
+    await apiProvider.getAllKodekeluarbarang();
     await apiProvider.getAllCustomer();
     await apiProvider.getUsers();
 

@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print, invalid_use_of_protected_member, unused_import
 
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_allitems_toko.dart';
@@ -8,6 +10,7 @@ import 'package:e_shop/global/global.dart';
 import 'package:e_shop/itemsScreens/items_details_screen_toko.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +40,47 @@ class _SearchPosToko extends State<SearchPosToko> {
   DBHelper dbHelper = DBHelper();
   @override
   Widget build(BuildContext context) {
+    var existingitemcart = context
+        .read<PCartToko>()
+        .getItems
+        .firstWhereOrNull((element) => element.name == widget.model?.name);
+    if (existingitemcart == null) {
+      if (Platform.isAndroid) {
+        FlutterBeep.playSysSound(AndroidSoundIDs.TONE_CDMA_ABBR_ALERT);
+        Fluttertoast.showToast(msg: "Barang Berhasil Di Tambahkan");
+        context.read<PCartToko>().addItem(
+              widget.model!.name.toString(),
+              int.parse(widget.model!.price.toString()),
+              1,
+              widget.model!.image_name.toString(),
+              widget.model!.id.toString(),
+              widget.model!.sales_id.toString(),
+              widget.model!.description.toString(),
+              widget.model!.keterangan_barang.toString(),
+            );
+        setState(() {
+          postAPIcart();
+          DbAllitemsToko.db.updateAllitemsTokoByname(widget.model?.name, 0);
+        });
+      } else {
+        FlutterBeep.playSysSound(iOSSoundIDs.AudioToneBusy);
+        Fluttertoast.showToast(msg: "Barang Berhasil Di Tambahkan");
+        context.read<PCartToko>().addItem(
+              widget.model!.name.toString(),
+              int.parse(widget.model!.price.toString()),
+              1,
+              widget.model!.image_name.toString(),
+              widget.model!.id.toString(),
+              widget.model!.sales_id.toString(),
+              widget.model!.description.toString(),
+              widget.model!.keterangan_barang.toString(),
+            );
+        setState(() {
+          postAPIcart();
+          DbAllitemsToko.db.updateAllitemsTokoByname(widget.model?.name, 0);
+        });
+      }
+    }
     return isLoading
         ? const Center(
             child: CircularProgressIndicator(),
