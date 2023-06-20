@@ -584,6 +584,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         scale: 1.2,
                         child: OutlinedButton(
                           onPressed: () async {
+                            sharedPreferences!
+                                .setString('total_product_sales', '0');
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -595,6 +597,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           child: IconButton(
                             onPressed: () async {
+                              sharedPreferences!
+                                  .setString('total_product_sales', '0');
+
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

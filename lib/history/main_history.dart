@@ -37,7 +37,7 @@ class MainHistory extends StatelessWidget {
               indicatorWeight: 8,
               tabs: [
                 RepeatedTab(label: 'Invoice'),
-                RepeatedTab(label: 'Kembali Baran'),
+                RepeatedTab(label: 'Kembali Barang'),
                 RepeatedTab(label: 'Titipan'),
               ]),
         ),
