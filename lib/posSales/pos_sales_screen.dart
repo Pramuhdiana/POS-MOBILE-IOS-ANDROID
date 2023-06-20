@@ -112,7 +112,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                 ),
                 SizedBox(
                   child: Text(
-                    '${sharedPreferences!.getString("total_product_sales")!} product ',
+                    '${sharedPreferences!.getString("total_product_sales")} product ',
                     style: const TextStyle(fontSize: 20, color: Colors.blue),
                   ),
                 ),
