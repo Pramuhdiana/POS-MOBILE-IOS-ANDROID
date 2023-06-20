@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print, non_constant_identifier_names, sized_box_for_whitespace, depend_on_referenced_packages
 
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
@@ -27,6 +26,8 @@ class _HomeReportState extends State<HomeReport> {
   bool cek_visit = false;
   bool cek_canvasing = false;
   bool cek_kunjungan = false;
+  bool cek_omzet = false;
+
   int? canvasing = 0;
   int? kunjungan = 0;
   int? wa = 0;
@@ -67,6 +68,27 @@ class _HomeReportState extends State<HomeReport> {
     return false;
   }
 
+  // start image multi
+  final ImagePicker imgpicker = ImagePicker();
+  List<XFile>? imagefiles;
+
+  openImages() async {
+    try {
+      var pickedfiles = await imgpicker.pickMultiImage();
+      //you can use ImageCourse.camera for Camera capture
+      // ignore: unnecessary_null_comparison
+      if (pickedfiles != null) {
+        imagefiles = pickedfiles;
+        setState(() {});
+      } else {
+        print("No image is selected.");
+      }
+    } catch (e) {
+      print("error while picking file.");
+    }
+  }
+
+//end image mult
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,8 +113,6 @@ class _HomeReportState extends State<HomeReport> {
             color: Colors.white,
           ),
           onPressed: () {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
             Navigator.pop(context);
           },
         ),
@@ -105,345 +125,385 @@ class _HomeReportState extends State<HomeReport> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-          padding: const EdgeInsets.all(25),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child:
-                ListView(padding: const EdgeInsets.all(4), children: <Widget>[
-              //date
-              const Text("Date"),
-              const Divider(),
-              Row(children: [
-                const Padding(padding: EdgeInsets.all(4)),
-                Expanded(
-                    child: TextField(
-                  controller: dateinput, //editing controller of this TextField
-                  decoration: const InputDecoration(
-                      icon: Icon(
-                        Icons.calendar_month,
-                        color: Colors.blue,
-                      ), //icon of text field
-                      labelText: "Enter Date" //label text of field
-                      ),
-                  readOnly:
-                      true, //set it true, so that user will not able to edit text
-                  onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(
-                            2000), //DateTime.now() - not to allow to choose before today.
-                        lastDate: DateTime(2024),
-                        selectableDayPredicate: _rangeDate);
-
-                    if (pickedDate != null) {
-                      print(
-                          pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                      String formattedDate =
-                          DateFormat('dd-MM-yyyy').format(pickedDate);
-                      print(
-                          formattedDate); //formatted date output using intl package =>  2021-03-16
-                      //you can implement different kind of Date Format here according to your requirement
-                      setState(() {
-                        dateinput.text =
-                            formattedDate; //set output date to TextField value.
-                      });
-                    } else {
-                      print("Date is not selected");
-                    }
-                  },
-                ))
-              ]),
-
-              //customer / toko
-              const SizedBox(
-                height: 10,
-              ),
-              const Text("Customer"),
-              const Divider(),
-              Row(
-                children: [
-                  const Padding(padding: EdgeInsets.all(4)),
-                  Expanded(
-                    child: DropdownSearch<UserModel>(
-                      asyncItems: (String? filter) => getData(filter),
-                      popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                        showSelectedItems: true,
-                        itemBuilder: _customPopupItemBuilderExample2,
-                        showSearchBox: true,
-                      ),
-                      compareFn: (item, sItem) => item.id == sItem.id,
-                      onChanged: (item) {
-                        setState(() {
-                          // print(text);
-                          print('toko : ${item?.name}');
-                          print('id  : ${item?.id}');
-                          print('diskonnya  : ${item?.diskon_customer}');
-                          idtoko = item?.id; // menyimpan id toko
-                          toko = item?.name; // menyimpan nama toko
-                        });
-                      },
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          labelText: 'Customer',
-                          filled: true,
-                          fillColor:
-                              Theme.of(context).inputDecorationTheme.fillColor,
-                        ),
-                      ),
-                    ),
+      body: Column(
+        children: <Widget>[
+          Row(
+            children: [
+              const Padding(padding: EdgeInsets.all(4)),
+              Expanded(
+                child: DropdownSearch<UserModel>(
+                  asyncItems: (String? filter) => getData(filter),
+                  popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                    showSelectedItems: true,
+                    itemBuilder: _customPopupItemBuilderExample2,
+                    showSearchBox: true,
                   ),
-                ],
-              ),
-
-              //wa
-              const SizedBox(
-                height: 10,
-              ),
-              const Text("Activity"),
-              const Divider(),
-              Column(
-                children: [
-                  Row(
-                    children: <Widget>[
-                      Checkbox(
-                        value: cek_wa,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            cek_wa = value!;
-                            wa = 1;
-                            print(cek_wa);
-                          });
-                        },
-                      ),
-                      const Text(
-                        'WhatsApp',
-                        style: TextStyle(fontSize: 14.0),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Checkbox(
-                        value: cek_tlp,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            cek_tlp = value!;
-                            tlp = 1;
-                            print(cek_tlp);
-                          });
-                        },
-                      ),
-                      const Text(
-                        'Telephone',
-                        style: TextStyle(fontSize: 14.0),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Checkbox(
-                        value: cek_visit,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            if (value == true) {
-                              visit = 1;
-                              cek_visit = value!;
-                            } else {
-                              visit = 0;
-                              cek_visit = value!;
-                            }
-                            print('$cek_visit dan $visit');
-                          });
-                        },
-                      ),
-                      const Text(
-                        'Visit',
-                        style: TextStyle(fontSize: 14.0),
-                      ),
-                      //kunjungan
-                      if (visit != 0)
-                        Checkbox(
-                          value: cek_kunjungan,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              if (value == true) {
-                                kunjungan = 1;
-                                cek_kunjungan = value!;
-                              } else {
-                                kunjungan = 0;
-                                cek_kunjungan = value!;
-                              }
-                              print('$cek_kunjungan dan $kunjungan');
-                            });
-                          },
-                        ),
-                      if (visit != 0)
-                        const Text(
-                          'Kunjungan',
-                          style: TextStyle(fontSize: 14.0),
-                        ),
-
-                      //canvasing
-                      if (visit != 0)
-                        Checkbox(
-                          value: cek_canvasing,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              if (value == true) {
-                                canvasing = 1;
-                                cek_canvasing = value!;
-                              } else {
-                                canvasing = 0;
-                                cek_canvasing = value!;
-                              }
-                              print('$cek_canvasing dan $canvasing');
-                            });
-                          },
-                        ),
-                      if (visit != 0)
-                        const Text(
-                          'Canvasing',
-                          style: TextStyle(fontSize: 14.0),
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text("Report"),
-              const Divider(),
-              Card(
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(0),
-                    child: TextField(
-                      onChanged: (reportinput) {
-                        setState(() {
-                          reportinput = reportinput;
-                          print(reportinput);
-                        });
-                      },
-                      maxLines: 8, //or null
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          hintText: "Enter your report"),
-                      controller: reportinput,
-                    ),
-                  )),
-              //DP
-              const SizedBox(
-                height: 10,
-              ),
-              const Text("Omzet"),
-              const Divider(),
-              SizedBox(
-                width: 250,
-                child: TextField(
-                  onChanged: (omzet) {
+                  compareFn: (item, sItem) => item.id == sItem.id,
+                  onChanged: (item) {
                     setState(() {
-                      // dpp = int.parse(dp);
+                      // print(text);
+                      print('toko : ${item?.name}');
+                      print('id  : ${item?.id}');
+                      print('diskonnya  : ${item?.diskon_customer}');
+                      idtoko = item?.id; // menyimpan id toko
+                      toko = item?.name; // menyimpan nama toko
                     });
                   },
-                  decoration: const InputDecoration(labelText: "Omzet"),
-                  // controller: omzet,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  dropdownDecoratorProps: DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(
+                      labelText: 'Customer',
+                      filled: true,
+                      fillColor:
+                          Theme.of(context).inputDecorationTheme.fillColor,
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      myAlert();
-                    },
-                    child: const Text('Upload Photo'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  //if image not null show the image
-                  //if image null show text
-                  image != null
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.file(
-                              //to show image, you type like this.
-                              File(image!.path),
-                              fit: BoxFit.cover,
-                              width: MediaQuery.of(context).size.width,
-                              height: 300,
+            ],
+          ),
+          Expanded(
+            child: Padding(
+                padding: const EdgeInsets.only(left: 25, right: 25),
+                child: Form(
+                  key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: ListView(
+                      padding: const EdgeInsets.all(4),
+                      children: <Widget>[
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        //date
+                        const Text("Date"),
+                        const Divider(),
+                        Row(children: [
+                          const Padding(padding: EdgeInsets.all(4)),
+                          Expanded(
+                              child: TextField(
+                            controller:
+                                dateinput, //editing controller of this TextField
+                            decoration: const InputDecoration(
+                                icon: Icon(
+                                  Icons.calendar_month,
+                                  color: Colors.blue,
+                                ), //icon of text field
+                                labelText: "Enter Date" //label text of field
+                                ),
+                            readOnly:
+                                true, //set it true, so that user will not able to edit text
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(
+                                      2000), //DateTime.now() - not to allow to choose before today.
+                                  lastDate: DateTime(2024),
+                                  selectableDayPredicate: _rangeDate);
+
+                              if (pickedDate != null) {
+                                print(
+                                    pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                String formattedDate =
+                                    DateFormat('dd-MM-yyyy').format(pickedDate);
+                                print(
+                                    formattedDate); //formatted date output using intl package =>  2021-03-16
+                                //you can implement different kind of Date Format here according to your requirement
+                                setState(() {
+                                  dateinput.text =
+                                      formattedDate; //set output date to TextField value.
+                                });
+                              } else {
+                                print("Date is not selected");
+                              }
+                            },
+                          ))
+                        ]),
+
+                        //wa
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text("Activity"),
+                        const Divider(),
+
+                        Column(
+                          children: [
+                            Row(
+                              children: <Widget>[
+                                Checkbox(
+                                  value: cek_wa,
+                                  onChanged: cek_visit == true ||
+                                          cek_tlp == true
+                                      ? null
+                                      : (bool? value) {
+                                          setState(() {
+                                            cek_wa = value!;
+                                            cek_wa == true ? wa = 1 : wa = 0;
+                                            print(
+                                                'whatsapp : status $cek_wa & vl : $wa');
+                                          });
+                                        },
+                                ),
+                                const Text(
+                                  'WhatsApp',
+                                  style: TextStyle(fontSize: 14.0),
+                                ),
+                              ],
                             ),
-                          ),
-                        )
-                      : const Text(
-                          "No Image",
-                          style: TextStyle(fontSize: 20),
-                        )
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Divider(),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      myAlertVideo();
-                    },
-                    child: const Text('Upload Video'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  //if image not null show the image
-                  //if image null show text
-                  image != null
-                      ? const Text(
-                          "No Video",
-                          style: TextStyle(fontSize: 20),
-                        )
-                      // Padding(
-                      //     padding: const EdgeInsets.symmetric(horizontal: 20),
-                      //     child: ClipRRect(
-                      //       borderRadius: BorderRadius.circular(8),
-                      //       child: Image.file(
-                      //         //to show image, you type like this.
-                      //         File(image!.path),
-                      //         fit: BoxFit.cover,
-                      //         width: MediaQuery.of(context).size.width,
-                      //         height: 300,
-                      //       ),
-                      //     ),
-                      //   )
-                      : const Text(
-                          "No Video",
-                          style: TextStyle(fontSize: 20),
-                        )
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Divider(),
-            ]),
-          )), //Row
+                            Row(
+                              children: <Widget>[
+                                Checkbox(
+                                  value: cek_tlp,
+                                  onChanged: cek_visit == true || cek_wa == true
+                                      ? null
+                                      : (bool? value) {
+                                          setState(() {
+                                            cek_tlp = value!;
+                                            cek_tlp == true ? tlp = 1 : tlp = 0;
+                                            print(
+                                                'tlp : status $cek_tlp & vl : $tlp');
+                                          });
+                                        },
+                                ),
+                                const Text(
+                                  'Telephone',
+                                  style: TextStyle(fontSize: 14.0),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Checkbox(
+                                  value: cek_visit,
+                                  onChanged: cek_tlp == true || cek_wa == true
+                                      ? null
+                                      : (bool? value) {
+                                          setState(() {
+                                            cek_visit = value!;
+                                            cek_visit == true
+                                                ? visit = 1
+                                                : visit = 0;
+                                            print(
+                                                'visit : status $cek_visit & vl : $visit');
+                                          });
+                                        },
+                                ),
+                                const Text(
+                                  'Visit',
+                                  style: TextStyle(fontSize: 14.0),
+                                ),
+                                //kunjungan
+                                if (visit != 0)
+                                  Checkbox(
+                                    value: cek_kunjungan,
+                                    onChanged: cek_canvasing == true
+                                        ? null
+                                        : (bool? value) {
+                                            setState(() {
+                                              cek_kunjungan = value!;
+                                              cek_kunjungan == true
+                                                  ? kunjungan = 1
+                                                  : kunjungan = 0;
+                                              print(
+                                                  'kunjungan : status $cek_kunjungan & vl : $kunjungan');
+                                            });
+                                          },
+                                  ),
+                                if (visit != 0)
+                                  const Text(
+                                    'Kunjungan',
+                                    style: TextStyle(fontSize: 14.0),
+                                  ),
+
+                                //canvasing
+                                if (visit != 0)
+                                  Checkbox(
+                                    value: cek_canvasing,
+                                    onChanged: cek_kunjungan == true
+                                        ? null
+                                        : (bool? value) {
+                                            setState(() {
+                                              cek_canvasing = value!;
+                                              cek_canvasing == true
+                                                  ? canvasing = 1
+                                                  : canvasing = 0;
+                                              print(
+                                                  'canvasing : status $cek_kunjungan & vl : $canvasing');
+                                            });
+                                          },
+                                  ),
+                                if (visit != 0)
+                                  const Text(
+                                    'Canvasing',
+                                    style: TextStyle(fontSize: 14.0),
+                                  ),
+                              ],
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text("Report"),
+                        const Divider(),
+                        Card(
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(0),
+                              child: TextField(
+                                onChanged: (reportinput) {
+                                  setState(() {
+                                    reportinput = reportinput;
+                                    print(reportinput);
+                                  });
+                                },
+                                maxLines: 8, //or null
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    hintText: "Enter your report"),
+                                controller: reportinput,
+                              ),
+                            )),
+                        //DP
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            const Text("Omzet"),
+                            Checkbox(
+                              value: cek_omzet,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  cek_omzet = value!;
+
+                                  print('omzet : status $cek_kunjungan');
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        const Divider(),
+                        cek_omzet == false
+                            ? const SizedBox()
+                            : SizedBox(
+                                width: 250,
+                                child: TextField(
+                                  onChanged: (omzet) {
+                                    setState(() {
+                                      // dpp = int.parse(dp);
+                                    });
+                                  },
+                                  decoration: const InputDecoration(
+                                      labelText: "Total Omzet"),
+                                  // controller: omzet,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                ),
+                              ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                // myAlert();
+                                openImages();
+                              },
+                              child: const Text('Upload Photo'),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+
+                            //multi img
+                            imagefiles != null
+                                ? Wrap(
+                                    children: imagefiles!.map((imageone) {
+                                      return Card(
+                                        child: Container(
+                                          height: 100,
+                                          width: 100,
+                                          child: Image.file(
+                                            File(imageone.path),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  )
+                                : Container()
+                          ],
+                        ),
+                        //   //video
+                        //   const SizedBox(
+                        //     height: 10,
+                        //   ),
+                        //   const Divider(),
+                        //   Column(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        //       ElevatedButton(
+                        //         onPressed: () {
+                        //           myAlertVideo();
+                        //         },
+                        //         child: const Text('Upload Video'),
+                        //       ),
+                        //       const SizedBox(
+                        //         height: 10,
+                        //       ),
+                        //       //if image not null show the image
+                        //       //if image null show text
+                        //       image != null
+                        //           ? Padding(
+                        //               padding:
+                        //                   const EdgeInsets.symmetric(horizontal: 20),
+                        //               child: ClipRRect(
+                        //                 borderRadius: BorderRadius.circular(8),
+                        //                 child: Image.file(
+                        //                   //to show image, you type like this.
+                        //                   File(image!.path),
+                        //                   fit: BoxFit.cover,
+                        //                   width: MediaQuery.of(context).size.width,
+                        //                   height: 300,
+                        //                 ),
+                        //               ),
+                        //             )
+                        //           : const Text(
+                        //               "No Video",
+                        //               style: TextStyle(fontSize: 20),
+                        //             )
+                        //     ],
+                        //   ),
+                        //   const SizedBox(
+                        //     height: 10,
+                        //   ),
+                        //   const Divider(),
+                      ]),
+                )),
+          ),
+        ],
+      ), //Row
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(left: 80, right: 80),
+        child: ElevatedButton(
+            onPressed: () {
+              Fluttertoast.showToast(msg: "Not Available");
+            },
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ))),
+            child: const Text('Save Report')),
+      ),
     );
   }
 
@@ -502,7 +562,8 @@ class _HomeReportState extends State<HomeReport> {
                     //if user click this button, user can upload image from gallery
                     onPressed: () {
                       Navigator.pop(context);
-                      getImage(ImageSource.gallery);
+                      // getImage(ImageSource.gallery);
+                      openImages();
                     },
                     child: Row(
                       children: const [

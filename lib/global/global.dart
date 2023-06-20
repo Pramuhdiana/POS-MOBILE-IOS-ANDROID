@@ -16,7 +16,7 @@ String? token = sharedPreferences!.getString('token');
 int revisiBesar =
     1; //UI baru, banyak fitur baru, perubahan konsep, dll  (MAJOR)
 int revisiKecil =
-    8; //perubahan kecil                                    (MINOR)
+    7; //perubahan kecil                                    (MINOR)
 int rilisPerbaikanbug =
     0; //perbaikan bug                                      (PATCH)
 

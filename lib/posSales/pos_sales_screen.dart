@@ -45,47 +45,16 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
 
   String token = sharedPreferences!.getString("token").toString();
 
-  // Future<List<Items>> _fecthDataItems() async {
-  //   final response = await http.get(
-  //       Uri.parse(ApiConstants.baseUrl + ApiConstants.posSalesendpoint),
-  //       headers: {
-  //         'Authorization': 'Bearer $token',
-  //       });
-  //   print(response.statusCode);
-  //   print(response.body);
-
-  //   final response2 = await http.post(
-  //       Uri.parse(ApiConstants.baseUrl + ApiConstants.posSalesendpoint),
-  //       headers: {
-  //         'Authorization': 'Bearer $token',
-  //       });
-  //   // print(response.statusCode);
-
-  //   if (response.statusCode == 200) {
-  //     var getItemsData = json.decode(response.body) as List;
-  //     var listItems = getItemsData.map((i) => Items.fromJson(i)).toList();
-  //     return listItems;
-  //   } else {
-  //     throw Exception('Failed to load Items');
-  //   }
-  // }
-
-  // late Future<List<Items>> futureItems;
-
   DBHelper dbHelper = DBHelper();
   String? title = '';
   String query = '';
   String kodeRefrensi = 'null';
   List<Products> products = [];
-  // List<ModelAllitems> allitems = <ModelAllitems>[];
-  // List<ModelAllitems> filteredAllitems = <ModelAllitems>[];
   var isLoading = false;
 
   @override
   void initState() {
-    print(kodeRefrensi);
     super.initState();
-    // futureItems = _fecthDataItems();
     title = 'POS ${sharedPreferences!.getString("name")!}';
   }
 

@@ -12,6 +12,7 @@ import 'package:e_shop/database/model_allitems_toko.dart';
 import 'package:e_shop/models/products.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
+import 'package:e_shop/qr/qr_scanner_toko.dart';
 import 'package:e_shop/widgets/appbar_cart_pos_toko.dart';
 import 'package:e_shop/widgets/fake_search_toko.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +46,7 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
 
   @override
   void initState() {
+    sharedPreferences!.setString('total_product_toko', '0');
     super.initState();
     title = 'POS TOKO';
   }
@@ -92,7 +94,8 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                         print('diskonnya  : ${item?.diskon_customer}');
                         idtoko = item?.id; // menyimpan id toko
                         toko = item?.name; // menyimpan nama toko
-
+                        sharedPreferences!
+                            .setString('customer_name', toko.toString());
                         sharedPreferences!
                             .setString('customer_id', idtoko.toString());
                         loadCartFromApiPOSTOKO();
@@ -141,12 +144,20 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                 ),
               ],
             ),
+            SizedBox(
+              child: Text(
+                '${sharedPreferences!.getString("total_product_toko")!} product ',
+                style: const TextStyle(fontSize: 20, color: Colors.blue),
+              ),
+            ),
             Expanded(
               child: FutureBuilder(
                 future: DbAllitemsToko.db.getAllitemsToko(idtoko),
                 builder: (context, AsyncSnapshot dataSnapshot) {
                   if (dataSnapshot.hasData) //if brands exists
                   {
+                    sharedPreferences!.setString('total_product_toko',
+                        dataSnapshot.data.length.toString());
                     print(idtoko);
                     return GridView.builder(
                       shrinkWrap: true,
@@ -198,15 +209,23 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Navigator.push(
-      //         context, MaterialPageRoute(builder: (c) => const QrScanner()));
-      //   },
-      //   backgroundColor: Colors.blue,
-      //   splashColor: Colors.white,
-      //   child: const Icon(Icons.add_a_photo_outlined),
-      // ),
+      floatingActionButton: sharedPreferences!
+                  .getString('customer_id')
+                  .toString() ==
+              0.toString()
+          ? const Icon(
+              Icons.disabled_by_default_outlined,
+              color: Color.fromARGB(255, 243, 237, 237),
+            )
+          : FloatingActionButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (c) => const QrScannerToko()));
+              },
+              backgroundColor: Colors.blue,
+              splashColor: Colors.white,
+              child: const Icon(Icons.add_a_photo_outlined),
+            ),
     );
   }
 
@@ -244,29 +263,11 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
         selected: isSelected,
         title: Text(item?.name ?? ''), // menampilkan nama
         subtitle: Text(item?.alamat?.toString() ?? ''), // menampilkan alamat
-
-        // leading: CircleAvatar(
-        //     // this does not work - throws 404 error
-        //     // backgroundImage: NetworkImage(item.avatar ?? ''),
-        //     ),
       ),
     );
   }
 
   loadCartFromApiPOSTOKO() async {
-    // setState(() {
-    //   isLoading = true;
-    // });
-
-    // var apiProvider = ApiServices();
-    // await apiProvider.getAllCart();
-
-    // // wait for 2 seconds to simulate loading of data
-    // await Future.delayed(const Duration(seconds: 2));
-
-    // setState(() {
-    //   isLoading = false;
-    // });
     var url = ApiConstants.baseUrl +
         ApiConstants.GETkeranjangtokoendpoint +
         idtoko.toString();
@@ -293,7 +294,6 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
               cart['keterangan_barang'].toString(),
             );
       } else {}
-      // DbAllItems.db.createAllItems(AllItems.fromJson(items));
     }).toList();
   }
 }
