@@ -94,7 +94,7 @@ class DbAlltransaksi {
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM alltransaksi WHERE jenisform_id=? and user_id=? ORDER BY invoices_number DESC',
-        [jenis_id, id]);
+        [jenis_id, sharedPreferences!.getString('id')]);
     // final res = await db.query('allitems', where: '"sales_id" = $id');
     // final res = await db.rawQuery("SELECT * FROM allitems");
 
@@ -112,7 +112,7 @@ class DbAlltransaksi {
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM alltransaksi WHERE jenisform_id=? and user_id=? and invoices_number LIKE ? ORDER BY invoices_number DESC',
-        [jenis_id, id, '%$name%']);
+        [jenis_id, sharedPreferences!.getString('id'), '%$name%']);
     // final res = await db.query('allitems', where: '"sales_id" = $id');
     // final res = await db.rawQuery("SELECT * FROM alltransaksi");
 

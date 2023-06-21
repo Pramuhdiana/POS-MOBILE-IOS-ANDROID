@@ -224,6 +224,8 @@ class _PosReturScreenState extends State<PosReturScreen> {
   }
 
   loadCartFromApiPOSRetur(idtoko) async {
+    String token = sharedPreferences!.getString("token").toString();
+
     var url = ApiConstants.baseUrl +
         ApiConstants.GETkeranjangreturendpoint +
         idtoko.toString();

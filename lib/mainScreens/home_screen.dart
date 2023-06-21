@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ImagePicker imagePicker = ImagePicker();
   @override
   void initState() {
-    print('sales id : ${id!}');
+    print('sales id : ${sharedPreferences!.getString('id')!}');
     super.initState();
     loadCartFromApiPOSSALES();
     controller?.stopCamera();
@@ -776,9 +776,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   loadCartFromApiPOSSALES() async {
+    String? tokens = sharedPreferences!.getString('token');
     var url = ApiConstants.baseUrl + ApiConstants.GETkeranjangsalesendpoint;
     Response response = await Dio().get(url,
-        options: Options(headers: {"Authorization": "Bearer $token"}));
+        options: Options(headers: {"Authorization": "Bearer $tokens"}));
 
     return (response.data as List).map((cart) {
       var existingitemcart = context

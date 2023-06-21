@@ -52,7 +52,7 @@ class _ItemsDetailsScreenTokoState extends State<ItemsDetailsScreenToko> {
         key: _scaffoldKey,
         child: Scaffold(
           backgroundColor: const Color.fromARGB(255, 253, 248, 248),
-          appBar: AppbarCartToko(title: 'POS MOBILE'),
+          appBar: AppbarCartToko(title: widget.model!.name.toString()),
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
               var existingitemcart = context

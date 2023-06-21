@@ -268,6 +268,8 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
   }
 
   loadCartFromApiPOSTOKO() async {
+    String token = sharedPreferences!.getString("token").toString();
+
     var url = ApiConstants.baseUrl +
         ApiConstants.GETkeranjangtokoendpoint +
         idtoko.toString();

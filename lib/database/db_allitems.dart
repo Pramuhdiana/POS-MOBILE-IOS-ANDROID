@@ -89,8 +89,9 @@ class DbAllitems {
   Future<List<ModelAllitems>> getAllitems() async {
     id;
     final db = await database;
-    final res = await db
-        .rawQuery('SELECT * FROM allitems WHERE sales_id=? and qty=?', [id, 1]);
+    final res = await db.rawQuery(
+        'SELECT * FROM allitems WHERE sales_id=? and qty=?',
+        [sharedPreferences!.getString('id'), 1]);
 
     List<ModelAllitems> list = res.isNotEmpty
         ? res.map((c) => ModelAllitems.fromJson(c)).toList()
@@ -105,7 +106,7 @@ class DbAllitems {
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM allitems WHERE sales_id=? and qty=? and kode_refrensi =?',
-        [id, 1, kodeRefrensi]);
+        [sharedPreferences!.getString('id'), 1, kodeRefrensi]);
 
     List<ModelAllitems> list = res.isNotEmpty
         ? res.map((c) => ModelAllitems.fromJson(c)).toList()

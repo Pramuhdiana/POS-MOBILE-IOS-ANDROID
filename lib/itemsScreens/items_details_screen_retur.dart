@@ -53,7 +53,7 @@ class _ItemsDetailsScreenReturState extends State<ItemsDetailsScreenRetur> {
         key: _scaffoldKey,
         child: Scaffold(
           backgroundColor: const Color.fromARGB(255, 253, 248, 248),
-          appBar: AppbarCartRetur(title: 'POS MOBILE'),
+          appBar: AppbarCartRetur(title: widget.model!.name.toString()),
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
               var existingitemcart = context
