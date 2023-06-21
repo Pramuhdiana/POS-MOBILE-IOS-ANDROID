@@ -6,7 +6,11 @@ import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/authScreens/auth_screen.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
+import 'package:e_shop/provider/provider_cart.dart';
+import 'package:e_shop/provider/provider_cart_retur.dart';
+import 'package:e_shop/provider/provider_cart_toko.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../database/db_alldetailtransaksi.dart';
 import '../database/db_allitems.dart';
@@ -58,6 +62,9 @@ class _MySplashScreenState extends State<MySplashScreen> {
       isLoading = true;
     });
 
+    context.read<PCart>().clearCart();
+    context.read<PCartToko>().clearCart();
+    context.read<PCartRetur>().clearCart();
     var apiProvider = ApiServices();
     await DbAllitems.db.deleteAllitems();
     await DbAllitemsToko.db.deleteAllitemsToko();
