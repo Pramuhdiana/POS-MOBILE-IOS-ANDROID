@@ -584,62 +584,62 @@ class _HomeScreenState extends State<HomeScreen> {
                   //         ),
                   //       ],
                   //     ),
-                  //   ],
-                  // ),
+                ],
+              ),
 
-                  // //slot 2 widget
-                  // SizedBox(
-                  //   height: 25,
-                  // ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     //POS SALES
-                  //     Column(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       children: <Widget>[
-                  //         Transform.scale(
-                  //           scale: 1.2,
-                  //           child: OutlinedButton(
-                  //             onPressed: () async {
-                  //               sharedPreferences!
-                  //                   .setString('total_product_sales', '0');
-                  //               Navigator.push(
-                  //                   context,
-                  //                   MaterialPageRoute(
-                  //                       builder: (c) => MainPosSalesScreen()));
-                  //             },
-                  //             style: OutlinedButton.styleFrom(
-                  //               side: const BorderSide(color: Colors.blueAccent),
-                  //               shape: const CircleBorder(),
-                  //             ),
-                  //             child: IconButton(
-                  //               onPressed: () async {
-                  //                 sharedPreferences!
-                  //                     .setString('total_product_sales', '0');
+              //slot 2 widget
+              SizedBox(
+                height: 25,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //POS SALES
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Transform.scale(
+                        scale: 1.2,
+                        child: OutlinedButton(
+                          onPressed: () async {
+                            sharedPreferences!
+                                .setString('total_product_sales', '0');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (c) => MainPosSalesScreen()));
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Colors.blueAccent),
+                            shape: const CircleBorder(),
+                          ),
+                          child: IconButton(
+                            onPressed: () async {
+                              sharedPreferences!
+                                  .setString('total_product_sales', '0');
 
-                  //                 Navigator.push(
-                  //                     context,
-                  //                     MaterialPageRoute(
-                  //                         builder: (c) => MainPosSalesScreen()));
-                  //               },
-                  //               icon: Image.asset(
-                  //                 "images/sales.png",
-                  //               ),
-                  //             ),
-                  //           ),
-                  //         ),
-                  //         const Padding(
-                  //           padding: EdgeInsets.only(top: 10.0),
-                  //         ),
-                  //         const Text(
-                  //           "POS SALES",
-                  //           style:
-                  //               TextStyle(color: Colors.blueAccent, fontSize: 12.0),
-                  //         ),
-                  //       ],
-                  //     ),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (c) => MainPosSalesScreen()));
+                            },
+                            icon: Image.asset(
+                              "images/sales.png",
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10.0),
+                      ),
+                      const Text(
+                        "POS SALES",
+                        style:
+                            TextStyle(color: Colors.blueAccent, fontSize: 12.0),
+                      ),
+                    ],
+                  ),
 
                   //pos retur
                   Column(
