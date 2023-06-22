@@ -6,7 +6,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
 import '../provider/provider_cart_toko.dart';
 
-class AppbarCartToko extends StatefulWidget with PreferredSizeWidget {
+class AppbarCartToko extends StatefulWidget implements PreferredSizeWidget {
   PreferredSizeWidget? preferredSizeWidget;
   String? sellerUID;
   String? title = '';
@@ -90,6 +90,7 @@ class _AppbarCartTokoState extends State<AppbarCartToko> {
                   child: const Icon(
                     Icons.shopping_cart,
                     color: Colors.white,
+                    size: 35,
                   ),
                 ),
               ),

@@ -21,8 +21,8 @@ class FakeSearchRetur extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: const [
+            const Row(
+              children: [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Icon(

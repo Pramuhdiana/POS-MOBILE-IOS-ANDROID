@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
 
-class AppbarCartRetur extends StatefulWidget with PreferredSizeWidget {
+class AppbarCartRetur extends StatefulWidget implements PreferredSizeWidget {
   PreferredSizeWidget? preferredSizeWidget;
   String? sellerUID;
   String? title = '';
@@ -91,6 +91,7 @@ class _AppbarCartReturState extends State<AppbarCartRetur> {
                   child: const Icon(
                     Icons.shopping_cart,
                     color: Colors.white,
+                    size: 35,
                   ),
                 ),
               ),

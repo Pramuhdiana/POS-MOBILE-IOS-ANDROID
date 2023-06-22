@@ -136,7 +136,7 @@ class _ItemsDetailsScreenState extends State<ItemsDetailsScreen> {
                   child: Center(
                     child: Theme(
                       data: ThemeData(
-                          accentColor: Colors.blue,
+                          hintColor: Colors.blue,
                           primarySwatch: Colors.blue,
                           colorScheme: ColorScheme.light(primary: Colors.blue)),
                       child: CartStepperInt(

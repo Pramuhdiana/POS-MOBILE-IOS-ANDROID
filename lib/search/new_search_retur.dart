@@ -95,9 +95,9 @@ class _SearchScreenState extends State<NewSearchScreenRetur> {
                     borderRadius: BorderRadius.circular(25)),
                 height: 30,
                 width: MediaQuery.of(context).size.width * 0.7,
-                child: Row(
+                child: const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
+                    children: [
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 15),
                         child: Icon(Icons.search, color: Colors.white),

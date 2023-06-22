@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
 
 // ignore: must_be_immutable
-class AppBarWithCartBadgeSales extends StatefulWidget with PreferredSizeWidget {
+class AppBarWithCartBadgeSales extends StatefulWidget
+    implements PreferredSizeWidget {
   PreferredSizeWidget? preferredSizeWidget;
   String? sellerUID;
   String? title = 'POS Mobile';
@@ -97,6 +98,7 @@ class _AppBarWithCartBadgeSalesState extends State<AppBarWithCartBadgeSales> {
                   child: const Icon(
                     Icons.shopping_cart,
                     color: Colors.white,
+                    size: 35,
                   ),
                 ),
               ),

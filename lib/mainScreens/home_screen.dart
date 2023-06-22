@@ -22,7 +22,6 @@ import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
 import 'package:e_shop/qr/qr_scanner.dart';
 import 'package:e_shop/report/main_report_screen.dart';
-import 'package:e_shop/testing/CRM/model/category.dart';
 import 'package:e_shop/toko/main_addToko_screen.dart';
 import 'package:e_shop/widgets/alert_dialog.dart';
 import 'package:e_shop/widgets/fake_search.dart';
@@ -44,7 +43,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var isLoading = false;
-  late final Category category;
   // late FirebaseMessaging messaging;
   QRViewController? controller;
   XFile? imgXFile;
@@ -518,17 +516,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Transform.scale(
                         scale: 1.2,
                         child: OutlinedButton(
-                          onPressed: () {
-                            // categories
-                            //     .map((category) => Navigator.of(context)
-                            //         .push(MaterialPageRoute(
-                            //             builder: (context) =>
-                            //                 CRMCategoryPage(
-                            //                   category: category,
-                            //                   key: null,
-                            //                 ))))
-                            //     .toList();
-                          },
+                          onPressed: () {},
                           style: OutlinedButton.styleFrom(
                             side: const BorderSide(color: Colors.blueAccent),
                             shape: const CircleBorder(
@@ -538,15 +526,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: IconButton(
                             onPressed: () {
                               Fluttertoast.showToast(msg: "Not Available");
-                              // categories
-                              //     .map((category) => Navigator.of(context)
-                              //         .push(MaterialPageRoute(
-                              //             builder: (context) =>
-                              //                 CRMCategoryPage(
-                              //                   category: category,
-                              //                   key: null,
-                              //                 ))))
-                              //     .toList();
                             },
                             icon: Image.asset(
                               "images/settings.png",
@@ -560,6 +539,46 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const Text(
                         "SETTINGS",
+                        style:
+                            TextStyle(color: Colors.blueAccent, fontSize: 12.0),
+                      ),
+                    ],
+                  ),
+
+                  //dashboard report
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Transform.scale(
+                        scale: 1.2,
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Colors.blueAccent),
+                            shape: const CircleBorder(
+                                // borderRadius: BorderRadius.circular(360),
+                                ),
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              Fluttertoast.showToast(msg: "Not Available");
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (c) => ChartScreen()));
+                            },
+                            icon: Image.asset(
+                              "images/settings.png",
+                              // "images/offer.png",
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10.0),
+                      ),
+                      const Text(
+                        "DASHBOARD",
                         style:
                             TextStyle(color: Colors.blueAccent, fontSize: 12.0),
                       ),

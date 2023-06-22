@@ -57,7 +57,7 @@ class _ItemsPhotoToko extends State<ItemsPhotoToko> {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.black,
+            color: Colors.white,
           ),
           onPressed: () {
             Navigator.pop(context);
