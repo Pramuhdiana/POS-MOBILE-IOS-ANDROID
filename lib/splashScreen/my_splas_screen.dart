@@ -38,9 +38,16 @@ class _MySplashScreenState extends State<MySplashScreen> {
       if (sharedPreferences!.getString("token").toString() != "null") {
         await requestPermission();
         await _loadFromApi();
-        await getToken();
-        Navigator.push(
-            context, MaterialPageRoute(builder: (c) => const MainScreen()));
+        try {
+          sharedPreferences!.setString('total_product_sales', '0');
+          await getToken();
+          Navigator.push(
+              context, MaterialPageRoute(builder: (c) => const MainScreen()));
+        } catch (c) {
+          sharedPreferences!.setString('total_product_sales', '0');
+          Navigator.push(
+              context, MaterialPageRoute(builder: (c) => const MainScreen()));
+        }
       } else //user is NOT already Logged-in
       {
         Navigator.push(

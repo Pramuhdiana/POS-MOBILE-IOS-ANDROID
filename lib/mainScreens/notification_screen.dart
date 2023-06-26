@@ -2,11 +2,13 @@
 
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/push_notifications/push_notifications_system.dart';
+import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -16,6 +18,9 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  RoundedLoadingButtonController btnController =
+      RoundedLoadingButtonController();
   TextEditingController username = TextEditingController();
   TextEditingController title = TextEditingController();
   TextEditingController body = TextEditingController();
@@ -34,34 +39,115 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        toolbarHeight: 0,
-      ),
-      backgroundColor: Colors.white,
-      body: Row(children: [
-        Center(
-          child: IconButton(
-            onPressed: () {
-              Fluttertoast.showToast(msg: "Not Available");
-              sendMotificationToBc(
-                  "eTPAF2EIQga8UyApDCLeT-:APA91bF-AN95GI30lsGH-ErYuAEiqRAQ9yuhlNYppYpMaE6U0F832nCv4DtXJ7hCdgHkZtF1vYs2ky9xI4BZF8CUloKRXPyc3oyAUBCpOK1QYEW4i8uotKZShxvJJs3Y9ZHF1ipIjKJ4",
-                  123.toString());
-
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (c) => const CartScreen()));
-            },
-            icon: const Icon(
-              Icons.notifications,
-              color: Colors.black,
-              // size: 350,
+        appBar: AppBar(
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+              colors: [
+                Colors.blueAccent,
+                Colors.lightBlueAccent,
+              ],
+              begin: FractionalOffset(0.0, 0.0),
+              end: FractionalOffset(1.0, 0.0),
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp,
+            )),
+          ),
+          automaticallyImplyLeading: false,
+          // leading: IconButton(
+          //   icon: const Icon(
+          //     Icons.arrow_back_ios_new,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.pop(context);
+          //   },
+          // ),
+          title: const Text(
+            "Notification",
+            style: TextStyle(
+              fontSize: 20,
+              letterSpacing: 3,
+            ),
+          ),
+          centerTitle: true,
+        ),
+        backgroundColor: Colors.white,
+        body: Padding(
+          padding: const EdgeInsets.only(top: 150),
+          child: Center(
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: 257,
+                    child: TextFormField(
+                        textAlign: TextAlign.center,
+                        controller: title,
+                        decoration: InputDecoration(
+                          hintStyle: const TextStyle(
+                              fontSize: 18.0, color: Colors.blue),
+                          hintText: "Title",
+                          // suffixIcon: IconButton(
+                          //   onPressed: title.clear,
+                          //   icon: const Icon(Icons.clear),
+                          //   color: Colors.red,
+                          // ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.blue, width: 1),
+                            borderRadius: BorderRadius.circular(100.0),
+                          ),
+                        )),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    width: 257,
+                    child: TextFormField(
+                        textAlign: TextAlign.center,
+                        controller: body,
+                        decoration: InputDecoration(
+                          hintStyle: const TextStyle(
+                              fontSize: 18.0, color: Colors.blue),
+                          hintText: "Body",
+                          fillColor: Colors.white,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.blue, width: 1),
+                            borderRadius: BorderRadius.circular(100.0),
+                          ),
+                        )),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ]),
-    );
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(left: 50, right: 50, bottom: 5),
+          child: CustomLoadingButton(
+            controller: btnController,
+            onPressed: () {
+              Future.delayed(const Duration(seconds: 1)).then((value) async {
+                btnController.success(); //sucses
+                await sendMotificationToBc(fcmTokensandy);
+                Future.delayed(const Duration(seconds: 2)).then((value) {
+                  btnController.reset(); //reset
+                  title.clear();
+                  body.clear();
+                });
+              });
+            },
+            //  c: Colors.blue,
+            child: const Text("Send Notification"),
+          ),
+        ));
   }
 
   //initinfo
@@ -88,24 +174,24 @@ class _NotificationScreenState extends State<NotificationScreen> {
 // //   });
 //   }
 
-  sendMotificationToBc(tokenBC, orderIdDiskon) {
+  sendMotificationToBc(tokenBC) {
     String bcDeviceToken = tokenBC;
     notificationFormat(
       bcDeviceToken,
-      orderIdDiskon,
       sharedPreferences!.getString("name"),
     );
   }
 
-  notificationFormat(bcDeviceToken, orderIdDiskon, userName) {
+  notificationFormat(bcDeviceToken, userName) {
     Map<String, String> headerNotification = {
       'Content-Type': 'application/json',
       'Authorization': 'key=$fcmServerToken',
     };
 
     Map bodyNotification = {
-      'body': "Dear BC, Request diskon has approved. \nPlease check now.",
-      'title': "Request Diskon",
+      'body': body.text,
+      'title': title.text,
+      'sound': 'default'
     };
 
     // Map dataMap = {
@@ -116,10 +202,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
     // };
 
     Map officialNotificationFormat = {
+      'to': bcDeviceToken,
+      'priority': 'high',
       'notification': bodyNotification,
       // 'data': dataMap,
-      'priority': 'high',
-      'to': bcDeviceToken,
     };
 
     http.post(

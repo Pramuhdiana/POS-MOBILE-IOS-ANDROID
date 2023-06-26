@@ -7,7 +7,8 @@ CartMethods cartMethods = CartMethods();
 // SearchScreens searchScreens = SearchScreens();
 // if (sharedPreferences!.getString("role")! != "SALES")
 String fcmTokenJonathan = "spxOYelPKaZ33WKvoFvWuL3k7uB2";
-String fcmTokenErick = "fUS5v8s9XRPLYP3mYVNEgH6BCAp2";
+String fcmTokensandy =
+    "eTPAF2EIQga8UyApDCLeT-:APA91bF-AN95GI30lsGH-ErYuAEiqRAQ9yuhlNYppYpMaE6U0F832nCv4DtXJ7hCdgHkZtF1vYs2ky9xI4BZF8CUloKRXPyc3oyAUBCpOK1QYEW4i8uotKZShxvJJs3Y9ZHF1ipIjKJ4";
 String fcmServerToken =
     "AAAAu6dblLA:APA91bEanz7VkI6wyJSxAGE8L1lVDFcv5VWg_9qlVsuRUwXUtoXmK5apL0fYMSOdDqt_OEL8uQhfBDJvFMJmwHYm3n0aav4z4Dg56tfsnkyZobqCwtGLO6PM0WBb2vsA_XtakPNIKJQT";
 

@@ -322,7 +322,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _bodybawah() {
     return Container(
         height: 200,
-        width: MediaQuery.of(context).size.width * 0.83,
+        width: MediaQuery.of(context).size.width * 0.78,
         decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(
@@ -565,8 +565,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         scale: 1.2,
                         child: OutlinedButton(
                           onPressed: () async {
-                            sharedPreferences!
-                                .setString('total_product_sales', '0');
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -578,9 +576,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           child: IconButton(
                             onPressed: () async {
-                              sharedPreferences!
-                                  .setString('total_product_sales', '0');
-
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
