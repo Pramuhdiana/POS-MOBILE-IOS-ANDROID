@@ -163,6 +163,7 @@ class HistoryModelNew extends StatelessWidget {
 
   _launchURLInBrowser() async {
     var url =
+        // 'http://54.179.58.215:8080/transcation/laporan/${order.invoices_number}';
         'http://54.179.58.215:8080/transcation/laporan/${order.invoices_number}';
 
     if (await canLaunch(url)) {

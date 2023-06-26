@@ -1,6 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, use_build_context_synchronously, unused_local_variable, unused_element, prefer_const_constructors, unnecessary_new, prefer_collection_literals, non_constant_identifier_names
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
@@ -417,7 +416,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                     //     .doc(item.name)
                                     //     .delete();
                                   }
-                                  print('delete data firebase berhasil');
+                                  // print('delete data firebase berhasil');
                                   context
                                       .read<PCart>()
                                       .clearCart(); //clear cart
@@ -429,39 +428,39 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                 } else if (idform == 2) {
                                   //titipan
                                   await postAPIsales();
-                                  for (var item
-                                      in context.read<PCart>().getItems) {
-                                    CollectionReference orderRef =
-                                        FirebaseFirestore.instance
-                                            .collection('allitemstoko');
-                                    await orderRef.doc(item.name).set({
-                                      'brand_id': 9999,
-                                      'category_id': '1',
-                                      'created_at': DateTime.now(),
-                                      'customer_id': idtoko.toString(),
-                                      'description': item.description,
-                                      'id': item.documentId,
-                                      'image_name': item.imageUrl,
-                                      'keterangan_barang':
-                                          item.keterangan_barang,
-                                      'kode_refrensi': 'null',
-                                      'name': item.name,
-                                      'posisi_id': 2,
-                                      'price':
-                                          item.price, //harus int atau double
-                                      'qty': 1, //harus int
-                                      'sales_id': int.parse(id!),
-                                      'slug': item.name,
-                                      'status_titipan': 0,
-                                      'updated_at': DateTime.now()
-                                    });
-                                    // delete all items id
-                                    // FirebaseFirestore.instance
-                                    //     .collection('allitems')
-                                    //     .doc(item.name)
-                                    //     .delete();
-                                  }
-                                  print('delete data firebase berhasil');
+                                  // for (var item
+                                  //     in context.read<PCart>().getItems) {
+                                  //   CollectionReference orderRef =
+                                  //       FirebaseFirestore.instance
+                                  //           .collection('allitemstoko');
+                                  //   await orderRef.doc(item.name).set({
+                                  //     'brand_id': 9999,
+                                  //     'category_id': '1',
+                                  //     'created_at': DateTime.now(),
+                                  //     'customer_id': idtoko.toString(),
+                                  //     'description': item.description,
+                                  //     'id': item.documentId,
+                                  //     'image_name': item.imageUrl,
+                                  //     'keterangan_barang':
+                                  //         item.keterangan_barang,
+                                  //     'kode_refrensi': 'null',
+                                  //     'name': item.name,
+                                  //     'posisi_id': 2,
+                                  //     'price':
+                                  //         item.price, //harus int atau double
+                                  //     'qty': 1, //harus int
+                                  //     'sales_id': int.parse(id!),
+                                  //     'slug': item.name,
+                                  //     'status_titipan': 0,
+                                  //     'updated_at': DateTime.now()
+                                  //   });
+                                  //   // delete all items id
+                                  //   // FirebaseFirestore.instance
+                                  //   //     .collection('allitems')
+                                  //   //     .doc(item.name)
+                                  //   //     .delete();
+                                  // }
+                                  // print('delete data firebase berhasil');
                                   context.read<PCart>().clearCart();
                                   Navigator.push(
                                       context,
@@ -471,40 +470,40 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                 } else if (idform == 3) {
                                   //PAMERAN
                                   await postAPIsales();
-                                  for (var item
-                                      in context.read<PCart>().getItems) {
-                                    CollectionReference orderRef =
-                                        FirebaseFirestore.instance
-                                            .collection('allitemstoko');
-                                    await orderRef.doc(item.name).set({
-                                      'brand_id': 9999,
-                                      'category_id': '1',
-                                      'created_at': DateTime.now(),
-                                      'customer_id': idtoko.toString(),
-                                      'description': item.description,
-                                      'id': int.parse(item.documentId),
-                                      'image_name': item.imageUrl,
-                                      'keterangan_barang':
-                                          item.keterangan_barang,
-                                      'kode_refrensi': 'null',
-                                      'name': item.name,
-                                      'posisi_id': 2,
-                                      'price':
-                                          item.price, //harus int atau double
-                                      'qty': 1, //harus int
-                                      'sales_id': int.parse(id!),
-                                      'slug': item.name,
-                                      'status_titipan': 1,
-                                      'updated_at': DateTime.now()
-                                    });
+                                  // for (var item
+                                  //     in context.read<PCart>().getItems) {
+                                  //   CollectionReference orderRef =
+                                  //       FirebaseFirestore.instance
+                                  //           .collection('allitemstoko');
+                                  //   await orderRef.doc(item.name).set({
+                                  //     'brand_id': 9999,
+                                  //     'category_id': '1',
+                                  //     'created_at': DateTime.now(),
+                                  //     'customer_id': idtoko.toString(),
+                                  //     'description': item.description,
+                                  //     'id': int.parse(item.documentId),
+                                  //     'image_name': item.imageUrl,
+                                  //     'keterangan_barang':
+                                  //         item.keterangan_barang,
+                                  //     'kode_refrensi': 'null',
+                                  //     'name': item.name,
+                                  //     'posisi_id': 2,
+                                  //     'price':
+                                  //         item.price, //harus int atau double
+                                  //     'qty': 1, //harus int
+                                  //     'sales_id': int.parse(id!),
+                                  //     'slug': item.name,
+                                  //     'status_titipan': 1,
+                                  //     'updated_at': DateTime.now()
+                                  //   });
 
-                                    // delete all items id
-                                    // FirebaseFirestore.instance
-                                    //     .collection('allitems')
-                                    //     .doc(item.name)
-                                    //     .delete();
-                                  }
-                                  print('delete data firebase berhasil');
+                                  //   // delete all items id
+                                  //   // FirebaseFirestore.instance
+                                  //   //     .collection('allitems')
+                                  //   //     .doc(item.name)
+                                  //   //     .delete();
+                                  // }
+                                  // print('delete data firebase berhasil');
 
                                   context.read<PCart>().clearCart();
                                   Navigator.push(

@@ -20,11 +20,13 @@ import 'package:e_shop/posSales/main_posSales_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
+import 'package:e_shop/push_notifications/push_notifications_system.dart';
 import 'package:e_shop/qr/qr_scanner.dart';
 import 'package:e_shop/report/main_report_screen.dart';
 import 'package:e_shop/toko/main_addToko_screen.dart';
 import 'package:e_shop/widgets/alert_dialog.dart';
 import 'package:e_shop/widgets/fake_search.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,7 +45,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var isLoading = false;
-  // late FirebaseMessaging messaging;
+  late FirebaseMessaging messaging;
   QRViewController? controller;
   XFile? imgXFile;
   final ImagePicker imagePicker = ImagePicker();
@@ -53,55 +55,15 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     loadCartFromApiPOSSALES();
     controller?.stopCamera();
-    // strat push notification
-    // PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
-    // pushNotificationsSystem.whenNotificationReceived(context);
-    // pushNotificationsSystem.generateDeviceRecognitionToken();
-    // end push notification
-
-    // messaging = FirebaseMessaging.instance;
-    // messaging.getToken().then((value) {
-    //   print(value);
-    // });
-    // FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-    //   print("message recieved");
-    //   print(event.notification!.body);
-    // });
-    // FirebaseMessaging.onMessageOpenedApp.listen((message) {
-    //   print('Message clicked!');
-    // });
-    // FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-    //   print("message recieved");
-    //   print(event.notification!.body);
-    //   showDialog(
-    //       context: context,
-    //       builder: (BuildContext context) {
-    //         return AlertDialog(
-    //           title: Text("Notification"),
-    //           content: Text(event.notification!.body!),
-    //           actions: [
-    //             TextButton(
-    //               child: Text("Ok"),
-    //               onPressed: () {
-    //                 Navigator.of(context).pop();
-    //               },
-    //             )
-    //           ],
-    //         );
-    //       });
-    // });
-    // messaging.subscribeToTopic("messaging");
+    //star notifi
+    PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
+    pushNotificationsSystem.notificationPopUp(context);
+    //end notif
   }
 
   @override
-  // Future<void> _messageHandler(RemoteMessage message) async {
-  //   // print('background message ${message.notification!.body}');
-  // }
-
   void main() async {
     WidgetsFlutterBinding.ensureInitialized();
-    // await Firebase.initializeApp();
-    // FirebaseMessaging.onBackgroundMessage(_messageHandler);
   }
 
   @override
@@ -545,45 +507,45 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
 
-                  //     //dashboard report
-                  //     Column(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       children: <Widget>[
-                  //         Transform.scale(
-                  //           scale: 1.2,
-                  //           child: OutlinedButton(
-                  //             onPressed: () {},
-                  //             style: OutlinedButton.styleFrom(
-                  //               side: const BorderSide(color: Colors.blueAccent),
-                  //               shape: const CircleBorder(
-                  //                   // borderRadius: BorderRadius.circular(360),
-                  //                   ),
-                  //             ),
-                  //             child: IconButton(
-                  //               onPressed: () {
-                  //                 Fluttertoast.showToast(msg: "Not Available");
-                  //                 // Navigator.push(
-                  //                 //     context,
-                  //                 //     MaterialPageRoute(
-                  //                 //         builder: (c) => ChartScreen()));
-                  //               },
-                  //               icon: Image.asset(
-                  //                 "images/settings.png",
-                  //                 // "images/offer.png",
-                  //               ),
-                  //             ),
-                  //           ),
-                  //         ),
-                  //         const Padding(
-                  //           padding: EdgeInsets.only(top: 10.0),
-                  //         ),
-                  //         const Text(
-                  //           "DASHBOARD",
-                  //           style:
-                  //               TextStyle(color: Colors.blueAccent, fontSize: 12.0),
-                  //         ),
-                  //       ],
-                  //     ),
+                  //dashboard report
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Transform.scale(
+                        scale: 1.2,
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Colors.blueAccent),
+                            shape: const CircleBorder(
+                                // borderRadius: BorderRadius.circular(360),
+                                ),
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              Fluttertoast.showToast(msg: "Not Available");
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (c) => ChartScreen()));
+                            },
+                            icon: Image.asset(
+                              "images/settings.png",
+                              // "images/offer.png",
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10.0),
+                      ),
+                      const Text(
+                        "DASHBOARD",
+                        style:
+                            TextStyle(color: Colors.blueAccent, fontSize: 12.0),
+                      ),
+                    ],
+                  ),
                 ],
               ),
 

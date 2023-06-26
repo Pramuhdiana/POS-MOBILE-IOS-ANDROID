@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/authScreens/auth_screen.dart';
 import 'package:e_shop/global/global.dart';
@@ -9,6 +10,7 @@ import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +27,7 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreenState extends State<MySplashScreen> {
+  String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
 
   var isLoading = false;
@@ -33,28 +36,61 @@ class _MySplashScreenState extends State<MySplashScreen> {
       //user sudah login
       print('token $token');
       if (sharedPreferences!.getString("token").toString() != "null") {
-        var hour = DateTime.now().hour;
-        if (hour > 10 && hour < 13) {
-          // await _loadAllDataApi();
-          await _loadFromApi();
-          Navigator.push(
-              context, MaterialPageRoute(builder: (c) => const MainScreen()));
-        } else if (hour == 16) {
-          // await _loadAllDataApi();
-          await _loadFromApi();
-          Navigator.push(
-              context, MaterialPageRoute(builder: (c) => const MainScreen()));
-        } else {
-          await _loadFromApi();
-          Navigator.push(
-              context, MaterialPageRoute(builder: (c) => const MainScreen()));
-        }
+        await requestPermission();
+        await _loadFromApi();
+        await getToken();
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => const MainScreen()));
       } else //user is NOT already Logged-in
       {
         Navigator.push(
             context, MaterialPageRoute(builder: (c) => const AuthScreen()));
       }
     });
+  }
+
+//get token
+  getToken() async {
+    await FirebaseMessaging.instance.getToken().then((token) {
+      setState(() {
+        mtoken = token;
+        print("token notif is $mtoken");
+      });
+      saveToken(token!);
+    });
+  }
+
+  //save token
+  saveToken(String token) async {
+    await FirebaseFirestore.instance
+        .collection("UserTokens")
+        .doc(sharedPreferences!.getString("name").toString())
+        .set({
+      'token': token,
+    });
+  }
+
+  //request permission
+  requestPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      print('User granted provosional permission');
+    } else {
+      print('user declined or has not accepted permission');
+    }
   }
 
   _loadFromApi() async {

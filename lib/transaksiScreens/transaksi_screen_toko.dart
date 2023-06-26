@@ -1,6 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, use_build_context_synchronously, non_constant_identifier_names
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/global/currency_format.dart';
@@ -309,16 +308,16 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                                 showProgress();
                                 await postAPItoko();
                                 if (idform == 1) {
-                                  print("invoice dari toko");
-                                  //invoice
-                                  for (var item
-                                      in context.read<PCartToko>().getItems) {
-                                    FirebaseFirestore.instance
-                                        .collection('allitemstoko')
-                                        .doc(item.name)
-                                        .delete();
-                                    print('delete data firebase berhasil');
-                                  }
+                                  // print("invoice dari toko");
+                                  // //invoice
+                                  // for (var item
+                                  //     in context.read<PCartToko>().getItems) {
+                                  //   FirebaseFirestore.instance
+                                  //       .collection('allitemstoko')
+                                  //       .doc(item.name)
+                                  //       .delete();
+                                  //   print('delete data firebase berhasil');
+                                  // }
                                   context.read<PCartToko>().clearCart();
                                   Navigator.push(
                                       context,
@@ -326,35 +325,35 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                                           builder: (c) =>
                                               const MySplashScreenTransaksi()));
                                 } else {
-                                  for (var item
-                                      in context.read<PCartToko>().getItems) {
-                                    CollectionReference orderRef =
-                                        FirebaseFirestore.instance
-                                            .collection('allitemstoko');
-                                    await orderRef.doc(item.name).set({
-                                      'brand_id': 9999,
-                                      'category_id': '1',
-                                      'created_at': DateTime.now(),
-                                      'customer_id': sharedPreferences!
-                                          .getString('customer_id')
-                                          .toString(),
-                                      'description': item.description,
-                                      'id': int.parse(item.documentId),
-                                      'image_name': item.imageUrl,
-                                      'keterangan_barang':
-                                          item.keterangan_barang,
-                                      'kode_refrensi': 'null',
-                                      'name': item.name,
-                                      'posisi_id': 3,
-                                      'price':
-                                          item.price, //harus int atau double
-                                      'qty': 1, //harus int
-                                      'sales_id': int.parse(id!),
-                                      'slug': item.name,
-                                      'status_titipan': 99,
-                                      'updated_at': DateTime.now()
-                                    });
-                                  }
+                                  // for (var item
+                                  //     in context.read<PCartToko>().getItems) {
+                                  //   CollectionReference orderRef =
+                                  //       FirebaseFirestore.instance
+                                  //           .collection('allitemstoko');
+                                  //   await orderRef.doc(item.name).set({
+                                  //     'brand_id': 9999,
+                                  //     'category_id': '1',
+                                  //     'created_at': DateTime.now(),
+                                  //     'customer_id': sharedPreferences!
+                                  //         .getString('customer_id')
+                                  //         .toString(),
+                                  //     'description': item.description,
+                                  //     'id': int.parse(item.documentId),
+                                  //     'image_name': item.imageUrl,
+                                  //     'keterangan_barang':
+                                  //         item.keterangan_barang,
+                                  //     'kode_refrensi': 'null',
+                                  //     'name': item.name,
+                                  //     'posisi_id': 3,
+                                  //     'price':
+                                  //         item.price, //harus int atau double
+                                  //     'qty': 1, //harus int
+                                  //     'sales_id': int.parse(id!),
+                                  //     'slug': item.name,
+                                  //     'status_titipan': 99,
+                                  //     'updated_at': DateTime.now()
+                                  //   });
+                                  // }
                                   //kembali barang
                                   print("kembali barang dari toko");
                                   context.read<PCartToko>().clearCart();
