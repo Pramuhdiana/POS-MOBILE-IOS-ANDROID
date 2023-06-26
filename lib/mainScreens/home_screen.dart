@@ -322,7 +322,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _bodybawah() {
     return Container(
         height: 200,
-        width: MediaQuery.of(context).size.width * 0.78,
+        width: 320,
         decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(
