@@ -2,7 +2,7 @@
 
 import 'package:e_shop/mainScreens/help_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
-import 'package:e_shop/report/home_report.dart';
+import 'package:e_shop/CRM/home_report.dart';
 import 'package:flutter/material.dart';
 
 class MainReportScreen extends StatefulWidget {

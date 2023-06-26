@@ -93,8 +93,8 @@ class DbAlldetailtransaksi {
     id;
     final db = await database;
     final res = await db.rawQuery(
-        'SELECT * FROM alldetailtransaksi WHERE name LIKE ? and user_id=?',
-        ['%$name%', sharedPreferences!.getString('id')]);
+        'SELECT * FROM alldetailtransaksi WHERE name LIKE ? and user_id=? and invoices_number !=?',
+        ['%$name%', sharedPreferences!.getString('id'), 'null']);
 
     List<ModelAlldetailtransaksi> list = res.isNotEmpty
         ? res.map((c) => ModelAlldetailtransaksi.fromJson(c)).toList()

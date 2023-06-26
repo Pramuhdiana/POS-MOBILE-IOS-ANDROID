@@ -8,6 +8,8 @@ import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/cartScreens/cart_screen.dart';
 import 'package:e_shop/database/db_allitems_toko.dart';
+import 'package:e_shop/database/db_alltransaksi.dart';
+import 'package:e_shop/eTICKETING/main_eticketing_screen.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:e_shop/history/history_invoice_screen.dart';
@@ -22,7 +24,7 @@ import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
 import 'package:e_shop/push_notifications/push_notifications_system.dart';
 import 'package:e_shop/qr/qr_scanner.dart';
-import 'package:e_shop/report/main_report_screen.dart';
+import 'package:e_shop/CRM/main_report_screen.dart';
 import 'package:e_shop/toko/main_addToko_screen.dart';
 import 'package:e_shop/widgets/alert_dialog.dart';
 import 'package:e_shop/widgets/fake_search.dart';
@@ -66,6 +68,15 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsFlutterBinding.ensureInitialized();
   }
 
+  Future refresh() async {
+    setState(() {
+      context.read<PCart>().clearCart(); //clear cart
+      loadCartFromApiPOSSALES();
+      DbAlltransaksi.db.getAlltransaksi(1);
+      // Fluttertoast.showToast(msg: "Refresh done");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,37 +85,40 @@ class _HomeScreenState extends State<HomeScreen> {
         toolbarHeight: 0,
       ),
       backgroundColor: Colors.white,
-      body: ListView(
-        physics: const ClampingScrollPhysics(),
-        children: <Widget>[
-          Container(
-              padding: const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
-              color: Colors.white,
-              child: Column(
-                children: <Widget>[
-                  _bodyatas(),
-                  _bodytengah(),
-                  SizedBox(height: 15),
-                  _bodybawah(),
-                  const Padding(
-                    padding: EdgeInsets.only(
-                        bottom: 7.0, top: 10.0, left: 40.0, right: 40.0),
-                    child: Divider(
-                      height: 1,
-                      thickness: 5,
-                      color: Colors.blueAccent,
+      body: RefreshIndicator(
+        onRefresh: refresh,
+        child: ListView(
+          physics: const ClampingScrollPhysics(),
+          children: <Widget>[
+            Container(
+                padding: const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+                color: Colors.white,
+                child: Column(
+                  children: <Widget>[
+                    _bodyatas(),
+                    _bodytengah(),
+                    SizedBox(height: 15),
+                    _bodybawah(),
+                    const Padding(
+                      padding: EdgeInsets.only(
+                          bottom: 7.0, top: 10.0, left: 40.0, right: 40.0),
+                      child: Divider(
+                        height: 1,
+                        thickness: 5,
+                        color: Colors.blueAccent,
+                      ),
                     ),
-                  ),
-                  Text(
-                    version,
-                    style: TextStyle(
-                        color: Colors.grey[800], fontStyle: FontStyle.italic),
-                  )
-                  // if (sharedPreferences!.getString("role")! != "SALES")
-                  //   _widget3()
-                ],
-              )),
-        ],
+                    Text(
+                      version,
+                      style: TextStyle(
+                          color: Colors.grey[800], fontStyle: FontStyle.italic),
+                    )
+                    // if (sharedPreferences!.getString("role")! != "SALES")
+                    //   _widget3()
+                  ],
+                )),
+          ],
+        ),
       ),
       // bottomNavigationBar: BottomAppBar(
       //     child: ElevatedButton(
@@ -142,178 +156,185 @@ class _HomeScreenState extends State<HomeScreen> {
       return 'Evening';
     }
 
-    return Container(
-        width: MediaQuery.of(context).size.width * 1.0,
-        height: 90,
-        decoration: BoxDecoration(color: Colors.blue),
-        // decoration: const BoxDecoration(
-        //     image: DecorationImage(
-        //   image: AssetImage("images/bgatas2.png"),
-        //   fit: BoxFit.cover,
-        // )),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 40,
-                    width: 100,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0.0,
-                        backgroundColor: Colors.blue,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(100),
-                          ),
-                          // side: BorderSide(color: Colors.white)
-                        ),
-                      ),
-                      onPressed: () {
-                        MyAlertDilaog.showMyDialog(
-                            context: context,
-                            title: 'Sign-Out',
-                            content: 'Are you sure to sign-out ?',
-                            tabNo: () {
-                              Navigator.pop(context);
-                            },
-                            tabYes: () async {
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              // await DbAllitems.db.deleteAllitems();
-                              // await DbAllitemsToko.db.deleteAllitemsToko();
-                              // await DbAlltransaksi.db.deleteAlltransaksi();
-                              // await DbAlldetailtransaksi.db
-                              //     .deleteAlldetailtransaksi();
-                              prefs.clear();
-                              prefs.setString('token', 'null');
-                              // FirebaseAuth.instance.signOut();
-                              await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (c) => const MySplashScreen()));
-                            });
-                      },
-                      child: Transform.scale(
-                        scale: 1.8,
-                        child: ClipOval(
-                            child: Image.asset(
-                          "images/user.png",
-                        )
-                            //     child: CachedNetworkImage(
-                            //   imageUrl: sharedPreferences!.getString("photoUrl")!,
-                            //   fit: BoxFit.cover,
-                            // )
+    return RefreshIndicator(
+      onRefresh: refresh,
+      child: Container(
+          width: MediaQuery.of(context).size.width * 1.0,
+          height: 90,
+          decoration: BoxDecoration(color: Colors.blue),
+          // decoration: const BoxDecoration(
+          //     image: DecorationImage(
+          //   image: AssetImage("images/bgatas2.png"),
+          //   fit: BoxFit.cover,
+          // )),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 30),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 40,
+                      width: 100,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0.0,
+                          backgroundColor: Colors.blue,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(100),
                             ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 42.0, right: 40),
-              child: Column(
-                children: [
-                  Text(
-                    "Good ${greeting()}, \n${sharedPreferences!.getString("name")!}",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0, right: 20),
-              child: Column(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (c) => const CartScreen()));
-                    },
-                    icon: Padding(
-                      padding: const EdgeInsets.only(right: 30),
-                      child: badges.Badge(
-                        showBadge: context.read<PCart>().getItems.isEmpty
-                            ? false
-                            : true,
-                        badgeStyle: const badges.BadgeStyle(
-                          badgeColor: Colors.green,
-                        ),
-                        badgeContent: Text(
-                          context.watch<PCart>().getItems.length.toString(),
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
+                            // side: BorderSide(color: Colors.white)
                           ),
                         ),
-                        child: const Icon(
-                          Icons.shopping_cart,
-                          color: Colors.white,
-                          size: 50,
+                        onPressed: () {
+                          MyAlertDilaog.showMyDialog(
+                              context: context,
+                              title: 'Sign-Out',
+                              content: 'Are you sure to sign-out ?',
+                              tabNo: () {
+                                Navigator.pop(context);
+                              },
+                              tabYes: () async {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                // await DbAllitems.db.deleteAllitems();
+                                // await DbAllitemsToko.db.deleteAllitemsToko();
+                                // await DbAlltransaksi.db.deleteAlltransaksi();
+                                // await DbAlldetailtransaksi.db
+                                //     .deleteAlldetailtransaksi();
+                                prefs.clear();
+                                prefs.setString('token', 'null');
+                                // FirebaseAuth.instance.signOut();
+                                await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) =>
+                                            const MySplashScreen()));
+                              });
+                        },
+                        child: Transform.scale(
+                          scale: 1.8,
+                          child: ClipOval(
+                              child: Image.asset(
+                            "images/user.png",
+                          )
+                              //     child: CachedNetworkImage(
+                              //   imageUrl: sharedPreferences!.getString("photoUrl")!,
+                              //   fit: BoxFit.cover,
+                              // )
+                              ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
-        ));
+              Padding(
+                padding: const EdgeInsets.only(top: 42.0, right: 40),
+                child: Column(
+                  children: [
+                    Text(
+                      "Good ${greeting()}, \n${sharedPreferences!.getString("name")!}",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0, right: 20),
+                child: Column(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (c) => const CartScreen()));
+                      },
+                      icon: Padding(
+                        padding: const EdgeInsets.only(right: 30),
+                        child: badges.Badge(
+                          showBadge: context.read<PCart>().getItems.isEmpty
+                              ? false
+                              : true,
+                          badgeStyle: const badges.BadgeStyle(
+                            badgeColor: Colors.green,
+                          ),
+                          badgeContent: Text(
+                            context.watch<PCart>().getItems.length.toString(),
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          child: const Icon(
+                            Icons.shopping_cart,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
+    );
   }
 
   Widget _bodytengah() {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.50,
-      decoration: BoxDecoration(color: Colors.grey),
-      child: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            elevation: 0,
-            // title: Text("History"),
-            // title: FakeSearchHistory(),
-            title: FakeSearch(),
-            automaticallyImplyLeading: false,
-            centerTitle: true,
-            // bottom: const TabBar(
-            //     indicatorColor: Colors.blue,
-            //     indicatorWeight: 8,
-            //     tabs: [
-            //       RepeatedTab(label: 'ACTIVE'),
-            //       RepeatedTab(label: 'MIDDLE'),
-            //       RepeatedTab(label: 'INACTIVE'),
-            //     ]),
-            // ),
-            // body: const TabBarView(children: [
-            // ActiveScreen(),
-            // MidScreen(),
-            // InactiveScreen(),
-            // ]),
-            bottom: const TabBar(
-                indicatorColor: Colors.blue,
-                indicatorWeight: 8,
-                tabs: [
-                  RepeatedTab(label: 'Invoice'),
-                  RepeatedTab(label: 'Kembali Barang'),
-                  RepeatedTab(label: 'Titipan'),
-                ]),
+    return RefreshIndicator(
+      onRefresh: refresh,
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.50,
+        decoration: BoxDecoration(color: Colors.grey),
+        child: DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              elevation: 0,
+              // title: Text("History"),
+              // title: FakeSearchHistory(),
+              title: FakeSearch(),
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+              // bottom: const TabBar(
+              //     indicatorColor: Colors.blue,
+              //     indicatorWeight: 8,
+              //     tabs: [
+              //       RepeatedTab(label: 'ACTIVE'),
+              //       RepeatedTab(label: 'MIDDLE'),
+              //       RepeatedTab(label: 'INACTIVE'),
+              //     ]),
+              // ),
+              // body: const TabBarView(children: [
+              // ActiveScreen(),
+              // MidScreen(),
+              // InactiveScreen(),
+              // ]),
+              bottom: const TabBar(
+                  indicatorColor: Colors.blue,
+                  indicatorWeight: 8,
+                  tabs: [
+                    RepeatedTab(label: 'Invoice'),
+                    RepeatedTab(label: 'Kembali Barang'),
+                    RepeatedTab(label: 'Titipan'),
+                  ]),
+            ),
+            body: const TabBarView(children: [
+              HistoryInvoiceScreen(),
+              HistoryKembalibarangScreen(),
+              HistoryTitipanScreen(),
+            ]),
           ),
-          body: const TabBarView(children: [
-            HistoryInvoiceScreen(),
-            HistoryKembalibarangScreen(),
-            HistoryTitipanScreen(),
-          ]),
         ),
       ),
     );
@@ -507,14 +528,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
 
-                  //dashboard report
+                  //e-ticketing report
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Transform.scale(
                         scale: 1.2,
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (c) => MainEticketingScreen()));
+                          },
                           style: OutlinedButton.styleFrom(
                             side: const BorderSide(color: Colors.blueAccent),
                             shape: const CircleBorder(
@@ -523,14 +549,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           child: IconButton(
                             onPressed: () {
-                              Fluttertoast.showToast(msg: "Not Available");
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (c) => ChartScreen()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (c) => MainEticketingScreen()));
                             },
                             icon: Image.asset(
-                              "images/settings.png",
+                              "images/ticket.png",
                               // "images/offer.png",
                             ),
                           ),
@@ -540,7 +565,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: EdgeInsets.only(top: 10.0),
                       ),
                       const Text(
-                        "DASHBOARD",
+                        "E-TICKETING",
                         style:
                             TextStyle(color: Colors.blueAccent, fontSize: 12.0),
                       ),
