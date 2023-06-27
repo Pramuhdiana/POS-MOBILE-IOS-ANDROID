@@ -4,11 +4,11 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
+import 'package:e_shop/database/db_alltransaksi.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -22,6 +22,9 @@ class HomeReport extends StatefulWidget {
 }
 
 class _HomeReportState extends State<HomeReport> {
+  //dropdwon future start
+  List<DropdownMenuItem<String>>? list;
+  //end dropdown
   RoundedLoadingButtonController btnController =
       RoundedLoadingButtonController();
   final TextEditingController reportinput = TextEditingController();
@@ -38,12 +41,19 @@ class _HomeReportState extends State<HomeReport> {
   bool cek_omzet = false;
   DateTime? pickedDate;
   String formattedDate = 'null';
+  String tanggal_aktivitas = '';
+  int? idomzet = 0;
   int? canvasing = 0;
   int? kunjungan = 0;
+  int? omzet = 0;
+  int? idaktivitas = 0;
+  int? idvisit = 0;
   int? wa = 0;
   int? tlp = 0;
   int? visit = 0;
   String? toko;
+  String? selectedItemName;
+  String? selectedOmzet;
   int? idtoko = 0;
   //text editing controller for text field
   final _formKey = GlobalKey<FormState>();
@@ -68,19 +78,18 @@ class _HomeReportState extends State<HomeReport> {
   void initState() {
     fToast = FToast();
     fToast.init(context);
-    print('id toko : $idtoko');
-    print('nama toko : $toko');
-    print('date input : $dateinput');
-    print('pick date : $pickedDate');
-    print('wa cek : $wa');
-    print('tlp cek : $tlp');
-    print('visit cek : $visit');
-    print('visit cek kunjungan : $kunjungan');
-    print('visit cek canvasing : $canvasing');
-    print('report cek : $reportinput');
-    print('omzet cek : $cek_omzet');
     dateinput.text = ""; //set the initial value of text field
     super.initState();
+    list = [];
+    DbAlltransaksi.db.getAllinvoicesnumber(idtoko).then((listMap) {
+      listMap.map((map) {
+        print(map.toString());
+        return getDropDownWidget(map);
+      }).forEach((dropDownItem) {
+        list?.add(dropDownItem);
+      });
+      setState(() {});
+    });
   }
 
   bool _rangeDate(DateTime day) {
@@ -252,6 +261,7 @@ class _HomeReportState extends State<HomeReport> {
                                     cek_error_date = 'date oke';
                                     dateinput.text =
                                         formattedDate; //set output date to TextField value.
+                                    tanggal_aktivitas = pickedDate.toString();
                                   });
                                 } else {
                                   print("Date is not selected");
@@ -278,27 +288,28 @@ class _HomeReportState extends State<HomeReport> {
                           ),
                           const Text("Activity"),
                           const Divider(),
-
                           Column(
                             children: [
                               Row(
                                 children: <Widget>[
                                   Checkbox(
                                     value: cek_wa,
-                                    onChanged: cek_visit == true ||
-                                            cek_tlp == true
-                                        ? null
-                                        : (bool? value) {
-                                            setState(() {
-                                              btnController.reset();
-                                              cek_wa = value!;
-                                              cek_wa == true ? wa = 1 : wa = 0;
-                                              print(
-                                                  'whatsapp : status $cek_wa & vl : $wa');
-                                              cek_error_activity =
-                                                  'activity oke';
-                                            });
-                                          },
+                                    onChanged:
+                                        cek_visit == true || cek_tlp == true
+                                            ? null
+                                            : (bool? value) {
+                                                setState(() {
+                                                  btnController.reset();
+                                                  cek_wa = value!;
+                                                  cek_wa == true
+                                                      ? idaktivitas = 1
+                                                      : idaktivitas = 0;
+                                                  print(
+                                                      'whatsapp : status $cek_wa & vl : $wa');
+                                                  cek_error_activity =
+                                                      'activity oke';
+                                                });
+                                              },
                                   ),
                                   const Text(
                                     'WhatsApp',
@@ -320,10 +331,8 @@ class _HomeReportState extends State<HomeReport> {
                                                       'activity oke';
                                                   cek_tlp = value!;
                                                   cek_tlp == true
-                                                      ? tlp = 1
-                                                      : tlp = 0;
-                                                  print(
-                                                      'tlp : status $cek_tlp & vl : $tlp');
+                                                      ? idaktivitas = 2
+                                                      : idaktivitas = 0;
                                                 });
                                               },
                                   ),
@@ -346,10 +355,8 @@ class _HomeReportState extends State<HomeReport> {
                                                   'activity oke';
                                               cek_visit = value!;
                                               cek_visit == true
-                                                  ? visit = 1
-                                                  : visit = 0;
-                                              print(
-                                                  'visit : status $cek_visit & vl : $visit');
+                                                  ? idaktivitas = 3
+                                                  : idaktivitas = 0;
                                             });
                                           },
                                   ),
@@ -370,8 +377,8 @@ class _HomeReportState extends State<HomeReport> {
                                                     'activity oke';
                                                 cek_kunjungan = value!;
                                                 cek_kunjungan == true
-                                                    ? kunjungan = 1
-                                                    : kunjungan = 0;
+                                                    ? idvisit = 1
+                                                    : idvisit = 0;
                                                 print(
                                                     'kunjungan : status $cek_kunjungan & vl : $kunjungan');
                                               });
@@ -396,8 +403,8 @@ class _HomeReportState extends State<HomeReport> {
                                                     'activity oke';
                                                 cek_canvasing = value!;
                                                 cek_canvasing == true
-                                                    ? canvasing = 1
-                                                    : canvasing = 0;
+                                                    ? idvisit = 2
+                                                    : idvisit = 0;
                                                 print(
                                                     'canvasing : status $cek_kunjungan & vl : $canvasing');
                                               });
@@ -478,6 +485,9 @@ class _HomeReportState extends State<HomeReport> {
                                 onChanged: (bool? value) {
                                   setState(() {
                                     cek_omzet = value!;
+                                    cek_omzet == true
+                                        ? idomzet = 1
+                                        : idomzet = 0;
                                   });
                                 },
                               ),
@@ -486,33 +496,33 @@ class _HomeReportState extends State<HomeReport> {
                           const Divider(),
                           cek_omzet == false
                               ? const SizedBox()
-                              : SizedBox(
-                                  width: 250,
-                                  child: TextField(
-                                    onChanged: (omzet) {
-                                      setState(() {
-                                        // dpp = int.parse(dp);
-                                      });
-                                    },
-                                    decoration: const InputDecoration(
-                                        labelText: "Total Omzet"),
-                                    // controller: omzet,
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                  ),
+                              :
+                              //nominal omzet
+                              Row(
+                                  children: [
+                                    const Padding(padding: EdgeInsets.all(4)),
+                                    Expanded(
+                                        child: DropdownButton(
+                                      value: selectedOmzet,
+                                      hint: const Text('Choose an Option'),
+                                      onChanged: (value) {
+                                        print(value);
+                                        setState(() {
+                                          selectedOmzet = value;
+                                        });
+                                      },
+                                      items: list,
+                                    )),
+                                  ],
                                 ),
-                          const SizedBox(
-                            height: 10,
-                          ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ElevatedButton(
                                 onPressed: () {
                                   // myAlert();
-                                  openImages();
+                                  Fluttertoast.showToast(msg: "Not Available");
+                                  // openImages();
                                 },
                                 child: const Text('Upload Photo'),
                               ),
@@ -754,6 +764,7 @@ class _HomeReportState extends State<HomeReport> {
     } else {
       Future.delayed(const Duration(seconds: 1)).then((value) {
         btnController.success(); //sucses
+        postAPIreport();
         Future.delayed(const Duration(seconds: 2)).then((value) {
           btnController.reset(); //reset
         });
@@ -764,35 +775,31 @@ class _HomeReportState extends State<HomeReport> {
 //send data to DATABASE with API
   postAPIreport() async {
     String token = sharedPreferences!.getString("token").toString();
-    Map<String, String> body = {};
+    Map<String, String> body = {
+      'user_id': id.toString(),
+      'customer_id': idtoko.toString(),
+      'tanggal_aktivitas': tanggal_aktivitas,
+      'aktivitas_id': idaktivitas.toString(),
+      'visit_id': idvisit.toString(),
+      'hasil_aktivitas': idomzet.toString(),
+      'nominal_hasil': omzet.toString(),
+      'nomor_invoice': "inv-00000123",
+      'detail': reportinput.text
+    };
     final response = await http.post(
-        Uri.parse(
-            ApiConstants.baseUrl + ApiConstants.POSTsalescheckoutendpoint),
+        Uri.parse(ApiConstants.baseUrl + ApiConstants.POSTcreateCRMendpoint),
         headers: <String, String>{
           'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);
   }
+
+  //dropdwon
+  DropdownMenuItem<String> getDropDownWidget(Map<String, dynamic> map) {
+    return DropdownMenuItem<String>(
+      value: map['invoices_number'],
+      child: Text(map['invoices_number']),
+    );
+  }
 }
-
-
-// 'user_id' => 'required',
-//             'customer_id' => 'required',
-//             'aktivitas_id' => 'required',
-//             'visit_id' => 'required',
-//             'hasil_aktivitas' => 'required',
-//             'nominal_hasil' => 'required',
-//             'nomor_invoice' => 'required',
-//             'detail' => 'required'
-
-//idtoko           :789 
-//toko             : nama toko 
-//formattedDate    : 21-06-2023
-//pickedDate       : 2023-06-21 00:00:00.000
-//wa & tlp         : 1 or 0
-//visti-kunjungan  : 1 - 1
-//visti-canvasing  : 1 - 1
-//reportinput      : long text deskripsi
-//cek_omzet        : true or valse
-//omzet            :

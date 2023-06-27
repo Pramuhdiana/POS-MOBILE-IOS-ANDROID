@@ -106,6 +106,14 @@ class DbAlltransaksi {
     return list;
   }
 
+  Future<List<Map<String, Object?>>> getAllinvoicesnumber(idtoko) async {
+    id;
+    final db = await database;
+    return await db.rawQuery(
+        'SELECT * FROM alltransaksi WHERE user_id=? and customer_id=? ORDER BY invoices_number DESC',
+        [sharedPreferences!.getString('id'), idtoko]);
+  }
+
   Future<List<ModelAlltransaksi>> getAlltransaksiBysearch(
       jenis_id, name) async {
     id;

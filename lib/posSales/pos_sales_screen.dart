@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_final_fields, unused_field, duplicate_ignore, unused_element
+// ignore_for_file: prefer_final_fields, unused_field, duplicate_ignore, unused_element, avoid_print
 
 import 'package:dio/dio.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/model_allitems.dart';
@@ -34,6 +33,7 @@ class PosSalesScreen extends StatefulWidget {
 }
 
 class _PosSalesScreenState extends State<PosSalesScreen> {
+  List<DropdownMenuItem<String>>? list;
   //function bottom
   // ignore: unused_field
   int _selectedIndex = 0;
@@ -48,6 +48,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
   DBHelper dbHelper = DBHelper();
   String? title = '';
   String query = '';
+  String? selectedOmzet;
   String kodeRefrensi = 'null';
   List<Products> products = [];
   var isLoading = false;
@@ -56,6 +57,16 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
   void initState() {
     super.initState();
     title = 'POS ${sharedPreferences!.getString("name")!}';
+    list = [];
+    DbAllKodekeluarbarang.db.getAllkeluarbarang().then((listMap) {
+      listMap.map((map) {
+        print(map.toString());
+        return getDropDownWidget(map);
+      }).forEach((dropDownItem) {
+        list?.add(dropDownItem);
+      });
+      setState(() {});
+    });
   }
 
   Future refresh() async {
@@ -82,34 +93,62 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                   padding: EdgeInsets.all(8.0),
                   child: FakeSearch(),
                 ),
-                DropdownSearch<KodeKeluarbarang>(
-                  asyncItems: (String? filter) => getData(filter),
-                  popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                    showSelectedItems: true,
-                    itemBuilder: _lostKodebarangkeluar,
-                    showSearchBox: true,
+                DropdownButton(
+                  style: const TextStyle(
+                      color: Colors.blue, //<-- SEE HERE
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.blue, // <-- SEE HERE
                   ),
-                  compareFn: (item, sItem) =>
-                      item.kode_refrensi == sItem.kode_refrensi,
-                  onChanged: (item) {
+                  underline: Container(
+                    height: 2,
+                    color: Colors.blue, //<-- SEE HERE
+                  ),
+                  focusColor: Colors.white,
+                  value: selectedOmzet,
+                  hint: const Text(
+                    'Code refrensi',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  onChanged: (value) {
+                    print(value);
                     setState(() {
-                      kodeRefrensi = item.toString();
-                      // sharedPreferences!
-                      //     .setString('customer_id', idtoko.toString());
-                      // loadCartFromApiPOSTOKO();
-                      DbAllitems.db.getAllitemsBykode(kodeRefrensi);
+                      selectedOmzet = value;
+                      kodeRefrensi = value!;
                     });
                   },
-                  dropdownDecoratorProps: DropDownDecoratorProps(
-                    dropdownSearchDecoration: InputDecoration(
-                      labelText: 'Kode Keluar Barang',
-                      filled: true,
-                      fillColor:
-                          // Colors.white,
-                          Theme.of(context).inputDecorationTheme.fillColor,
-                    ),
-                  ),
+                  items: list,
                 ),
+                // DropdownSearch<KodeKeluarbarang>(
+                //   asyncItems: (String? filter) => getData(filter),
+                //   popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                //     showSelectedItems: true,
+                //     itemBuilder: _lostKodebarangkeluar,
+                //     showSearchBox: true,
+                //   ),
+                //   compareFn: (item, sItem) =>
+                //       item.kode_refrensi == sItem.kode_refrensi,
+                //   onChanged: (item) {
+                //     setState(() {
+                //       kodeRefrensi = item.toString();
+                //       // sharedPreferences!
+                //       //     .setString('customer_id', idtoko.toString());
+                //       // loadCartFromApiPOSTOKO();
+                //       DbAllitems.db.getAllitemsBykode(kodeRefrensi);
+                //     });
+                //   },
+                //   dropdownDecoratorProps: DropDownDecoratorProps(
+                //     dropdownSearchDecoration: InputDecoration(
+                //       labelText: 'Kode Keluar Barang',
+                //       filled: true,
+                //       fillColor:
+                //           // Colors.white,
+                //           Theme.of(context).inputDecorationTheme.fillColor,
+                //     ),
+                //   ),
+                // ),
                 SizedBox(
                   child: Text(
                     '${sharedPreferences!.getString("total_product_sales")} product ',
@@ -290,6 +329,14 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
         selected: isSelected,
         title: Text(item?.kode_refrensi.toString() ?? ''), // menampilkan nama
       ),
+    );
+  }
+
+  //dropdwon
+  DropdownMenuItem<String> getDropDownWidget(Map<String, dynamic> map) {
+    return DropdownMenuItem<String>(
+      value: map['kode_refrensi'],
+      child: Text(map['kode_refrensi']),
     );
   }
 }

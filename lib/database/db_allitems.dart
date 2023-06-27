@@ -190,22 +190,24 @@ class DbAllKodekeluarbarang {
   // Delete all employees
   Future<int> deleteAllkeluarbarang() async {
     final db = await database;
-    final res = await db.rawDelete(
-        'DELETE FROM allkodekeluarbarang where kode_refrensi not in (select min(kode_refrensi) from allkodekeluarbarang)');
+    // final res = await db.rawDelete(
+    //     'DELETE FROM allkodekeluarbarang where kode_refrensi not in (select min(kode_refrensi) from allkodekeluarbarang)');
+    final res = await db.rawDelete('DELETE FROM allkodekeluarbarang');
     print("delete all items berhasil");
 
     return res;
   }
 
-  Future<List<ModelAllKodekeluarbarang>> getAllkeluarbarang() async {
-    id;
+  Future<List<Map<String, Object?>>> getAllkeluarbarang() async {
+    // id;
     final db = await database;
-    final res = await db.rawQuery("SELECT * FROM allkodekeluarbarang");
+    // final res = await db.rawQuery("SELECT * FROM allkodekeluarbarang");
 
-    List<ModelAllKodekeluarbarang> list = res.isNotEmpty
-        ? res.map((c) => ModelAllKodekeluarbarang.fromJson(c)).toList()
-        : [];
+    // List<ModelAllKodekeluarbarang> list = res.isNotEmpty
+    //     ? res.map((c) => ModelAllKodekeluarbarang.fromJson(c)).toList()
+    //     : [];
 
-    return list;
+    // return list;
+    return await db.rawQuery("SELECT * FROM allkodekeluarbarang");
   }
 }
