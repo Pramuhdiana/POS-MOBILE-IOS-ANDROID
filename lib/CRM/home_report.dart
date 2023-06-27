@@ -81,15 +81,6 @@ class _HomeReportState extends State<HomeReport> {
     dateinput.text = ""; //set the initial value of text field
     super.initState();
     list = [];
-    DbAlltransaksi.db.getAllinvoicesnumber(idtoko).then((listMap) {
-      listMap.map((map) {
-        print(map.toString());
-        return getDropDownWidget(map);
-      }).forEach((dropDownItem) {
-        list?.add(dropDownItem);
-      });
-      setState(() {});
-    });
   }
 
   bool _rangeDate(DateTime day) {
@@ -173,6 +164,8 @@ class _HomeReportState extends State<HomeReport> {
                     compareFn: (item, sItem) => item.id == sItem.id,
                     onChanged: (item) {
                       setState(() {
+                        selectedOmzet = null;
+
                         // print(text);
                         print('toko : ${item?.name}');
                         print('id  : ${item?.id}');
@@ -180,7 +173,19 @@ class _HomeReportState extends State<HomeReport> {
                         idtoko = item?.id; // menyimpan id toko
                         toko = item?.name; // menyimpan nama toko
                         cek_error_customer = 'customer oke';
+                        list?.clear();
+                        DbAlltransaksi.db.getAllinvoicesnumber(idtoko);
                         btnController.reset();
+                      });
+                      DbAlltransaksi.db
+                          .getAllinvoicesnumber(idtoko)
+                          .then((listMap) {
+                        listMap.map((map) {
+                          print(map.toString());
+                          return getDropDownWidget(map);
+                        }).forEach((dropDownItem) {
+                          list?.add(dropDownItem);
+                        });
                       });
                     },
                     dropdownDecoratorProps: DropDownDecoratorProps(
@@ -485,9 +490,12 @@ class _HomeReportState extends State<HomeReport> {
                                 onChanged: (bool? value) {
                                   setState(() {
                                     cek_omzet = value!;
-                                    cek_omzet == true
-                                        ? idomzet = 1
-                                        : idomzet = 0;
+                                    if (cek_omzet == true) {
+                                      idomzet = 1;
+                                      selectedOmzet = null;
+                                    } else {
+                                      idomzet = 0;
+                                    }
                                   });
                                 },
                               ),
@@ -507,6 +515,7 @@ class _HomeReportState extends State<HomeReport> {
                                       hint: const Text('Choose an Option'),
                                       onChanged: (value) {
                                         print(value);
+
                                         setState(() {
                                           selectedOmzet = value;
                                         });
