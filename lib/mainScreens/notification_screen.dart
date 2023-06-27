@@ -150,68 +150,56 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ));
   }
 
-  //initinfo
-//   initInfo() {
-//     var androidInitialize =
-//         const AndroidInitializationSettings('@mipmap/ic_launcher');
-//     var iOSInitialize = const DarwinInitializationSettings();
-//     // ignore: unused_local_variable
-//     var initializationsSettings =
-//         InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
-
-// //         FlutterLocalNotificationsPlugin.initialize(initializationsSettings, onSe: (String? payload) async
-// //         {
-// //  try {
-// //         if(payload != null && payload.isNotEmpty) {
-
-// //         }else {
-
-// //         } catch(e) {
-
-// //         }
-// //         return;
-// //       }
-// //   });
-//   }
-
   sendMotificationToBc(tokenBC) {
-    String bcDeviceToken = tokenBC;
-    notificationFormat(
-      bcDeviceToken,
-      sharedPreferences!.getString("name"),
-    );
-  }
-
-  notificationFormat(bcDeviceToken, userName) {
-    Map<String, String> headerNotification = {
+    Map bodyNotification = {
+      'title': title.text,
+      'body': body.text,
+      'sound': 'default'
+    };
+    Map<String, String> headersAPI = {
       'Content-Type': 'application/json',
       'Authorization': 'key=$fcmServerToken',
     };
-
-    Map bodyNotification = {
-      'body': body.text,
-      'title': title.text,
-      'sound': 'default'
-    };
-
-    // Map dataMap = {
-    //   "click_action": "FLUTTER_NOTIFICATION_CLICK",
-    //   "id": "1",
-    //   "status": "done",
-    //   "bcOrderId": orderIdDiskon,
-    // };
-
-    Map officialNotificationFormat = {
-      'to': bcDeviceToken,
+    Map bodyAPI = {
+      'to': tokenBC,
       'priority': 'high',
       'notification': bodyNotification,
       // 'data': dataMap,
     };
-
-    http.post(
-      Uri.parse("https://fcm.googleapis.com/fcm/send"),
-      headers: headerNotification,
-      body: jsonEncode(officialNotificationFormat),
-    );
+    http.post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
+        headers: headersAPI, body: jsonEncode(bodyAPI));
   }
+
+  // notificationFormat(bcDeviceToken, userName) {
+  //   Map<String, String> headerNotification = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': 'key=$fcmServerToken',
+  //   };
+
+  //   Map bodyNotification = {
+  //     'body': body.text,
+  //     'title': title.text,
+  //     'sound': 'default'
+  //   };
+
+  // Map dataMap = {
+  //   "click_action": "FLUTTER_NOTIFICATION_CLICK",
+  //   "id": "1",
+  //   "status": "done",
+  //   "bcOrderId": orderIdDiskon,
+  // };
+
+  // Map officialNotificationFormat = {
+  //   'to': bcDeviceToken,
+  //   'priority': 'high',
+  //   'notification': bodyNotification,
+  //   // 'data': dataMap,
+  // };
+
+  // http.post(
+  //   Uri.parse("https://fcm.googleapis.com/fcm/send"),
+  //   headers: headerNotification,
+  //   body: jsonEncode(officialNotificationFormat),
+  // );
 }
+// }
