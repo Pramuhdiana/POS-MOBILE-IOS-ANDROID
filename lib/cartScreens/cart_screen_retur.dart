@@ -84,6 +84,10 @@ class _CartScreenReturState extends State<CartScreenRetur> {
                             Navigator.pop(context);
                           },
                           tabYes: () async {
+                            String token = sharedPreferences!
+                                .getString("token")
+                                .toString();
+
                             Map<String, String> body = {
                               'customer_id':
                                   sharedPreferences!.getString('customer_id')!,
@@ -94,7 +98,7 @@ class _CartScreenReturState extends State<CartScreenRetur> {
                                     ApiConstants
                                         .DELETEallkeranjangreturendpoint),
                                 headers: <String, String>{
-                                  'Authorization': 'Bearer ${token!}',
+                                  'Authorization': 'Bearer $token',
                                 },
                                 body: body);
                             print(response.body);
@@ -202,6 +206,7 @@ class _CartScreenReturState extends State<CartScreenRetur> {
     String addesdiskon_rupiah = '0';
     String total_potongan = '0';
     String keterangan_bayar = 'null';
+    String token = sharedPreferences!.getString("token").toString();
 
     Map<String, String> body = {
       'cart_total': cart_total,
@@ -224,7 +229,7 @@ class _CartScreenReturState extends State<CartScreenRetur> {
         Uri.parse(
             ApiConstants.baseUrl + ApiConstants.POSTreturcheckoutendpoint),
         headers: <String, String>{
-          'Authorization': 'Bearer ${token!}',
+          'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);
@@ -393,6 +398,8 @@ class CartItems extends StatelessWidget {
   }
 
   deleteAPIcart(productId) async {
+    String token = sharedPreferences!.getString("token").toString();
+
     Map<String, String> body = {
       'update_by': '1',
       'product_id': productId,
@@ -401,13 +408,15 @@ class CartItems extends StatelessWidget {
         Uri.parse(
             ApiConstants.baseUrl + ApiConstants.DELETEkeranjangtokoendpoint),
         headers: <String, String>{
-          'Authorization': 'Bearer ${token!}',
+          'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);
   }
 
   deleteAllAPIcart(productId) async {
+    String token = sharedPreferences!.getString("token").toString();
+
     Map<String, String> body = {
       'customer_id': sharedPreferences!.getString('customer_id')!,
       'jenisform_id': '2',
@@ -416,7 +425,7 @@ class CartItems extends StatelessWidget {
         Uri.parse(
             ApiConstants.baseUrl + ApiConstants.DELETEallkeranjangtokondpoint),
         headers: <String, String>{
-          'Authorization': 'Bearer ${token!}',
+          'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);

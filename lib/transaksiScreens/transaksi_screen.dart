@@ -563,6 +563,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
   }
 
   postAPIsales() async {
+    String token = sharedPreferences!.getString("token").toString();
     String cart_total = context.read<PCart>().totalPrice2.toString();
     String cart_totalquantity = context.read<PCart>().count.toString();
     String bayar = dpp.toString();
@@ -597,7 +598,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
         Uri.parse(
             ApiConstants.baseUrl + ApiConstants.POSTsalescheckoutendpoint),
         headers: <String, String>{
-          'Authorization': 'Bearer ${token!}',
+          'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);

@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print
 
 import 'package:e_shop/global/global.dart';
-import 'package:e_shop/push_notifications/push_notifications_system.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +28,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     //  strat push notification
-    PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
-    pushNotificationsSystem.notificationPopUp(context);
+    // PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
+    // pushNotificationsSystem.notificationPopUp(context);
     // pushNotificationsSystem.whenNotificationReceived(context); //popup dari bottom tanpa confirmasi oke
     // end push notification
     super.initState();

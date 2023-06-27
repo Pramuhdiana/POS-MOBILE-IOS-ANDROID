@@ -165,6 +165,7 @@ class _SearchPosRetur extends State<SearchPosRetur> {
   }
 
   postAPIcart() async {
+    String token = sharedPreferences!.getString("token").toString();
     Map<String, String> body = {
       // 'user_id': id.toString(),
       'product_id': widget.model!.id.toString(), //70507
@@ -179,7 +180,7 @@ class _SearchPosRetur extends State<SearchPosRetur> {
         Uri.parse(
             ApiConstants.baseUrl + ApiConstants.POSTkeranjangreturendpoint),
         headers: <String, String>{
-          'Authorization': 'Bearer ${token!}',
+          'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);

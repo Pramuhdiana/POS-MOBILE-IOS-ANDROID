@@ -169,6 +169,8 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
   }
 
   postAPIcart() async {
+    String token = sharedPreferences!.getString("token").toString();
+
     Map<String, String> body = {
       // 'user_id': id.toString(),
       'product_id': widget.model!.id.toString(),
@@ -181,7 +183,7 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
         Uri.parse(
             ApiConstants.baseUrl + ApiConstants.POSTkeranjangsalesendpoint),
         headers: <String, String>{
-          'Authorization': 'Bearer ${token!}',
+          'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);

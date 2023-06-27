@@ -134,6 +134,7 @@ class _PosReturUi extends State<PosReturUi> {
   }
 
   postAPIcart() async {
+    String token = sharedPreferences!.getString("token").toString();
     Map<String, String> body = {
       // 'user_id': id.toString(),
       'product_id': widget.model!.id.toString(), //70507
@@ -148,7 +149,7 @@ class _PosReturUi extends State<PosReturUi> {
         Uri.parse(
             ApiConstants.baseUrl + ApiConstants.POSTkeranjangreturendpoint),
         headers: <String, String>{
-          'Authorization': 'Bearer ${token!}',
+          'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);

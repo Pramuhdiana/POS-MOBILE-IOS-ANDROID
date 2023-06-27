@@ -154,6 +154,7 @@ class _QrScannerState extends State<QrScanner> {
 
   //widget searchQR
   Widget _searchQr(BuildContext context) {
+    String token = sharedPreferences!.getString("token").toString();
     loadCartFromApiPOSSALES() async {
       var url = ApiConstants.baseUrl + ApiConstants.GETkeranjangsalesendpoint;
       Response response = await Dio().get(url,
@@ -467,6 +468,8 @@ class SearchModel extends StatelessWidget {
   }
 
   postAPIcart() async {
+    String token = sharedPreferences!.getString("token").toString();
+
     Map<String, String> body = {
       // 'user_id': id.toString(),
       'product_id': e['id'].toString(),
@@ -479,7 +482,7 @@ class SearchModel extends StatelessWidget {
         Uri.parse(
             ApiConstants.baseUrl + ApiConstants.POSTkeranjangsalesendpoint),
         headers: <String, String>{
-          'Authorization': 'Bearer ${token!}',
+          'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);

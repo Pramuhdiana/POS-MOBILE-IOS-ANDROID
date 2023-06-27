@@ -5,7 +5,6 @@ import 'package:cart_stepper/cart_stepper.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/model_allitems.dart';
-import 'package:e_shop/global/global.dart';
 import 'package:e_shop/itemsScreens/items_photo.dart';
 import 'package:http/http.dart' as http;
 import 'package:e_shop/provider/provider_cart.dart';
@@ -15,6 +14,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:collection/collection.dart';
+import '../global/global.dart';
 import '../widgets/appbar_cart_pos_sales.dart';
 
 class ItemsDetailsScreen extends StatefulWidget {
@@ -216,6 +216,7 @@ class _ItemsDetailsScreenState extends State<ItemsDetailsScreen> {
   }
 
   postAPIcart() async {
+    String token = sharedPreferences!.getString("token").toString();
     Map<String, String> body = {
       // 'user_id': id.toString(),
       'product_id': widget.model!.id.toString(),
@@ -228,7 +229,7 @@ class _ItemsDetailsScreenState extends State<ItemsDetailsScreen> {
         Uri.parse(
             ApiConstants.baseUrl + ApiConstants.POSTkeranjangsalesendpoint),
         headers: <String, String>{
-          'Authorization': 'Bearer ${token!}',
+          'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);

@@ -391,6 +391,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
     String addesdiskon_rupiah = addesdiskon;
     String total_potongan = totalDiskonRp;
     String keterangan_bayar = 'null';
+    String token = sharedPreferences!.getString("token").toString();
 
     Map<String, String> body = {
       'cart_total': cart_total,
@@ -412,7 +413,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
     final response = await http.post(
         Uri.parse(ApiConstants.baseUrl + ApiConstants.POSTtokocheckoutendpoint),
         headers: <String, String>{
-          'Authorization': 'Bearer ${token!}',
+          'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);

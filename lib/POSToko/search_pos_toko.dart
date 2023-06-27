@@ -209,6 +209,8 @@ class _SearchPosToko extends State<SearchPosToko> {
   }
 
   postAPIcart() async {
+    String token = sharedPreferences!.getString("token").toString();
+
     Map<String, String> body = {
       // 'user_id': id.toString(),
       'product_id': widget.model!.id.toString(), //70507
@@ -223,7 +225,7 @@ class _SearchPosToko extends State<SearchPosToko> {
         Uri.parse(
             ApiConstants.baseUrl + ApiConstants.POSTkeranjangtokoendpoint),
         headers: <String, String>{
-          'Authorization': 'Bearer ${token!}',
+          'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);

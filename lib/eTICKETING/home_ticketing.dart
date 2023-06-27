@@ -704,6 +704,26 @@ class _HomeEticketingState extends State<HomeEticketing> {
                           : Container()
                     ],
                   ),
+                  Card(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(0),
+                        child: TextField(
+                          onChanged: (reportinput) {
+                            setState(() {
+                              btnController.reset();
+                              reportinput = reportinput;
+                            });
+                          },
+                          maxLines: 8, //or null
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              hintText: "Note"),
+                          controller: reportinput,
+                        ),
+                      )),
                 ],
               ),
             ),

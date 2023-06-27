@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 // ignore: use_key_in_widget_constructors
@@ -759,7 +760,31 @@ class _HomeReportState extends State<HomeReport> {
       });
     }
   }
+
+//send data to DATABASE with API
+  postAPIreport() async {
+    String token = sharedPreferences!.getString("token").toString();
+    Map<String, String> body = {};
+    final response = await http.post(
+        Uri.parse(
+            ApiConstants.baseUrl + ApiConstants.POSTsalescheckoutendpoint),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+        },
+        body: body);
+    print(response.body);
+  }
 }
+
+
+// 'user_id' => 'required',
+//             'customer_id' => 'required',
+//             'aktivitas_id' => 'required',
+//             'visit_id' => 'required',
+//             'hasil_aktivitas' => 'required',
+//             'nominal_hasil' => 'required',
+//             'nomor_invoice' => 'required',
+//             'detail' => 'required'
 
 //idtoko           :789 
 //toko             : nama toko 

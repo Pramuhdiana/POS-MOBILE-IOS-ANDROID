@@ -59,7 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
     controller?.stopCamera();
     //star notifi
     PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
-    pushNotificationsSystem.notificationPopUp(context);
+    // pushNotificationsSystem.notificationPopUp(context);
+    pushNotificationsSystem.whenNotificationReceived(context);
     //end notif
   }
 

@@ -82,6 +82,9 @@ class _CartScreenState extends State<CartScreen> {
                           Navigator.pop(context);
                         },
                         tabYes: () async {
+                          String token =
+                              sharedPreferences!.getString("token").toString();
+
                           Map<String, String> body = {
                             'jenisform_id': '3',
                           };
@@ -89,7 +92,7 @@ class _CartScreenState extends State<CartScreen> {
                               Uri.parse(ApiConstants.baseUrl +
                                   ApiConstants.DELETEallkeranjangsalesendpoint),
                               headers: <String, String>{
-                                'Authorization': 'Bearer ${token!}',
+                                'Authorization': 'Bearer $token',
                               },
                               body: body);
                           print(response.body);
@@ -346,6 +349,8 @@ class CartItems extends StatelessWidget {
   }
 
   deleteAPIcart(productId) async {
+    String token = sharedPreferences!.getString("token").toString();
+
     Map<String, String> body = {
       'update_by': '1',
       'product_id': productId,
@@ -354,7 +359,7 @@ class CartItems extends StatelessWidget {
         Uri.parse(
             ApiConstants.baseUrl + ApiConstants.DELETEkeranjangsalesendpoint),
         headers: <String, String>{
-          'Authorization': 'Bearer ${token!}',
+          'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);

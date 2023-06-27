@@ -13,7 +13,7 @@ String fcmServerToken =
     "AAAAu6dblLA:APA91bEanz7VkI6wyJSxAGE8L1lVDFcv5VWg_9qlVsuRUwXUtoXmK5apL0fYMSOdDqt_OEL8uQhfBDJvFMJmwHYm3n0aav4z4Dg56tfsnkyZobqCwtGLO6PM0WBb2vsA_XtakPNIKJQT";
 
 String? id = sharedPreferences!.getString('id');
-String? token = sharedPreferences!.getString('token');
+String? globalToken = sharedPreferences!.getString('token');
 int revisiBesar =
     1; //UI baru, banyak fitur baru, perubahan konsep, dll  (MAJOR)
 int revisiKecil =

@@ -24,6 +24,7 @@ class CartScreenToko extends StatefulWidget {
 
 class _CartScreenTokoState extends State<CartScreenToko> {
   String? title = '';
+  String token = sharedPreferences!.getString("token").toString();
 
   @override
   void initState() {
@@ -90,7 +91,7 @@ class _CartScreenTokoState extends State<CartScreenToko> {
                               Uri.parse(ApiConstants.baseUrl +
                                   ApiConstants.DELETEallkeranjangtokondpoint),
                               headers: <String, String>{
-                                'Authorization': 'Bearer ${token!}',
+                                'Authorization': 'Bearer $token',
                               },
                               body: body);
                           print(response.body);
@@ -327,6 +328,8 @@ class CartItems extends StatelessWidget {
   }
 
   deleteAPIcart(productId) async {
+    String token = sharedPreferences!.getString("token").toString();
+
     Map<String, String> body = {
       'update_by': '1',
       'product_id': productId,
@@ -335,7 +338,7 @@ class CartItems extends StatelessWidget {
         Uri.parse(
             ApiConstants.baseUrl + ApiConstants.DELETEkeranjangtokoendpoint),
         headers: <String, String>{
-          'Authorization': 'Bearer ${token!}',
+          'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);
