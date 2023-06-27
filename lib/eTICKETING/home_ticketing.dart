@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print, non_constant_identifier_names, sized_box_for_whitespace, depend_on_referenced_packages
 
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/global/global.dart';
@@ -36,6 +38,11 @@ class _HomeEticketingState extends State<HomeEticketing> {
   TextEditingController dateinput = TextEditingController();
   DateTime? pickedDate;
   String formattedDate = 'null';
+  String? product;
+  String? categoryProduct;
+  String? jenisRequest;
+  String? warnaProduct;
+  String? qualitasProduct;
 
   //start image
   XFile? image;
@@ -134,6 +141,7 @@ class _HomeEticketingState extends State<HomeEticketing> {
                     child: SizedBox(
                       width: 315,
                       child: TextFormField(
+                          enabled: false,
                           textAlign: TextAlign.center,
                           readOnly: true,
                           controller: requestDate,
@@ -163,6 +171,7 @@ class _HomeEticketingState extends State<HomeEticketing> {
                     child: SizedBox(
                       width: 315,
                       child: TextFormField(
+                          enabled: false,
                           textAlign: TextAlign.center,
                           readOnly: true,
                           controller: bcName,
@@ -192,6 +201,7 @@ class _HomeEticketingState extends State<HomeEticketing> {
                     child: SizedBox(
                       width: 315,
                       child: TextFormField(
+                          enabled: false,
                           textAlign: TextAlign.center,
                           readOnly: true,
                           controller: departement,
@@ -258,6 +268,366 @@ class _HomeEticketingState extends State<HomeEticketing> {
                     ),
                   ),
 
+                  //pilih produk
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40, right: 0),
+                    child: SizedBox(
+                      width: 300,
+                      child: DecoratedBox(
+                          decoration: BoxDecoration(
+                              color: product != null
+                                  ? const Color.fromARGB(255, 8, 209, 69)
+                                  : const Color.fromRGBO(238, 240, 235,
+                                      1), //background color of dropdown button
+                              border: Border.all(
+                                  color: Colors.black38,
+                                  width: 3), //border of dropdown button
+                              borderRadius: BorderRadius.circular(
+                                  50), //border raiuds of dropdown button
+                              boxShadow: const <BoxShadow>[
+                                //apply shadow on Dropdown button
+                                BoxShadow(
+                                    color: Color.fromRGBO(
+                                        0, 0, 0, 0.57), //shadow for button
+                                    blurRadius: 5) //blur radius of shadow
+                              ]),
+                          child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: DropdownButton(
+                                value: product,
+                                items: const [
+                                  //add items in the dropdown
+                                  DropdownMenuItem(
+                                    value: "001 (Parva)",
+                                    child: Text("001 (Parva)"),
+                                  )
+                                ],
+                                hint: const Text('Select a product'),
+                                onChanged: (value) {
+                                  print("You have selected $value");
+                                  setState(() {
+                                    product = value;
+                                  });
+                                },
+                                icon: const Padding(
+                                    padding: EdgeInsets.only(left: 20),
+                                    child: Icon(Icons.arrow_circle_down_sharp)),
+                                iconEnabledColor: Colors.black, //Icon color
+                                style: const TextStyle(
+                                    color: Colors.black, //Font color
+                                    fontSize: 15 //font size on dropdown button
+                                    ),
+
+                                dropdownColor:
+                                    Colors.white, //dropdown background color
+                                underline: Container(), //remove underline
+                                isExpanded: true, //make true to make width 100%
+                              ))),
+                    ),
+                  ),
+
+                  //CATEGORY PRODUCT
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40, right: 0, top: 10),
+                    child: SizedBox(
+                      width: 300,
+                      child: DecoratedBox(
+                          decoration: BoxDecoration(
+                              color: categoryProduct != null
+                                  ? const Color.fromARGB(255, 8, 209, 69)
+                                  : const Color.fromRGBO(238, 240, 235,
+                                      1), //background color of dropdown button
+                              border: Border.all(
+                                  color: Colors.black38,
+                                  width: 3), //border of dropdown button
+                              borderRadius: BorderRadius.circular(
+                                  50), //border raiuds of dropdown button
+                              boxShadow: const <BoxShadow>[
+                                //apply shadow on Dropdown button
+                                BoxShadow(
+                                    color: Color.fromRGBO(
+                                        0, 0, 0, 0.57), //shadow for button
+                                    blurRadius: 5) //blur radius of shadow
+                              ]),
+                          child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: DropdownButton(
+                                value: categoryProduct,
+                                items: const [
+                                  //add items in the dropdown
+                                  DropdownMenuItem(
+                                    value: "Bangle",
+                                    child: Text("Bangle"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Bracelet",
+                                    child: Text("Bracelet"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Earings",
+                                    child: Text("Earings"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Koye",
+                                    child: Text("Koye"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Necklace",
+                                    child: Text("Necklace"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Pendant",
+                                    child: Text("Pendant"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Rings",
+                                    child: Text("Rings"),
+                                  )
+                                ],
+                                hint: const Text('Select product category'),
+                                onChanged: (value) {
+                                  print("You have selected $value");
+                                  setState(() {
+                                    categoryProduct = value;
+                                  });
+                                },
+                                icon: const Padding(
+                                    padding: EdgeInsets.only(left: 20),
+                                    child: Icon(Icons.arrow_circle_down_sharp)),
+                                iconEnabledColor: Colors.black, //Icon color
+                                style: const TextStyle(
+                                    color: Colors.black, //Font color
+                                    fontSize: 15 //font size on dropdown button
+                                    ),
+
+                                dropdownColor:
+                                    Colors.white, //dropdown background color
+                                underline: Container(), //remove underline
+                                isExpanded: true, //make true to make width 100%
+                              ))),
+                    ),
+                  ),
+
+                  //JENIS REQUEST
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40, right: 0, top: 10),
+                    child: SizedBox(
+                      width: 300,
+                      child: DecoratedBox(
+                          decoration: BoxDecoration(
+                              color: jenisRequest != null
+                                  ? const Color.fromARGB(255, 8, 209, 69)
+                                  : const Color.fromRGBO(238, 240, 235,
+                                      1), //background color of dropdown button
+                              border: Border.all(
+                                  color: Colors.black38,
+                                  width: 3), //border of dropdown button
+                              borderRadius: BorderRadius.circular(
+                                  50), //border raiuds of dropdown button
+                              boxShadow: const <BoxShadow>[
+                                //apply shadow on Dropdown button
+                                BoxShadow(
+                                    color: Color.fromRGBO(
+                                        0, 0, 0, 0.57), //shadow for button
+                                    blurRadius: 5) //blur radius of shadow
+                              ]),
+                          child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: DropdownButton(
+                                value: jenisRequest,
+                                items: const [
+                                  //add items in the dropdown
+                                  DropdownMenuItem(
+                                    value: "Baru",
+                                    child: Text("Baru"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Revisi",
+                                    child: Text("Revisi"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Ro",
+                                    child: Text("Ro"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Reparasi",
+                                    child: Text("Reparasi"),
+                                  )
+                                ],
+                                hint: const Text('Select type of request'),
+                                onChanged: (value) {
+                                  print("You have selected $value");
+                                  setState(() {
+                                    jenisRequest = value;
+                                  });
+                                },
+                                icon: const Padding(
+                                    padding: EdgeInsets.only(left: 20),
+                                    child: Icon(Icons.arrow_circle_down_sharp)),
+                                iconEnabledColor: Colors.black, //Icon color
+                                style: const TextStyle(
+                                    color: Colors.black, //Font color
+                                    fontSize: 15 //font size on dropdown button
+                                    ),
+
+                                dropdownColor:
+                                    Colors.white, //dropdown background color
+                                underline: Container(), //remove underline
+                                isExpanded: true, //make true to make width 100%
+                              ))),
+                    ),
+                  ),
+
+                  //warna
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40, right: 0, top: 10),
+                    child: SizedBox(
+                      width: 300,
+                      child: DecoratedBox(
+                          decoration: BoxDecoration(
+                              color: warnaProduct != null
+                                  ? const Color.fromARGB(255, 8, 209, 69)
+                                  : const Color.fromRGBO(238, 240, 235,
+                                      1), //background color of dropdown button
+                              border: Border.all(
+                                  color: Colors.black38,
+                                  width: 3), //border of dropdown button
+                              borderRadius: BorderRadius.circular(
+                                  50), //border raiuds of dropdown button
+                              boxShadow: const <BoxShadow>[
+                                //apply shadow on Dropdown button
+                                BoxShadow(
+                                    color: Color.fromRGBO(
+                                        0, 0, 0, 0.57), //shadow for button
+                                    blurRadius: 5) //blur radius of shadow
+                              ]),
+                          child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: DropdownButton(
+                                value: warnaProduct,
+                                items: const [
+                                  //add items in the dropdown
+                                  DropdownMenuItem(
+                                    value: "Rose gold",
+                                    child: Text("Rose gold"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "White gold",
+                                    child: Text("White gold"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Yellow gold",
+                                    child: Text("Yellow gold"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Plating rose gold",
+                                    child: Text("Plating rose gold"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Plating yellow gold",
+                                    child: Text("Plating yellow gold"),
+                                  )
+                                ],
+                                hint:
+                                    const Text('Select the product color type'),
+                                onChanged: (value) {
+                                  print("You have selected $value");
+                                  setState(() {
+                                    warnaProduct = value;
+                                  });
+                                },
+                                icon: const Padding(
+                                    padding: EdgeInsets.only(left: 20),
+                                    child: Icon(Icons.arrow_circle_down_sharp)),
+                                iconEnabledColor: Colors.black, //Icon color
+                                style: const TextStyle(
+                                    color: Colors.black, //Font color
+                                    fontSize: 15 //font size on dropdown button
+                                    ),
+
+                                dropdownColor:
+                                    Colors.white, //dropdown background color
+                                underline: Container(), //remove underline
+                                isExpanded: true, //make true to make width 100%
+                              ))),
+                    ),
+                  ),
+
+                  //kualitas
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40, right: 0, top: 10),
+                    child: SizedBox(
+                      width: 300,
+                      child: DecoratedBox(
+                          decoration: BoxDecoration(
+                              color: qualitasProduct != null
+                                  ? const Color.fromARGB(255, 8, 209, 69)
+                                  : const Color.fromRGBO(238, 240, 235,
+                                      1), //background color of dropdown button
+                              border: Border.all(
+                                  color: Colors.black38,
+                                  width: 3), //border of dropdown button
+                              borderRadius: BorderRadius.circular(
+                                  50), //border raiuds of dropdown button
+                              boxShadow: const <BoxShadow>[
+                                //apply shadow on Dropdown button
+                                BoxShadow(
+                                    color: Color.fromRGBO(
+                                        0, 0, 0, 0.57), //shadow for button
+                                    blurRadius: 5) //blur radius of shadow
+                              ]),
+                          child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: DropdownButton(
+                                value: qualitasProduct,
+                                items: const [
+                                  //add items in the dropdown
+                                  DropdownMenuItem(
+                                    value: "SA - VVS",
+                                    child: Text("SA - VVS"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "ZA - VS",
+                                    child: Text("ZA - VS"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "GIA",
+                                    child: Text("GIA"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "SI",
+                                    child: Text("SI"),
+                                  )
+                                ],
+                                hint: const Text('Select quality type'),
+                                onChanged: (value) {
+                                  print("You have selected $value");
+                                  setState(() {
+                                    qualitasProduct = value;
+                                  });
+                                },
+                                icon: const Padding(
+                                    padding: EdgeInsets.only(left: 20),
+                                    child: Icon(Icons.arrow_circle_down_sharp)),
+                                iconEnabledColor: Colors.black, //Icon color
+                                style: const TextStyle(
+                                    color: Colors.black, //Font color
+                                    fontSize: 15 //font size on dropdown button
+                                    ),
+
+                                dropdownColor:
+                                    Colors.white, //dropdown background color
+                                underline: Container(), //remove underline
+                                isExpanded: true, //make true to make width 100%
+                              ))),
+                    ),
+                  ),
+
                   //product size
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -286,7 +656,7 @@ class _HomeEticketingState extends State<HomeEticketing> {
                       controller: estimatePrice,
                       decoration: InputDecoration(
                         // hintText: "example: Cahaya Sanivokasi",
-                        labelText: "Estimate price",
+                        labelText: "Price estimate",
                         icon: const Icon(Icons.price_check),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0)),
@@ -299,24 +669,39 @@ class _HomeEticketingState extends State<HomeEticketing> {
                       //   },
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: TextFormField(
-                  //     obscureText: true,
-                  //     decoration: InputDecoration(
-                  //       labelText: "Password",
-                  //       icon: const Icon(Icons.security),
-                  //       border: OutlineInputBorder(
-                  //           borderRadius: BorderRadius.circular(5.0)),
-                  //     ),
-                  //     validator: (value) {
-                  //       if (value!.isEmpty) {
-                  //         return 'Password tidak boleh kosong';
-                  //       }
-                  //       return null;
-                  //     },
-                  //   ),
-                  // ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          // myAlert();
+                          openImages();
+                        },
+                        child: const Text('Upload Photo'),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+
+                      //multi img
+                      imagefiles != null
+                          ? Wrap(
+                              children: imagefiles!.map((imageone) {
+                                return Card(
+                                  child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    child: Image.file(
+                                      File(imageone.path),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            )
+                          : Container()
+                    ],
+                  ),
                 ],
               ),
             ),
