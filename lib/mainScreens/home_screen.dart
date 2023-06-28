@@ -99,9 +99,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     children: <Widget>[
                       _bodyatas(),
-                      // _bodytengah(),
-                      // SizedBox(height: 15),
-                      // _bodybawah(),
+                      _bodytengah(),
+                      SizedBox(height: 15),
+                      _bodybawah(),
                       const Padding(
                         padding: EdgeInsets.only(
                             bottom: 7.0, top: 10.0, left: 40.0, right: 40.0),
