@@ -35,6 +35,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
     super.initState();
   }
 
+  Future refresh() async {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,58 +76,61 @@ class _NotificationScreenState extends State<NotificationScreen> {
           centerTitle: true,
         ),
         backgroundColor: Colors.white,
-        body: Padding(
-          padding: const EdgeInsets.only(top: 150),
-          child: Center(
-            child: Form(
-              key: formKey,
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: 257,
-                    child: TextFormField(
-                        textAlign: TextAlign.center,
-                        controller: title,
-                        decoration: InputDecoration(
-                          hintStyle: const TextStyle(
-                              fontSize: 18.0, color: Colors.blue),
-                          hintText: "Title",
-                          // suffixIcon: IconButton(
-                          //   onPressed: title.clear,
-                          //   icon: const Icon(Icons.clear),
-                          //   color: Colors.red,
-                          // ),
-                          fillColor: Colors.white,
-                          filled: true,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.blue, width: 1),
-                            borderRadius: BorderRadius.circular(100.0),
-                          ),
-                        )),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    width: 257,
-                    child: TextFormField(
-                        textAlign: TextAlign.center,
-                        controller: body,
-                        decoration: InputDecoration(
-                          hintStyle: const TextStyle(
-                              fontSize: 18.0, color: Colors.blue),
-                          hintText: "Body",
-                          fillColor: Colors.white,
-                          filled: true,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.blue, width: 1),
-                            borderRadius: BorderRadius.circular(100.0),
-                          ),
-                        )),
-                  ),
-                ],
+        body: RefreshIndicator(
+          onRefresh: refresh,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 150),
+            child: Center(
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 257,
+                      child: TextFormField(
+                          textAlign: TextAlign.center,
+                          controller: title,
+                          decoration: InputDecoration(
+                            hintStyle: const TextStyle(
+                                fontSize: 18.0, color: Colors.blue),
+                            hintText: "Title",
+                            // suffixIcon: IconButton(
+                            //   onPressed: title.clear,
+                            //   icon: const Icon(Icons.clear),
+                            //   color: Colors.red,
+                            // ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.blue, width: 1),
+                              borderRadius: BorderRadius.circular(100.0),
+                            ),
+                          )),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: 257,
+                      child: TextFormField(
+                          textAlign: TextAlign.center,
+                          controller: body,
+                          decoration: InputDecoration(
+                            hintStyle: const TextStyle(
+                                fontSize: 18.0, color: Colors.blue),
+                            hintText: "Body",
+                            fillColor: Colors.white,
+                            filled: true,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.blue, width: 1),
+                              borderRadius: BorderRadius.circular(100.0),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

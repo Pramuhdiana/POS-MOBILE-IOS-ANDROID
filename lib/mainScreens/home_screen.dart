@@ -94,29 +94,33 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
                 padding: const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
                 color: Colors.white,
-                child: Column(
-                  children: <Widget>[
-                    _bodyatas(),
-                    _bodytengah(),
-                    SizedBox(height: 15),
-                    _bodybawah(),
-                    const Padding(
-                      padding: EdgeInsets.only(
-                          bottom: 7.0, top: 10.0, left: 40.0, right: 40.0),
-                      child: Divider(
-                        height: 1,
-                        thickness: 5,
-                        color: Colors.blueAccent,
+                child: RefreshIndicator(
+                  onRefresh: refresh,
+                  child: Column(
+                    children: <Widget>[
+                      _bodyatas(),
+                      // _bodytengah(),
+                      // SizedBox(height: 15),
+                      // _bodybawah(),
+                      const Padding(
+                        padding: EdgeInsets.only(
+                            bottom: 7.0, top: 10.0, left: 40.0, right: 40.0),
+                        child: Divider(
+                          height: 1,
+                          thickness: 5,
+                          color: Colors.blueAccent,
+                        ),
                       ),
-                    ),
-                    Text(
-                      version,
-                      style: TextStyle(
-                          color: Colors.grey[800], fontStyle: FontStyle.italic),
-                    )
-                    // if (sharedPreferences!.getString("role")! != "SALES")
-                    //   _widget3()
-                  ],
+                      Text(
+                        version,
+                        style: TextStyle(
+                            color: Colors.grey[800],
+                            fontStyle: FontStyle.italic),
+                      )
+                      // if (sharedPreferences!.getString("role")! != "SALES")
+                      //   _widget3()
+                    ],
+                  ),
                 )),
           ],
         ),
@@ -342,133 +346,122 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _bodybawah() {
-    return Container(
-        height: 200,
-        width: 320,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: Colors.blue,
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(30))),
-        child: ListView(scrollDirection: Axis.horizontal, children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 15,
+    return RefreshIndicator(
+      onRefresh: refresh,
+      child: Container(
+          height: 200,
+          width: 320,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                color: Colors.blue,
               ),
-              //bagian atas
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //HISTORY
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Transform.scale(
-                        scale: 1.2,
-                        child: OutlinedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => MainHistoryScreen()));
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Colors.blueAccent),
-                            shape: const CircleBorder(),
-                          ),
-                          child: IconButton(
+              borderRadius: BorderRadius.all(Radius.circular(30))),
+          child: ListView(scrollDirection: Axis.horizontal, children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 15,
+                ),
+                //bagian atas
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //HISTORY
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Transform.scale(
+                          scale: 1.2,
+                          child: OutlinedButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (c) => MainHistoryScreen()));
                             },
-                            icon: Image.asset(
-                              "images/refresh.png",
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.blueAccent),
+                              shape: const CircleBorder(),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => MainHistoryScreen()));
+                              },
+                              icon: Image.asset(
+                                "images/refresh.png",
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                      ),
-                      const Text(
-                        "HISTORY",
-                        style:
-                            TextStyle(color: Colors.blueAccent, fontSize: 12.0),
-                      ),
-                    ],
-                  ),
-                  //report
-                  // if (sharedPreferences!.getString("role")! != "SALES")
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Transform.scale(
-                        scale: 1.2,
-                        child: OutlinedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => MainReportScreen()));
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Colors.blueAccent),
-                            shape: const CircleBorder(
-                                // borderRadius: BorderRadius.circular(360),
-                                ),
-                          ),
-                          child: IconButton(
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                        ),
+                        const Text(
+                          "HISTORY",
+                          style: TextStyle(
+                              color: Colors.blueAccent, fontSize: 12.0),
+                        ),
+                      ],
+                    ),
+                    //report
+                    // if (sharedPreferences!.getString("role")! != "SALES")
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Transform.scale(
+                          scale: 1.2,
+                          child: OutlinedButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (c) => MainReportScreen()));
                             },
-                            icon: Image.asset(
-                              "images/seo-report.png",
-                              // "images/offer.png",
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.blueAccent),
+                              shape: const CircleBorder(
+                                  // borderRadius: BorderRadius.circular(360),
+                                  ),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => MainReportScreen()));
+                              },
+                              icon: Image.asset(
+                                "images/seo-report.png",
+                                // "images/offer.png",
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                      ),
-                      const Text(
-                        "REPORT",
-                        style:
-                            TextStyle(color: Colors.blueAccent, fontSize: 12.0),
-                      ),
-                    ],
-                  ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                        ),
+                        const Text(
+                          "REPORT",
+                          style: TextStyle(
+                              color: Colors.blueAccent, fontSize: 12.0),
+                        ),
+                      ],
+                    ),
 
-                  //ADD TOKO
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Transform.scale(
-                        scale: 1.2,
-                        child: OutlinedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => const MainAddTokoScreen()));
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Colors.blueAccent),
-                            shape: const CircleBorder(
-                                // borderRadius: BorderRadius.circular(360),
-                                ),
-                          ),
-                          child: IconButton(
+                    //ADD TOKO
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Transform.scale(
+                          scale: 1.2,
+                          child: OutlinedButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
@@ -476,235 +469,233 @@ class _HomeScreenState extends State<HomeScreen> {
                                       builder: (c) =>
                                           const MainAddTokoScreen()));
                             },
-                            icon: Image.asset(
-                              "images/franchise.png",
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.blueAccent),
+                              shape: const CircleBorder(
+                                  // borderRadius: BorderRadius.circular(360),
+                                  ),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) =>
+                                            const MainAddTokoScreen()));
+                              },
+                              icon: Image.asset(
+                                "images/franchise.png",
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                      ),
-                      const Text(
-                        "ADD TOKO",
-                        style:
-                            TextStyle(color: Colors.blueAccent, fontSize: 12.0),
-                      ),
-                    ],
-                  ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                        ),
+                        const Text(
+                          "ADD TOKO",
+                          style: TextStyle(
+                              color: Colors.blueAccent, fontSize: 12.0),
+                        ),
+                      ],
+                    ),
 
-                  //setting
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Transform.scale(
-                        scale: 1.2,
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Colors.blueAccent),
-                            shape: const CircleBorder(
-                                // borderRadius: BorderRadius.circular(360),
-                                ),
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              Fluttertoast.showToast(msg: "Not Available");
-                            },
-                            icon: Image.asset(
-                              "images/settings.png",
-                              // "images/offer.png",
+                    //setting
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Transform.scale(
+                          scale: 1.2,
+                          child: OutlinedButton(
+                            onPressed: () {},
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.blueAccent),
+                              shape: const CircleBorder(
+                                  // borderRadius: BorderRadius.circular(360),
+                                  ),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                Fluttertoast.showToast(msg: "Not Available");
+                              },
+                              icon: Image.asset(
+                                "images/settings.png",
+                                // "images/offer.png",
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                      ),
-                      const Text(
-                        "SETTINGS",
-                        style:
-                            TextStyle(color: Colors.blueAccent, fontSize: 12.0),
-                      ),
-                    ],
-                  ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                        ),
+                        const Text(
+                          "SETTINGS",
+                          style: TextStyle(
+                              color: Colors.blueAccent, fontSize: 12.0),
+                        ),
+                      ],
+                    ),
 
-                  //e-ticketing report
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Transform.scale(
-                        scale: 1.2,
-                        child: OutlinedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => MainEticketingScreen()));
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Colors.blueAccent),
-                            shape: const CircleBorder(
-                                // borderRadius: BorderRadius.circular(360),
-                                ),
-                          ),
-                          child: IconButton(
+                    //e-ticketing report
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Transform.scale(
+                          scale: 1.2,
+                          child: OutlinedButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (c) => MainEticketingScreen()));
                             },
-                            icon: Image.asset(
-                              "images/ticket.png",
-                              // "images/offer.png",
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.blueAccent),
+                              shape: const CircleBorder(
+                                  // borderRadius: BorderRadius.circular(360),
+                                  ),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) =>
+                                            MainEticketingScreen()));
+                              },
+                              icon: Image.asset(
+                                "images/ticket.png",
+                                // "images/offer.png",
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                      ),
-                      const Text(
-                        "E-TICKETING",
-                        style:
-                            TextStyle(color: Colors.blueAccent, fontSize: 12.0),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                        ),
+                        const Text(
+                          "E-TICKETING",
+                          style: TextStyle(
+                              color: Colors.blueAccent, fontSize: 12.0),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
 
-              //slot 2 widget
-              SizedBox(
-                height: 25,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //POS SALES
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Transform.scale(
-                        scale: 1.2,
-                        child: OutlinedButton(
-                          onPressed: () async {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => MainPosSalesScreen()));
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Colors.blueAccent),
-                            shape: const CircleBorder(),
-                          ),
-                          child: IconButton(
+                //slot 2 widget
+                SizedBox(
+                  height: 25,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //POS SALES
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Transform.scale(
+                          scale: 1.2,
+                          child: OutlinedButton(
                             onPressed: () async {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (c) => MainPosSalesScreen()));
                             },
-                            icon: Image.asset(
-                              "images/sales.png",
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.blueAccent),
+                              shape: const CircleBorder(),
+                            ),
+                            child: IconButton(
+                              onPressed: () async {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => MainPosSalesScreen()));
+                              },
+                              icon: Image.asset(
+                                "images/sales.png",
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                      ),
-                      const Text(
-                        "POS SALES",
-                        style:
-                            TextStyle(color: Colors.blueAccent, fontSize: 12.0),
-                      ),
-                    ],
-                  ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                        ),
+                        const Text(
+                          "POS SALES",
+                          style: TextStyle(
+                              color: Colors.blueAccent, fontSize: 12.0),
+                        ),
+                      ],
+                    ),
 
-                  //pos retur
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Transform.scale(
-                        scale: 1.2,
-                        child: OutlinedButton(
-                          onPressed: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            prefs.setString('customer_id', 0.toString());
-                            context.read<PCartRetur>().clearCart();
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) =>
-                                        const MainPosReturScreen()));
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Colors.blueAccent),
-                            shape: const CircleBorder(),
-                          ),
-                          child: IconButton(
+                    //pos retur
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Transform.scale(
+                          scale: 1.2,
+                          child: OutlinedButton(
                             onPressed: () async {
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               prefs.setString('customer_id', 0.toString());
                               context.read<PCartRetur>().clearCart();
-                              // _loadFromApiPOSTOKO();
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (c) =>
                                           const MainPosReturScreen()));
                             },
-                            icon: Image.asset(
-                              "images/product-return.png",
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.blueAccent),
+                              shape: const CircleBorder(),
+                            ),
+                            child: IconButton(
+                              onPressed: () async {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.setString('customer_id', 0.toString());
+                                context.read<PCartRetur>().clearCart();
+                                // _loadFromApiPOSTOKO();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) =>
+                                            const MainPosReturScreen()));
+                              },
+                              icon: Image.asset(
+                                "images/product-return.png",
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                      ),
-                      const Text(
-                        "POS RETUR",
-                        style:
-                            TextStyle(color: Colors.blueAccent, fontSize: 12.0),
-                      ),
-                    ],
-                  ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                        ),
+                        const Text(
+                          "POS RETUR",
+                          style: TextStyle(
+                              color: Colors.blueAccent, fontSize: 12.0),
+                        ),
+                      ],
+                    ),
 
-                  //POS TOKO
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Transform.scale(
-                        scale: 1.2,
-                        child: OutlinedButton(
-                          onPressed: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            prefs.setString('customer_id', 0.toString());
-                            prefs.setString('total_product', 0.toString());
-                            context.read<PCartToko>().clearCart();
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => const MainPosTokoScreen()));
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Colors.blueAccent),
-                            shape: const CircleBorder(),
-                          ),
-                          child: IconButton(
+                    //POS TOKO
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Transform.scale(
+                          scale: 1.2,
+                          child: OutlinedButton(
                             onPressed: () async {
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               prefs.setString('customer_id', 0.toString());
                               prefs.setString('total_product', 0.toString());
-
                               context.read<PCartToko>().clearCart();
                               Navigator.push(
                                   context,
@@ -712,69 +703,88 @@ class _HomeScreenState extends State<HomeScreen> {
                                       builder: (c) =>
                                           const MainPosTokoScreen()));
                             },
-                            icon: Image.asset(
-                              "images/store.png",
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.blueAccent),
+                              shape: const CircleBorder(),
+                            ),
+                            child: IconButton(
+                              onPressed: () async {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.setString('customer_id', 0.toString());
+                                prefs.setString('total_product', 0.toString());
+
+                                context.read<PCartToko>().clearCart();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) =>
+                                            const MainPosTokoScreen()));
+                              },
+                              icon: Image.asset(
+                                "images/store.png",
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                      ),
-                      const Text(
-                        "POS TOKO",
-                        style:
-                            TextStyle(color: Colors.blueAccent, fontSize: 12.0),
-                      ),
-                    ],
-                  ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                        ),
+                        const Text(
+                          "POS TOKO",
+                          style: TextStyle(
+                              color: Colors.blueAccent, fontSize: 12.0),
+                        ),
+                      ],
+                    ),
 
-                  //SCAN QR
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Transform.scale(
-                        scale: 1.2,
-                        child: OutlinedButton(
-                          onPressed: () {
-                            // scanQR();
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => const QrScanner()));
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Colors.blueAccent),
-                            shape: const CircleBorder(),
-                          ),
-                          child: IconButton(
+                    //SCAN QR
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Transform.scale(
+                          scale: 1.2,
+                          child: OutlinedButton(
                             onPressed: () {
+                              // scanQR();
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (c) => const QrScanner()));
                             },
-                            icon: Image.asset(
-                              "images/qr-code.png",
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.blueAccent),
+                              shape: const CircleBorder(),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => const QrScanner()));
+                              },
+                              icon: Image.asset(
+                                "images/qr-code.png",
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                      ),
-                      const Text(
-                        "QR",
-                        style:
-                            TextStyle(color: Colors.blueAccent, fontSize: 12.0),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ]));
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                        ),
+                        const Text(
+                          "QR",
+                          style: TextStyle(
+                              color: Colors.blueAccent, fontSize: 12.0),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ])),
+    );
   }
 
   loadCartFromApiPOSSALES() async {

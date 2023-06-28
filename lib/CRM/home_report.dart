@@ -652,6 +652,8 @@ class _HomeReportState extends State<HomeReport> {
                               : SizedBox(
                                   width: 250,
                                   child: TextField(
+                                    enabled:
+                                        selectedOmzet != null ? false : true,
                                     onChanged: (omzetS) {
                                       setState(() {
                                         omzet = int.parse(omzetS);
@@ -934,7 +936,7 @@ class _HomeReportState extends State<HomeReport> {
     Map bodyNotification = {
       'title': 'Report CRM',
       'body':
-          '$bcName successfully made a report\nDetail report : ${reportinput.text}\nTotal omzet : ${omzetS.text}',
+          'Report $bcName \nDetail report : ${reportinput.text}\nTotal omzet : ${omzetS.text}',
       'sound': 'default'
     };
     Map<String, String> headersAPI = {
