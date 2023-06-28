@@ -5,10 +5,12 @@ import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_alltransaksi.dart';
+import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -30,6 +32,7 @@ class _HomeReportState extends State<HomeReport> {
   final TextEditingController reportinput = TextEditingController();
   TextEditingController dateinput = TextEditingController();
   bool cek_wa = false;
+  TextEditingController omzetS = TextEditingController();
   String cek_error_customer = 'null';
   String cek_error_date = 'null';
   String cek_error_report = 'null';
@@ -51,6 +54,7 @@ class _HomeReportState extends State<HomeReport> {
   int? wa = 0;
   int? tlp = 0;
   int? visit = 0;
+  String? resultValue = '';
   String? toko;
   String? selectedItemName;
   String? selectedOmzet;
@@ -181,7 +185,6 @@ class _HomeReportState extends State<HomeReport> {
                           .getAllinvoicesnumber(idtoko)
                           .then((listMap) {
                         listMap.map((map) {
-                          print(map.toString());
                           return getDropDownWidget(map);
                         }).forEach((dropDownItem) {
                           list?.add(dropDownItem);
@@ -493,36 +496,70 @@ class _HomeReportState extends State<HomeReport> {
                                     if (cek_omzet == true) {
                                       idomzet = 1;
                                       selectedOmzet = null;
+                                      omzetS.text = '';
                                     } else {
                                       idomzet = 0;
                                     }
                                   });
                                 },
                               ),
-                            ],
-                          ),
-                          const Divider(),
-                          cek_omzet == false
-                              ? const SizedBox()
-                              :
-                              //nominal omzet
-                              Row(
-                                  children: [
-                                    const Padding(padding: EdgeInsets.all(4)),
-                                    Expanded(
-                                        child: DropdownButton(
+                              cek_omzet == false
+                                  ? const Text('')
+                                  :
+                                  //no invoices
+                                  DropdownButton(
+                                      underline: Container(
+                                        height: 2,
+                                        color: Colors.blue, //<-- SEE HERE
+                                      ),
                                       value: selectedOmzet,
-                                      hint: const Text('Choose an Option'),
+                                      hint: const Text(
+                                          'Select transaction codes'),
                                       onChanged: (value) {
-                                        print(value);
-
                                         setState(() {
                                           selectedOmzet = value;
+                                          // CurrencyFormat.convertToIdr(
+                                          //         int.parse(resultValue!), 2)
+                                          //     .toString();
+                                        });
+                                        DbAlltransaksi.db
+                                            .getAllNominalTransaksi(
+                                                selectedOmzet)
+                                            .then((result) {
+                                          result.isEmpty
+                                              ? setState(() {
+                                                  resultValue = '0';
+                                                  omzetS.text = resultValue!;
+                                                })
+                                              : setState(() {
+                                                  resultValue =
+                                                      result.first.total_rupiah;
+                                                  omzetS.text = resultValue!;
+                                                });
                                         });
                                       },
                                       items: list,
-                                    )),
-                                  ],
+                                    )
+                            ],
+                          ),
+                          const Divider(),
+                          //total nominal omzet
+                          cek_omzet == false
+                              ? const Text('')
+                              : SizedBox(
+                                  width: 250,
+                                  child: TextField(
+                                    onChanged: (omzetS) {
+                                      setState(() {
+                                        omzet = int.parse(omzetS);
+                                      });
+                                    },
+                                    controller: omzetS,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                  ),
                                 ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
