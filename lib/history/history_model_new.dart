@@ -84,15 +84,15 @@ class HistoryModelNew extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      ('Toko              : ') + (order.customer),
+                      ('Customer          : ') + (order.customer),
                       style: const TextStyle(fontSize: 15),
                     ),
                     Text(
-                      ('Total Item     : ') + (order.total_quantity.toString()),
+                      ('Total item     : ') + (order.total_quantity.toString()),
                       style: const TextStyle(fontSize: 15),
                     ),
                     Text(
-                      'Total Harga   : ${CurrencyFormat.convertToIdr(int.parse(order.total_rupiah), 2)}',
+                      'Total price   : ${CurrencyFormat.convertToIdr(int.parse(order.total_rupiah), 2)}',
                       style: const TextStyle(fontSize: 15),
                     ),
                     const SizedBox(height: 2),

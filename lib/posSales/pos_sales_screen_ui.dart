@@ -5,6 +5,7 @@ import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/model_allitems.dart';
 import 'package:e_shop/global/global.dart';
+import 'package:e_shop/posSales/main_posSales_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -132,6 +133,7 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                             //   transaction
                             //       .update(documentReference, {'posisi_id': 99});
                             // });
+                            print(widget.model);
                             Fluttertoast.showToast(
                                 msg: "Barang Berhasil Di Tambahkan");
                             context.read<PCart>().addItem(
@@ -149,6 +151,11 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                               DbAllitems.db
                                   .updateAllitemsByname(widget.model?.name, 0);
                             });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (c) =>
+                                        const MainPosSalesScreen()));
                           } else {
                             Fluttertoast.showToast(
                                 msg: "Barang Sudah Ada Di Keranjang");

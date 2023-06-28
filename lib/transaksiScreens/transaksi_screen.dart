@@ -150,7 +150,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                       },
                       dropdownDecoratorProps: DropDownDecoratorProps(
                         dropdownSearchDecoration: InputDecoration(
-                          labelText: 'Pilih Toko',
+                          labelText: 'Choose customer',
                           filled: true,
                           fillColor:
                               Theme.of(context).inputDecorationTheme.fillColor,
@@ -164,7 +164,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
               const SizedBox(
                 height: 10,
               ),
-              const Text("Jenis Form"),
+              const Text("Select type of form"),
               const Divider(),
               Row(
                 children: [

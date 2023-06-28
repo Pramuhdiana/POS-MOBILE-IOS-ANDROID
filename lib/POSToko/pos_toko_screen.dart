@@ -104,7 +104,7 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                     },
                     dropdownDecoratorProps: DropDownDecoratorProps(
                       dropdownSearchDecoration: InputDecoration(
-                        labelText: 'Pilih Toko',
+                        labelText: 'Choose customer',
                         filled: true,
                         fillColor:
                             Theme.of(context).inputDecorationTheme.fillColor,
@@ -134,7 +134,7 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                     },
                     dropdownDecoratorProps: DropDownDecoratorProps(
                       dropdownSearchDecoration: InputDecoration(
-                        labelText: 'Jenis Form',
+                        labelText: 'Select type of form',
                         filled: true,
                         fillColor:
                             Theme.of(context).inputDecorationTheme.fillColor,

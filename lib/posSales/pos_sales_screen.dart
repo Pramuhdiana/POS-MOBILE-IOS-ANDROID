@@ -109,7 +109,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                   focusColor: Colors.white,
                   value: selectedOmzet,
                   hint: const Text(
-                    'Code refrensi',
+                    'Refrence code',
                     style: TextStyle(color: Colors.blue),
                   ),
                   onChanged: (value) {

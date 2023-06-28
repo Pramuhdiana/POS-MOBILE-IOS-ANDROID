@@ -106,7 +106,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
               const SizedBox(
                 height: 10,
               ),
-              const Text("Jenis Form"),
+              const Text("Select type of form"),
               const Divider(),
               Row(
                 children: [

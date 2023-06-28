@@ -4,7 +4,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_allitems.dart';
+import 'package:e_shop/database/model_allitems.dart';
 import 'package:e_shop/global/global.dart';
+import 'package:e_shop/itemsScreens/items_photo.dart';
 import 'package:e_shop/posSales/pos_sales_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
 import 'package:e_shop/widgets/alert_dialog.dart';
@@ -24,6 +26,8 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  ModelAllitems? model;
+
   String? title = '';
 
   @override
@@ -56,6 +60,10 @@ class _CartScreenState extends State<CartScreen> {
             color: Colors.white,
           ),
           onPressed: () {
+            setState(() {
+              DbAllitems.db.getAllitems();
+            });
+
             // Navigator.push(
             //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
             Navigator.pop(context);
@@ -210,135 +218,150 @@ class CartItems extends StatelessWidget {
           final product = cart.getItems[index];
           return Padding(
             padding: const EdgeInsets.all(5.0),
-            child: Card(
-              child: SizedBox(
-                height: 100,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      height: 100,
-                      width: 120,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
-                        child: CachedNetworkImage(
-                          memCacheWidth: 85, //default 45
-                          memCacheHeight: 100, //default 60
-                          maxHeightDiskCache: 100, //default 60
-                          maxWidthDiskCache: 85, //default 45
-                          imageUrl:
-                              'https://parvabisnis.id/uploads/products/${product.imageUrl.toString()}',
-                          placeholder: (context, url) =>
-                              const CircularProgressIndicator(),
-                          errorWidget: (context, url, error) => const Icon(
-                            Icons.error,
-                            color: Colors.red,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (c) => ItemsPhoto(
+                              model: ModelAllitems(
+                                  name: product.name,
+                                  image_name: product.imageUrl,
+                                  description: product.description,
+                                  price: product.price,
+                                  qty: product.qty,
+                                  keterangan_barang: product.keterangan_barang),
+                            )));
+              },
+              child: Card(
+                child: SizedBox(
+                  height: 100,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        width: 120,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(40),
+                          child: CachedNetworkImage(
+                            memCacheWidth: 85, //default 45
+                            memCacheHeight: 100, //default 60
+                            maxHeightDiskCache: 100, //default 60
+                            maxWidthDiskCache: 85, //default 45
+                            imageUrl:
+                                'https://parvabisnis.id/uploads/products/${product.imageUrl.toString()}',
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => const Icon(
+                              Icons.error,
+                              color: Colors.red,
+                            ),
+                            height: 100,
+                            fit: BoxFit.cover,
                           ),
-                          height: 100,
-                          fit: BoxFit.cover,
                         ),
                       ),
-                    ),
-                    Flexible(
-                        child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            product.name,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey.shade700),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                product.price.toStringAsFixed(2),
-                                style: const TextStyle(
-                                  fontSize: 16,
+                      Flexible(
+                          child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              product.name,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 24,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.red,
-                                ),
-                              ),
-                              Container(
-                                height: 35,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.shade200,
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: Row(children: [
-                                  product.qty == 1
-                                      ? IconButton(
-                                          onPressed: () async {
-                                            // await FirebaseFirestore.instance
-                                            //     .runTransaction(
-                                            //         (transaction) async {
-                                            //   DocumentReference
-                                            //       documentReference =
-                                            //       FirebaseFirestore.instance
-                                            //           // .collection("users")
-                                            //           // .doc(sharedPreferences!
-                                            //           //     .getString("uid"))
-                                            //           .collection("allitems")
-                                            //           .doc(product.name);
-                                            //   transaction.update(
-                                            //       documentReference,
-                                            //       {'posisi_id': 3});
-                                            // });
-                                            cart.removeItem(product);
-                                            await deleteAPIcart(
-                                                product.documentId);
-                                            await DbAllitems.db
-                                                .updateAllitemsByname(
-                                                    product.name, 1);
-                                            // ignore: use_build_context_synchronously
-                                          },
-                                          icon: const Icon(
-                                            Icons.delete_forever,
-                                            size: 18,
-                                          ))
-                                      : IconButton(
-                                          onPressed: () {
-                                            cart.reduceByOne(product);
-                                          },
-                                          icon: const Icon(
-                                            FontAwesomeIcons.minus,
-                                            size: 18,
-                                          )),
-                                  Text(
-                                    product.qty.toString(),
-                                    style: product.qty == 1 //3 adalah stok
-                                        ? const TextStyle(
-                                            fontSize: 20,
-                                            fontFamily: 'Acme',
-                                            color: Colors.red,
-                                          )
-                                        : const TextStyle(
-                                            fontSize: 20,
-                                            fontFamily: 'Acme',
-                                          ),
+                                  color: Colors.grey.shade700),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  product.price.toStringAsFixed(2),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
                                   ),
-                                  IconButton(
-                                      onPressed: product.qty == 1
-                                          ? null
-                                          : () {
-                                              cart.increament(product);
+                                ),
+                                Container(
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.shade200,
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Row(children: [
+                                    product.qty == 1
+                                        ? IconButton(
+                                            onPressed: () async {
+                                              // await FirebaseFirestore.instance
+                                              //     .runTransaction(
+                                              //         (transaction) async {
+                                              //   DocumentReference
+                                              //       documentReference =
+                                              //       FirebaseFirestore.instance
+                                              //           // .collection("users")
+                                              //           // .doc(sharedPreferences!
+                                              //           //     .getString("uid"))
+                                              //           .collection("allitems")
+                                              //           .doc(product.name);
+                                              //   transaction.update(
+                                              //       documentReference,
+                                              //       {'posisi_id': 3});
+                                              // });
+                                              cart.removeItem(product);
+                                              await deleteAPIcart(
+                                                  product.documentId);
+                                              await DbAllitems.db
+                                                  .updateAllitemsByname(
+                                                      product.name, 1);
                                             },
-                                      icon: const Icon(
-                                        FontAwesomeIcons.plus,
-                                        size: 18,
-                                      )),
-                                ]),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ))
-                  ],
+                                            icon: const Icon(
+                                              Icons.delete_forever,
+                                              size: 18,
+                                            ))
+                                        : IconButton(
+                                            onPressed: () {
+                                              cart.reduceByOne(product);
+                                            },
+                                            icon: const Icon(
+                                              FontAwesomeIcons.minus,
+                                              size: 18,
+                                            )),
+                                    Text(
+                                      product.qty.toString(),
+                                      style: product.qty == 1 //3 adalah stok
+                                          ? const TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: 'Acme',
+                                              color: Colors.red,
+                                            )
+                                          : const TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: 'Acme',
+                                            ),
+                                    ),
+                                    IconButton(
+                                        onPressed: product.qty == 1
+                                            ? null
+                                            : () {
+                                                cart.increament(product);
+                                              },
+                                        icon: const Icon(
+                                          FontAwesomeIcons.plus,
+                                          size: 18,
+                                        )),
+                                  ]),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ))
+                    ],
+                  ),
                 ),
               ),
             ),

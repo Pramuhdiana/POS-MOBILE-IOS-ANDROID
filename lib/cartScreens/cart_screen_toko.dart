@@ -3,8 +3,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_allitems_toko.dart';
+import 'package:e_shop/database/model_allitems_toko.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
+import 'package:e_shop/itemsScreens/items_photo_toko.dart';
 import 'package:e_shop/posToko/pos_toko_screen.dart';
 import 'package:e_shop/transaksiScreens/transaksi_screen_toko.dart';
 import 'package:e_shop/widgets/alert_dialog.dart';
@@ -204,120 +206,136 @@ class CartItems extends StatelessWidget {
           final product = cart.getItems[index];
           return Padding(
             padding: const EdgeInsets.all(5.0),
-            child: Card(
-              child: SizedBox(
-                height: 100,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      height: 100,
-                      width: 120,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
-                        child: CachedNetworkImage(
-                          memCacheWidth: 85, //default 45
-                          memCacheHeight: 100, //default 60
-                          maxHeightDiskCache: 100, //default 60
-                          maxWidthDiskCache: 85, //default 45
-                          imageUrl:
-                              'https://parvabisnis.id/uploads/products/${product.imageUrl.toString()}',
-                          placeholder: (context, url) =>
-                              const CircularProgressIndicator(),
-                          errorWidget: (context, url, error) => const Icon(
-                            Icons.error,
-                            color: Colors.red,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (c) => ItemsPhotoToko(
+                              model: ModelAllitemsToko(
+                                  name: product.name,
+                                  image_name: product.imageUrl,
+                                  description: product.description,
+                                  price: product.price,
+                                  qty: product.qty,
+                                  keterangan_barang: product.keterangan_barang),
+                            )));
+              },
+              child: Card(
+                child: SizedBox(
+                  height: 100,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        width: 120,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(40),
+                          child: CachedNetworkImage(
+                            memCacheWidth: 85, //default 45
+                            memCacheHeight: 100, //default 60
+                            maxHeightDiskCache: 100, //default 60
+                            maxWidthDiskCache: 85, //default 45
+                            imageUrl:
+                                'https://parvabisnis.id/uploads/products/${product.imageUrl.toString()}',
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => const Icon(
+                              Icons.error,
+                              color: Colors.red,
+                            ),
+                            height: 100,
+                            fit: BoxFit.cover,
                           ),
-                          height: 100,
-                          fit: BoxFit.cover,
                         ),
                       ),
-                    ),
-                    Flexible(
-                        child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            product.name,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 24,
-                                // fontWeight: FontWeight.w600,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey.shade700),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                product.price.toStringAsFixed(2),
-                                style: const TextStyle(
-                                  fontSize: 16,
+                      Flexible(
+                          child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              product.name,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  // fontWeight: FontWeight.w600,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.red,
-                                ),
-                              ),
-                              Container(
-                                height: 35,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.shade200,
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: Row(children: [
-                                  product.qty == 1
-                                      ? IconButton(
-                                          onPressed: () async {
-                                            await DbAllitemsToko.db
-                                                .updateAllitemsTokoByname(
-                                                    product.name, 1);
-                                            cart.removeItem(product);
-                                            await deleteAPIcart(
-                                                product.documentId);
-                                          },
-                                          icon: const Icon(
-                                            Icons.delete_forever,
-                                            size: 18,
-                                          ))
-                                      : IconButton(
-                                          onPressed: () {
-                                            cart.reduceByOne(product);
-                                          },
-                                          icon: const Icon(
-                                            FontAwesomeIcons.minus,
-                                            size: 18,
-                                          )),
-                                  Text(
-                                    product.qty.toString(),
-                                    style: product.qty == 1 //3 adalah stok
-                                        ? const TextStyle(
-                                            fontSize: 20,
-                                            fontFamily: 'Acme',
-                                            color: Colors.red,
-                                          )
-                                        : const TextStyle(
-                                            fontSize: 20,
-                                            fontFamily: 'Acme',
-                                          ),
+                                  color: Colors.grey.shade700),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  product.price.toStringAsFixed(2),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
                                   ),
-                                  IconButton(
-                                      onPressed: product.qty == 1
-                                          ? null
-                                          : () {
-                                              cart.increament(product);
+                                ),
+                                Container(
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.shade200,
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Row(children: [
+                                    product.qty == 1
+                                        ? IconButton(
+                                            onPressed: () async {
+                                              await DbAllitemsToko.db
+                                                  .updateAllitemsTokoByname(
+                                                      product.name, 1);
+                                              cart.removeItem(product);
+                                              await deleteAPIcart(
+                                                  product.documentId);
                                             },
-                                      icon: const Icon(
-                                        FontAwesomeIcons.plus,
-                                        size: 18,
-                                      )),
-                                ]),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ))
-                  ],
+                                            icon: const Icon(
+                                              Icons.delete_forever,
+                                              size: 18,
+                                            ))
+                                        : IconButton(
+                                            onPressed: () {
+                                              cart.reduceByOne(product);
+                                            },
+                                            icon: const Icon(
+                                              FontAwesomeIcons.minus,
+                                              size: 18,
+                                            )),
+                                    Text(
+                                      product.qty.toString(),
+                                      style: product.qty == 1 //3 adalah stok
+                                          ? const TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: 'Acme',
+                                              color: Colors.red,
+                                            )
+                                          : const TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: 'Acme',
+                                            ),
+                                    ),
+                                    IconButton(
+                                        onPressed: product.qty == 1
+                                            ? null
+                                            : () {
+                                                cart.increament(product);
+                                              },
+                                        icon: const Icon(
+                                          FontAwesomeIcons.plus,
+                                          size: 18,
+                                        )),
+                                  ]),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ))
+                    ],
+                  ),
                 ),
               ),
             ),
