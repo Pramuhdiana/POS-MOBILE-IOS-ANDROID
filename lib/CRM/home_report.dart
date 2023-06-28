@@ -1,12 +1,13 @@
 // ignore_for_file: avoid_print, non_constant_identifier_names, sized_box_for_whitespace, depend_on_referenced_packages
 
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_alltransaksi.dart';
-import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
+import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
@@ -55,9 +56,9 @@ class _HomeReportState extends State<HomeReport> {
   int? tlp = 0;
   int? visit = 0;
   String? resultValue = '';
-  String? toko;
-  String? selectedItemName;
-  String? selectedOmzet;
+  String? toko = '';
+  String? selectedItemName = '';
+  String? selectedOmzet = '';
   int? idtoko = 0;
   //text editing controller for text field
   final _formKey = GlobalKey<FormState>();
@@ -80,6 +81,7 @@ class _HomeReportState extends State<HomeReport> {
   late FToast fToast;
   @override
   void initState() {
+    _timeController.text = '00:00';
     fToast = FToast();
     fToast.init(context);
     dateinput.text = ""; //set the initial value of text field
@@ -114,8 +116,44 @@ class _HomeReportState extends State<HomeReport> {
       print("error while picking file.");
     }
   }
-
 //end image mult
+
+// start date & time
+  // ignore: unused_field
+  String? _setTime = '';
+
+  String? _hour = '0', _minute = '0', _time = '0';
+
+  String? dateTime = '';
+
+  DateTime selectedDate = DateTime.now();
+
+  TimeOfDay selectedTime = const TimeOfDay(hour: 00, minute: 00);
+
+  final TextEditingController _timeController = TextEditingController();
+
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+    if (picked != null) {
+      setState(() {
+        selectedTime = picked;
+        _hour = selectedTime.hour.toString();
+        _minute = selectedTime.minute.toString();
+        _time = '$_hour:$_minute';
+        _timeController.text = _time!;
+        print(_timeController.text);
+        // _timeController.text = DateFormat(
+        //     DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute).toString(),
+        //     [hh, ':', nn, " ", am]).toString();
+      });
+    }
+  }
+
+//end date time
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,11 +207,10 @@ class _HomeReportState extends State<HomeReport> {
                     onChanged: (item) {
                       setState(() {
                         selectedOmzet = null;
-
+                        cek_omzet = false;
                         // print(text);
                         print('toko : ${item?.name}');
                         print('id  : ${item?.id}');
-                        print('diskonnya  : ${item?.diskon_customer}');
                         idtoko = item?.id; // menyimpan id toko
                         toko = item?.name; // menyimpan nama toko
                         cek_error_customer = 'customer oke';
@@ -261,6 +298,8 @@ class _HomeReportState extends State<HomeReport> {
                                   String formattedDate =
                                       DateFormat('dd-MM-yyyy')
                                           .format(pickedDate);
+                                  tanggal_aktivitas = DateFormat('yyyy-MM-dd')
+                                      .format(pickedDate);
                                   print(
                                       formattedDate); //formatted date output using intl package =>  2021-03-16
                                   //you can implement different kind of Date Format here according to your requirement
@@ -269,14 +308,16 @@ class _HomeReportState extends State<HomeReport> {
                                     cek_error_date = 'date oke';
                                     dateinput.text =
                                         formattedDate; //set output date to TextField value.
-                                    tanggal_aktivitas = pickedDate.toString();
+
+                                    // tanggal_aktivitas = pickedDate.toString();
                                   });
                                 } else {
                                   print("Date is not selected");
                                 }
                               },
-                            ))
+                            )),
                           ]),
+
                           if (cek_error_date == 'error date')
                             const Padding(
                               padding: EdgeInsets.only(right: 1),
@@ -290,10 +331,46 @@ class _HomeReportState extends State<HomeReport> {
                                 ),
                               ),
                             ),
-                          //wa
-                          const SizedBox(
-                            height: 10,
+                          //time
+                          const Text(
+                            'Choose Time',
+                            style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.5),
                           ),
+                          InkWell(
+                            onTap: () {
+                              // Fluttertoast.showToast(msg: 'oke');
+                              _selectTime(context);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 30),
+                              width: 15,
+                              height: 5,
+                              alignment: Alignment.center,
+                              decoration:
+                                  const BoxDecoration(color: Colors.blue),
+                              child: TextFormField(
+                                style: const TextStyle(fontSize: 30),
+                                textAlign: TextAlign.center,
+                                onSaved: (String? val) {
+                                  _setTime = val!;
+                                },
+                                enabled: false,
+                                keyboardType: TextInputType.text,
+                                controller: _timeController,
+                                decoration: const InputDecoration(
+                                  disabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide.none),
+                                  // labelText: 'Time',
+                                  // contentPadding: EdgeInsets.all(5)
+                                ),
+                              ),
+                            ),
+                          ),
+                          //wa
+
                           const Text("Activity"),
                           const Divider(),
                           Column(
@@ -362,6 +439,8 @@ class _HomeReportState extends State<HomeReport> {
                                               cek_error_activity =
                                                   'activity oke';
                                               cek_visit = value!;
+                                              cek_canvasing = false;
+                                              cek_kunjungan = false;
                                               cek_visit == true
                                                   ? idaktivitas = 3
                                                   : idaktivitas = 0;
@@ -373,7 +452,7 @@ class _HomeReportState extends State<HomeReport> {
                                     style: TextStyle(fontSize: 14.0),
                                   ),
                                   //kunjungan
-                                  if (visit != 0)
+                                  if (idaktivitas == 3)
                                     Checkbox(
                                       value: cek_kunjungan,
                                       onChanged: cek_canvasing == true
@@ -392,14 +471,14 @@ class _HomeReportState extends State<HomeReport> {
                                               });
                                             },
                                     ),
-                                  if (visit != 0)
+                                  if (idaktivitas == 3)
                                     const Text(
                                       'Kunjungan',
                                       style: TextStyle(fontSize: 14.0),
                                     ),
 
                                   //canvasing
-                                  if (visit != 0)
+                                  if (idaktivitas == 3)
                                     Checkbox(
                                       value: cek_canvasing,
                                       onChanged: cek_kunjungan == true
@@ -418,7 +497,7 @@ class _HomeReportState extends State<HomeReport> {
                                               });
                                             },
                                     ),
-                                  if (visit != 0)
+                                  if (idaktivitas == 3)
                                     const Text(
                                       'Canvasing',
                                       style: TextStyle(fontSize: 14.0),
@@ -496,7 +575,7 @@ class _HomeReportState extends State<HomeReport> {
                                     if (cek_omzet == true) {
                                       idomzet = 1;
                                       selectedOmzet = null;
-                                      omzetS.text = '';
+                                      omzetS.text = '0';
                                     } else {
                                       idomzet = 0;
                                     }
@@ -508,6 +587,26 @@ class _HomeReportState extends State<HomeReport> {
                                   :
                                   //no invoices
                                   DropdownButton(
+                                      icon: selectedOmzet == null
+                                          ? IconButton(
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                Icons.arrow_drop_down,
+                                                color: Colors.blue,
+                                              ),
+                                            )
+                                          : IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  selectedOmzet = null;
+                                                  omzetS.text = '0';
+                                                });
+                                              },
+                                              icon: const Icon(
+                                                Icons.cancel,
+                                                color: Colors.blue,
+                                              ),
+                                            ),
                                       underline: Container(
                                         height: 2,
                                         color: Colors.blue, //<-- SEE HERE
@@ -518,10 +617,8 @@ class _HomeReportState extends State<HomeReport> {
                                       onChanged: (value) {
                                         setState(() {
                                           selectedOmzet = value;
-                                          // CurrencyFormat.convertToIdr(
-                                          //         int.parse(resultValue!), 2)
-                                          //     .toString();
                                         });
+                                        //fungsi show value without builder
                                         DbAlltransaksi.db
                                             .getAllNominalTransaksi(
                                                 selectedOmzet)
@@ -530,6 +627,11 @@ class _HomeReportState extends State<HomeReport> {
                                               ? setState(() {
                                                   resultValue = '0';
                                                   omzetS.text = resultValue!;
+                                                  //CurrencyFormat
+                                                  //.convertToIdr(
+                                                  //int.parse(
+                                                  //resultValue!),
+                                                  //2);
                                                 })
                                               : setState(() {
                                                   resultValue =
@@ -538,6 +640,7 @@ class _HomeReportState extends State<HomeReport> {
                                                 });
                                         });
                                       },
+                                      //end of fungsi
                                       items: list,
                                     )
                             ],
@@ -565,7 +668,11 @@ class _HomeReportState extends State<HomeReport> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                ),
                                 onPressed: () {
+                                  // null;
                                   // myAlert();
                                   Fluttertoast.showToast(msg: "Not Available");
                                   // openImages();
@@ -804,18 +911,44 @@ class _HomeReportState extends State<HomeReport> {
         cek_error_activity = 'error activity';
       });
       Future.delayed(const Duration(seconds: 1)).then((value) {
-        // btnController.success(); //sucses
         btnController.error(); //error
       });
     } else {
-      Future.delayed(const Duration(seconds: 1)).then((value) {
+      Future.delayed(const Duration(seconds: 1)).then((value) async {
+        // ignore: unnecessary_null_comparison
         btnController.success(); //sucses
-        postAPIreport();
-        Future.delayed(const Duration(seconds: 2)).then((value) {
-          btnController.reset(); //reset
+        await postAPIreport();
+        await sendMotificationToBc(fcmTokensandy);
+        Fluttertoast.showToast(msg: 'Report success');
+        Future.delayed(const Duration(seconds: 1)).then((value) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (c) => const MainScreen()));
         });
       });
     }
+  }
+
+//mengirim notif
+  sendMotificationToBc(tokenBC) {
+    String? bcName = sharedPreferences!.getString('name');
+    Map bodyNotification = {
+      'title': 'Report CRM',
+      'body':
+          '$bcName successfully made a report\nDetail report : ${reportinput.text}\nTotal omzet : ${omzetS.text}',
+      'sound': 'default'
+    };
+    Map<String, String> headersAPI = {
+      'Content-Type': 'application/json',
+      'Authorization': 'key=$fcmServerToken',
+    };
+    Map bodyAPI = {
+      'to': tokenBC,
+      'priority': 'high',
+      'notification': bodyNotification,
+      // 'data': dataMap,
+    };
+    http.post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
+        headers: headersAPI, body: jsonEncode(bodyAPI));
   }
 
 //send data to DATABASE with API
@@ -824,12 +957,12 @@ class _HomeReportState extends State<HomeReport> {
     Map<String, String> body = {
       'user_id': id.toString(),
       'customer_id': idtoko.toString(),
-      'tanggal_aktivitas': tanggal_aktivitas,
+      'tanggal_aktivitas': '$tanggal_aktivitas ${_timeController.text}:00.000',
       'aktivitas_id': idaktivitas.toString(),
       'visit_id': idvisit.toString(),
       'hasil_aktivitas': idomzet.toString(),
       'nominal_hasil': omzetS.text,
-      'nomor_invoice': selectedOmzet!,
+      'nomor_invoice': selectedOmzet ?? '',
       'detail': reportinput.text
     };
     final response = await http.post(
