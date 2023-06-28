@@ -828,8 +828,8 @@ class _HomeReportState extends State<HomeReport> {
       'aktivitas_id': idaktivitas.toString(),
       'visit_id': idvisit.toString(),
       'hasil_aktivitas': idomzet.toString(),
-      'nominal_hasil': omzet.toString(),
-      'nomor_invoice': "inv-00000123",
+      'nominal_hasil': omzetS.text,
+      'nomor_invoice': selectedOmzet!,
       'detail': reportinput.text
     };
     final response = await http.post(
