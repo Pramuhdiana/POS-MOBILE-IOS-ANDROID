@@ -19,6 +19,7 @@ class ModelCRM {
   int? nominal_hasil;
   String? nomor_invoice;
   String? detail;
+  String? nama_toko;
 
   ModelCRM({
     this.id,
@@ -31,6 +32,7 @@ class ModelCRM {
     this.nominal_hasil,
     this.nomor_invoice,
     this.detail,
+    this.nama_toko,
   });
 
   // ignore: avoid_types_as_parameter_names
@@ -46,6 +48,7 @@ class ModelCRM {
         nominal_hasil: json["nominal_hasil"] ?? 0,
         nomor_invoice: json["nomor_invoice"] ?? '',
         detail: json["detail"] ?? '',
+        nama_toko: json["nama_toko"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -59,5 +62,6 @@ class ModelCRM {
         "nominal_hasil": nominal_hasil,
         "nomor_invoice": nomor_invoice,
         "detail": detail,
+        "nama_toko": nama_toko,
       };
 }

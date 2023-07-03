@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:e_shop/database/model_crm.dart';
+import 'package:e_shop/global/global.dart';
 import 'package:path/path.dart';
 
 import 'package:path_provider/path_provider.dart';
@@ -41,7 +42,8 @@ class DbCRM {
           hasil_aktivitas TEXT,
           nominal_hasil INTEGER,
           nomor_invoice TEXT,
-          detail TEXT
+          detail TEXT,
+          nama_toko TEXT
                    )''');
     });
   }
@@ -105,8 +107,24 @@ class DbCRM {
 
   Future<List<ModelCRM>> getAllCrmById(aktivitasId) async {
     final db = await database;
-    final res = await db
-        .rawQuery('SELECT * FROM allcrm WHERE aktivitas_id=?', [aktivitasId]);
+    final res = await db.rawQuery(
+        'SELECT * FROM allcrm WHERE aktivitas_id=? and user_id=?',
+        [aktivitasId, sharedPreferences!.getString('id')]);
+    // final res = await db.rawQuery("SELECT * FROM allcrm");
+
+    List<ModelCRM> list = res.isNotEmpty
+        ? res.map((c) => ModelCRM.fromJson(c, String: null)).toList()
+        : [];
+
+    return list;
+  }
+
+  Future<List<ModelCRM>> getCountCrmById(
+      aktivitasId, idcustomer, userId) async {
+    final db = await database;
+    final res = await db.rawQuery(
+        'SELECT * FROM allcrm WHERE aktivitas_id=? and customer_id =? and user_id=?',
+        [aktivitasId, idcustomer, userId]);
     // final res = await db.rawQuery("SELECT * FROM allcrm");
 
     List<ModelCRM> list = res.isNotEmpty

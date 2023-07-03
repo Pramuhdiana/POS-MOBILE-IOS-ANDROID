@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:e_shop/CRM/dashboard_erick.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_alltransaksi.dart';
 import 'package:e_shop/database/db_crm.dart';
@@ -191,6 +192,23 @@ class _HomeReportState extends State<HomeReport> {
             ),
           ),
           centerTitle: true,
+          actions: [
+            // ignore: unrelated_type_equality_checks
+            sharedPreferences!.getString('id') != '21'
+                ? const SizedBox()
+                : IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (c) => const DashboardErick()));
+                    },
+                    icon: const Icon(
+                      Icons.security_rounded,
+                      color: Colors.white,
+                    ),
+                  ),
+          ],
         ),
         body: Column(
           children: <Widget>[
@@ -925,6 +943,7 @@ class _HomeReportState extends State<HomeReport> {
       Future.delayed(const Duration(seconds: 1)).then((value) async {
         // ignore: unnecessary_null_comparison
         btnController.success(); //sucses
+        print(toko);
         await DbCRM.db.createAllcrm(ModelCRM(
             user_id: id.toString(),
             customer_id: idtoko,
@@ -935,7 +954,8 @@ class _HomeReportState extends State<HomeReport> {
             hasil_aktivitas: idomzet.toString(),
             nominal_hasil: omzet,
             nomor_invoice: selectedOmzet ?? '',
-            detail: reportinput.text));
+            detail: reportinput.text,
+            nama_toko: toko));
         // await postAPIreport();
         // sendMotificationToBc(fcmTokensandy);
         Fluttertoast.showToast(msg: 'Report success');
