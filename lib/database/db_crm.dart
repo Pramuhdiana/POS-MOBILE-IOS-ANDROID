@@ -2,7 +2,6 @@
 
 import 'dart:io';
 import 'package:e_shop/database/model_crm.dart';
-import 'package:e_shop/global/global.dart';
 import 'package:path/path.dart';
 
 import 'package:path_provider/path_provider.dart';
