@@ -116,8 +116,8 @@ class ApiServices {
       //   'customer_brand': customer['customer_brand'] ?? 0,
       //   'score': customer['score'] ?? 0,
       // });
-      // DbAllCustomer.db.createAllcustomer(ModelAllCustomer.fromJson(customer));
-      // print('insert to database allcustomer ');
+      DbAllCustomer.db.createAllcustomer(ModelAllCustomer.fromJson(customer));
+      print('insert to database allcustomer ');
     }).toList();
   }
 

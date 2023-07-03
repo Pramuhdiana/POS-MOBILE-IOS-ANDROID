@@ -5,7 +5,6 @@ import 'package:cart_stepper/cart_stepper.dart';
 import 'package:collection/collection.dart';
 import 'package:e_shop/database/model_allitems_retur.dart';
 import 'package:e_shop/itemsScreens/items_photo_retur.dart';
-import 'package:e_shop/posRetur/pos_retur_screen.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/widgets/appbar_cart_pos_retur.dart';
 import 'package:flutter/cupertino.dart';
@@ -184,18 +183,6 @@ class _ItemsDetailsScreenReturState extends State<ItemsDetailsScreenRetur> {
               ],
             ),
           ),
-          bottomNavigationBar: BottomAppBar(
-              child: ElevatedButton(
-            onPressed: () {
-              Navigator.pop(
-                  context, MaterialPageRoute(builder: (c) => PosReturScreen()));
-            },
-            child: const Icon(
-              Icons.home,
-              color: Colors.white,
-              size: 50,
-            ),
-          )),
         ));
   }
 }

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-// ignore: library_prefixes
+// ignore: library_prefixes, unused_import
 import 'package:firebase_storage/firebase_storage.dart' as fStorage;
 
 import '../global/global.dart';
@@ -67,25 +67,25 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
         });
 
         //1. upload image to storage - get downloadUrl
-        String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+        // String fileName = DateTime.now().millisecondsSinceEpoch.toString();
 
-        fStorage.Reference storageRef = fStorage.FirebaseStorage.instance
-            .ref()
-            .child("sellerstokosImages")
-            .child(fileName);
+        // fStorage.Reference storageRef = fStorage.FirebaseStorage.instance
+        //     .ref()
+        //     .child("sellerstokosImages")
+        //     .child(fileName);
 
-        fStorage.UploadTask uploadImageTask =
-            storageRef.putFile(File(imgXFile!.path));
+        // fStorage.UploadTask uploadImageTask =
+        //     storageRef.putFile(File(imgXFile!.path));
 
-        fStorage.TaskSnapshot taskSnapshot =
-            await uploadImageTask.whenComplete(() {});
+        // fStorage.TaskSnapshot taskSnapshot =
+        //     await uploadImageTask.whenComplete(() {});
 
-        await taskSnapshot.ref.getDownloadURL().then((urlImage) {
-          downloadUrlImage = urlImage;
-        });
+        // await taskSnapshot.ref.getDownloadURL().then((urlImage) {
+        //   downloadUrlImage = urlImage;
+        // });
 
         //2. save toko info to firestore database
-        savetokoInfo();
+        // savetokoInfo();
       } else {
         Fluttertoast.showToast(msg: "Please write toko name and toko address.");
       }

@@ -1,31 +1,28 @@
-// ignore_for_file: avoid_print, prefer_const_constructors, use_build_context_synchronously, unused_element, prefer_const_literals_to_create_immutables, override_on_non_overriding_member
+// ignore_for_file: use_build_context_synchronously, avoid_print
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:e_shop/POSToko/main_posToko_screen.dart';
+import 'package:e_shop/CRM/home_report.dart';
+import 'package:e_shop/CRM/list_crm_telephone.dart';
+import 'package:e_shop/CRM/list_crm_visit.dart';
+import 'package:e_shop/CRM/list_crm_whatsapp.dart';
 import 'package:e_shop/api/api_constant.dart';
-import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/cartScreens/cart_screen.dart';
-import 'package:e_shop/database/db_allitems_toko.dart';
 import 'package:e_shop/database/db_alltransaksi.dart';
-import 'package:e_shop/eTICKETING/main_eticketing_screen.dart';
+import 'package:e_shop/database/db_crm.dart';
+import 'package:e_shop/eTICKETING/home_ticketing.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:e_shop/history/history_invoice_screen.dart';
-import 'package:e_shop/history/history_kembalibarang_screen.dart';
-import 'package:e_shop/history/history_titipan_screen.dart';
 import 'package:e_shop/history/main_history.dart';
-import 'package:e_shop/history/main_history_screen.dart';
-import 'package:e_shop/posRetur/main_posRetur_screen.dart';
-import 'package:e_shop/posSales/main_posSales_screen.dart';
+import 'package:e_shop/posRetur/pos_retur_screen.dart';
+import 'package:e_shop/posSales/pos_sales_screen.dart';
+import 'package:e_shop/posToko/pos_toko_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
 import 'package:e_shop/push_notifications/push_notifications_system.dart';
 import 'package:e_shop/qr/qr_scanner.dart';
-import 'package:e_shop/CRM/main_report_screen.dart';
-import 'package:e_shop/toko/main_addToko_screen.dart';
+import 'package:e_shop/toko/upload_toko_screen.dart';
 import 'package:e_shop/widgets/alert_dialog.dart';
 import 'package:e_shop/widgets/fake_search.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -53,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final ImagePicker imagePicker = ImagePicker();
   @override
   void initState() {
-    print('sales id : ${sharedPreferences!.getString('id')!}');
     super.initState();
     loadCartFromApiPOSSALES();
     controller?.stopCamera();
@@ -64,7 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
     //end notif
   }
 
-  @override
   void main() async {
     WidgetsFlutterBinding.ensureInitialized();
   }
@@ -100,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: <Widget>[
                       _bodyatas(),
                       _bodytengah(),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       _bodybawah(),
                       const Padding(
                         padding: EdgeInsets.only(
@@ -166,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
           width: MediaQuery.of(context).size.width * 1.0,
           height: 90,
-          decoration: BoxDecoration(color: Colors.blue),
+          decoration: const BoxDecoration(color: Colors.blue),
           // decoration: const BoxDecoration(
           //     image: DecorationImage(
           //   image: AssetImage("images/bgatas2.png"),
@@ -299,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onRefresh: refresh,
       child: Container(
         height: MediaQuery.of(context).size.height * 0.50,
-        decoration: BoxDecoration(color: Colors.grey),
+        decoration: const BoxDecoration(color: Colors.grey),
         child: DefaultTabController(
           length: 3,
           child: Scaffold(
@@ -308,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
               elevation: 0,
               // title: Text("History"),
               // title: FakeSearchHistory(),
-              title: FakeSearch(),
+              title: const FakeSearch(),
               automaticallyImplyLeading: false,
               centerTitle: true,
               // bottom: const TabBar(
@@ -329,15 +324,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   indicatorColor: Colors.blue,
                   indicatorWeight: 8,
                   tabs: [
-                    RepeatedTab(label: 'Invoice'),
-                    RepeatedTab(label: 'Kembali Barang'),
-                    RepeatedTab(label: 'Titipan'),
+                    RepeatedTab(label: 'Whatsapp'),
+                    RepeatedTab(label: 'Telephone'),
+                    RepeatedTab(label: 'Visit'),
                   ]),
             ),
             body: const TabBarView(children: [
-              HistoryInvoiceScreen(),
-              HistoryKembalibarangScreen(),
-              HistoryTitipanScreen(),
+              ListCrmWhatsapp(),
+              ListCrmTelephone(),
+              ListCrmVisist(),
             ]),
           ),
         ),
@@ -356,13 +351,13 @@ class _HomeScreenState extends State<HomeScreen> {
               border: Border.all(
                 color: Colors.blue,
               ),
-              borderRadius: BorderRadius.all(Radius.circular(30))),
+              borderRadius: const BorderRadius.all(Radius.circular(30))),
           child: ListView(scrollDirection: Axis.horizontal, children: <Widget>[
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 //bagian atas
@@ -381,7 +376,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (c) => MainHistoryScreen()));
+                                      builder: (c) => const MainHistory()));
+                              // builder: (c) => MainHistoryScreen()));
                             },
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(color: Colors.blueAccent),
@@ -392,7 +388,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (c) => MainHistoryScreen()));
+                                        builder: (c) => const MainHistory()));
                               },
                               icon: Image.asset(
                                 "images/refresh.png",
@@ -422,7 +418,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (c) => MainReportScreen()));
+                                      builder: (c) => HomeReport()));
                             },
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(color: Colors.blueAccent),
@@ -435,7 +431,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (c) => MainReportScreen()));
+                                        builder: (c) => HomeReport()));
+                                // builder: (c) => MainReportScreen()));
                               },
                               icon: Image.asset(
                                 "images/seo-report.png",
@@ -467,7 +464,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (c) =>
-                                          const MainAddTokoScreen()));
+                                          const UploadTokoScreen()));
                             },
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(color: Colors.blueAccent),
@@ -481,7 +478,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (c) =>
-                                            const MainAddTokoScreen()));
+                                            const UploadTokoScreen()));
                               },
                               icon: Image.asset(
                                 "images/franchise.png",
@@ -507,7 +504,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         Transform.scale(
                           scale: 1.2,
                           child: OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              DbCRM.db.deleteAllcrm();
+                            },
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(color: Colors.blueAccent),
                               shape: const CircleBorder(
@@ -517,6 +516,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: IconButton(
                               onPressed: () {
                                 Fluttertoast.showToast(msg: "Not Available");
+                                DbCRM.db.deleteAllcrm();
                               },
                               icon: Image.asset(
                                 "images/settings.png",
@@ -547,7 +547,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (c) => MainEticketingScreen()));
+                                      builder: (c) => HomeEticketing()));
                             },
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(color: Colors.blueAccent),
@@ -560,8 +560,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (c) =>
-                                            MainEticketingScreen()));
+                                        builder: (c) => HomeEticketing()));
                               },
                               icon: Image.asset(
                                 "images/ticket.png",
@@ -584,7 +583,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
                 //slot 2 widget
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
                 Row(
@@ -602,7 +601,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (c) => MainPosSalesScreen()));
+                                      builder: (c) => PosSalesScreen()));
                             },
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(color: Colors.blueAccent),
@@ -613,7 +612,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (c) => MainPosSalesScreen()));
+                                        builder: (c) => PosSalesScreen()));
                               },
                               icon: Image.asset(
                                 "images/sales.png",
@@ -647,8 +646,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (c) =>
-                                          const MainPosReturScreen()));
+                                      builder: (c) => const PosReturScreen()));
                             },
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(color: Colors.blueAccent),
@@ -665,7 +663,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (c) =>
-                                            const MainPosReturScreen()));
+                                            const PosReturScreen()));
                               },
                               icon: Image.asset(
                                 "images/product-return.png",
@@ -700,8 +698,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (c) =>
-                                          const MainPosTokoScreen()));
+                                      builder: (c) => const PosTokoScreen()));
                             },
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(color: Colors.blueAccent),
@@ -718,8 +715,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (c) =>
-                                            const MainPosTokoScreen()));
+                                        builder: (c) => const PosTokoScreen()));
                               },
                               icon: Image.asset(
                                 "images/store.png",
@@ -799,7 +795,6 @@ class _HomeScreenState extends State<HomeScreen> {
           .getItems
           .firstWhereOrNull((element) => element.name == cart['lot']);
 
-      print(existingitemcart);
       if (existingitemcart == null) {
         print('Inserting Cart berhasil');
         context.read<PCart>().addItem(
@@ -817,84 +812,84 @@ class _HomeScreenState extends State<HomeScreen> {
     }).toList();
   }
 
-  _loadFromApiPOSTOKO() async {
-    setState(() {
-      isLoading = true;
-    });
+  // _loadFromApiPOSTOKO() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
 
-    var apiProvider = ApiServices();
-    DbAllitemsToko.db.deleteAllitemsToko();
-    await apiProvider.getAllItemsToko();
+  //   var apiProvider = ApiServices();
+  //   DbAllitemsToko.db.deleteAllitemsToko();
+  //   await apiProvider.getAllItemsToko();
 
-    // wait for 2 seconds to simulate loading of data
-    await Future.delayed(const Duration(seconds: 2));
+  //   // wait for 2 seconds to simulate loading of data
+  //   await Future.delayed(const Duration(seconds: 2));
 
-    setState(() {
-      isLoading = false;
-    });
-  }
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  // }
 
-  _deleteAllitemstokofirebase() {
-    FirebaseFirestore.instance
-        .collection('allitemstoko')
-        .get()
-        .then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.docs) {
-        ds.reference.delete();
-        print('delete allitems toko in firebase berhasil');
-      }
-    });
-  }
+  // _deleteAllitemstokofirebase() {
+  //   FirebaseFirestore.instance
+  //       .collection('allitemstoko')
+  //       .get()
+  //       .then((snapshot) {
+  //     for (DocumentSnapshot ds in snapshot.docs) {
+  //       ds.reference.delete();
+  //       print('delete allitems toko in firebase berhasil');
+  //     }
+  //   });
+  // }
 
-  _deleteAllitemsfirebase() {
-    FirebaseFirestore.instance.collection('allitems').get().then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.docs) {
-        ds.reference.delete();
-        print('delete allitems in firebase berhasil');
-      }
-    });
-  }
+  // _deleteAllitemsfirebase() {
+  //   FirebaseFirestore.instance.collection('allitems').get().then((snapshot) {
+  //     for (DocumentSnapshot ds in snapshot.docs) {
+  //       ds.reference.delete();
+  //       print('delete allitems in firebase berhasil');
+  //     }
+  //   });
+  // }
 
-  _deleteAlldetailtransaksifirebase() {
-    FirebaseFirestore.instance
-        .collection('alldetailtransaksi')
-        .get()
-        .then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.docs) {
-        ds.reference.delete();
-        print('delete alldetailtransaksi in firebase berhasil');
-      }
-    });
-  }
+  // _deleteAlldetailtransaksifirebase() {
+  //   FirebaseFirestore.instance
+  //       .collection('alldetailtransaksi')
+  //       .get()
+  //       .then((snapshot) {
+  //     for (DocumentSnapshot ds in snapshot.docs) {
+  //       ds.reference.delete();
+  //       print('delete alldetailtransaksi in firebase berhasil');
+  //     }
+  //   });
+  // }
 
-  _deleteAlltransaksifirebase() {
-    FirebaseFirestore.instance
-        .collection('alltransaksi')
-        .get()
-        .then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.docs) {
-        ds.reference.delete();
-        print('delete alltransaksi in firebase berhasil');
-      }
-    });
-  }
+  // _deleteAlltransaksifirebase() {
+  //   FirebaseFirestore.instance
+  //       .collection('alltransaksi')
+  //       .get()
+  //       .then((snapshot) {
+  //     for (DocumentSnapshot ds in snapshot.docs) {
+  //       ds.reference.delete();
+  //       print('delete alltransaksi in firebase berhasil');
+  //     }
+  //   });
+  // }
 
-  _loadAllDataApi() async {
-    setState(() {
-      isLoading = true;
-    });
+  // _loadAllDataApi() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
 
-    var apiProvider = ApiServicesFirebase();
-    await apiProvider.getAllItems();
-    await apiProvider.getAllItemsToko();
-    await apiProvider.getAllDetailTransaksi();
-    // await apiProvider.getAllTransaksi();
+  //   var apiProvider = ApiServicesFirebase();
+  //   await apiProvider.getAllItems();
+  //   await apiProvider.getAllItemsToko();
+  //   await apiProvider.getAllDetailTransaksi();
+  //   // await apiProvider.getAllTransaksi();
 
-    // wait for 2 seconds to simulate loading of data
-    await Future.delayed(const Duration(seconds: 2));
+  //   // wait for 2 seconds to simulate loading of data
+  //   await Future.delayed(const Duration(seconds: 2));
 
-    setState(() {
-      isLoading = false;
-    });
-  }
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  // }
 }

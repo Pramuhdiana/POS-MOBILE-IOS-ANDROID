@@ -53,7 +53,6 @@ class DbAllCustomer {
     return res;
   }
 
-  // Delete all employees
   Future<int> deleteAllcustomer() async {
     final db = await database;
     final res = await db.rawDelete('DELETE FROM allcustomer');
@@ -92,7 +91,7 @@ class DbAllCustomer {
     return result;
   }
 
-  Future<List<ModelAllCustomer>> getAllcustomer(int score) async {
+  Future<List<ModelAllCustomer>> getAllcustomer() async {
     id;
     final db = await database;
     final res = await db
@@ -104,5 +103,28 @@ class DbAllCustomer {
         : [];
 
     return list;
+  }
+
+  Future<String?> getNameCustomer(idcustomer) async {
+    final db = await database;
+    final res =
+        await db.rawQuery('SELECT * FROM allcustomer WHERE id=?', [idcustomer]);
+    // final res = await db.query('allitems', where: '"sales_id" = $id');
+    // final res = await db.rawQuery("SELECT * FROM allitems");
+
+    List<ModelAllCustomer> list = res.isNotEmpty
+        ? res.map((c) => ModelAllCustomer.fromJson(c)).toList()
+        // ? res.map((c) => ModelAllitems.fromMap(c)).toList()
+        : [];
+
+    return list.first.name;
+  }
+
+  Future<Object> getCustomerById(idcustomer) async {
+    final db = await database;
+    var result =
+        await db.rawQuery('SELECT * FROM allcustomer WHERE id=?', [idcustomer]);
+    // await db.query("allcustomer", where: "id = ", whereArgs: [idcustomer]);
+    return result.isNotEmpty ? ModelAllCustomer.fromJson(result.first) : Null;
   }
 }

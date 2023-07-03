@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cart_stepper/cart_stepper.dart';
 import 'package:e_shop/database/model_allitems_toko.dart';
 import 'package:e_shop/itemsScreens/items_photo_toko.dart';
-import 'package:e_shop/posToko/pos_toko_screen.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
 import 'package:e_shop/widgets/appbar_cart_pos_toko.dart';
 import 'package:flutter/cupertino.dart';
@@ -183,18 +182,6 @@ class _ItemsDetailsScreenTokoState extends State<ItemsDetailsScreenToko> {
               ],
             ),
           ),
-          bottomNavigationBar: BottomAppBar(
-              child: ElevatedButton(
-            onPressed: () {
-              Navigator.pop(
-                  context, MaterialPageRoute(builder: (c) => PosTokoScreen()));
-            },
-            child: const Icon(
-              Icons.home,
-              color: Colors.white,
-              size: 50,
-            ),
-          )),
         ));
   }
 }

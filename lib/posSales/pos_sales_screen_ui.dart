@@ -151,11 +151,10 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                               DbAllitems.db
                                   .updateAllitemsByname(widget.model?.name, 0);
                             });
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) =>
-                                        const MainPosSalesScreen()));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (c) => PosSalesScreen()));
                           } else {
                             Fluttertoast.showToast(
                                 msg: "Barang Sudah Ada Di Keranjang");
