@@ -108,7 +108,7 @@ class DbCRM {
   Future<List<ModelCRM>> getAllCrmById(aktivitasId) async {
     final db = await database;
     final res = await db.rawQuery(
-        'SELECT * FROM allcrm WHERE aktivitas_id=? and user_id=?',
+        'SELECT * FROM allcrm WHERE aktivitas_id=? and user_id=? ORDER BY tanggal_aktivitas DESC',
         [aktivitasId, sharedPreferences!.getString('id')]);
     // final res = await db.rawQuery("SELECT * FROM allcrm");
 

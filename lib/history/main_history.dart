@@ -46,18 +46,6 @@ class MainHistory extends StatelessWidget {
           HistoryKembalibarangScreen(),
           HistoryTitipanScreen(),
         ]),
-        // bottomNavigationBar: BottomAppBar(
-        //     child: ElevatedButton(
-        //   onPressed: () {
-        //     Navigator.push(
-        //         context, MaterialPageRoute(builder: (c) => HomeScreen()));
-        //   },
-        //   child: const Icon(
-        //     Icons.home,
-        //     color: Colors.white,
-        //     size: 50,
-        //   ),
-        // )),
       ),
     );
   }

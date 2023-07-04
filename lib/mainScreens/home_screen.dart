@@ -301,25 +301,9 @@ class _HomeScreenState extends State<HomeScreen> {
             appBar: AppBar(
               backgroundColor: Colors.white,
               elevation: 0,
-              // title: Text("History"),
-              // title: FakeSearchHistory(),
               title: const FakeSearch(),
               automaticallyImplyLeading: false,
               centerTitle: true,
-              // bottom: const TabBar(
-              //     indicatorColor: Colors.blue,
-              //     indicatorWeight: 8,
-              //     tabs: [
-              //       RepeatedTab(label: 'ACTIVE'),
-              //       RepeatedTab(label: 'MIDDLE'),
-              //       RepeatedTab(label: 'INACTIVE'),
-              //     ]),
-              // ),
-              // body: const TabBarView(children: [
-              // ActiveScreen(),
-              // MidScreen(),
-              // InactiveScreen(),
-              // ]),
               bottom: const TabBar(
                   indicatorColor: Colors.blue,
                   indicatorWeight: 8,
@@ -445,7 +429,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: EdgeInsets.only(top: 10.0),
                         ),
                         const Text(
-                          "REPORT",
+                          "CRM",
                           style: TextStyle(
                               color: Colors.blueAccent, fontSize: 12.0),
                         ),
@@ -497,45 +481,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
 
-                    //setting
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Transform.scale(
-                          scale: 1.2,
-                          child: OutlinedButton(
-                            onPressed: () {
-                              DbCRM.db.deleteAllcrm();
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.blueAccent),
-                              shape: const CircleBorder(
-                                  // borderRadius: BorderRadius.circular(360),
-                                  ),
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                Fluttertoast.showToast(msg: "Not Available");
-                                DbCRM.db.deleteAllcrm();
-                              },
-                              icon: Image.asset(
-                                "images/settings.png",
-                                // "images/offer.png",
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 10.0),
-                        ),
-                        const Text(
-                          "SETTINGS",
-                          style: TextStyle(
-                              color: Colors.blueAccent, fontSize: 12.0),
-                        ),
-                      ],
-                    ),
-
                     //e-ticketing report
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -574,6 +519,45 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const Text(
                           "E-TICKETING",
+                          style: TextStyle(
+                              color: Colors.blueAccent, fontSize: 12.0),
+                        ),
+                      ],
+                    ),
+
+                    //setting
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Transform.scale(
+                          scale: 1.2,
+                          child: OutlinedButton(
+                            onPressed: () {
+                              DbCRM.db.deleteAllcrm();
+                            },
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.blueAccent),
+                              shape: const CircleBorder(
+                                  // borderRadius: BorderRadius.circular(360),
+                                  ),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                Fluttertoast.showToast(msg: "Not Available");
+                                DbCRM.db.deleteAllcrm();
+                              },
+                              icon: Image.asset(
+                                "images/settings.png",
+                                // "images/offer.png",
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                        ),
+                        const Text(
+                          "SETTINGS",
                           style: TextStyle(
                               color: Colors.blueAccent, fontSize: 12.0),
                         ),
