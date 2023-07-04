@@ -13,6 +13,7 @@ import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
+import 'package:e_shop/widgets/keyboard_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -28,6 +29,8 @@ class AddFormCRM extends StatefulWidget {
 }
 
 class _AddFormCRMState extends State<AddFormCRM> {
+  FocusNode numberFocusNode = FocusNode();
+
   //dropdwon future start
   List<DropdownMenuItem<String>>? list;
   //end dropdown
@@ -84,12 +87,27 @@ class _AddFormCRMState extends State<AddFormCRM> {
   late FToast fToast;
   @override
   void initState() {
+    numberFocusNode.addListener(() {
+      bool hasFocus = numberFocusNode.hasFocus;
+      if (hasFocus) {
+        KeyboardOverlay.showOverlay(context);
+      } else {
+        KeyboardOverlay.removeOverlay();
+      }
+    });
     _timeController.text = '00:00';
     fToast = FToast();
     fToast.init(context);
     dateinput.text = ""; //set the initial value of text field
     super.initState();
     list = [];
+  }
+
+  @override
+  void dispose() {
+    // Clean up the focus node
+    numberFocusNode.dispose();
+    super.dispose();
   }
 
   bool _rangeDate(DateTime day) {
@@ -688,7 +706,8 @@ class _AddFormCRMState extends State<AddFormCRM> {
                                     },
                                     controller: omzetS,
                                     keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
+                                    focusNode: numberFocusNode,
+                                    inputFormatters: [
                                       FilteringTextInputFormatter.digitsOnly
                                     ],
                                   ),
