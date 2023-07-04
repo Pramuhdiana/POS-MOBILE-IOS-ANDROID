@@ -956,8 +956,8 @@ class _AddFormCRMState extends State<AddFormCRM> {
             nomor_invoice: selectedOmzet ?? '',
             detail: reportinput.text,
             nama_toko: toko));
-        // await postAPIreport();
-        // sendMotificationToBc(fcmTokensandy);
+        await postAPIreport();
+        sendMotificationToBc(fcmTokensandy);
         Fluttertoast.showToast(msg: 'Report success');
         Future.delayed(const Duration(seconds: 1)).then((value) {
           Navigator.push(
