@@ -378,7 +378,8 @@ class _AddFormCRMState extends State<AddFormCRM> {
                                   _setTime = val!;
                                 },
                                 enabled: false,
-                                keyboardType: TextInputType.text,
+                                // textInputAction: TextInputAction.done,
+
                                 controller: _timeController,
                                 decoration: const InputDecoration(
                                   disabledBorder: UnderlineInputBorder(
@@ -549,6 +550,8 @@ class _AddFormCRMState extends State<AddFormCRM> {
                               child: Padding(
                                 padding: const EdgeInsets.all(0),
                                 child: TextField(
+                                  // textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.text,
                                   onChanged: (reportinput) {
                                     setState(() {
                                       btnController.reset();

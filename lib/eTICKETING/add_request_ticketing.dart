@@ -231,6 +231,7 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      textInputAction: TextInputAction.next,
                       autofocus: true,
                       controller: customerName,
                       decoration: InputDecoration(
@@ -253,6 +254,8 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      textInputAction: TextInputAction.next,
+
                       controller: searchKeyword,
                       decoration: InputDecoration(
                         // hintText: "example: Cahaya Sanivokasi",
@@ -634,6 +637,7 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      textInputAction: TextInputAction.next,
                       controller: productSize,
                       decoration: InputDecoration(
                         // hintText: "example: Cahaya Sanivokasi",
@@ -655,6 +659,7 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      textInputAction: TextInputAction.next,
                       controller: estimatePrice,
                       decoration: InputDecoration(
                         // hintText: "example: Cahaya Sanivokasi",
@@ -709,6 +714,8 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
                       child: Padding(
                         padding: const EdgeInsets.all(0),
                         child: TextField(
+                          keyboardType: TextInputType.text,
+
                           onChanged: (reportinput) {
                             setState(() {
                               btnController.reset();
