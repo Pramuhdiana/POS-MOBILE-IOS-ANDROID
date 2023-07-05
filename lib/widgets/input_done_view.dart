@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 class InputDoneView extends StatelessWidget {
   const InputDoneView({Key? key}) : super(key: key);
