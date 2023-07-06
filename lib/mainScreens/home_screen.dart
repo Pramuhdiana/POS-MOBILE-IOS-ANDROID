@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print, depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously, avoid_print
 
 import 'dart:math';
 import 'package:intl/intl.dart';
@@ -7,7 +7,6 @@ import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:e_shop/CRM/home_report.dart';
 import 'package:e_shop/global/currency_format.dart';
-import 'package:e_shop/testing/chart_line.dart';
 import 'package:e_shop/testing/color_extensions.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -137,9 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
         barMay += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
       }
       setState(() {
-        print(barMay);
         barMay = (barMay / targetByMonth).round();
-        print(barMay);
       });
     });
     //jun
@@ -747,10 +744,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               onPressed: () {
                                 Fluttertoast.showToast(msg: "Not Available");
                                 // DbCRM.db.deleteAllcrm();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (c) => BarChartSample1()));
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (c) => BarChartSample1()));
                               },
                               icon: Image.asset(
                                 "images/settings.png",
