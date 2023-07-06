@@ -2,7 +2,6 @@
 
 import 'dart:io';
 import 'package:e_shop/database/model_allcustomer.dart';
-import 'package:e_shop/global/global.dart';
 import 'package:path/path.dart';
 
 import 'package:path_provider/path_provider.dart';
@@ -92,7 +91,6 @@ class DbAllCustomer {
   }
 
   Future<List<ModelAllCustomer>> getAllcustomer() async {
-    id;
     final db = await database;
     final res = await db
         .rawQuery('SELECT * FROM allcustomer WHERE alamat!=?', ['null']);

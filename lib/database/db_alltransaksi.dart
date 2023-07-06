@@ -92,7 +92,6 @@ class DbAlltransaksi {
   // }
 
   Future<List<ModelAlltransaksi>> getAlltransaksi(jenis_id) async {
-    id;
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM alltransaksi WHERE jenisform_id=? and user_id=? ORDER BY invoices_number DESC',
@@ -109,7 +108,6 @@ class DbAlltransaksi {
   }
 
   Future<List<ModelAlltransaksi>> getAlltransaksiNominal(year) async {
-    id;
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM alltransaksi WHERE user_id=? and total_rupiah !=? and year =?',
@@ -127,7 +125,6 @@ class DbAlltransaksi {
 
   Future<List<ModelAlltransaksi>> getAlltransaksiNominalByMonth(
       month, year) async {
-    id;
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM alltransaksi WHERE user_id=? and total_rupiah !=? and month =? and year =?',
@@ -144,7 +141,6 @@ class DbAlltransaksi {
   }
 
   Future<List<ModelAlltransaksi>> getAllNominalTransaksi(no_invoices) async {
-    id;
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM alltransaksi WHERE invoices_number=? and user_id=?',
@@ -161,7 +157,6 @@ class DbAlltransaksi {
   }
 
   Future<List<Map<String, Object?>>> getAllinvoicesnumber(idtoko) async {
-    id;
     final db = await database;
     return await db.rawQuery(
         'SELECT * FROM alltransaksi WHERE user_id=? and customer_id=? ORDER BY invoices_number DESC',
@@ -170,7 +165,6 @@ class DbAlltransaksi {
 
   Future<List<ModelAlltransaksi>> getAlltransaksiBysearch(
       jenis_id, name) async {
-    id;
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM alltransaksi WHERE jenisform_id=? and user_id=? and invoices_number LIKE ? ORDER BY invoices_number DESC',
@@ -189,7 +183,6 @@ class DbAlltransaksi {
 //get with search lot
   Future<List<ModelAlltransaksi>> getAlltransaksiBylot(name) async {
     name = '';
-    id;
     final db = await database;
     final res = await db
         .query("allitems", where: "name LIKE ?", whereArgs: ['%$name%']);

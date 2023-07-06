@@ -2,7 +2,6 @@
 
 import 'dart:io';
 import 'package:e_shop/database/model_allitems_retur.dart';
-import 'package:e_shop/global/global.dart';
 import 'package:path/path.dart';
 
 import 'package:path_provider/path_provider.dart';
@@ -90,7 +89,6 @@ class DbAllitemsRetur {
   }
 
   Future<List<ModelAllitemsRetur>> getAllitemsRetur(idtoko) async {
-    id;
     final db = await database;
     final res = await db
         .rawQuery('SELECT * FROM allitemsretur WHERE customer_id=?', [idtoko]);
@@ -105,7 +103,6 @@ class DbAllitemsRetur {
 
   //gett all items toko with search lot
   Future<List<ModelAllitemsRetur>> getAllitemsReturBylot(idtoko, name) async {
-    id;
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM allitemsretur WHERE name LIKE ? and customer_id=?',

@@ -179,7 +179,6 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                             idform = 1;
                             idformAPI = 1;
                             print(idform);
-                            print(id);
                           } else if (form == "TITIPAN") {
                             idform = 2;
                             idformAPI = 2;

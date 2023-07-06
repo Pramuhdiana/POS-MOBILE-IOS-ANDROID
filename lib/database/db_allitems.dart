@@ -87,7 +87,6 @@ class DbAllitems {
   }
 
   Future<List<ModelAllitems>> getAllitems() async {
-    id;
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM allitems WHERE sales_id=? and qty=?',
@@ -102,7 +101,6 @@ class DbAllitems {
   }
 
   Future<List<ModelAllitems>> getAllitemsBykode(kodeRefrensi) async {
-    id;
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM allitems WHERE sales_id=? and qty=? and kode_refrensi =?',
@@ -118,7 +116,6 @@ class DbAllitems {
 
 //get with search lot and qty >1
   Future<List<ModelAllitems>> getAllitemsBylot(name) async {
-    id;
     final db = await database;
     // final res = await db
     //     .query("allitems", where: "name LIKE ?", whereArgs: ['%$name%']);
@@ -134,7 +131,6 @@ class DbAllitems {
 
 //get with search only lot
   Future<List<ModelAllitems>> getAllitemsByOnlylot(name) async {
-    id;
     final db = await database;
     // final res = await db
     //     .query("allitems", where: "name LIKE ?", whereArgs: ['%$name%']);

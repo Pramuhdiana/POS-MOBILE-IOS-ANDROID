@@ -74,7 +74,6 @@ class DbAlldetailtransaksi {
 
   Future<List<ModelAlldetailtransaksi>> getAlldetailtransaksi(
       String jenis_id) async {
-    id;
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM alldetailtransaksi WHERE invoices_number=? and user_id=?',
@@ -90,7 +89,6 @@ class DbAlldetailtransaksi {
 
   Future<List<ModelAlldetailtransaksi>> getAlldetailtransaksiBysearch(
       name) async {
-    id;
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM alldetailtransaksi WHERE name LIKE ? and user_id=? and invoices_number !=?',
@@ -107,7 +105,6 @@ class DbAlldetailtransaksi {
 //get with search lot
   Future<List<ModelAlldetailtransaksi>> getAlldetailtransaksiBylot(name) async {
     name = '';
-    id;
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM alldetailtransaksi WHERE name LIKE ?', ['%$name%']);

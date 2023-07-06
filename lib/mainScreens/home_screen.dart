@@ -79,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int barNov = 0;
   int barDec = 0;
   int targetByMonth = 10000000;
+  int targetByYear = 10000000000;
   //end chart color
 
   String? year = '';
@@ -93,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    print(sharedPreferences!.getString('id'));
     year = DateFormat('y').format(DateTime.now());
     //jan
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('1', year).then((value) {
@@ -208,10 +210,12 @@ class _HomeScreenState extends State<HomeScreen> {
         list += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
         listNominal.add(value[i].total_rupiah); //memasukan ke list
       }
+      percentYear = (list / targetByYear);
+      print(percentYear);
       setState(() {
-        // CurrencyFormat.convertToIdr(list, 2);
-        // print(list / 10000000000 * 100);
-        percentYear = (list / 1000000000000 * 100);
+        (percentYear > 1.0)
+            ? percentYear = 1.0
+            : percentYear = list / targetByYear;
       });
     });
     // percentYear = 0.7;
@@ -479,11 +483,11 @@ class _HomeScreenState extends State<HomeScreen> {
               animationDuration: 2500, //kecepatan animasi
               percent: percentYear,
               center: Text(
-                '${(percentYear * 100).round()}%',
+                '${(list / targetByYear * 100).round()}%',
               ),
               // ignore: deprecated_member_use
               linearStrokeCap: LinearStrokeCap.roundAll,
-              progressColor: const Color.fromARGB(255, 17, 221, 82),
+              progressColor: AppColors.contentColorGreen,
             ),
             Text('${CurrencyFormat.convertToIdr(list, 2)} / 10.000.000.000,00'),
             // CircularPercentIndicator(

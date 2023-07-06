@@ -967,7 +967,7 @@ class _AddFormCRMState extends State<AddFormCRM> {
         btnController.success(); //sucses
         print(toko);
         await DbCRM.db.createAllcrm(ModelCRM(
-            user_id: id.toString(),
+            user_id: sharedPreferences!.getString('id'),
             customer_id: idtoko,
             tanggal_aktivitas:
                 '$tanggal_aktivitas ${_timeController.text}:00.000',
@@ -979,7 +979,7 @@ class _AddFormCRMState extends State<AddFormCRM> {
             detail: reportinput.text,
             nama_toko: toko));
         await sendMotificationToBc(fcmTokensandy);
-        await postAPIreport();
+        // await postAPIreport();
         Fluttertoast.showToast(msg: 'Report success');
         Future.delayed(const Duration(seconds: 1)).then((value) {
           Navigator.push(
@@ -1016,7 +1016,7 @@ class _AddFormCRMState extends State<AddFormCRM> {
   postAPIreport() async {
     String token = sharedPreferences!.getString("token").toString();
     Map<String, String> body = {
-      'user_id': id.toString(),
+      'user_id': sharedPreferences!.getString('id').toString(),
       'customer_id': idtoko.toString(),
       'tanggal_aktivitas': '$tanggal_aktivitas ${_timeController.text}:00.000',
       'aktivitas_id': idaktivitas.toString(),

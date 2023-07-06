@@ -8,12 +8,10 @@ CartMethods cartMethods = CartMethods();
 // if (sharedPreferences!.getString("role")! != "SALES")
 String fcmTokenJonathan = "spxOYelPKaZ33WKvoFvWuL3k7uB2";
 String fcmTokensandy =
-    "fcGgYv7jQYGKjTx9pVz-l5:APA91bGcaCj4xj-36rUa6bdb2G2W1d9oaBuYliPK2wxqbU5XGjOANA-THSziCnx73X0uLmaZVtqNTuhem6aBaeJa0DaZpb7rT-axTxg4iEGyUfrjfQbUv49MPTvJqeoqB23MJnZQlGKz";
+    "dr_Epi1ZSdWpnFwFrcjwzl:APA91bEQkKzXemL5F3JZysNBG2FN8LizsZLwuKxGK0WUwtTjC3JmdzsGtn7yCW2CYuR0YnAPSM3caqtkSDw3ncDw3kKDcPoaHrM3bemRalWt3cQ5493UroQrZO4Iy7LxaiJDG6_FXscg";
 String fcmServerToken =
     "AAAAu6dblLA:APA91bEanz7VkI6wyJSxAGE8L1lVDFcv5VWg_9qlVsuRUwXUtoXmK5apL0fYMSOdDqt_OEL8uQhfBDJvFMJmwHYm3n0aav4z4Dg56tfsnkyZobqCwtGLO6PM0WBb2vsA_XtakPNIKJQT";
 
-String? id = sharedPreferences!.getString('id');
-String? globalToken = sharedPreferences!.getString('token');
 int revisiBesar =
     1; //UI baru, banyak fitur baru, perubahan konsep, dll  (MAJOR)
 int revisiKecil =
@@ -22,5 +20,3 @@ int rilisPerbaikanbug =
     0; //perbaikan bug                                      (PATCH)
 
 String version = 'v$revisiBesar.$revisiKecil.$rilisPerbaikanbug';
-//try dari windows
-
