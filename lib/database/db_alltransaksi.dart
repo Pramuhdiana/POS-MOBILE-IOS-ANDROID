@@ -51,7 +51,9 @@ class DbAlltransaksi {
           user TEXT,
           customer TEXT,
           alamat TEXT,
-          jenisform TEXT
+          jenisform TEXT,
+          month TEXT,
+          year TEXT
           )''');
     });
   }
@@ -95,6 +97,41 @@ class DbAlltransaksi {
     final res = await db.rawQuery(
         'SELECT * FROM alltransaksi WHERE jenisform_id=? and user_id=? ORDER BY invoices_number DESC',
         [jenis_id, sharedPreferences!.getString('id')]);
+    // final res = await db.query('allitems', where: '"sales_id" = $id');
+    // final res = await db.rawQuery("SELECT * FROM allitems");
+
+    List<ModelAlltransaksi> list = res.isNotEmpty
+        ? res.map((c) => ModelAlltransaksi.fromJson(c)).toList()
+        // ? res.map((c) => ModelAllitems.fromMap(c)).toList()
+        : [];
+
+    return list;
+  }
+
+  Future<List<ModelAlltransaksi>> getAlltransaksiNominal(year) async {
+    id;
+    final db = await database;
+    final res = await db.rawQuery(
+        'SELECT * FROM alltransaksi WHERE user_id=? and total_rupiah !=? and year =?',
+        [sharedPreferences!.getString('id'), 0, year]);
+    // final res = await db.query('allitems', where: '"sales_id" = $id');
+    // final res = await db.rawQuery("SELECT * FROM allitems");
+
+    List<ModelAlltransaksi> list = res.isNotEmpty
+        ? res.map((c) => ModelAlltransaksi.fromJson(c)).toList()
+        // ? res.map((c) => ModelAllitems.fromMap(c)).toList()
+        : [];
+
+    return list;
+  }
+
+  Future<List<ModelAlltransaksi>> getAlltransaksiNominalByMonth(
+      month, year) async {
+    id;
+    final db = await database;
+    final res = await db.rawQuery(
+        'SELECT * FROM alltransaksi WHERE user_id=? and total_rupiah !=? and month =? and year =?',
+        [sharedPreferences!.getString('id'), 0, month, year]);
     // final res = await db.query('allitems', where: '"sales_id" = $id');
     // final res = await db.rawQuery("SELECT * FROM allitems");
 

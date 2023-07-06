@@ -1,15 +1,19 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
+// ignore_for_file: use_build_context_synchronously, avoid_print, depend_on_referenced_packages
+
+import 'dart:math';
+import 'package:intl/intl.dart';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:e_shop/CRM/home_report.dart';
-import 'package:e_shop/CRM/list_crm_telephone.dart';
-import 'package:e_shop/CRM/list_crm_visit.dart';
-import 'package:e_shop/CRM/list_crm_whatsapp.dart';
+import 'package:e_shop/global/currency_format.dart';
+import 'package:e_shop/testing/chart_line.dart';
+import 'package:e_shop/testing/color_extensions.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/cartScreens/cart_screen.dart';
 import 'package:e_shop/database/db_alltransaksi.dart';
-import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/eTICKETING/home_ticketing.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:badges/badges.dart' as badges;
@@ -24,7 +28,6 @@ import 'package:e_shop/push_notifications/push_notifications_system.dart';
 import 'package:e_shop/qr/qr_scanner.dart';
 import 'package:e_shop/toko/upload_toko_screen.dart';
 import 'package:e_shop/widgets/alert_dialog.dart';
-import 'package:e_shop/widgets/fake_search.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -33,6 +36,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../splashScreen/my_splas_screen.dart';
+import '../testing/app_colors.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
@@ -43,6 +47,45 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  //start color chart
+  List<Color> get availableColors => const <Color>[
+        AppColors.contentColorPurple,
+        AppColors.contentColorYellow,
+        AppColors.contentColorBlue,
+        AppColors.contentColorOrange,
+        AppColors.contentColorPink,
+        AppColors.contentColorRed,
+      ];
+  final Color barBackgroundColor =
+      AppColors.contentColorWhite.darken().withOpacity(0.3);
+  final Color barColor = AppColors.contentColorWhite;
+  final Color touchedBarColor = AppColors.contentColorGreen;
+  final Duration animDuration = const Duration(milliseconds: 250);
+
+  int touchedIndex = -1;
+  bool isPlaying = false;
+  double percentYear = 0.0;
+  double percentMonth = 0.0;
+  double percentWeek = 0.0;
+  int barJan = 0;
+  int barFeb = 0;
+  int barMar = 0;
+  int barApr = 0;
+  int barMay = 0;
+  int barJun = 0;
+  int barJul = 0;
+  int barAug = 0;
+  int barSep = 0;
+  int barOct = 0;
+  int barNov = 0;
+  int barDec = 0;
+  int targetByMonth = 10000000;
+  //end chart color
+
+  String? year = '';
+  var listNominal = [];
+  int list = 0;
+
   var isLoading = false;
   late FirebaseMessaging messaging;
   QRViewController? controller;
@@ -51,6 +94,87 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    year = DateFormat('y').format(DateTime.now());
+    //jan
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('1', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barJan += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+      }
+      setState(() {
+        barJan = (barJan / targetByMonth).round();
+      });
+    });
+    //feb
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('2', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barFeb += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+      }
+      setState(() {
+        barFeb = (barFeb / targetByMonth).round();
+      });
+    });
+    //mar
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('3', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barMar += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+      }
+      setState(() {
+        barMar = (barMar / targetByMonth).round();
+      });
+    });
+    //apr
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('4', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barApr += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+      }
+      setState(() {
+        barApr = (barApr / targetByMonth).round();
+      });
+    });
+    //may
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('5', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barMay += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+      }
+      setState(() {
+        print(barMay);
+        barMay = (barMay / targetByMonth).round();
+        print(barMay);
+      });
+    });
+    //jun
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('6', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barJun += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+      }
+      setState(() {
+        barJun = (barJun / targetByMonth).round();
+      });
+    });
+    //jul
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('7', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barJul += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+      }
+      setState(() {
+        barJul = (barJul / targetByMonth).round();
+      });
+    });
+
+    DbAlltransaksi.db.getAlltransaksiNominal(year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        list += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+        listNominal.add(value[i].total_rupiah); //memasukan ke list
+      }
+      setState(() {
+        // CurrencyFormat.convertToIdr(list, 2);
+        // print(list / 10000000000 * 100);
+        percentYear = (list / 1000000000000 * 100);
+      });
+    });
+    // percentYear = 0.7;
+    percentMonth = 0.3;
+    percentWeek = 0.1;
     loadCartFromApiPOSSALES();
     controller?.stopCamera();
     //star notifi
@@ -76,6 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 0,
@@ -94,6 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     children: <Widget>[
                       _bodyatas(),
+                      const SizedBox(height: 15),
                       _bodytengah(),
                       const SizedBox(height: 15),
                       _bodybawah(),
@@ -294,31 +420,109 @@ class _HomeScreenState extends State<HomeScreen> {
       onRefresh: refresh,
       child: Container(
         height: MediaQuery.of(context).size.height * 0.50,
-        decoration: const BoxDecoration(color: Colors.grey),
-        child: DefaultTabController(
-          length: 3,
-          child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-              elevation: 0,
-              title: const FakeSearch(),
-              automaticallyImplyLeading: false,
-              centerTitle: true,
-              bottom: const TabBar(
-                  indicatorColor: Colors.blue,
-                  indicatorWeight: 8,
-                  tabs: [
-                    RepeatedTab(label: 'Whatsapp'),
-                    RepeatedTab(label: 'Telephone'),
-                    RepeatedTab(label: 'Visit'),
-                  ]),
+        decoration: const BoxDecoration(color: Colors.white),
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(right: 100, bottom: 5),
+              child: Text(
+                'Sales progress this year',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+              ),
             ),
-            body: const TabBarView(children: [
-              ListCrmWhatsapp(),
-              ListCrmTelephone(),
-              ListCrmVisist(),
-            ]),
-          ),
+            LinearPercentIndicator(
+              width: MediaQuery.of(context).size.width - 20,
+              animation: true,
+              lineHeight: 20.0,
+              animationDuration: 2500, //kecepatan animasi
+              percent: percentYear,
+              center: Text(
+                '${(percentYear * 100).round()}%',
+              ),
+              // ignore: deprecated_member_use
+              linearStrokeCap: LinearStrokeCap.roundAll,
+              progressColor: const Color.fromARGB(255, 17, 221, 82),
+            ),
+            Text('${CurrencyFormat.convertToIdr(list, 2)} / 10.000.000.000,00'),
+            // CircularPercentIndicator(
+            //   radius: 120.0,
+            //   lineWidth: 13.0,
+            //   animation: true,
+            //   percent: percentYear,
+            //   center: Text(
+            //     '${percentYear * 100}%',
+            //     style: const TextStyle(
+            //         fontWeight: FontWeight.bold, fontSize: 50.0),
+            //   ),
+            //   footer: const Text(
+            //     "Sales this year",
+            //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+            //   ),
+            //   circularStrokeCap: CircularStrokeCap.round,
+            //   progressColor: Colors.green,
+            // ),
+            const SizedBox(
+              height: 5,
+            ),
+            SizedBox(
+              // aspectRatio: 1.1,
+              height: MediaQuery.of(context).size.height * 0.40,
+              child: Card(
+                color: Colors.white70,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Monthly',
+                            style: TextStyle(
+                              color: AppColors.contentColorBlue,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                              icon: Icon(
+                                isPlaying ? Icons.pause : Icons.play_arrow,
+                                color: AppColors.contentColorBlue,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  isPlaying = !isPlaying;
+                                  if (isPlaying) {
+                                    refreshState();
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      // height: 250,
+                      height: MediaQuery.of(context).size.height * 0.31,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: BarChart(
+                          isPlaying ? randomData() : mainBarData(),
+                          swapAnimationDuration: animDuration,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -532,9 +736,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Transform.scale(
                           scale: 1.2,
                           child: OutlinedButton(
-                            onPressed: () {
-                              DbCRM.db.deleteAllcrm();
-                            },
+                            onPressed: () {},
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(color: Colors.blueAccent),
                               shape: const CircleBorder(
@@ -544,7 +746,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: IconButton(
                               onPressed: () {
                                 Fluttertoast.showToast(msg: "Not Available");
-                                DbCRM.db.deleteAllcrm();
+                                // DbCRM.db.deleteAllcrm();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => BarChartSample1()));
                               },
                               icon: Image.asset(
                                 "images/settings.png",
@@ -796,84 +1002,413 @@ class _HomeScreenState extends State<HomeScreen> {
     }).toList();
   }
 
-  // _loadFromApiPOSTOKO() async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
+//start chart
+  Widget bottomTitleWidgets(double value, TitleMeta meta) {
+    const style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+    );
+    Widget text;
+    switch (value.toInt()) {
+      case 2:
+        text = const Text('MAR', style: style);
+        break;
+      case 5:
+        text = const Text('JUN', style: style);
+        break;
+      case 8:
+        text = const Text('SEP', style: style);
+        break;
+      default:
+        text = const Text('', style: style);
+        break;
+    }
 
-  //   var apiProvider = ApiServices();
-  //   DbAllitemsToko.db.deleteAllitemsToko();
-  //   await apiProvider.getAllItemsToko();
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: text,
+    );
+  }
 
-  //   // wait for 2 seconds to simulate loading of data
-  //   await Future.delayed(const Duration(seconds: 2));
+  Widget leftTitleWidgets(double value, TitleMeta meta) {
+    const style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 15,
+    );
+    String text;
+    switch (value.toInt()) {
+      case 1:
+        text = '10K';
+        break;
+      case 3:
+        text = '30k';
+        break;
+      case 5:
+        text = '50k';
+        break;
+      default:
+        return Container();
+    }
 
-  //   setState(() {
-  //     isLoading = false;
-  //   });
-  // }
+    return Text(text, style: style, textAlign: TextAlign.left);
+  }
 
-  // _deleteAllitemstokofirebase() {
-  //   FirebaseFirestore.instance
-  //       .collection('allitemstoko')
-  //       .get()
-  //       .then((snapshot) {
-  //     for (DocumentSnapshot ds in snapshot.docs) {
-  //       ds.reference.delete();
-  //       print('delete allitems toko in firebase berhasil');
-  //     }
-  //   });
-  // }
+  //end chart
+  BarChartGroupData makeGroupData(
+    int x,
+    int y, {
+    bool isTouched = false,
+    Color? barColor,
+    double width = 22,
+    List<int> showTooltips = const [],
+  }) {
+    barColor ??= AppColors.contentColorGreen;
+    return BarChartGroupData(
+      x: x,
+      barRods: [
+        BarChartRodData(
+          toY: isTouched ? (y).toDouble() : y.toDouble(),
+          // toY: isTouched ? y + 1 : y,
+          color: isTouched ? AppColors.contentColorBlue : barColor,
+          width: width,
+          borderSide: isTouched
+              ? BorderSide(color: AppColors.contentColorGreen.darken(80))
+              : const BorderSide(color: Colors.blue, width: 0),
+          backDrawRodData: BackgroundBarChartRodData(
+            show: true,
+            toY: 100, //ruang or target bar
+            color: AppColors.contentColorWhite.darken().withOpacity(0.9),
+            // color: Colors.black,
+          ),
+        ),
+      ],
+      showingTooltipIndicators: showTooltips,
+    );
+  }
 
-  // _deleteAllitemsfirebase() {
-  //   FirebaseFirestore.instance.collection('allitems').get().then((snapshot) {
-  //     for (DocumentSnapshot ds in snapshot.docs) {
-  //       ds.reference.delete();
-  //       print('delete allitems in firebase berhasil');
-  //     }
-  //   });
-  // }
+  //show grop smt 1
+  List<BarChartGroupData> showingGroupsSmt1() => List.generate(12, (i) {
+        //DATA BAR
+        switch (i) {
+          //januari
+          case 0:
+            return makeGroupData(0, barJan, isTouched: i == touchedIndex);
+          //februari
+          case 1:
+            return makeGroupData(1, barFeb, isTouched: i == touchedIndex);
+          //maret
+          case 2:
+            return makeGroupData(2, barMar, isTouched: i == touchedIndex);
+          //april
+          case 3:
+            return makeGroupData(3, barApr, isTouched: i == touchedIndex);
+          //mei
+          case 4:
+            return makeGroupData(4, barMay, isTouched: i == touchedIndex);
+          //juni
+          case 5:
+            return makeGroupData(5, barJun, isTouched: i == touchedIndex);
+          //juli
+          case 6:
+            return makeGroupData(6, barJul, isTouched: i == touchedIndex);
+          //agustus
+          case 7:
+            return makeGroupData(7, barAug, isTouched: i == touchedIndex);
+          //septeember
+          case 8:
+            return makeGroupData(8, barSep, isTouched: i == touchedIndex);
+          //oktober
+          case 9:
+            return makeGroupData(9, barOct, isTouched: i == touchedIndex);
+          //november
+          case 10:
+            return makeGroupData(10, barNov, isTouched: i == touchedIndex);
+          //desember
+          case 11:
+            return makeGroupData(11, barDec, isTouched: i == touchedIndex);
+          default:
+            return throw Error();
+        }
+      });
 
-  // _deleteAlldetailtransaksifirebase() {
-  //   FirebaseFirestore.instance
-  //       .collection('alldetailtransaksi')
-  //       .get()
-  //       .then((snapshot) {
-  //     for (DocumentSnapshot ds in snapshot.docs) {
-  //       ds.reference.delete();
-  //       print('delete alldetailtransaksi in firebase berhasil');
-  //     }
-  //   });
-  // }
+  //main bar data (awal)
+  BarChartData mainBarData() {
+    return BarChartData(
+      barTouchData: BarTouchData(
+        touchTooltipData: BarTouchTooltipData(
+          tooltipBgColor: Colors.blueGrey,
+          tooltipHorizontalAlignment: FLHorizontalAlignment.right,
+          tooltipMargin: -10,
+          getTooltipItem: (group, groupIndex, rod, rodIndex) {
+            String semester1;
+            switch (group.x) {
+              case 0:
+                semester1 = 'Januari';
+                break;
+              case 1:
+                semester1 = 'February';
+                break;
+              case 2:
+                semester1 = 'March';
+                break;
+              case 3:
+                semester1 = 'April';
+                break;
+              case 4:
+                semester1 = 'May';
+                break;
+              case 5:
+                semester1 = 'June';
+                break;
+              case 6:
+                semester1 = 'July';
+                break;
+              case 7:
+                semester1 = 'Augustus';
+                break;
+              case 8:
+                semester1 = 'September';
+                break;
+              case 9:
+                semester1 = 'October';
+                break;
+              case 10:
+                semester1 = 'November';
+                break;
+              case 11:
+                semester1 = 'December';
+                break;
+              default:
+                throw Error();
+            }
+            //tampilam UI bar
+            return BarTooltipItem(
+              '$semester1\n',
+              const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+              children: <TextSpan>[
+                (rod.toY - 1).round().toString().length > 2
+                    ? TextSpan(
+                        text:
+                            '${(rod.toY - 1).round()}%\n${(rod.toY * 10).toString()[0]},${(rod.toY * 10).toString()[1]}M',
+                        style: const TextStyle(
+                          color: AppColors.contentColorGreen,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
+                    : TextSpan(
+                        text:
+                            '${(rod.toY - 1).round()}%\n${(rod.toY * 10).toString()[0]}${(rod.toY * 10).toString()[1]}${(rod.toY * 10).toString()[2]}JT',
+                        style: const TextStyle(
+                          color: AppColors.contentColorGreen,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
+              ],
+            );
+          },
+        ),
+        touchCallback: (FlTouchEvent event, barTouchResponse) {
+          setState(() {
+            if (!event.isInterestedForInteractions ||
+                barTouchResponse == null ||
+                barTouchResponse.spot == null) {
+              touchedIndex = -1;
+              return;
+            }
+            touchedIndex = barTouchResponse.spot!.touchedBarGroupIndex;
+          });
+        },
+      ),
+      titlesData: FlTitlesData(
+        show: true,
+        rightTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        topTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: getTitlesSmt1,
+            reservedSize: 80,
+          ),
+        ),
+        leftTitles: const AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: false,
+          ),
+        ),
+      ),
+      borderData: FlBorderData(
+        show: false,
+      ),
+      barGroups: showingGroupsSmt1(),
+      gridData: const FlGridData(show: false),
+    );
+  }
 
-  // _deleteAlltransaksifirebase() {
-  //   FirebaseFirestore.instance
-  //       .collection('alltransaksi')
-  //       .get()
-  //       .then((snapshot) {
-  //     for (DocumentSnapshot ds in snapshot.docs) {
-  //       ds.reference.delete();
-  //       print('delete alltransaksi in firebase berhasil');
-  //     }
-  //   });
-  // }
+  //title semester 1
+  Widget getTitlesSmt1(double value, TitleMeta meta) {
+    const style = TextStyle(
+      color: Colors.blue,
+      fontWeight: FontWeight.bold,
+      fontSize: 12,
+    );
+    Widget text;
+    switch (value.toInt()) {
+      case 0:
+        text = const Text('J\nA\nN', style: style);
+        break;
+      case 1:
+        text = const Text('F\nE\nB', style: style);
+        break;
+      case 2:
+        text = const Text('M\nA\nR', style: style);
+        break;
+      case 3:
+        text = const Text('A\nP\nR', style: style);
+        break;
+      case 4:
+        text = const Text('M\nA\nY', style: style);
+        break;
+      case 5:
+        text = const Text('J\nU\nN', style: style);
+        break;
+      case 6:
+        text = const Text('J\nU\nL', style: style);
+        break;
+      case 7:
+        text = const Text('A\nU\nG', style: style);
+        break;
+      case 8:
+        text = const Text('S\nE\nP', style: style);
+        break;
+      case 9:
+        text = const Text('O\nC\nT', style: style);
+        break;
+      case 10:
+        text = const Text('N\nO\nV', style: style);
+        break;
+      case 11:
+        text = const Text('D\nE\nC', style: style);
+        break;
+      default:
+        text = const Text('', style: style);
+        break;
+    }
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      space: 16,
+      child: text,
+    );
+  }
 
-  // _loadAllDataApi() async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
+  Future<dynamic> refreshState() async {
+    setState(() {});
+    await Future<dynamic>.delayed(
+      animDuration + const Duration(milliseconds: 50),
+    );
+    if (isPlaying) {
+      await refreshState();
+    }
+  }
 
-  //   var apiProvider = ApiServicesFirebase();
-  //   await apiProvider.getAllItems();
-  //   await apiProvider.getAllItemsToko();
-  //   await apiProvider.getAllDetailTransaksi();
-  //   // await apiProvider.getAllTransaksi();
-
-  //   // wait for 2 seconds to simulate loading of data
-  //   await Future.delayed(const Duration(seconds: 2));
-
-  //   setState(() {
-  //     isLoading = false;
-  //   });
-  // }
+  BarChartData randomData() {
+    return BarChartData(
+      barTouchData: BarTouchData(
+        enabled: false,
+      ),
+      titlesData: FlTitlesData(
+        show: true,
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: getTitlesSmt1,
+            reservedSize: 38,
+          ),
+        ),
+        leftTitles: const AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: false,
+          ),
+        ),
+        topTitles: const AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: false,
+          ),
+        ),
+        rightTitles: const AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: false,
+          ),
+        ),
+      ),
+      borderData: FlBorderData(
+        show: false,
+      ),
+      barGroups: List.generate(7, (i) {
+        switch (i) {
+          case 0:
+            return makeGroupData(
+              0,
+              Random().nextInt(15).toInt() + 6,
+              barColor:
+                  availableColors[Random().nextInt(availableColors.length)],
+            );
+          case 1:
+            return makeGroupData(
+              1,
+              Random().nextInt(15).toInt() + 6,
+              barColor:
+                  availableColors[Random().nextInt(availableColors.length)],
+            );
+          case 2:
+            return makeGroupData(
+              2,
+              Random().nextInt(15).toInt() + 6,
+              barColor:
+                  availableColors[Random().nextInt(availableColors.length)],
+            );
+          case 3:
+            return makeGroupData(
+              3,
+              Random().nextInt(15).toInt() + 6,
+              barColor:
+                  availableColors[Random().nextInt(availableColors.length)],
+            );
+          case 4:
+            return makeGroupData(
+              4,
+              Random().nextInt(15).toInt() + 6,
+              barColor:
+                  availableColors[Random().nextInt(availableColors.length)],
+            );
+          case 5:
+            return makeGroupData(
+              5,
+              Random().nextInt(15).toInt() + 6,
+              barColor:
+                  availableColors[Random().nextInt(availableColors.length)],
+            );
+          case 6:
+            return makeGroupData(
+              6,
+              Random().nextInt(15).toInt() + 6,
+              barColor:
+                  availableColors[Random().nextInt(availableColors.length)],
+            );
+          default:
+            return throw Error();
+        }
+      }),
+      gridData: const FlGridData(show: false),
+    );
+  }
 }

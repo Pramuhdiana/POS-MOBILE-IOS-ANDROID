@@ -1,6 +1,7 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages
 
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 List<ModelAlltransaksi> allitems(String str) => List<ModelAlltransaksi>.from(
     json.decode(str).map((x) => ModelAlltransaksi.fromJson(x)));
@@ -28,6 +29,8 @@ class ModelAlltransaksi {
   String? customer;
   String? alamat;
   String? jenisform;
+  String? month;
+  String? year;
 
   ModelAlltransaksi({
     this.invoices_number,
@@ -49,6 +52,8 @@ class ModelAlltransaksi {
     this.customer,
     this.alamat,
     this.jenisform,
+    this.month,
+    this.year,
   });
 
   factory ModelAlltransaksi.fromJson(Map<String, dynamic> json) =>
@@ -72,6 +77,10 @@ class ModelAlltransaksi {
         customer: json["customer"],
         alamat: json["alamat"],
         jenisform: json["jenisform"],
+        month:
+            DateFormat('M').format(DateTime.parse(json["created_at"] ?? '13')),
+        year:
+            DateFormat('y').format(DateTime.parse(json["created_at"] ?? '13')),
       );
 
   Map<String, dynamic> toJson() => {
@@ -94,5 +103,7 @@ class ModelAlltransaksi {
         "customer": customer,
         "alamat": alamat,
         "jenisform": jenisform,
+        "month": month,
+        "year": year,
       };
 }

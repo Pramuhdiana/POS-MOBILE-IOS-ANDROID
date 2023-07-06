@@ -44,6 +44,7 @@ dependencies:
   firebase_core: ^2.14.0
   firebase_messaging: ^14.6.2
   firebase_storage: ^11.0.11
+  fl_chart: ^0.63.0
   flutter:
     sdk: flutter
   flutter_beep: ^1.0.0
@@ -63,6 +64,7 @@ dependencies:
   nfc_manager: ^3.2.0
   open_file: ^3.3.1
   path_provider: ^2.0.14
+  percent_indicator: ^4.2.3
   photo_view: ^0.14.0
   printing: ^5.11.0
   provider: ^6.0.5
@@ -104,7 +106,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - pdf/image/
     - images/
     - slider/
     - json/products.json

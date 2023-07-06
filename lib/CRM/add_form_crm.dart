@@ -222,7 +222,7 @@ class _AddFormCRMState extends State<AddFormCRM> {
                               builder: (c) => const DashboardErick()));
                     },
                     icon: const Icon(
-                      Icons.security_rounded,
+                      Icons.remove_red_eye_outlined,
                       color: Colors.white,
                     ),
                   ),
