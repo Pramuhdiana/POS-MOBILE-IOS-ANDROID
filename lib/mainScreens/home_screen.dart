@@ -157,6 +157,51 @@ class _HomeScreenState extends State<HomeScreen> {
         barJul = (barJul / targetByMonth).round();
       });
     });
+    //agus
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('8', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barAug += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+      }
+      setState(() {
+        barAug = (barAug / targetByMonth).round();
+      });
+    });
+    //sept
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('9', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barSep += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+      }
+      setState(() {
+        barSep = (barSep / targetByMonth).round();
+      });
+    });
+    //okt
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('10', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barOct += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+      }
+      setState(() {
+        barOct = (barOct / targetByMonth).round();
+      });
+    });
+    //nov
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('11', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barNov += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+      }
+      setState(() {
+        barNov = (barNov / targetByMonth).round();
+      });
+    });
+    //desc
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('12', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barDec += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+      }
+      setState(() {
+        barDec = (barDec / targetByMonth).round();
+      });
+    });
 
     DbAlltransaksi.db.getAlltransaksiNominal(year).then((value) {
       for (var i = 0; i < value.length; i++) {
@@ -1161,7 +1206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 semester1 = 'July';
                 break;
               case 7:
-                semester1 = 'Augustus';
+                semester1 = 'August';
                 break;
               case 8:
                 semester1 = 'September';
@@ -1187,10 +1232,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontSize: 18,
               ),
               children: <TextSpan>[
-                (rod.toY - 1).round().toString().length > 2
+                (rod.toY).round().toString().length > 2
                     ? TextSpan(
                         text:
-                            '${(rod.toY - 1).round()}%\n${(rod.toY * 10).toString()[0]},${(rod.toY * 10).toString()[1]}M',
+                            '${(rod.toY).round()}%\n${(rod.toY * 10).toString()[0]},${(rod.toY * 10).toString()[1]}M',
                         style: const TextStyle(
                           color: AppColors.contentColorGreen,
                           fontSize: 16,
@@ -1199,7 +1244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                     : TextSpan(
                         text:
-                            '${(rod.toY - 1).round()}%\n${(rod.toY * 10).toString()[0]}${(rod.toY * 10).toString()[1]}${(rod.toY * 10).toString()[2]}JT',
+                            '${(rod.toY).round().toString()}%\n${(rod.toY * 10).toString()[0]}${(rod.toY * 10).toString()[1]}${(rod.toY * 10).toString()[2]}JT',
                         style: const TextStyle(
                           color: AppColors.contentColorGreen,
                           fontSize: 16,
@@ -1328,7 +1373,7 @@ class _HomeScreenState extends State<HomeScreen> {
           sideTitles: SideTitles(
             showTitles: true,
             getTitlesWidget: getTitlesSmt1,
-            reservedSize: 38,
+            reservedSize: 80,
           ),
         ),
         leftTitles: const AxisTitles(
@@ -1350,54 +1395,89 @@ class _HomeScreenState extends State<HomeScreen> {
       borderData: FlBorderData(
         show: false,
       ),
-      barGroups: List.generate(7, (i) {
+      barGroups: List.generate(12, (i) {
         switch (i) {
           case 0:
             return makeGroupData(
               0,
-              Random().nextInt(15).toInt() + 6,
+              Random().nextInt(7500).toInt() + 1000,
               barColor:
                   availableColors[Random().nextInt(availableColors.length)],
             );
           case 1:
             return makeGroupData(
               1,
-              Random().nextInt(15).toInt() + 6,
+              Random().nextInt(7500).toInt() + 1000,
               barColor:
                   availableColors[Random().nextInt(availableColors.length)],
             );
           case 2:
             return makeGroupData(
               2,
-              Random().nextInt(15).toInt() + 6,
+              Random().nextInt(7500).toInt() + 1000,
               barColor:
                   availableColors[Random().nextInt(availableColors.length)],
             );
           case 3:
             return makeGroupData(
               3,
-              Random().nextInt(15).toInt() + 6,
+              Random().nextInt(7500).toInt() + 1000,
               barColor:
                   availableColors[Random().nextInt(availableColors.length)],
             );
           case 4:
             return makeGroupData(
               4,
-              Random().nextInt(15).toInt() + 6,
+              Random().nextInt(7500).toInt() + 1000,
               barColor:
                   availableColors[Random().nextInt(availableColors.length)],
             );
           case 5:
             return makeGroupData(
               5,
-              Random().nextInt(15).toInt() + 6,
+              Random().nextInt(7500).toInt() + 1000,
               barColor:
                   availableColors[Random().nextInt(availableColors.length)],
             );
           case 6:
             return makeGroupData(
               6,
-              Random().nextInt(15).toInt() + 6,
+              Random().nextInt(7500).toInt() + 1000,
+              barColor:
+                  availableColors[Random().nextInt(availableColors.length)],
+            );
+          case 7:
+            return makeGroupData(
+              7,
+              Random().nextInt(7500).toInt() + 1000,
+              barColor:
+                  availableColors[Random().nextInt(availableColors.length)],
+            );
+          case 8:
+            return makeGroupData(
+              8,
+              Random().nextInt(7500).toInt() + 1000,
+              barColor:
+                  availableColors[Random().nextInt(availableColors.length)],
+            );
+          case 9:
+            return makeGroupData(
+              9,
+              Random().nextInt(7500).toInt() + 1000,
+              barColor:
+                  availableColors[Random().nextInt(availableColors.length)],
+            );
+          case 10:
+            return makeGroupData(
+              10,
+              Random().nextInt(7500).toInt() + 1000,
+              barColor:
+                  availableColors[Random().nextInt(availableColors.length)],
+            );
+          case 11:
+            return makeGroupData(
+              11,
+              Random().nextInt(7500).toInt() + 1000,
               barColor:
                   availableColors[Random().nextInt(availableColors.length)],
             );
