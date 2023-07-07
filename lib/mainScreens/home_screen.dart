@@ -469,11 +469,12 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: const BoxDecoration(color: Colors.white),
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.only(right: 100, bottom: 5),
+            Padding(
+              padding: const EdgeInsets.only(right: 100, bottom: 5),
               child: Text(
-                'Sales progress this year',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                'Sales progress ${year.toString()}',
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 20.0),
               ),
             ),
             LinearPercentIndicator(
@@ -514,7 +515,7 @@ class _HomeScreenState extends State<HomeScreen> {
               // aspectRatio: 1.1,
               height: MediaQuery.of(context).size.height * 0.40,
               child: Card(
-                color: Colors.white70,
+                color: Colors.white,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
@@ -1122,7 +1123,7 @@ class _HomeScreenState extends State<HomeScreen> {
               : const BorderSide(color: Colors.blue, width: 0),
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
-            toY: 100, //ruang or target bar
+            toY: 0, //ruang or target bar
             color: AppColors.contentColorWhite.darken().withOpacity(0.9),
             // color: Colors.black,
           ),
@@ -1238,8 +1239,9 @@ class _HomeScreenState extends State<HomeScreen> {
               children: <TextSpan>[
                 (rod.toY).round().toString().length > 2
                     ? TextSpan(
+                        // ${(rod.toY).round()}%\n
                         text:
-                            '${(rod.toY).round()}%\n${(rod.toY * 10).toString()[0]},${(rod.toY * 10).toString()[1]}M',
+                            '${(rod.toY * 10).toString()[0]},${(rod.toY * 10).toString()[1]}M',
                         style: const TextStyle(
                           color: AppColors.contentColorGreen,
                           fontSize: 16,
@@ -1248,7 +1250,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                     : TextSpan(
                         text:
-                            '${(rod.toY).round().toString()}%\n${(rod.toY * 10).toString()[0]}${(rod.toY * 10).toString()[1]}${(rod.toY * 10).toString()[2]}JT',
+                            '${(rod.toY * 10).toString()[0]}${(rod.toY * 10).toString()[1]}${(rod.toY * 10).toString()[2]}JT',
                         style: const TextStyle(
                           color: AppColors.contentColorGreen,
                           fontSize: 16,

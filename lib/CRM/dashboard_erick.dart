@@ -168,6 +168,7 @@ class _DashboardErickState extends State<DashboardErick> {
                                     fontWeight: FontWeight.w600, fontSize: 14),
                               ),
                               onSort: (columnIndex, ascending) {
+                                sort = !sort;
                                 setState(() {
                                   sort = !sort;
                                 });
@@ -411,7 +412,7 @@ DataRow recentFileDataRow(var data) {
             Padding(
               padding: const EdgeInsets.all(2.0),
               child: FutureBuilder(
-                  future: DbCRM.db.getCountCrmById(1, data.customer_id, 19),
+                  future: DbCRM.db.getCountCrmById(1, data.customer_id, 52),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       if (snapshot.data!.length.toString() == '0') {
@@ -435,7 +436,7 @@ DataRow recentFileDataRow(var data) {
             Padding(
               padding: const EdgeInsets.all(2.0),
               child: FutureBuilder(
-                  future: DbCRM.db.getCountCrmById(2, data.customer_id, 19),
+                  future: DbCRM.db.getCountCrmById(2, data.customer_id, 52),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       if (snapshot.data!.length.toString() == '0') {
@@ -459,7 +460,7 @@ DataRow recentFileDataRow(var data) {
             Padding(
               padding: const EdgeInsets.all(2.0),
               child: FutureBuilder(
-                  future: DbCRM.db.getCountCrmById(3, data.customer_id, 19),
+                  future: DbCRM.db.getCountCrmById(3, data.customer_id, 52),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       if (snapshot.data!.length.toString() == '0') {
