@@ -141,56 +141,65 @@ class _CartScreenReturState extends State<CartScreenRetur> {
                   ),
                 ],
               ),
-              Container(
-                height: 35,
-                width: MediaQuery.of(context).size.width * 0.45,
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(25)),
-                child: MaterialButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) => SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.3,
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 100),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      'Total: \$ ${CurrencyFormat.convertToDollar(context.watch<PCartRetur>().totalPrice, 2)}',
-                                      style: const TextStyle(fontSize: 24),
-                                    ),
-                                    ElevatedButton(
-                                        onPressed: () async {
-                                          showProgress();
-                                          await postAPIRetur();
+              context.watch<PCartRetur>().getItems.isNotEmpty
+                  ? Container(
+                      height: 35,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(25)),
+                      child: MaterialButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) => SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.3,
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 100),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Text(
+                                            'Total: \$ ${CurrencyFormat.convertToDollar(context.watch<PCartRetur>().totalPrice, 2)}',
+                                            style:
+                                                const TextStyle(fontSize: 24),
+                                          ),
+                                          ElevatedButton(
+                                              onPressed: () async {
+                                                showProgress();
+                                                await postAPIRetur();
 
-                                          //kembali barang
-                                          print("kembali barang dari Retur");
-                                          context
-                                              .read<PCartRetur>()
-                                              .clearCart();
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (c) =>
-                                                      const MySplashScreenTransaksi()));
-                                        },
-                                        child: const Text('Save'))
-                                  ],
-                                ),
-                              ),
-                            ));
-                  },
-                  child: const Text(
-                    'Check Out',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              )
+                                                //kembali barang
+                                                print(
+                                                    "kembali barang dari Retur");
+                                                context
+                                                    .read<PCartRetur>()
+                                                    .clearCart();
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (c) =>
+                                                            const MySplashScreenTransaksi()));
+                                              },
+                                              child: const Text('Save'))
+                                        ],
+                                      ),
+                                    ),
+                                  ));
+                        },
+                        child: const Text(
+                          'Check Out',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    )
+                  : SizedBox(
+                      height: 35,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                    )
             ],
           ),
         ));

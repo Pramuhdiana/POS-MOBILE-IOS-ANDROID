@@ -134,22 +134,30 @@ class _CartScreenTokoState extends State<CartScreenToko> {
                 ),
               ],
             ),
-            Container(
-              height: 35,
-              width: MediaQuery.of(context).size.width * 0.45,
-              decoration: BoxDecoration(
-                  color: Colors.black, borderRadius: BorderRadius.circular(25)),
-              child: MaterialButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (c) => TransaksiScreenToko()));
-                },
-                child: const Text(
-                  'Check Out',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            )
+            context.watch<PCartToko>().getItems.isNotEmpty
+                ? Container(
+                    height: 35,
+                    width: MediaQuery.of(context).size.width * 0.45,
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(25)),
+                    child: MaterialButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (c) => TransaksiScreenToko()));
+                      },
+                      child: const Text(
+                        'Check Out',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )
+                : SizedBox(
+                    height: 35,
+                    width: MediaQuery.of(context).size.width * 0.45,
+                  )
           ],
         ),
       ),

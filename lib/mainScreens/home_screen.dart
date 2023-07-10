@@ -28,7 +28,6 @@ import 'package:e_shop/toko/upload_toko_screen.dart';
 import 'package:e_shop/widgets/alert_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -593,7 +592,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         builder: (c) => const MainHistory()));
                               },
                               icon: Image.asset(
-                                "images/refresh.png",
+                                "images/history.png",
                               ),
                             ),
                           ),
@@ -636,7 +635,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 // builder: (c) => MainReportScreen()));
                               },
                               icon: Image.asset(
-                                "images/seo-report.png",
+                                "images/crm.png",
                                 // "images/offer.png",
                               ),
                             ),
@@ -681,7 +680,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             const UploadTokoScreen()));
                               },
                               icon: Image.asset(
-                                "images/franchise.png",
+                                "images/store (1).png",
                               ),
                             ),
                           ),
@@ -739,40 +738,40 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
 
-                    //setting
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Transform.scale(
-                          scale: 1.2,
-                          child: OutlinedButton(
-                            onPressed: () {},
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.black),
-                              shape: const CircleBorder(
-                                  // borderRadius: BorderRadius.circular(360),
-                                  ),
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                Fluttertoast.showToast(msg: "Not Available");
-                              },
-                              icon: Image.asset(
-                                "images/settings.png",
-                                // "images/offer.png",
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 10.0),
-                        ),
-                        const Text(
-                          "SETTINGS",
-                          style: TextStyle(color: Colors.black, fontSize: 12.0),
-                        ),
-                      ],
-                    ),
+                    // //setting
+                    // Column(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: <Widget>[
+                    //     Transform.scale(
+                    //       scale: 1.2,
+                    //       child: OutlinedButton(
+                    //         onPressed: () {},
+                    //         style: OutlinedButton.styleFrom(
+                    //           side: const BorderSide(color: Colors.black),
+                    //           shape: const CircleBorder(
+                    //               // borderRadius: BorderRadius.circular(360),
+                    //               ),
+                    //         ),
+                    //         child: IconButton(
+                    //           onPressed: () {
+                    //             Fluttertoast.showToast(msg: "Not Available");
+                    //           },
+                    //           icon: Image.asset(
+                    //             "images/settings.png",
+                    //             // "images/offer.png",
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     const Padding(
+                    //       padding: EdgeInsets.only(top: 10.0),
+                    //     ),
+                    //     const Text(
+                    //       "SETTINGS",
+                    //       style: TextStyle(color: Colors.black, fontSize: 12.0),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
 
@@ -809,7 +808,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         builder: (c) => PosSalesScreen()));
                               },
                               icon: Image.asset(
-                                "images/sales.png",
+                                "images/sales (1).png",
                               ),
                             ),
                           ),
@@ -859,7 +858,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             const PosReturScreen()));
                               },
                               icon: Image.asset(
-                                "images/product-return.png",
+                                "images/return.png",
                               ),
                             ),
                           ),
@@ -910,7 +909,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         builder: (c) => const PosTokoScreen()));
                               },
                               icon: Image.asset(
-                                "images/store.png",
+                                "images/ecommerce.png",
                               ),
                             ),
                           ),
@@ -951,7 +950,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         builder: (c) => const QrScanner()));
                               },
                               icon: Image.asset(
-                                "images/qr-code.png",
+                                "images/qr-code (1).png",
                               ),
                             ),
                           ),
