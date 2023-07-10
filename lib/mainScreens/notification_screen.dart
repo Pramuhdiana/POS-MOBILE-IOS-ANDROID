@@ -31,6 +31,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     // pushNotificationsSystem.whenNotificationReceived(context); //popup dari bottom tanpa confirmasi oke
     // end push notification
     super.initState();
+    print(fcmTokensandy);
   }
 
   Future refresh() async {

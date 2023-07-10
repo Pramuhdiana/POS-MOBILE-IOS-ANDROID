@@ -94,15 +94,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
-    // CollectionReference _collectionRef =
-    //     FirebaseFirestore.instance.collection('UserTokens');
-    // Future<void> getData() async {
-    //   QuerySnapshot querySnapshot = await _collectionRef.get();
-    //   final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    //   print(allData);
-    // }
-
     year = DateFormat('y').format(DateTime.now());
     //jan
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('1', year).then((value) {
@@ -232,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
     controller?.stopCamera();
     //star notifi
     PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
-    // pushNotificationsSystem.notificationPopUp(context);
+    pushNotificationsSystem.notificationPopUp(context);
     pushNotificationsSystem.whenNotificationReceived(context);
     //end notif
   }
@@ -765,11 +756,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: IconButton(
                               onPressed: () {
                                 Fluttertoast.showToast(msg: "Not Available");
-                                // DbCRM.db.deleteAllcrm();
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (c) => BarChartSample1()));
                               },
                               icon: Image.asset(
                                 "images/settings.png",

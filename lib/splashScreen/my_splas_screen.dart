@@ -104,7 +104,16 @@ class _MySplashScreenState extends State<MySplashScreen> {
     setState(() {
       isLoading = true;
     });
-
+    FirebaseFirestore.instance
+        .collection("UserTokens")
+        .doc('Sandy')
+        .snapshots()
+        .listen((event) {
+      setState(() {
+        fcmTokensandy = event.get("token");
+        print('token sandy done');
+      });
+    });
     context.read<PCart>().clearCart();
     context.read<PCartToko>().clearCart();
     context.read<PCartRetur>().clearCart();

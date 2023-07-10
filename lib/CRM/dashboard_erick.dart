@@ -69,6 +69,7 @@ class _DashboardErickState extends State<DashboardErick> {
     return Scaffold(
       resizeToAvoidBottomInset: false, //anti error jika keyboard active
       appBar: AppBar(
+        backgroundColor: Colors.white,
         flexibleSpace: Container(
           color: Colors.white,
           // decoration: const BoxDecoration(
@@ -95,6 +96,7 @@ class _DashboardErickState extends State<DashboardErick> {
         title: const Text(
           "HELICOPTER VIEW",
           style: TextStyle(
+            color: Colors.black,
             fontSize: 20,
             letterSpacing: 3,
           ),
