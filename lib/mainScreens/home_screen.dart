@@ -635,7 +635,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 // builder: (c) => MainReportScreen()));
                               },
                               icon: Image.asset(
-                                "images/crm.png",
+                                "images/crm (1).png",
                                 // "images/offer.png",
                               ),
                             ),
@@ -680,7 +680,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             const UploadTokoScreen()));
                               },
                               icon: Image.asset(
-                                "images/store (1).png",
+                                "images/store (2).png",
                               ),
                             ),
                           ),
@@ -722,7 +722,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         builder: (c) => HomeEticketing()));
                               },
                               icon: Image.asset(
-                                "images/ticket.png",
+                                "images/ticket (1).png",
                                 // "images/offer.png",
                               ),
                             ),
@@ -808,7 +808,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         builder: (c) => PosSalesScreen()));
                               },
                               icon: Image.asset(
-                                "images/sales (1).png",
+                                "images/sales-team.png",
                               ),
                             ),
                           ),
@@ -909,7 +909,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         builder: (c) => const PosTokoScreen()));
                               },
                               icon: Image.asset(
-                                "images/ecommerce.png",
+                                "images/shop.png",
                               ),
                             ),
                           ),
@@ -950,7 +950,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         builder: (c) => const QrScanner()));
                               },
                               icon: Image.asset(
-                                "images/qr-code (1).png",
+                                "images/qr-code-scan.png",
                               ),
                             ),
                           ),
