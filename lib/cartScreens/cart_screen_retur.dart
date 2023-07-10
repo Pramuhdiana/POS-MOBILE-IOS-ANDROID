@@ -7,7 +7,6 @@ import 'package:e_shop/database/model_allitems_retur.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/itemsScreens/items_photo_retur.dart';
-import 'package:e_shop/posToko/pos_toko_screen.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
 import 'package:e_shop/widgets/alert_dialog.dart';
@@ -41,14 +40,15 @@ class _CartScreenReturState extends State<CartScreenRetur> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey.shade200,
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           flexibleSpace: Container(
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
               colors: [
-                Colors.blueAccent,
-                Colors.lightBlueAccent,
+                Colors.white,
+                Colors.white,
               ],
               begin: FractionalOffset(0.0, 0.0),
               end: FractionalOffset(1.0, 0.0),
@@ -59,7 +59,7 @@ class _CartScreenReturState extends State<CartScreenRetur> {
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back_ios_new,
-              color: Colors.white,
+              color: Colors.black,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -68,6 +68,7 @@ class _CartScreenReturState extends State<CartScreenRetur> {
           title: const Text(
             "Cart Retur",
             style: TextStyle(
+              color: Colors.black,
               fontSize: 20,
               letterSpacing: 3,
             ),
@@ -144,7 +145,7 @@ class _CartScreenReturState extends State<CartScreenRetur> {
                 height: 35,
                 width: MediaQuery.of(context).size.width * 0.45,
                 decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.black,
                     borderRadius: BorderRadius.circular(25)),
                 child: MaterialButton(
                   onPressed: () {
@@ -184,7 +185,10 @@ class _CartScreenReturState extends State<CartScreenRetur> {
                               ),
                             ));
                   },
-                  child: const Text('Check Out'),
+                  child: const Text(
+                    'Check Out',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               )
             ],
@@ -257,16 +261,18 @@ class EmptyCart extends StatelessWidget {
             height: 50,
           ),
           Material(
-            color: Colors.blue,
+            color: Colors.black,
             borderRadius: BorderRadius.circular(25),
             child: MaterialButton(
               minWidth: MediaQuery.of(context).size.width * 0.6,
               onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => PosTokoScreen()));
+                Navigator.pop(context);
+
+                // Navigator.pushReplacement(context,
+                //     MaterialPageRoute(builder: (context) => PosTokoScreen()));
               },
               child: const Text(
-                'back to POS TOKO',
+                'back to POS RETUR',
                 style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),

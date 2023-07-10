@@ -18,7 +18,7 @@ class MainHistory extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back_ios_new,
-              color: Colors.blue,
+              color: Colors.black,
             ),
             onPressed: () {
               // Navigator.push(
@@ -33,8 +33,8 @@ class MainHistory extends StatelessWidget {
           automaticallyImplyLeading: false,
           centerTitle: true,
           bottom: const TabBar(
-              indicatorColor: Colors.blue,
-              indicatorWeight: 8,
+              indicatorColor: Colors.black,
+              indicatorWeight: 5,
               tabs: [
                 RepeatedTab(label: 'Invoice'),
                 RepeatedTab(label: 'Kembali Barang'),
@@ -61,7 +61,7 @@ class RepeatedTab extends StatelessWidget {
       child: Center(
           child: Text(
         label,
-        style: const TextStyle(color: Colors.blue),
+        style: const TextStyle(color: Colors.black),
       )),
     );
   }

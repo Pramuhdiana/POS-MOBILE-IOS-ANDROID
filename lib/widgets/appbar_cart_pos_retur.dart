@@ -2,6 +2,7 @@
 
 import 'package:e_shop/cartScreens/cart_screen_retur.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
+import 'package:e_shop/testing/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
@@ -31,10 +32,11 @@ class _AppbarCartReturState extends State<AppbarCartRetur> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Colors.white,
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back_ios_new,
-          color: Colors.white,
+          color: Colors.black,
         ),
         onPressed: () {
           // Navigator.push(
@@ -46,8 +48,8 @@ class _AppbarCartReturState extends State<AppbarCartRetur> {
         decoration: const BoxDecoration(
             gradient: LinearGradient(
           colors: [
-            Colors.blueAccent,
-            Colors.lightBlueAccent,
+            Colors.white,
+            Colors.white,
           ],
           begin: FractionalOffset(0.0, 0.0),
           end: FractionalOffset(1.0, 0.0),
@@ -59,6 +61,7 @@ class _AppbarCartReturState extends State<AppbarCartRetur> {
       title: Text(
         widget.title!.toString(),
         style: const TextStyle(
+          color: Colors.black,
           fontSize: 20,
           letterSpacing: 3,
         ),
@@ -79,18 +82,19 @@ class _AppbarCartReturState extends State<AppbarCartRetur> {
                       ? false
                       : true,
                   badgeStyle: const badges.BadgeStyle(
-                    badgeColor: Colors.green,
+                    badgeColor: AppColors.contentColorGreen,
                   ),
                   badgeContent: Text(
                     context.watch<PCartRetur>().getItems.length.toString(),
                     style: const TextStyle(
+                      color: Colors.black,
                       fontSize: 8,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   child: const Icon(
                     Icons.shopping_cart,
-                    color: Colors.white,
+                    color: Colors.black,
                     size: 35,
                   ),
                 ),

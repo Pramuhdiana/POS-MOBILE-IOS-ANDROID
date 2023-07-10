@@ -47,8 +47,8 @@ class _ItemsPhoto extends State<ItemsPhoto> {
           decoration: const BoxDecoration(
               gradient: LinearGradient(
             colors: [
-              Colors.blueAccent,
-              Colors.lightBlueAccent,
+              Colors.white,
+              Colors.white,
             ],
             begin: FractionalOffset(0.0, 0.0),
             end: FractionalOffset(1.0, 0.0),
@@ -59,7 +59,7 @@ class _ItemsPhoto extends State<ItemsPhoto> {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.white,
+            color: Colors.black,
           ),
           onPressed: () {
             Navigator.pop(context);

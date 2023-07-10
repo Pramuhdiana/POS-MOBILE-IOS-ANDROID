@@ -43,6 +43,7 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
   String query = ''; //filter
   String queryBrandId = '';
   String? title = '';
+  int qtyProduct = 0;
 
   @override
   void initState() {
@@ -60,7 +61,7 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 243, 237, 237),
+      backgroundColor: Colors.white,
       appBar: AppbarCartToko(
         title: title,
       ),
@@ -102,12 +103,11 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                         DbAllitemsToko.db.getAllitemsToko(idtoko);
                       });
                     },
-                    dropdownDecoratorProps: DropDownDecoratorProps(
+                    dropdownDecoratorProps: const DropDownDecoratorProps(
                       dropdownSearchDecoration: InputDecoration(
                         labelText: 'Choose customer',
                         filled: true,
-                        fillColor:
-                            Theme.of(context).inputDecorationTheme.fillColor,
+                        fillColor: Colors.white,
                       ),
                     ),
                   ),
@@ -120,9 +120,9 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                 Expanded(
                   child: DropdownSearch<String>(
                     items: const ["PAMERAN", "TITIPAN"],
-                    onChanged: (text) {
+                    onChanged: (jenisform) {
                       setState(() {
-                        jenisform = text;
+                        jenisform = jenisform;
                         if (jenisform == "TITIPAN") {
                           idform = 3;
                           jenisform = "null";
@@ -132,12 +132,11 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                         }
                       });
                     },
-                    dropdownDecoratorProps: DropDownDecoratorProps(
+                    dropdownDecoratorProps: const DropDownDecoratorProps(
                       dropdownSearchDecoration: InputDecoration(
                         labelText: 'Select type of form',
                         filled: true,
-                        fillColor:
-                            Theme.of(context).inputDecorationTheme.fillColor,
+                        fillColor: Colors.white,
                       ),
                     ),
                   ),
@@ -146,8 +145,8 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
             ),
             SizedBox(
               child: Text(
-                '${sharedPreferences!.getString("total_product_toko")!} product ',
-                style: const TextStyle(fontSize: 20, color: Colors.blue),
+                '$qtyProduct product ',
+                style: const TextStyle(fontSize: 20, color: Colors.black),
               ),
             ),
             Expanded(
@@ -156,9 +155,11 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                 builder: (context, AsyncSnapshot dataSnapshot) {
                   if (dataSnapshot.hasData) //if brands exists
                   {
-                    sharedPreferences!.setString('total_product_toko',
-                        dataSnapshot.data.length.toString());
-                    print(idtoko);
+                    DbAllitemsToko.db.getAllitemsToko(idtoko).then((value) {
+                      setState(() {
+                        qtyProduct = value.length;
+                      });
+                    });
                     return GridView.builder(
                       shrinkWrap: true,
                       gridDelegate:
@@ -190,9 +191,9 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                       itemCount: dataSnapshot.data.length,
                     );
                   } else if (dataSnapshot.hasError) {
-                    return const CircularProgressIndicator();
+                    return const CircularProgressIndicator(color: Colors.black);
                   } //if data NOT exists
-                  return const CircularProgressIndicator();
+                  return const CircularProgressIndicator(color: Colors.black);
                   //   }, else //if data NOT exists
                   // {
                   //   return const SliverToBoxAdapter(
@@ -222,9 +223,12 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (c) => const QrScannerToko()));
               },
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.black,
               splashColor: Colors.white,
-              child: const Icon(Icons.add_a_photo_outlined),
+              child: const Icon(
+                Icons.add_a_photo_outlined,
+                color: Colors.white,
+              ),
             ),
     );
   }
@@ -238,10 +242,10 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
     );
 
     final data = response.data;
+
     if (data != null) {
       return UserModel.fromJsonList(data);
     }
-
     return [];
   }
 
@@ -255,9 +259,8 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
       decoration: !isSelected
           ? null
           : BoxDecoration(
-              border: Border.all(color: Theme.of(context).primaryColor),
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.white,
+              border: Border.all(color: Colors.black, width: 5),
+              borderRadius: BorderRadius.circular(50),
             ),
       child: ListTile(
         selected: isSelected,

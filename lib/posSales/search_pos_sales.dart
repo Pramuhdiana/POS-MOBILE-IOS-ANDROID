@@ -63,21 +63,24 @@ class _SearchPosSales extends State<SearchPosSales> {
                     padding: const EdgeInsets.only(right: 10),
                     child: Row(
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: SizedBox(
-                            height: 100,
-                            width: 100,
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
-                              placeholder: (context, url) =>
-                                  const CircularProgressIndicator(),
-                              errorWidget: (context, url, error) => Image.asset(
-                                "images/noimage.png",
+                        Card(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: SizedBox(
+                              height: 100,
+                              width: 100,
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    Image.asset(
+                                  "images/noimage.png",
+                                ),
+                                height: 124,
+                                fit: BoxFit.cover,
                               ),
-                              height: 124,
-                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
@@ -152,7 +155,7 @@ class _SearchPosSales extends State<SearchPosSales> {
                           hoverColor: Colors.green,
                           icon: const Icon(
                             Icons.shopping_cart,
-                            color: Colors.blue,
+                            color: Colors.black,
                           ),
                         ),
                         const SizedBox(

@@ -13,6 +13,7 @@ import 'package:e_shop/database/model_allitems_toko.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/provider/provider_cart.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
+import 'package:e_shop/testing/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
@@ -69,6 +70,9 @@ class _QrScannerTokoState extends State<QrScannerToko> {
       ),
       bottomNavigationBar: BottomAppBar(
           child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white, // Background color
+        ),
         onPressed: () {
           controller?.stopCamera();
           Navigator.push(
@@ -80,7 +84,7 @@ class _QrScannerTokoState extends State<QrScannerToko> {
             showBadge:
                 context.read<PCartToko>().getItems.isEmpty ? false : true,
             badgeStyle: const badges.BadgeStyle(
-              badgeColor: Colors.green,
+              badgeColor: AppColors.contentColorGreen,
             ),
             badgeContent: Text(
               context.watch<PCartToko>().getItems.length.toString(),
@@ -91,7 +95,7 @@ class _QrScannerTokoState extends State<QrScannerToko> {
             ),
             child: const Icon(
               Icons.shopping_cart_checkout,
-              color: Colors.white,
+              color: Colors.black,
               size: 50,
             ),
           ),
@@ -112,7 +116,7 @@ class _QrScannerTokoState extends State<QrScannerToko> {
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(
-          borderColor: Colors.blue,
+          borderColor: Colors.white,
           borderRadius: 10,
           borderLength: 40,
           borderWidth: 10,
@@ -190,10 +194,10 @@ class _QrScannerTokoState extends State<QrScannerToko> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade300,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.grey.shade300,
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
@@ -224,7 +228,7 @@ class _QrScannerTokoState extends State<QrScannerToko> {
                     padding: const EdgeInsets.only(top: 0),
                     child: Container(
                       decoration: BoxDecoration(
-                          color: Colors.blue,
+                          color: Colors.black,
                           borderRadius: BorderRadius.circular(25)),
                       height: 30,
                       width: MediaQuery.of(context).size.width * 0.75,

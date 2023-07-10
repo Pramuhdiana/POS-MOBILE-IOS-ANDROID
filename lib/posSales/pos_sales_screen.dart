@@ -52,10 +52,16 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
   String kodeRefrensi = 'null';
   List<Products> products = [];
   var isLoading = false;
+  int? qtyProduct = 0;
 
   @override
   void initState() {
     super.initState();
+    DbAllitems.db.getAllitems().then((value) {
+      setState(() {
+        qtyProduct = value.length;
+      });
+    });
     title = 'POS ${sharedPreferences!.getString("name")!}';
     list = [];
     DbAllKodekeluarbarang.db.getAllkeluarbarang().then((listMap) {
@@ -78,7 +84,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 237, 237, 237),
+      backgroundColor: Colors.white,
       appBar: AppBarWithCartBadgeSales(
         title: title,
       ),
@@ -95,22 +101,22 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                 ),
                 DropdownButton(
                   style: const TextStyle(
-                      color: Colors.blue, //<-- SEE HERE
+                      color: Colors.black, //<-- SEE HERE
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                   icon: const Icon(
                     Icons.arrow_drop_down,
-                    color: Colors.blue, // <-- SEE HERE
+                    color: Colors.black, // <-- SEE HERE
                   ),
                   underline: Container(
                     height: 2,
-                    color: Colors.blue, //<-- SEE HERE
+                    color: Colors.black, //<-- SEE HERE
                   ),
                   focusColor: Colors.white,
                   value: selectedOmzet,
                   hint: const Text(
                     'Refrence code',
-                    style: TextStyle(color: Colors.blue),
+                    style: TextStyle(color: Colors.black),
                   ),
                   onChanged: (value) {
                     print(value);
@@ -121,119 +127,42 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                   },
                   items: list,
                 ),
-                // DropdownSearch<KodeKeluarbarang>(
-                //   asyncItems: (String? filter) => getData(filter),
-                //   popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                //     showSelectedItems: true,
-                //     itemBuilder: _lostKodebarangkeluar,
-                //     showSearchBox: true,
-                //   ),
-                //   compareFn: (item, sItem) =>
-                //       item.kode_refrensi == sItem.kode_refrensi,
-                //   onChanged: (item) {
-                //     setState(() {
-                //       kodeRefrensi = item.toString();
-                //       // sharedPreferences!
-                //       //     .setString('customer_id', idtoko.toString());
-                //       // loadCartFromApiPOSTOKO();
-                //       DbAllitems.db.getAllitemsBykode(kodeRefrensi);
-                //     });
-                //   },
-                //   dropdownDecoratorProps: DropDownDecoratorProps(
-                //     dropdownSearchDecoration: InputDecoration(
-                //       labelText: 'Kode Keluar Barang',
-                //       filled: true,
-                //       fillColor:
-                //           // Colors.white,
-                //           Theme.of(context).inputDecorationTheme.fillColor,
-                //     ),
-                //   ),
-                // ),
                 SizedBox(
                   child: Text(
-                    '${sharedPreferences!.getString("total_product_sales")} product ',
-                    style: const TextStyle(fontSize: 20, color: Colors.blue),
+                    '$qtyProduct product ',
+                    style: const TextStyle(fontSize: 20, color: Colors.black),
                   ),
                 ),
                 Expanded(
-                  // child: CustomScrollView(
-                  // slivers: [
-                  // StreamBuilder<QuerySnapshot<Object?>>(
-                  //   stream: FirebaseFirestore.instance
-                  //       .collection('allitems')
-                  //       .where('sales_id', isEqualTo: int.parse(id!))
-                  //       .where('posisi_id', isEqualTo: 3)
-                  //       .snapshots(),
-                  // isEqualTo: sharedPreferences!.getString("uid")!)
                   child: FutureBuilder(
                     future: kodeRefrensi == 'null'
                         ? DbAllitems.db.getAllitems()
                         : DbAllitems.db.getAllitemsBykode(kodeRefrensi),
                     builder:
                         (BuildContext context, AsyncSnapshot dataSnapshot) {
-                      // dataSnapshot.data.length;
-
                       if (dataSnapshot.hasData) //if brands exists
                       {
-                        // return ListView.separated(
-                        // return SliverStaggeredGrid.countBuilder(
-                        // crossAxisCount: 2,
-                        // staggeredTileBuilder: (c) => const StaggeredTile.fit(1),
-                        // itemBuilder: ((context, index) {
-                        //   var item = (dataSnapshot.data as List<Items>)[index];
-                        //   return
-                        //       // Column(
-                        //       //   children: [
-                        //       SalesItemsUiDesign(
-                        //     items: Items(
-                        //         id: item.id,
-                        //         name: item.name,
-                        //         slug: item.slug,
-                        //         image_name: item.image_name,
-                        //         description: item.description,
-                        //         price: item.price,
-                        //         category_id: item.category_id,
-                        //         posisi_id: item.posisi_id,
-                        //         customer_id: item.customer_id,
-                        //         kode_refrensi: item.kode_refrensi,
-                        //         sales_id: item.sales_id,
-                        //         brand_id: item.brand_id,
-                        //         qty: item.qty,
-                        //         status_titipan: item.status_titipan,
-                        //         keterangan_barang: item.keterangan_barang,
-                        //         created_at: item.created_at,
-                        //         updated_at: item.updated_at),
-                        //     // ),
-                        //     // SizedBox(height: 5)
-                        //     // ],
-                        //   );
-                        // }),
-                        // separatorBuilder: (context, index) {
-                        //   return const Divider();
-                        // },
-                        // itemCount: (dataSnapshot.data as List<Items>).length);
-                        // return Text('oke');
-                        //display brands
-                        sharedPreferences!.setString('total_product_sales',
-                            dataSnapshot.data.length.toString());
+                        kodeRefrensi == 'null'
+                            ? DbAllitems.db
+                                .getAllitems()
+                                .then((value) => {qtyProduct = value.length})
+                            : DbAllitems.db
+                                .getAllitemsBykode(kodeRefrensi)
+                                .then((value) => {
+                                      setState(
+                                        () {
+                                          qtyProduct = value.length;
+                                        },
+                                      )
+                                    });
                         return GridView.builder(
-                          // physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2),
-                          // separatorBuilder: (context, index) => const Divider(
-                          //   color: Colors.black12,
-                          // ),
-                          // return SliverStaggeredGrid.countBuilder(
-                          // crossAxisCount: 2,
-                          // staggeredTileBuilder: (c) => const StaggeredTile.fit(1),
                           itemBuilder: (BuildContext context, int index) {
-                            // ModelAllitems itemsModel = ModelAllitems.fromJson(
-                            // Items itemsModel = Items.fromJson(
-                            // dataSnapshot.data.docs[index].data()
-                            // as Map<String, dynamic>,
-                            // );
+                            sharedPreferences!.setString('total_product_sales',
+                                dataSnapshot.data.length.toString());
                             var item = (dataSnapshot.data[index]);
                             return SalesItemsUiDesign(
                               model: ModelAllitems(
@@ -252,8 +181,6 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                                   qty: item.qty,
                                   status_titipan: item.status_titipan,
                                   keterangan_barang: item.keterangan_barang),
-
-                              // model: itemsModel,
                             );
                           },
                           itemCount: dataSnapshot.data.length,
@@ -275,23 +202,13 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
           Navigator.push(
               context, MaterialPageRoute(builder: (c) => const QrScanner()));
         },
-        backgroundColor: Colors.blue,
-        splashColor: Colors.white,
-        child: const Icon(Icons.add_a_photo_outlined),
+        backgroundColor: Colors.black,
+        splashColor: Colors.black,
+        child: const Icon(
+          Icons.add_a_photo_outlined,
+          color: Colors.white,
+        ),
       ),
-      // bottomNavigationBar: const MainScreen()
-      //  BottomAppBar(
-      //     child: ElevatedButton(
-      //   onPressed: () {
-      //     Navigator.push(
-      //         context, MaterialPageRoute(builder: (c) => const HomeScreen()));
-      //   },
-      //   child: const Icon(
-      //     Icons.home,
-      //     color: Colors.white,
-      //     size: 50,
-      //   ),
-      // )),
     );
   }
 

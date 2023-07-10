@@ -33,7 +33,7 @@ class DbAllitems {
         onCreate: (Database db, int version) async {
       await db.execute('''
       CREATE TABLE allitems(
-          id INTEGER,
+          id INTEGER PRIMARY KEY,
           name TEXT,
           slug TEXT,
           image_name TEXT,
@@ -195,15 +195,15 @@ class DbAllKodekeluarbarang {
   }
 
   Future<List<Map<String, Object?>>> getAllkeluarbarang() async {
-    // id;
+// Future<List<Map<String, Object?>>> getAllinvoicesnumber(idtoko) async {
+//     final db = await database;
+//     return await db.rawQuery(
+//         'SELECT * FROM alltransaksi WHERE user_id=? and customer_id=? ORDER BY invoices_number DESC',
+//         [sharedPreferences!.getString('id'), idtoko]);
+//   }
     final db = await database;
-    // final res = await db.rawQuery("SELECT * FROM allkodekeluarbarang");
-
-    // List<ModelAllKodekeluarbarang> list = res.isNotEmpty
-    //     ? res.map((c) => ModelAllKodekeluarbarang.fromJson(c)).toList()
-    //     : [];
-
-    // return list;
-    return await db.rawQuery("SELECT * FROM allkodekeluarbarang");
+    return await db.rawQuery(
+        'SELECT * FROM allkodekeluarbarang WHERE kode_refrensi!=?', ['null']);
+    // return await db.rawQuery('SELECT * FROM allkodekeluarbarang');
   }
 }

@@ -35,9 +35,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PCartRetur()),
       ],
       child: MaterialApp(
-        title: 'Sales App',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.primaryBlack,
         ),
         debugShowCheckedModeBanner: false,
         home: const MySplashScreen(),

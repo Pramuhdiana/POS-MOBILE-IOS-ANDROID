@@ -1,6 +1,7 @@
 // ignore_for_file: sort_child_properties_last
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class MyAlertDilaog {
   static void showMyDialog({
@@ -17,7 +18,7 @@ class MyAlertDilaog {
         content: Text(content),
         actions: <CupertinoDialogAction>[
           CupertinoDialogAction(
-            child: const Text('No'),
+            child: const Text('No', style: TextStyle(color: Colors.black)),
             onPressed: tabNo,
           ),
           CupertinoDialogAction(

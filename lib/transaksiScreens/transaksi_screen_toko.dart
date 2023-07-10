@@ -5,10 +5,13 @@ import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
+import 'package:e_shop/widgets/custom_loading.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 import '../provider/provider_cart_toko.dart';
 import 'package:http/http.dart' as http;
@@ -21,6 +24,8 @@ class TransaksiScreenToko extends StatefulWidget {
 }
 
 class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
+  RoundedLoadingButtonController btnController =
+      RoundedLoadingButtonController();
   String qty = '';
   String orderId = DateTime.now().second.toString();
   String? form;
@@ -92,287 +97,249 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: const Text("Billing Information Toko"), centerTitle: true),
-      body: Padding(
-        padding: const EdgeInsets.all(25),
-        child: Form(
-          key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: ListView(
-            padding: const EdgeInsets.all(4),
-            children: <Widget>[
-              //jenis form
-              const SizedBox(
-                height: 10,
-              ),
-              const Text("Select type of form"),
-              const Divider(),
-              Row(
-                children: [
-                  const Padding(padding: EdgeInsets.all(4)),
-                  Expanded(
-                    child: DropdownSearch<String>(
-                      items: const ["INVOICE", "KEMBALI BARANG"],
-                      onChanged: (text) {
-                        setState(() {
-                          form = text;
-                          if (form == "INVOICE") {
-                            idform = 1;
-                            idformAPI = 1;
-                            print(idform);
-                          } else if (form == "KEMBALI BARANG") {
-                            idform = 4;
-                            idformAPI = 4;
-                            print(idform);
-                          } else {
-                            idform = 0;
-                            print(idform);
-                          }
-                          qty = context
-                              .read<PCartToko>()
-                              .getItems
-                              .length
-                              .toString();
-                          print(sharedPreferences!.getString("toko"));
-                        });
-                      },
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          labelText: 'Jenis Form',
-                          filled: true,
-                          fillColor:
-                              Theme.of(context).inputDecorationTheme.fillColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              //Rate
-              if (idform != 4)
-                const SizedBox(
-                  height: 10,
-                ),
-              if (idform != 4) const Text("Rate"),
-              if (idform != 4) const Divider(),
-              if (idform != 4)
-                Row(
-                  children: [
-                    const Padding(padding: EdgeInsets.all(4)),
-                    Expanded(
-                      child: DropdownSearch<int>(
-                        items: const [11500, 11900, 13000],
-                        onChanged: (value) {
-                          setState(() {
-                            rate = value!;
-                          });
-                        },
-                        dropdownDecoratorProps: DropDownDecoratorProps(
-                          dropdownSearchDecoration: InputDecoration(
-                            labelText: 'Rate',
-                            filled: true,
-                            fillColor: Theme.of(context)
-                                .inputDecorationTheme
-                                .fillColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
-              //Basic Diskon
-              if (idform != 4)
-                const SizedBox(
-                  height: 10,
-                ),
-              if (idform != 4) const Text("Basic Diskon"),
-              if (idform != 4) const Divider(),
-              if (idform != 4)
-                Row(
-                  children: [
-                    const Padding(padding: EdgeInsets.all(4)),
-                    Expanded(
-                      child: DropdownSearch<int>(
-                        items: const [60, 63],
-                        onChanged: (value) {
-                          setState(() {
-                            diskon = value!;
-                          });
-                        },
-                        dropdownDecoratorProps: DropDownDecoratorProps(
-                          dropdownSearchDecoration: InputDecoration(
-                            labelText: 'Basic Diskon',
-                            filled: true,
-                            fillColor: Theme.of(context)
-                                .inputDecorationTheme
-                                .fillColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-//addesdiskon
-              if (idform != 4)
-                const SizedBox(
-                  height: 10,
-                ),
-              if (idform != 4) const Text("ADD DISKON"),
-              if (idform != 4) const Divider(),
-              if (idform != 4)
-                SizedBox(
-                  width: 250,
-                  child: TextField(
-                    onChanged: (addDiskon) {
-                      setState(() {
-                        addesdiskon = int.parse(addDiskon);
-                      });
-                    },
-                    decoration: const InputDecoration(labelText: "ADD DISKON"),
-                    controller: addDiskon,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                  ),
-                ),
-
-              //DP
-              if (idform != 4)
-                const SizedBox(
-                  height: 10,
-                ),
-              if (idform != 4) const Text("DP"),
-              if (idform != 4) const Divider(),
-              if (idform != 4)
-                SizedBox(
-                  width: 250,
-                  child: TextField(
-                    onChanged: (dp) {
-                      setState(() {
-                        dpp = int.parse(dp);
-                      });
-                    },
-                    decoration: const InputDecoration(labelText: "DP"),
-                    controller: dp,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                  ),
-                ),
-
-              const SizedBox(height: 30),
-              const Divider(
-                color: Colors.black,
-                thickness: 5,
-              ),
-
-              const Text("Total"),
-              // Text(
-              //   "$total",
-              //   style: TextStyle(fontSize: 40),
-              // ),
-              Text(
-                "$totalPrice3",
-                style: const TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red),
-              ),
-            ],
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: const Text(
+            "Billing Information",
+            style: TextStyle(color: Colors.black),
+          ),
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              // Navigator.push(
+              //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
+              Navigator.pop(context);
+            },
           ),
         ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-          child: ElevatedButton(
-        onPressed: () {
-          showModalBottomSheet(
-              context: context,
-              builder: (context) => SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 100),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            'Total : $totalPrice3',
-                            style: const TextStyle(fontSize: 24),
+        body: Padding(
+          padding: const EdgeInsets.all(25),
+          child: Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: ListView(
+              padding: const EdgeInsets.all(4),
+              children: <Widget>[
+                //jenis form
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text("Select type of form"),
+                const Divider(),
+                Row(
+                  children: [
+                    const Padding(padding: EdgeInsets.all(4)),
+                    Expanded(
+                      child: DropdownSearch<String>(
+                        items: const ["INVOICE", "KEMBALI BARANG"],
+                        onChanged: (text) {
+                          setState(() {
+                            form = text;
+                            if (form == "INVOICE") {
+                              idform = 1;
+                              idformAPI = 1;
+                              print(idform);
+                            } else if (form == "KEMBALI BARANG") {
+                              idform = 4;
+                              idformAPI = 4;
+                              print(idform);
+                            } else {
+                              idform = 0;
+                              print(idform);
+                            }
+                            qty = context
+                                .read<PCartToko>()
+                                .getItems
+                                .length
+                                .toString();
+                            print(sharedPreferences!.getString("toko"));
+                          });
+                        },
+                        dropdownDecoratorProps: DropDownDecoratorProps(
+                          dropdownSearchDecoration: InputDecoration(
+                            labelText: 'Jenis Form',
+                            filled: true,
+                            fillColor: Theme.of(context)
+                                .inputDecorationTheme
+                                .fillColor,
                           ),
-                          ElevatedButton(
-                              onPressed: () async {
-                                showProgress();
-                                await postAPItoko();
-                                if (idform == 1) {
-                                  // print("invoice dari toko");
-                                  // //invoice
-                                  // for (var item
-                                  //     in context.read<PCartToko>().getItems) {
-                                  //   FirebaseFirestore.instance
-                                  //       .collection('allitemstoko')
-                                  //       .doc(item.name)
-                                  //       .delete();
-                                  //   print('delete data firebase berhasil');
-                                  // }
-                                  context.read<PCartToko>().clearCart();
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (c) =>
-                                              const MySplashScreenTransaksi()));
-                                } else {
-                                  // for (var item
-                                  //     in context.read<PCartToko>().getItems) {
-                                  //   CollectionReference orderRef =
-                                  //       FirebaseFirestore.instance
-                                  //           .collection('allitemstoko');
-                                  //   await orderRef.doc(item.name).set({
-                                  //     'brand_id': 9999,
-                                  //     'category_id': '1',
-                                  //     'created_at': DateTime.now(),
-                                  //     'customer_id': sharedPreferences!
-                                  //         .getString('customer_id')
-                                  //         .toString(),
-                                  //     'description': item.description,
-                                  //     'id': int.parse(item.documentId),
-                                  //     'image_name': item.imageUrl,
-                                  //     'keterangan_barang':
-                                  //         item.keterangan_barang,
-                                  //     'kode_refrensi': 'null',
-                                  //     'name': item.name,
-                                  //     'posisi_id': 3,
-                                  //     'price':
-                                  //         item.price, //harus int atau double
-                                  //     'qty': 1, //harus int
-                                  //     'sales_id': int.parse(id!),
-                                  //     'slug': item.name,
-                                  //     'status_titipan': 99,
-                                  //     'updated_at': DateTime.now()
-                                  //   });
-                                  // }
-                                  //kembali barang
-                                  print("kembali barang dari toko");
-                                  context.read<PCartToko>().clearCart();
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (c) =>
-                                              const MySplashScreenTransaksi()));
-                                }
-                              },
-                              child: const Text('Save'))
-                        ],
+                        ),
                       ),
                     ),
-                  ));
-        },
-        child: const Text('Save Transaksi'),
-      )),
-    );
+                  ],
+                ),
+
+                //Rate
+                if (idform != 4)
+                  const SizedBox(
+                    height: 10,
+                  ),
+                if (idform != 4) const Text("Rate"),
+                if (idform != 4) const Divider(),
+                if (idform != 4)
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.all(4)),
+                      Expanded(
+                        child: DropdownSearch<int>(
+                          items: const [11500, 11900, 13000],
+                          onChanged: (value) {
+                            setState(() {
+                              rate = value!;
+                            });
+                          },
+                          dropdownDecoratorProps: DropDownDecoratorProps(
+                            dropdownSearchDecoration: InputDecoration(
+                              labelText: 'Rate',
+                              filled: true,
+                              fillColor: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .fillColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                //Basic Diskon
+                if (idform != 4)
+                  const SizedBox(
+                    height: 10,
+                  ),
+                if (idform != 4) const Text("Basic Diskon"),
+                if (idform != 4) const Divider(),
+                if (idform != 4)
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.all(4)),
+                      Expanded(
+                        child: DropdownSearch<int>(
+                          items: const [60, 63],
+                          onChanged: (value) {
+                            setState(() {
+                              diskon = value!;
+                            });
+                          },
+                          dropdownDecoratorProps: DropDownDecoratorProps(
+                            dropdownSearchDecoration: InputDecoration(
+                              labelText: 'Basic Diskon',
+                              filled: true,
+                              fillColor: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .fillColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+//addesdiskon
+                if (idform != 4)
+                  const SizedBox(
+                    height: 10,
+                  ),
+                if (idform != 4) const Text("ADD DISKON"),
+                if (idform != 4) const Divider(),
+                if (idform != 4)
+                  SizedBox(
+                    width: 250,
+                    child: TextField(
+                      onChanged: (addDiskon) {
+                        setState(() {
+                          addesdiskon = int.parse(addDiskon);
+                        });
+                      },
+                      decoration:
+                          const InputDecoration(labelText: "ADD DISKON"),
+                      controller: addDiskon,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                    ),
+                  ),
+
+                //DP
+                if (idform != 4)
+                  const SizedBox(
+                    height: 10,
+                  ),
+                if (idform != 4) const Text("DP"),
+                if (idform != 4) const Divider(),
+                if (idform != 4)
+                  SizedBox(
+                    width: 250,
+                    child: TextField(
+                      onChanged: (dp) {
+                        setState(() {
+                          dpp = int.parse(dp);
+                        });
+                      },
+                      decoration: const InputDecoration(labelText: "DP"),
+                      controller: dp,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                    ),
+                  ),
+
+                const SizedBox(height: 30),
+                const Divider(
+                  color: Colors.black,
+                  thickness: 5,
+                ),
+
+                const Text("Total"),
+                // Text(
+                //   "$total",
+                //   style: TextStyle(fontSize: 40),
+                // ),
+                Text(
+                  "$totalPrice3",
+                  style: const TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red),
+                ),
+              ],
+            ),
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(left: 50, right: 50, bottom: 20),
+          child: CustomLoadingButton(
+            controller: btnController,
+            onPressed: () {
+              formValidation();
+            },
+            backgroundColor: Colors.black,
+            child: const Text(
+              "Save Transaction",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ));
+  }
+
+  formValidation() async {
+    if (form == null) {
+      btnController.error(); //error
+      await Future.delayed(const Duration(seconds: 2)).then((value) {});
+      btnController.reset(); //error
+      Fluttertoast.showToast(msg: 'Jenis form required');
+    } else {
+      await postAPItoko();
+      btnController.success(); //sucses
+      context.read<PCartToko>().clearCart(); //clear cart
+      Navigator.push(context,
+          MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
+    }
   }
 
   postAPItoko() async {

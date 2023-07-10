@@ -70,22 +70,23 @@ class _DashboardErickState extends State<DashboardErick> {
       resizeToAvoidBottomInset: false, //anti error jika keyboard active
       appBar: AppBar(
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-            colors: [
-              Colors.blueAccent,
-              Colors.lightBlueAccent,
-            ],
-            begin: FractionalOffset(0.0, 0.0),
-            end: FractionalOffset(1.0, 0.0),
-            stops: [0.0, 1.0],
-            tileMode: TileMode.clamp,
-          )),
+          color: Colors.white,
+          // decoration: const BoxDecoration(
+          //     gradient: LinearGradient(
+          //   colors: [
+          //     Colors.blueAccent,
+          //     Colors.lightBlueAccent,
+          //   ],
+          //   begin: FractionalOffset(0.0, 0.0),
+          //   end: FractionalOffset(1.0, 0.0),
+          //   stops: [0.0, 1.0],
+          //   tileMode: TileMode.clamp,
+          // )),
         ),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.white,
+            color: Colors.black,
           ),
           onPressed: () {
             Navigator.pop(context);

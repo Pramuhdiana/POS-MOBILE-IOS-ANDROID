@@ -98,10 +98,11 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
   uploadFormScreen() {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.white,
+            color: Colors.black,
           ),
           onPressed: () {
             // Navigator.push(
@@ -110,17 +111,18 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
           },
         ),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-            colors: [
-              Colors.blueAccent,
-              Colors.lightBlueAccent,
-            ],
-            begin: FractionalOffset(0.0, 0.0),
-            end: FractionalOffset(1.0, 0.0),
-            stops: [0.0, 1.0],
-            tileMode: TileMode.clamp,
-          )),
+          color: Colors.white,
+          // decoration: const BoxDecoration(
+          //     gradient: LinearGradient(
+          //   colors: [
+          //     Colors.blueAccent,
+          //     Colors.lightBlueAccent,
+          //   ],
+          //   begin: FractionalOffset(0.0, 0.0),
+          //   end: FractionalOffset(1.0, 0.0),
+          //   stops: [0.0, 1.0],
+          //   tileMode: TileMode.clamp,
+          // )),
         ),
         actions: [
           Padding(
@@ -132,11 +134,15 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
               },
               icon: const Icon(
                 Icons.cloud_upload,
+                color: Colors.black,
               ),
             ),
           ),
         ],
-        title: const Text("Upload New toko"),
+        title: const Text(
+          "Upload New toko",
+          style: TextStyle(color: Colors.black),
+        ),
         centerTitle: true,
       ),
       body: ListView(
@@ -166,7 +172,7 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
           ),
 
           const Divider(
-            color: Colors.blueAccent,
+            color: Colors.black,
             thickness: 1,
           ),
 
@@ -174,7 +180,7 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
           ListTile(
             leading: const Icon(
               Icons.store,
-              color: Colors.blue,
+              color: Colors.black,
             ),
             title: SizedBox(
               width: 250,
@@ -182,14 +188,14 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
                 controller: tokoNameTextEditingController,
                 decoration: const InputDecoration(
                   hintText: "Name Toko",
-                  hintStyle: TextStyle(color: Colors.grey),
+                  hintStyle: TextStyle(color: Colors.black),
                   border: InputBorder.none,
                 ),
               ),
             ),
           ),
           const Divider(
-            color: Colors.blueAccent,
+            color: Colors.black,
             thickness: 1,
           ),
 
@@ -197,7 +203,7 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
           ListTile(
             leading: const Icon(
               Icons.contact_phone,
-              color: Colors.deepPurple,
+              color: Colors.black,
             ),
             title: SizedBox(
               width: 250,
@@ -205,14 +211,14 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
                 controller: tokoNoKontakController,
                 decoration: const InputDecoration(
                   hintText: "No Kontak",
-                  hintStyle: TextStyle(color: Colors.grey),
+                  hintStyle: TextStyle(color: Colors.black),
                   border: InputBorder.none,
                 ),
               ),
             ),
           ),
           const Divider(
-            color: Colors.pinkAccent,
+            color: Colors.black,
             thickness: 1,
           ),
 
@@ -220,7 +226,7 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
           ListTile(
             leading: const Icon(
               Icons.location_on_outlined,
-              color: Colors.blue,
+              color: Colors.black,
             ),
             title: SizedBox(
               width: 250,
@@ -228,14 +234,14 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
                 controller: tokoAddressTextEditingController,
                 decoration: const InputDecoration(
                   hintText: "Location",
-                  hintStyle: TextStyle(color: Colors.grey),
+                  hintStyle: TextStyle(color: Colors.black),
                   border: InputBorder.none,
                 ),
               ),
             ),
           ),
           const Divider(
-            color: Colors.pinkAccent,
+            color: Colors.black,
             thickness: 1,
           ),
         ],
@@ -252,10 +258,11 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
   defaultScreen() {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.white,
+            color: Colors.black,
           ),
           onPressed: () {
             // Navigator.push(
@@ -267,8 +274,8 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
           decoration: const BoxDecoration(
               gradient: LinearGradient(
             colors: [
-              Colors.blue,
-              Colors.blueAccent,
+              Colors.white,
+              Colors.white,
             ],
             begin: FractionalOffset(0.0, 0.0),
             end: FractionalOffset(1.0, 0.0),
@@ -277,7 +284,10 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
           )),
         ),
         automaticallyImplyLeading: false,
-        title: const Text("Add New toko"),
+        title: const Text(
+          "Add New toko",
+          style: TextStyle(color: Colors.black),
+        ),
         centerTitle: true,
       ),
       body: Container(
@@ -298,7 +308,7 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
             children: [
               const Icon(
                 Icons.add_photo_alternate_outlined,
-                color: Colors.blueAccent,
+                color: Colors.black,
                 size: 200,
               ),
               ElevatedButton(
@@ -306,13 +316,14 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
                     obtainImageDialogBox();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent,
+                    backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                   child: const Text(
                     "Add New toko",
+                    style: TextStyle(color: Colors.white),
                   )),
             ],
           ),
@@ -330,7 +341,7 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
             title: const Text(
               "Toko Image",
               style: TextStyle(
-                color: Colors.blue,
+                color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -342,7 +353,7 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
                 child: const Text(
                   "Capture image with Camera",
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: Colors.black,
                   ),
                 ),
               ),
@@ -353,7 +364,7 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
                 child: const Text(
                   "Select image from Gallery",
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: Colors.black,
                   ),
                 ),
               ),

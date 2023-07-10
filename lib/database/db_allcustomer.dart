@@ -32,7 +32,7 @@ class DbAllCustomer {
         onCreate: (Database db, int version) async {
       await db.execute('''
       CREATE TABLE allcustomer(
-          id INTEGER PRIMARY KEY,
+          id INTEGER,
           name TEXT,
           role INTEGER,
           alamat TEXT,
@@ -45,6 +45,8 @@ class DbAllCustomer {
                    )''');
     });
   }
+
+  // id INTEGER PRIMARY KEY,
 
   createAllcustomer(ModelAllCustomer newAllcustomer) async {
     final db = await database;

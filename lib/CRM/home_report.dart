@@ -25,7 +25,7 @@ class _HomeReportState extends State<HomeReport> {
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back_ios_new,
-              color: Colors.blue,
+              color: Colors.black,
             ),
             onPressed: () {
               // Navigator.push(
@@ -37,14 +37,14 @@ class _HomeReportState extends State<HomeReport> {
           elevation: 0,
           title: const Text(
             "CRM",
-            style: TextStyle(color: Colors.blue),
+            style: TextStyle(color: Colors.black),
           ),
           // title: const FakeSearch(),
           automaticallyImplyLeading: false,
           centerTitle: true,
           bottom: const TabBar(
-              indicatorColor: Colors.blue,
-              indicatorWeight: 8,
+              indicatorColor: Colors.black,
+              indicatorWeight: 5,
               tabs: [
                 RepeatedTab(label: 'Whatsapp'),
                 RepeatedTab(label: 'Telephone'),
@@ -63,7 +63,7 @@ class _HomeReportState extends State<HomeReport> {
                     },
                     icon: const Icon(
                       Icons.security_rounded,
-                      color: Colors.blue,
+                      color: Colors.black,
                     ),
                   ),
           ],
@@ -78,12 +78,15 @@ class _HomeReportState extends State<HomeReport> {
             Navigator.push(
                 context, MaterialPageRoute(builder: (c) => AddFormCRM()));
           },
-          label: const Text("Add report CRM"),
+          label: const Text(
+            "Add report CRM",
+            style: TextStyle(color: Colors.white),
+          ),
           icon: const Icon(
             Icons.add_circle_outline_sharp,
             color: Colors.white,
           ),
-          backgroundColor: Colors.blueAccent,
+          backgroundColor: Colors.black,
         ),
       ),
     );

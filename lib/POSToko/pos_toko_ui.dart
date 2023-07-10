@@ -54,7 +54,7 @@ class _PosTokoUi extends State<PosTokoUi> {
                 Text(
                   widget.model!.name.toString(),
                   style: const TextStyle(
-                    color: Colors.deepPurple,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 12,
                     letterSpacing: 3,
@@ -83,7 +83,7 @@ class _PosTokoUi extends State<PosTokoUi> {
                 Text(
                   "\$${widget.model!.price.toString()}",
                   style: const TextStyle(
-                    color: Color.fromARGB(255, 2, 8, 193),
+                    color: Colors.red,
                     fontSize: 12,
                   ),
                 ),
@@ -123,7 +123,7 @@ class _PosTokoUi extends State<PosTokoUi> {
                   hoverColor: Colors.green,
                   icon: const Icon(
                     Icons.shopping_cart,
-                    color: Colors.blue,
+                    color: Colors.black,
                   ),
                 ),
               ],

@@ -74,7 +74,7 @@ class _ItemsDetailsScreenState extends State<ItemsDetailsScreen> {
     return ScaffoldMessenger(
         key: _scaffoldKey,
         child: Scaffold(
-          backgroundColor: Color.fromARGB(255, 253, 248, 248),
+          backgroundColor: Colors.white,
           appBar: AppBarWithCartBadgeSales(
             title: widget.model!.name.toString(),
           ),
@@ -106,12 +106,15 @@ class _ItemsDetailsScreenState extends State<ItemsDetailsScreen> {
                 showSnackBar();
               }
             },
-            label: const Text("Add to Cart"),
+            label: const Text(
+              "Add to Cart",
+              style: TextStyle(color: Colors.white),
+            ),
             icon: const Icon(
               Icons.add_shopping_cart_rounded,
               color: Colors.white,
             ),
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: Colors.black,
           ),
           body: SingleChildScrollView(
             child: Column(
@@ -138,7 +141,8 @@ class _ItemsDetailsScreenState extends State<ItemsDetailsScreen> {
                       data: ThemeData(
                           hintColor: Colors.blue,
                           primarySwatch: Colors.blue,
-                          colorScheme: ColorScheme.light(primary: Colors.blue)),
+                          colorScheme:
+                              ColorScheme.light(primary: Colors.black)),
                       child: CartStepperInt(
                         count: counterLimit,
                         size: 30,
@@ -169,7 +173,7 @@ class _ItemsDetailsScreenState extends State<ItemsDetailsScreen> {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
-                      color: Colors.blueAccent,
+                      color: Colors.black,
                     ),
                   ),
                 ),
@@ -194,7 +198,7 @@ class _ItemsDetailsScreenState extends State<ItemsDetailsScreen> {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
-                      color: Colors.blue,
+                      color: Colors.black,
                     ),
                   ),
                 ),
@@ -203,7 +207,7 @@ class _ItemsDetailsScreenState extends State<ItemsDetailsScreen> {
                   child: Divider(
                     height: 1,
                     thickness: 2,
-                    color: Colors.blueAccent,
+                    color: Colors.black,
                   ),
                 ),
                 const SizedBox(

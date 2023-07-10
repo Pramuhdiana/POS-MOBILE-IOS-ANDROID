@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously, avoid_print
 
 import 'dart:math';
+import 'package:e_shop/search/new_search.dart';
 import 'package:intl/intl.dart';
 
 import 'package:collection/collection.dart';
@@ -11,11 +12,9 @@ import 'package:e_shop/testing/color_extensions.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:e_shop/api/api_constant.dart';
-import 'package:e_shop/cartScreens/cart_screen.dart';
 import 'package:e_shop/database/db_alltransaksi.dart';
 import 'package:e_shop/eTICKETING/home_ticketing.dart';
 import 'package:e_shop/global/global.dart';
-import 'package:badges/badges.dart' as badges;
 import 'package:e_shop/history/main_history.dart';
 import 'package:e_shop/posRetur/pos_retur_screen.dart';
 import 'package:e_shop/posSales/pos_sales_screen.dart';
@@ -91,10 +90,19 @@ class _HomeScreenState extends State<HomeScreen> {
   QRViewController? controller;
   XFile? imgXFile;
   final ImagePicker imagePicker = ImagePicker();
+
   @override
   void initState() {
     super.initState();
-    print(sharedPreferences!.getString('id'));
+
+    // CollectionReference _collectionRef =
+    //     FirebaseFirestore.instance.collection('UserTokens');
+    // Future<void> getData() async {
+    //   QuerySnapshot querySnapshot = await _collectionRef.get();
+    //   final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    //   print(allData);
+    // }
+
     year = DateFormat('y').format(DateTime.now());
     //jan
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('1', year).then((value) {
@@ -211,7 +219,6 @@ class _HomeScreenState extends State<HomeScreen> {
         listNominal.add(value[i].total_rupiah); //memasukan ke list
       }
       percentYear = (list / targetByYear);
-      print(percentYear);
       setState(() {
         (percentYear > 1.0)
             ? percentYear = 1.0
@@ -248,6 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         toolbarHeight: 0,
       ),
@@ -265,7 +273,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     children: <Widget>[
                       _bodyatas(),
-                      const SizedBox(height: 15),
+
+                      const SizedBox(height: 10),
+                      const Divider(
+                        height: 1,
+                        thickness: 2,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(height: 5),
+
                       _bodytengah(),
                       const SizedBox(height: 15),
                       _bodybawah(),
@@ -275,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Divider(
                           height: 1,
                           thickness: 5,
-                          color: Colors.blueAccent,
+                          color: Colors.black,
                         ),
                       ),
                       Text(
@@ -329,136 +345,96 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return RefreshIndicator(
-      onRefresh: refresh,
-      child: Container(
+        onRefresh: refresh,
+        child: Container(
           width: MediaQuery.of(context).size.width * 1.0,
           height: 90,
-          decoration: const BoxDecoration(color: Colors.blue),
+          decoration: const BoxDecoration(color: Colors.white),
           // decoration: const BoxDecoration(
           //     image: DecorationImage(
           //   image: AssetImage("images/bgatas2.png"),
           //   fit: BoxFit.cover,
           // )),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 40,
-                      width: 100,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0.0,
-                          backgroundColor: Colors.blue,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(100),
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 20.0),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Transform.scale(
+                          scale: 2.5,
+                          child: IconButton(
+                            onPressed: () {
+                              MyAlertDilaog.showMyDialog(
+                                  context: context,
+                                  title: 'Sign-Out',
+                                  content: 'Are you sure to sign-out ?',
+                                  tabNo: () {
+                                    Navigator.pop(context);
+                                  },
+                                  tabYes: () async {
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    prefs.clear();
+                                    prefs.setString('token', 'null');
+                                    // FirebaseAuth.instance.signOut();
+                                    await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (c) =>
+                                                const MySplashScreen()));
+                                  });
+                            },
+                            icon: Image.asset(
+                              "images/user.png",
+                              // size: 50,
                             ),
-                            // side: BorderSide(color: Colors.white)
                           ),
                         ),
-                        onPressed: () {
-                          MyAlertDilaog.showMyDialog(
-                              context: context,
-                              title: 'Sign-Out',
-                              content: 'Are you sure to sign-out ?',
-                              tabNo: () {
-                                Navigator.pop(context);
-                              },
-                              tabYes: () async {
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-                                // await DbAllitems.db.deleteAllitems();
-                                // await DbAllitemsToko.db.deleteAllitemsToko();
-                                // await DbAlltransaksi.db.deleteAlltransaksi();
-                                // await DbAlldetailtransaksi.db
-                                //     .deleteAlldetailtransaksi();
-                                prefs.clear();
-                                prefs.setString('token', 'null');
-                                // FirebaseAuth.instance.signOut();
-                                await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (c) =>
-                                            const MySplashScreen()));
-                              });
-                        },
-                        child: Transform.scale(
-                          scale: 1.8,
-                          child: ClipOval(
-                              child: Image.asset(
-                            "images/user.png",
-                          )
-                              //     child: CachedNetworkImage(
-                              //   imageUrl: sharedPreferences!.getString("photoUrl")!,
-                              //   fit: BoxFit.cover,
-                              // )
-                              ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 42.0,
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Good ${greeting()}, \n${sharedPreferences!.getString("name")!}",
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 42.0, right: 40),
-                child: Column(
-                  children: [
-                    Text(
-                      "Good ${greeting()}, \n${sharedPreferences!.getString("name")!}",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0, right: 20),
-                child: Column(
-                  children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, right: 10),
+                  child: Column(children: [
                     IconButton(
                       onPressed: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (c) => const CartScreen()));
+                                builder: (c) => NewSearchScreen()));
                       },
-                      icon: Padding(
-                        padding: const EdgeInsets.only(right: 30),
-                        child: badges.Badge(
-                          showBadge: context.read<PCart>().getItems.isEmpty
-                              ? false
-                              : true,
-                          badgeStyle: const badges.BadgeStyle(
-                            badgeColor: Colors.green,
-                          ),
-                          badgeContent: Text(
-                            context.watch<PCart>().getItems.length.toString(),
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          child: const Icon(
-                            Icons.shopping_cart,
-                            color: Colors.white,
-                            size: 50,
-                          ),
-                        ),
+                      icon: const Icon(
+                        Icons.search,
+                        color: Colors.black,
+                        size: 50,
                       ),
                     ),
-                  ],
+                  ]),
                 ),
-              ),
-            ],
-          )),
-    );
+              ]),
+        ));
   }
 
   Widget _bodytengah() {
@@ -526,7 +502,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Text(
                             'Monthly',
                             style: TextStyle(
-                              color: AppColors.contentColorBlue,
+                              color: AppColors.contentColorBlack,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
@@ -539,7 +515,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: IconButton(
                               icon: Icon(
                                 isPlaying ? Icons.pause : Icons.play_arrow,
-                                color: AppColors.contentColorBlue,
+                                color: AppColors.contentColorBlack,
                               ),
                               onPressed: () {
                                 setState(() {
@@ -584,7 +560,7 @@ class _HomeScreenState extends State<HomeScreen> {
           decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(
-                color: Colors.blue,
+                color: Colors.black,
               ),
               borderRadius: const BorderRadius.all(Radius.circular(30))),
           child: ListView(scrollDirection: Axis.horizontal, children: <Widget>[
@@ -615,7 +591,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               // builder: (c) => MainHistoryScreen()));
                             },
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.blueAccent),
+                              side: const BorderSide(color: Colors.black),
                               shape: const CircleBorder(),
                             ),
                             child: IconButton(
@@ -636,8 +612,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const Text(
                           "HISTORY",
-                          style: TextStyle(
-                              color: Colors.blueAccent, fontSize: 12.0),
+                          style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
                       ],
                     ),
@@ -656,7 +631,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       builder: (c) => HomeReport()));
                             },
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.blueAccent),
+                              side: const BorderSide(color: Colors.black),
                               shape: const CircleBorder(
                                   // borderRadius: BorderRadius.circular(360),
                                   ),
@@ -681,8 +656,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const Text(
                           "CRM",
-                          style: TextStyle(
-                              color: Colors.blueAccent, fontSize: 12.0),
+                          style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
                       ],
                     ),
@@ -702,7 +676,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           const UploadTokoScreen()));
                             },
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.blueAccent),
+                              side: const BorderSide(color: Colors.black),
                               shape: const CircleBorder(
                                   // borderRadius: BorderRadius.circular(360),
                                   ),
@@ -726,8 +700,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const Text(
                           "ADD TOKO",
-                          style: TextStyle(
-                              color: Colors.blueAccent, fontSize: 12.0),
+                          style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
                       ],
                     ),
@@ -746,7 +719,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       builder: (c) => HomeEticketing()));
                             },
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.blueAccent),
+                              side: const BorderSide(color: Colors.black),
                               shape: const CircleBorder(
                                   // borderRadius: BorderRadius.circular(360),
                                   ),
@@ -770,8 +743,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const Text(
                           "E-TICKETING",
-                          style: TextStyle(
-                              color: Colors.blueAccent, fontSize: 12.0),
+                          style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
                       ],
                     ),
@@ -785,7 +757,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: OutlinedButton(
                             onPressed: () {},
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.blueAccent),
+                              side: const BorderSide(color: Colors.black),
                               shape: const CircleBorder(
                                   // borderRadius: BorderRadius.circular(360),
                                   ),
@@ -811,8 +783,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const Text(
                           "SETTINGS",
-                          style: TextStyle(
-                              color: Colors.blueAccent, fontSize: 12.0),
+                          style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
                       ],
                     ),
@@ -841,7 +812,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       builder: (c) => PosSalesScreen()));
                             },
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.blueAccent),
+                              side: const BorderSide(color: Colors.black),
                               shape: const CircleBorder(),
                             ),
                             child: IconButton(
@@ -862,8 +833,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const Text(
                           "POS SALES",
-                          style: TextStyle(
-                              color: Colors.blueAccent, fontSize: 12.0),
+                          style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
                       ],
                     ),
@@ -886,7 +856,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       builder: (c) => const PosReturScreen()));
                             },
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.blueAccent),
+                              side: const BorderSide(color: Colors.black),
                               shape: const CircleBorder(),
                             ),
                             child: IconButton(
@@ -913,8 +883,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const Text(
                           "POS RETUR",
-                          style: TextStyle(
-                              color: Colors.blueAccent, fontSize: 12.0),
+                          style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
                       ],
                     ),
@@ -938,7 +907,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       builder: (c) => const PosTokoScreen()));
                             },
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.blueAccent),
+                              side: const BorderSide(color: Colors.black),
                               shape: const CircleBorder(),
                             ),
                             child: IconButton(
@@ -965,8 +934,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const Text(
                           "POS TOKO",
-                          style: TextStyle(
-                              color: Colors.blueAccent, fontSize: 12.0),
+                          style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
                       ],
                     ),
@@ -986,7 +954,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       builder: (c) => const QrScanner()));
                             },
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.blueAccent),
+                              side: const BorderSide(color: Colors.black),
                               shape: const CircleBorder(),
                             ),
                             child: IconButton(
@@ -1007,8 +975,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const Text(
                           "QR",
-                          style: TextStyle(
-                              color: Colors.blueAccent, fontSize: 12.0),
+                          style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
                       ],
                     ),
@@ -1116,11 +1083,11 @@ class _HomeScreenState extends State<HomeScreen> {
         BarChartRodData(
           toY: isTouched ? (y).toDouble() : y.toDouble(),
           // toY: isTouched ? y + 1 : y,
-          color: isTouched ? AppColors.contentColorBlue : barColor,
+          color: isTouched ? AppColors.contentColorBlack : barColor,
           width: width,
           borderSide: isTouched
               ? BorderSide(color: AppColors.contentColorGreen.darken(80))
-              : const BorderSide(color: Colors.blue, width: 0),
+              : const BorderSide(color: Colors.black, width: 0),
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
             toY: 0, //ruang or target bar
@@ -1305,7 +1272,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //title semester 1
   Widget getTitlesSmt1(double value, TitleMeta meta) {
     const style = TextStyle(
-      color: Colors.blue,
+      color: Colors.black,
       fontWeight: FontWeight.bold,
       fontSize: 12,
     );

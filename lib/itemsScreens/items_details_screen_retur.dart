@@ -29,7 +29,7 @@ class _ItemsDetailsScreenReturState extends State<ItemsDetailsScreenRetur> {
   void showSnackBar() {
     _scaffoldKey.currentState!.showSnackBar(const SnackBar(
       duration: Duration(seconds: 2),
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: Colors.white,
       content: Text(
         'Barang sudah ditambahkan',
         textAlign: TextAlign.center,
@@ -51,7 +51,7 @@ class _ItemsDetailsScreenReturState extends State<ItemsDetailsScreenRetur> {
     return ScaffoldMessenger(
         key: _scaffoldKey,
         child: Scaffold(
-          backgroundColor: const Color.fromARGB(255, 253, 248, 248),
+          backgroundColor: Colors.white,
           appBar: AppbarCartRetur(title: widget.model!.name.toString()),
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
@@ -77,12 +77,15 @@ class _ItemsDetailsScreenReturState extends State<ItemsDetailsScreenRetur> {
                 showSnackBar();
               }
             },
-            label: const Text("Add to Cart"),
+            label: const Text(
+              "Add to Cart",
+              style: TextStyle(color: Colors.white),
+            ),
             icon: const Icon(
               Icons.add_shopping_cart_rounded,
               color: Colors.white,
             ),
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: Colors.black,
           ),
           body: SingleChildScrollView(
             child: Column(
@@ -107,9 +110,10 @@ class _ItemsDetailsScreenReturState extends State<ItemsDetailsScreenRetur> {
                   child: Center(
                     child: Theme(
                       data: ThemeData(
-                          hintColor: Colors.blue,
+                          hintColor: Colors.black,
                           primarySwatch: Colors.blue,
-                          colorScheme: ColorScheme.light(primary: Colors.blue)),
+                          colorScheme:
+                              ColorScheme.light(primary: Colors.black)),
                       child: CartStepperInt(
                         count: counterLimit,
                         size: 30,
@@ -140,7 +144,7 @@ class _ItemsDetailsScreenReturState extends State<ItemsDetailsScreenRetur> {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
-                      color: Colors.blueAccent,
+                      color: Colors.black,
                     ),
                   ),
                 ),
@@ -165,7 +169,7 @@ class _ItemsDetailsScreenReturState extends State<ItemsDetailsScreenRetur> {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
-                      color: Colors.blue,
+                      color: Colors.black,
                     ),
                   ),
                 ),
@@ -174,7 +178,7 @@ class _ItemsDetailsScreenReturState extends State<ItemsDetailsScreenRetur> {
                   child: Divider(
                     height: 1,
                     thickness: 2,
-                    color: Colors.blueAccent,
+                    color: Colors.black,
                   ),
                 ),
                 const SizedBox(

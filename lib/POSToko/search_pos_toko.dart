@@ -196,7 +196,7 @@ class _SearchPosToko extends State<SearchPosToko> {
                           hoverColor: Colors.green,
                           icon: const Icon(
                             Icons.shopping_cart,
-                            color: Colors.blue,
+                            color: Colors.black,
                           ),
                         ),
                         const SizedBox(

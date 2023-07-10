@@ -15,7 +15,6 @@ import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/widgets/appbar_cart_pos_retur.dart';
 import 'package:e_shop/widgets/fake_search_retur.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../cartScreens/db_helper.dart';
@@ -31,7 +30,7 @@ class PosReturScreen extends StatefulWidget {
 class _PosReturScreenState extends State<PosReturScreen> {
   DBHelper dbHelper = DBHelper();
   int idform = 0;
-  int? idtoko = 0;
+  int? idtoko = 99999;
   int idtokoP = 0;
   int idtokoK = 0;
   String uid = '';
@@ -58,7 +57,7 @@ class _PosReturScreenState extends State<PosReturScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 243, 237, 237),
+      backgroundColor: Colors.white,
       appBar: AppbarCartRetur(
         title: title,
       ),
@@ -93,8 +92,8 @@ class _PosReturScreenState extends State<PosReturScreen> {
                         idtoko = item?.id; // menyimpan id toko
                         toko = item?.name; // menyimpan nama toko
 
-                        sharedPreferences!
-                            .setString('customer_id', idtoko.toString());
+                        // sharedPreferences!
+                        //     .setString('customer_id', idtoko.toString());
                         loadCartFromApiPOSRetur(idtoko);
                         DbAllitemsRetur.db.getAllitemsRetur(idtoko);
                       });

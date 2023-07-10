@@ -17,14 +17,14 @@ import 'package:http/http.dart' as http;
 import '../global/currency_format.dart';
 import '../transaksiScreens/transaksi_screen.dart';
 
-class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+class CartScreenHome extends StatefulWidget {
+  const CartScreenHome({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  State<CartScreenHome> createState() => _CartScreenHomeState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CartScreenHomeState extends State<CartScreenHome> {
   ModelAllitems? model;
 
   String? title = '';
@@ -53,22 +53,7 @@ class _CartScreenState extends State<CartScreen> {
             tileMode: TileMode.clamp,
           )),
         ),
-        // automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            setState(() {
-              DbAllitems.db.getAllitems();
-            });
-
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
-            Navigator.pop(context);
-          },
-        ),
+        automaticallyImplyLeading: false,
         title: const Text(
           "Cart Sales",
           style: TextStyle(
@@ -113,7 +98,7 @@ class _CartScreenState extends State<CartScreen> {
                   },
                   icon: const Icon(
                     Icons.delete_forever,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
         ],
@@ -175,34 +160,32 @@ class EmptyCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
+          Text(
             'Your Cart Is Empty !',
             style: TextStyle(fontSize: 30),
           ),
-          const SizedBox(
+          SizedBox(
             height: 50,
           ),
-          Material(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(25),
-            child: MaterialButton(
-              minWidth: MediaQuery.of(context).size.width * 0.6,
-              onPressed: () {
-                Navigator.pop(context);
-
-                // Navigator.pushReplacement(context,
-                //     MaterialPageRoute(builder: (context) => PosSalesScreen()));
-              },
-              child: const Text(
-                'back to POS SALES',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-            ),
-          )
+          // Material(
+          //   color: Colors.black,
+          //   borderRadius: BorderRadius.circular(25),
+          //   child: MaterialButton(
+          //     minWidth: MediaQuery.of(context).size.width * 0.6,
+          //     onPressed: () {
+          //       Navigator.pushReplacement(context,
+          //           MaterialPageRoute(builder: (context) => PosSalesScreen()));
+          //     },
+          //     child: const Text(
+          //       'back to POS SALES',
+          //       style: TextStyle(fontSize: 18, color: Colors.white),
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );

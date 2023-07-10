@@ -18,7 +18,7 @@ class FakeSearchHistory extends StatelessWidget {
       child: Container(
         height: 35,
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.blue, width: 1.4),
+            border: Border.all(color: Colors.black, width: 1.4),
             borderRadius: BorderRadius.circular(25)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -29,12 +29,12 @@ class FakeSearchHistory extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Icon(
                     Icons.search,
-                    color: Colors.blue,
+                    color: Colors.black,
                   ),
                 ),
                 Text(
                   'What are you looking for?',
-                  style: TextStyle(fontSize: 15, color: Colors.blue),
+                  style: TextStyle(fontSize: 15, color: Colors.black),
                 ),
               ],
             ),
@@ -42,7 +42,7 @@ class FakeSearchHistory extends StatelessWidget {
               height: 32,
               width: 75,
               decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(25)),
+                  color: Colors.black, borderRadius: BorderRadius.circular(25)),
               child: const Center(
                 child: Text(
                   'Search',

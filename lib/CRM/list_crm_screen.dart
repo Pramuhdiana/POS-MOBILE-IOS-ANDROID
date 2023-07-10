@@ -19,7 +19,7 @@ class ListCrmScreen extends StatelessWidget {
       padding: const EdgeInsets.all(3.0),
       child: Container(
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.blue),
+            border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(15)),
         child: ExpansionTile(
           title: Container(
@@ -75,7 +75,7 @@ class ListCrmScreen extends StatelessWidget {
               height: 120,
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: Colors.blue.shade300.withOpacity(0.2),
+                  color: Colors.grey.shade600.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(15)),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

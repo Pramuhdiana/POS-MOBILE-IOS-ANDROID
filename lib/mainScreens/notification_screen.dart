@@ -47,8 +47,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
               colors: [
-                Colors.blueAccent,
-                Colors.lightBlueAccent,
+                Colors.white,
+                Colors.white,
               ],
               begin: FractionalOffset(0.0, 0.0),
               end: FractionalOffset(1.0, 0.0),
@@ -92,7 +92,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           controller: title,
                           decoration: InputDecoration(
                             hintStyle: const TextStyle(
-                                fontSize: 18.0, color: Colors.blue),
+                                fontSize: 18.0, color: Colors.black),
                             hintText: "Title",
                             // suffixIcon: IconButton(
                             //   onPressed: title.clear,
@@ -103,7 +103,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             filled: true,
                             enabledBorder: OutlineInputBorder(
                               borderSide: const BorderSide(
-                                  color: Colors.blue, width: 1),
+                                  color: Colors.black, width: 1),
                               borderRadius: BorderRadius.circular(100.0),
                             ),
                           )),
@@ -118,13 +118,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           controller: body,
                           decoration: InputDecoration(
                             hintStyle: const TextStyle(
-                                fontSize: 18.0, color: Colors.blue),
+                                fontSize: 18.0, color: Colors.black),
                             hintText: "Body",
                             fillColor: Colors.white,
                             filled: true,
                             enabledBorder: OutlineInputBorder(
                               borderSide: const BorderSide(
-                                  color: Colors.blue, width: 1),
+                                  color: Colors.black, width: 1),
                               borderRadius: BorderRadius.circular(100.0),
                             ),
                           )),
@@ -138,6 +138,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(left: 50, right: 50, bottom: 5),
           child: CustomLoadingButton(
+            backgroundColor: Colors.black,
             controller: btnController,
             onPressed: () {
               Future.delayed(const Duration(seconds: 1)).then((value) async {
@@ -151,7 +152,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
               });
             },
             //  c: Colors.blue,
-            child: const Text("Send Notification"),
+            child: const Text(
+              "Send Notification",
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ));
   }

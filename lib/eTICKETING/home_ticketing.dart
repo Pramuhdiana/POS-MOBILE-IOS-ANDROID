@@ -15,23 +15,14 @@ class _HomeEticketingState extends State<HomeEticketing> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-            colors: [
-              Colors.blueAccent,
-              Colors.lightBlueAccent,
-            ],
-            begin: FractionalOffset(0.0, 0.0),
-            end: FractionalOffset(1.0, 0.0),
-            stops: [0.0, 1.0],
-            tileMode: TileMode.clamp,
-          )),
+          color: Colors.white,
         ),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.white,
+            color: Colors.black,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -40,6 +31,7 @@ class _HomeEticketingState extends State<HomeEticketing> {
         title: const Text(
           "E-TICKETING",
           style: TextStyle(
+            color: Colors.black,
             fontSize: 20,
             letterSpacing: 3,
           ),
@@ -79,12 +71,15 @@ class _HomeEticketingState extends State<HomeEticketing> {
           Navigator.push(context,
               MaterialPageRoute(builder: (c) => AddRequestEticketing()));
         },
-        label: const Text("Add request"),
+        label: const Text(
+          "Add request",
+          style: TextStyle(color: Colors.white),
+        ),
         icon: const Icon(
           Icons.add_circle_outline_sharp,
           color: Colors.white,
         ),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.black,
       ),
     );
   }

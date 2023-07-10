@@ -22,22 +22,24 @@ class _SearchScreenState extends State<NewSearchScreenToko> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade300,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.grey.shade300,
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.blue,
+            color: Colors.black,
           ),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         title: CupertinoSearchTextField(
+          borderRadius: const BorderRadius.all(Radius.circular(25)),
+          itemColor: Colors.black,
           autofocus: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black12,
           keyboardType: TextInputType.number,
           onChanged: (value) {
             setState(() {
@@ -76,7 +78,7 @@ class _SearchScreenState extends State<NewSearchScreenToko> {
                       ),
                       child: const Icon(
                         Icons.shopping_cart_checkout,
-                        color: Colors.blue,
+                        color: Colors.black,
                         size: 35,
                       ),
                     ),
@@ -91,7 +93,7 @@ class _SearchScreenState extends State<NewSearchScreenToko> {
           ? Center(
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.black,
                     borderRadius: BorderRadius.circular(25)),
                 height: 30,
                 width: MediaQuery.of(context).size.width * 0.7,

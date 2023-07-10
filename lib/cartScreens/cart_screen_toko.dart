@@ -7,7 +7,6 @@ import 'package:e_shop/database/model_allitems_toko.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/itemsScreens/items_photo_toko.dart';
-import 'package:e_shop/posToko/pos_toko_screen.dart';
 import 'package:e_shop/transaksiScreens/transaksi_screen_toko.dart';
 import 'package:e_shop/widgets/alert_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -37,14 +36,15 @@ class _CartScreenTokoState extends State<CartScreenToko> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
             colors: [
-              Colors.blueAccent,
-              Colors.lightBlueAccent,
+              Colors.white,
+              Colors.white,
             ],
             begin: FractionalOffset(0.0, 0.0),
             end: FractionalOffset(1.0, 0.0),
@@ -55,7 +55,7 @@ class _CartScreenTokoState extends State<CartScreenToko> {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.white,
+            color: Colors.black,
           ),
           onPressed: () {
             // Navigator.push(
@@ -66,6 +66,7 @@ class _CartScreenTokoState extends State<CartScreenToko> {
         title: const Text(
           "Cart Toko",
           style: TextStyle(
+            color: Colors.black,
             fontSize: 20,
             letterSpacing: 3,
           ),
@@ -103,7 +104,7 @@ class _CartScreenTokoState extends State<CartScreenToko> {
                   },
                   icon: const Icon(
                     Icons.delete_forever,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
         ],
@@ -137,13 +138,16 @@ class _CartScreenTokoState extends State<CartScreenToko> {
               height: 35,
               width: MediaQuery.of(context).size.width * 0.45,
               decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(25)),
+                  color: Colors.black, borderRadius: BorderRadius.circular(25)),
               child: MaterialButton(
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (c) => TransaksiScreenToko()));
                 },
-                child: const Text('Check Out'),
+                child: const Text(
+                  'Check Out',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             )
           ],
@@ -172,13 +176,14 @@ class EmptyCart extends StatelessWidget {
             height: 50,
           ),
           Material(
-            color: Colors.blue,
+            color: Colors.black,
             borderRadius: BorderRadius.circular(25),
             child: MaterialButton(
               minWidth: MediaQuery.of(context).size.width * 0.6,
               onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => PosTokoScreen()));
+                Navigator.pop(context);
+                // Navigator.pushReplacement(context,
+                //     MaterialPageRoute(builder: (context) => PosTokoScreen()));
               },
               child: const Text(
                 'back to POS TOKO',

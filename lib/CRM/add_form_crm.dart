@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:e_shop/CRM/dashboard_erick.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_alltransaksi.dart';
 import 'package:e_shop/database/db_crm.dart';
@@ -178,25 +177,13 @@ class _AddFormCRMState extends State<AddFormCRM> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey.shade200,
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-              colors: [
-                Colors.blueAccent,
-                Colors.lightBlueAccent,
-              ],
-              begin: FractionalOffset(0.0, 0.0),
-              end: FractionalOffset(1.0, 0.0),
-              stops: [0.0, 1.0],
-              tileMode: TileMode.clamp,
-            )),
-          ),
+          backgroundColor: Colors.white,
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back_ios_new,
-              color: Colors.white,
+              color: Colors.black,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -204,29 +191,10 @@ class _AddFormCRMState extends State<AddFormCRM> {
           ),
           title: const Text(
             "FORM ADD REPORT",
-            style: TextStyle(
-              fontSize: 20,
-              letterSpacing: 3,
-            ),
+            style:
+                TextStyle(fontSize: 20, letterSpacing: 3, color: Colors.black),
           ),
           centerTitle: true,
-          actions: [
-            // ignore: unrelated_type_equality_checks
-            sharedPreferences!.getString('id') != '21'
-                ? const SizedBox()
-                : IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (c) => const DashboardErick()));
-                    },
-                    icon: const Icon(
-                      Icons.remove_red_eye_outlined,
-                      color: Colors.white,
-                    ),
-                  ),
-          ],
         ),
         body: Column(
           children: <Widget>[
@@ -315,7 +283,7 @@ class _AddFormCRMState extends State<AddFormCRM> {
                               decoration: const InputDecoration(
                                   icon: Icon(
                                     Icons.calendar_month,
-                                    color: Colors.blue,
+                                    color: Colors.black,
                                   ), //icon of text field
                                   labelText: "Enter Date" //label text of field
                                   ),
@@ -388,7 +356,7 @@ class _AddFormCRMState extends State<AddFormCRM> {
                               height: 5,
                               alignment: Alignment.center,
                               decoration:
-                                  const BoxDecoration(color: Colors.blue),
+                                  const BoxDecoration(color: Colors.black),
                               child: TextFormField(
                                 style: const TextStyle(fontSize: 30),
                                 textAlign: TextAlign.center,
@@ -417,6 +385,8 @@ class _AddFormCRMState extends State<AddFormCRM> {
                               Row(
                                 children: <Widget>[
                                   Checkbox(
+                                    checkColor: Colors.white,
+                                    activeColor: Colors.black,
                                     value: cek_wa,
                                     onChanged:
                                         cek_visit == true || cek_tlp == true
@@ -444,6 +414,8 @@ class _AddFormCRMState extends State<AddFormCRM> {
                               Row(
                                 children: <Widget>[
                                   Checkbox(
+                                    checkColor: Colors.white,
+                                    activeColor: Colors.black,
                                     value: cek_tlp,
                                     onChanged:
                                         cek_visit == true || cek_wa == true
@@ -469,6 +441,8 @@ class _AddFormCRMState extends State<AddFormCRM> {
                               Row(
                                 children: <Widget>[
                                   Checkbox(
+                                    checkColor: Colors.white,
+                                    activeColor: Colors.black,
                                     value: cek_visit,
                                     onChanged: cek_tlp == true || cek_wa == true
                                         ? null
@@ -493,6 +467,8 @@ class _AddFormCRMState extends State<AddFormCRM> {
                                   //kunjungan
                                   if (idaktivitas == 3)
                                     Checkbox(
+                                      checkColor: Colors.white,
+                                      activeColor: Colors.black,
                                       value: cek_kunjungan,
                                       onChanged: cek_canvasing == true
                                           ? null
@@ -519,6 +495,8 @@ class _AddFormCRMState extends State<AddFormCRM> {
                                   //canvasing
                                   if (idaktivitas == 3)
                                     Checkbox(
+                                      checkColor: Colors.white,
+                                      activeColor: Colors.black,
                                       value: cek_canvasing,
                                       onChanged: cek_kunjungan == true
                                           ? null
@@ -609,6 +587,8 @@ class _AddFormCRMState extends State<AddFormCRM> {
                             children: [
                               const Text("Omzet"),
                               Checkbox(
+                                checkColor: Colors.white,
+                                activeColor: Colors.black,
                                 value: cek_omzet,
                                 onChanged: (bool? value) {
                                   setState(() {
@@ -633,7 +613,7 @@ class _AddFormCRMState extends State<AddFormCRM> {
                                               onPressed: () {},
                                               icon: const Icon(
                                                 Icons.arrow_drop_down,
-                                                color: Colors.blue,
+                                                color: Colors.black,
                                               ),
                                             )
                                           : IconButton(
@@ -646,12 +626,12 @@ class _AddFormCRMState extends State<AddFormCRM> {
                                               },
                                               icon: const Icon(
                                                 Icons.cancel,
-                                                color: Colors.blue,
+                                                color: Colors.black,
                                               ),
                                             ),
                                       underline: Container(
                                         height: 2,
-                                        color: Colors.blue, //<-- SEE HERE
+                                        color: Colors.black, //<-- SEE HERE
                                       ),
                                       value: selectedOmzet,
                                       hint: const Text(
@@ -806,8 +786,13 @@ class _AddFormCRMState extends State<AddFormCRM> {
             onPressed: () {
               formValidation();
             },
-            //  c: Colors.blue,
-            child: const Text("Save Report"),
+            //  c: Colors.black,
+            backgroundColor: Colors.black,
+
+            child: const Text(
+              "Save Report",
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ));
   }

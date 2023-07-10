@@ -5,9 +5,11 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
+import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,6 +25,8 @@ class TransaksiScreen extends StatefulWidget {
 }
 
 class _TransaksiScreenState extends State<TransaksiScreen> {
+  RoundedLoadingButtonController btnController =
+      RoundedLoadingButtonController();
   String qty = '';
   String orderId = DateTime.now().second.toString();
   String uid = '';
@@ -100,427 +104,302 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Billing Information"),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.white,
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: const Text(
+            "Billing Information",
+            style: TextStyle(color: Colors.black),
           ),
-          onPressed: () {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
-            Navigator.pop(context);
-          },
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              // Navigator.push(
+              //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
+              Navigator.pop(context);
+            },
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(25),
-        child: Form(
-          key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: ListView(
-            padding: const EdgeInsets.all(4),
-            children: <Widget>[
-              ///************************[dropdownBuilder examples]********************************///
-              // const Text("Pilih Toko"),
-              // const Divider(),
-              Row(
-                children: [
-                  Padding(padding: EdgeInsets.all(4)),
-                  Expanded(
-                    child: DropdownSearch<UserModel>(
-                      asyncItems: (String? filter) => getData(filter),
-                      popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                        showSelectedItems: true,
-                        itemBuilder: _customPopupItemBuilderExample2,
-                        showSearchBox: true,
-                      ),
-                      compareFn: (item, sItem) => item.id == sItem.id,
-                      onChanged: (item) {
-                        setState(() {
-                          // print(text);
-                          print('toko : ${item?.name}');
-                          print('id  : ${item?.id}');
-                          print('diskonnya  : ${item?.diskon_customer}');
-                          idtoko = item?.id; // menyimpan id toko
-                          toko = item?.name; // menyimpan nama toko
-                        });
-                      },
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          labelText: 'Choose customer',
-                          filled: true,
-                          fillColor:
-                              Theme.of(context).inputDecorationTheme.fillColor,
+        body: Padding(
+          padding: const EdgeInsets.all(25),
+          child: Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: ListView(
+              padding: const EdgeInsets.all(4),
+              children: <Widget>[
+                ///************************[dropdownBuilder examples]********************************///
+                // const Text("Pilih Toko"),
+                // const Divider(),
+                Row(
+                  children: [
+                    Padding(padding: EdgeInsets.all(4)),
+                    Expanded(
+                      child: DropdownSearch<UserModel>(
+                        asyncItems: (String? filter) => getData(filter),
+                        popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                          showSelectedItems: true,
+                          itemBuilder: _customPopupItemBuilderExample2,
+                          showSearchBox: true,
+                        ),
+                        compareFn: (item, sItem) => item.id == sItem.id,
+                        onChanged: (item) {
+                          setState(() {
+                            // print(text);
+                            print('toko : ${item?.name}');
+                            print('id  : ${item?.id}');
+                            print('diskonnya  : ${item?.diskon_customer}');
+                            idtoko = item?.id; // menyimpan id toko
+                            toko = item?.name; // menyimpan nama toko
+                          });
+                        },
+                        dropdownDecoratorProps: DropDownDecoratorProps(
+                          dropdownSearchDecoration: InputDecoration(
+                            labelText: 'Choose customer',
+                            filled: true,
+                            fillColor: Theme.of(context)
+                                .inputDecorationTheme
+                                .fillColor,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              //jenis form
-              const SizedBox(
-                height: 10,
-              ),
-              const Text("Select type of form"),
-              const Divider(),
-              Row(
-                children: [
-                  const Padding(padding: EdgeInsets.all(4)),
-                  Expanded(
-                    child: DropdownSearch<String>(
-                      items: const ["INVOICE", "TITIPAN", "PAMERAN"],
-                      onChanged: (text) {
-                        setState(() {
-                          form = text;
-                          if (form == "INVOICE") {
-                            idform = 1;
-                            idformAPI = 1;
-                            print(idform);
-                          } else if (form == "TITIPAN") {
-                            idform = 2;
-                            idformAPI = 2;
-
-                            print(idform);
-                          } else if (form == "PAMERAN") {
-                            idform = 3;
-                            idformAPI = 2;
-
-                            print(idform);
-                          } else {
-                            idform = 0;
-                            idformAPI = 0;
-
-                            print(idform);
-                          }
-                        });
-                      },
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          labelText: 'Jenis Form',
-                          filled: true,
-                          fillColor:
-                              Theme.of(context).inputDecorationTheme.fillColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              //rate
-              const SizedBox(
-                height: 10,
-              ),
-              const Text("Rate"),
-              const Divider(),
-              Row(
-                children: [
-                  const Padding(padding: EdgeInsets.all(4)),
-                  Expanded(
-                    child: DropdownSearch<int>(
-                      items: const [11500, 11900, 13000],
-                      onChanged: (value) {
-                        setState(() {
-                          rate = value!;
-                        });
-                      },
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          labelText: 'Rate',
-                          filled: true,
-                          fillColor:
-                              Theme.of(context).inputDecorationTheme.fillColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              //Basic Diskon
-              const SizedBox(
-                height: 10,
-              ),
-              const Text("Basic Diskon"),
-              const Divider(),
-              Row(
-                children: [
-                  const Padding(padding: EdgeInsets.all(4)),
-                  Expanded(
-                    child: DropdownSearch<int>(
-                      items: const [60, 63],
-                      onChanged: (value) {
-                        setState(() {
-                          diskon = value!;
-                        });
-                      },
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          labelText: 'Basic Diskon',
-                          filled: true,
-                          fillColor:
-                              Theme.of(context).inputDecorationTheme.fillColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              // addesdiskon
-              const SizedBox(
-                height: 10,
-              ),
-              const Text("ADD DISKON"),
-              const Divider(),
-              SizedBox(
-                width: 250,
-                child: TextField(
-                  onChanged: (addDiskon) {
-                    setState(() {
-                      addesdiskon = int.parse(addDiskon);
-                    });
-                  },
-                  decoration: const InputDecoration(labelText: "ADD DISKON"),
-                  controller: addDiskon,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
                   ],
                 ),
-              ),
+                //jenis form
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text("Select type of form"),
+                const Divider(),
+                Row(
+                  children: [
+                    const Padding(padding: EdgeInsets.all(4)),
+                    Expanded(
+                      child: DropdownSearch<String>(
+                        items: const ["INVOICE", "TITIPAN", "PAMERAN"],
+                        onChanged: (text) {
+                          setState(() {
+                            form = text;
+                            if (form == "INVOICE") {
+                              idform = 1;
+                              idformAPI = 1;
+                              print(idform);
+                            } else if (form == "TITIPAN") {
+                              idform = 2;
+                              idformAPI = 2;
 
-              //DP
-              const SizedBox(
-                height: 10,
-              ),
-              const Text("DP"),
-              const Divider(),
-              SizedBox(
-                width: 250,
-                child: TextField(
-                  onChanged: (dp) {
-                    setState(() {
-                      dpp = int.parse(dp);
-                    });
-                  },
-                  decoration: const InputDecoration(labelText: "DP"),
-                  controller: dp,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
+                              print(idform);
+                            } else if (form == "PAMERAN") {
+                              idform = 3;
+                              idformAPI = 2;
+
+                              print(idform);
+                            } else {
+                              idform = 0;
+                              idformAPI = 0;
+
+                              print(idform);
+                            }
+                          });
+                        },
+                        dropdownDecoratorProps: DropDownDecoratorProps(
+                          dropdownSearchDecoration: InputDecoration(
+                            labelText: 'Jenis Form',
+                            filled: true,
+                            fillColor: Theme.of(context)
+                                .inputDecorationTheme
+                                .fillColor,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-              ),
+
+                //rate
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text("Rate"),
+                const Divider(),
+                Row(
+                  children: [
+                    const Padding(padding: EdgeInsets.all(4)),
+                    Expanded(
+                      child: DropdownSearch<int>(
+                        items: const [11500, 11900, 13000],
+                        onChanged: (value) {
+                          setState(() {
+                            rate = value!;
+                          });
+                        },
+                        dropdownDecoratorProps: DropDownDecoratorProps(
+                          dropdownSearchDecoration: InputDecoration(
+                            labelText: 'Rate',
+                            filled: true,
+                            fillColor: Theme.of(context)
+                                .inputDecorationTheme
+                                .fillColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                //Basic Diskon
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text("Basic Diskon"),
+                const Divider(),
+                Row(
+                  children: [
+                    const Padding(padding: EdgeInsets.all(4)),
+                    Expanded(
+                      child: DropdownSearch<int>(
+                        items: const [60, 63],
+                        onChanged: (value) {
+                          setState(() {
+                            diskon = value!;
+                          });
+                        },
+                        dropdownDecoratorProps: DropDownDecoratorProps(
+                          dropdownSearchDecoration: InputDecoration(
+                            labelText: 'Basic Diskon',
+                            filled: true,
+                            fillColor: Theme.of(context)
+                                .inputDecorationTheme
+                                .fillColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                // addesdiskon
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text("ADD DISKON"),
+                const Divider(),
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    onChanged: (addDiskon) {
+                      setState(() {
+                        addesdiskon = int.parse(addDiskon);
+                      });
+                    },
+                    decoration: const InputDecoration(labelText: "ADD DISKON"),
+                    controller: addDiskon,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                  ),
+                ),
+
+                //DP
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text("DP"),
+                const Divider(),
+                SizedBox(
+                  width: 250,
+                  child: TextField(
+                    onChanged: (dp) {
+                      setState(() {
+                        dpp = int.parse(dp);
+                      });
+                    },
+                    decoration: const InputDecoration(labelText: "DP"),
+                    controller: dp,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                  ),
+                ),
 
 //add diskon request
-              //rate
-              // const SizedBox(
-              //   height: 10,
-              // ),
-              // const Text("Approve Diskon"),
-              // const Divider(),
+                //rate
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // const Text("Approve Diskon"),
+                // const Divider(),
 
-              // Row(
-              //   children: [
-              //     const Padding(padding: EdgeInsets.all(4)),
-              //     Expanded(
-              //       child: TextField(
-              //         decoration: const InputDecoration(
-              //           labelText: '80',
-              //           border: OutlineInputBorder(),
-              //         ),
-              //         enabled: false,
-              //         readOnly: true,
-              //         onChanged: (value) {
-              //           setState(() {
-              //             diskonrequest = 60;
-              //           });
-              //         },
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              const SizedBox(height: 30),
-              const Divider(
-                color: Colors.black,
-                thickness: 5,
-              ),
-              const Text("Total"),
-              Text(
-                "$totalPrice3",
-                style: const TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red),
-              ),
-            ],
+                // Row(
+                //   children: [
+                //     const Padding(padding: EdgeInsets.all(4)),
+                //     Expanded(
+                //       child: TextField(
+                //         decoration: const InputDecoration(
+                //           labelText: '80',
+                //           border: OutlineInputBorder(),
+                //         ),
+                //         enabled: false,
+                //         readOnly: true,
+                //         onChanged: (value) {
+                //           setState(() {
+                //             diskonrequest = 60;
+                //           });
+                //         },
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                const SizedBox(height: 30),
+                const Divider(
+                  color: Colors.black,
+                  thickness: 5,
+                ),
+                const Text("Total"),
+                Text(
+                  "$totalPrice3",
+                  style: const TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-          child: ElevatedButton(
-        onPressed: () {
-          showModalBottomSheet(
-              context: context,
-              builder: (context) => SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 100),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            'Total : $totalPrice3',
-                            style: const TextStyle(fontSize: 24),
-                          ),
-                          ElevatedButton(
-                              onPressed: () async {
-                                showProgress();
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(left: 50, right: 50, bottom: 20),
+          child: CustomLoadingButton(
+            controller: btnController,
+            onPressed: () {
+              formValidation();
+            },
+            backgroundColor: Colors.black,
+            child: const Text(
+              "Save Transaction",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ));
+  }
 
-                                if (idform == 1) {
-                                  print("invoice");
-                                  await postAPIsales();
-                                  //invoice
-                                  for (var item
-                                      in context.read<PCart>().getItems) {
-                                    //real bawah
-                                    //delete semua items karena akan pindah ke all transaksi details
-                                    // var apiProvider = ApiServices();
-                                    // await apiProvider.getAllDetailTransaksi();
-                                    // await apiProvider.getAllTransaksi();
-                                    // print('inserting API');
-                                    //update posisi id ke firestore
-                                    // await FirebaseFirestore.instance
-                                    //     .runTransaction((transaction) async {
-                                    //   DocumentReference documentReference =
-                                    //       FirebaseFirestore.instance
-                                    //           .collection("allitems")
-                                    //           .doc(item.name);
-                                    //   transaction.update(documentReference, {
-                                    //     'posisi_id':
-                                    //         "100", //ganti posisi sales (3) menjadi terjual (100)
-                                    //     'customer_id': idtoko
-                                    //         .toString(), //tambahkan customer id agar tahu terjual oleh tko mana
-                                    //     'qty': 0 //set qty menjadi 0
-                                    //   });
-                                    // });
-
-                                    // delete all items id
-                                    // FirebaseFirestore.instance
-                                    //     .collection('allitems')
-                                    //     .doc(item.name)
-                                    //     .delete();
-                                  }
-                                  // print('delete data firebase berhasil');
-                                  context
-                                      .read<PCart>()
-                                      .clearCart(); //clear cart
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (c) =>
-                                              const MySplashScreenTransaksi()));
-                                } else if (idform == 2) {
-                                  //titipan
-                                  await postAPIsales();
-                                  // for (var item
-                                  //     in context.read<PCart>().getItems) {
-                                  //   CollectionReference orderRef =
-                                  //       FirebaseFirestore.instance
-                                  //           .collection('allitemstoko');
-                                  //   await orderRef.doc(item.name).set({
-                                  //     'brand_id': 9999,
-                                  //     'category_id': '1',
-                                  //     'created_at': DateTime.now(),
-                                  //     'customer_id': idtoko.toString(),
-                                  //     'description': item.description,
-                                  //     'id': item.documentId,
-                                  //     'image_name': item.imageUrl,
-                                  //     'keterangan_barang':
-                                  //         item.keterangan_barang,
-                                  //     'kode_refrensi': 'null',
-                                  //     'name': item.name,
-                                  //     'posisi_id': 2,
-                                  //     'price':
-                                  //         item.price, //harus int atau double
-                                  //     'qty': 1, //harus int
-                                  //     'sales_id': int.parse(id!),
-                                  //     'slug': item.name,
-                                  //     'status_titipan': 0,
-                                  //     'updated_at': DateTime.now()
-                                  //   });
-                                  //   // delete all items id
-                                  //   // FirebaseFirestore.instance
-                                  //   //     .collection('allitems')
-                                  //   //     .doc(item.name)
-                                  //   //     .delete();
-                                  // }
-                                  // print('delete data firebase berhasil');
-                                  context.read<PCart>().clearCart();
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (c) =>
-                                              const MySplashScreenTransaksi()));
-                                } else if (idform == 3) {
-                                  //PAMERAN
-                                  await postAPIsales();
-                                  // for (var item
-                                  //     in context.read<PCart>().getItems) {
-                                  //   CollectionReference orderRef =
-                                  //       FirebaseFirestore.instance
-                                  //           .collection('allitemstoko');
-                                  //   await orderRef.doc(item.name).set({
-                                  //     'brand_id': 9999,
-                                  //     'category_id': '1',
-                                  //     'created_at': DateTime.now(),
-                                  //     'customer_id': idtoko.toString(),
-                                  //     'description': item.description,
-                                  //     'id': int.parse(item.documentId),
-                                  //     'image_name': item.imageUrl,
-                                  //     'keterangan_barang':
-                                  //         item.keterangan_barang,
-                                  //     'kode_refrensi': 'null',
-                                  //     'name': item.name,
-                                  //     'posisi_id': 2,
-                                  //     'price':
-                                  //         item.price, //harus int atau double
-                                  //     'qty': 1, //harus int
-                                  //     'sales_id': int.parse(id!),
-                                  //     'slug': item.name,
-                                  //     'status_titipan': 1,
-                                  //     'updated_at': DateTime.now()
-                                  //   });
-
-                                  //   // delete all items id
-                                  //   // FirebaseFirestore.instance
-                                  //   //     .collection('allitems')
-                                  //   //     .doc(item.name)
-                                  //   //     .delete();
-                                  // }
-                                  // print('delete data firebase berhasil');
-
-                                  context.read<PCart>().clearCart();
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (c) =>
-                                              const MySplashScreenTransaksi()));
-                                }
-                              },
-                              child: const Text('Save'))
-                        ],
-                      ),
-                    ),
-                  ));
-        },
-        child: const Text('Save Transaksi'),
-      )),
-    );
+  formValidation() async {
+    if (toko == null) {
+      btnController.error(); //error
+    } else {
+      await postAPIsales();
+      btnController.success(); //sucses
+      context.read<PCart>().clearCart(); //clear cart
+      Navigator.push(context,
+          MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
+    }
   }
 
   Widget _customPopupItemBuilderExample2(
@@ -603,3 +482,166 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
     print(response.body);
   }
 }
+
+ // bottomNavigationBar: BottomAppBar(
+        //     child: ElevatedButton(
+        //   onPressed: () {
+        //     showModalBottomSheet(
+        //         context: context,
+        //         builder: (context) => SizedBox(
+        //               height: MediaQuery.of(context).size.height * 0.3,
+        //               child: Padding(
+        //                 padding: const EdgeInsets.only(bottom: 100),
+        //                 child: Column(
+        //                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //                   children: [
+        //                     Text(
+        //                       'Total : $totalPrice3',
+        //                       style: const TextStyle(fontSize: 24),
+        //                     ),
+        //                     ElevatedButton(
+        //                         style: ElevatedButton.styleFrom(
+        //                             backgroundColor:
+        //                                 Colors.black), // set the backgroun
+        //                         onPressed: () async {
+        //                           showProgress();
+
+        //                           if (idform == 1) {
+        //                             print("invoice");
+        //                             await postAPIsales();
+        //                             //invoice
+        //                             for (var item
+        //                                 in context.read<PCart>().getItems) {
+        //                               //real bawah
+        //                               //delete semua items karena akan pindah ke all transaksi details
+        //                               // var apiProvider = ApiServices();
+        //                               // await apiProvider.getAllDetailTransaksi();
+        //                               // await apiProvider.getAllTransaksi();
+        //                               // print('inserting API');
+        //                               //update posisi id ke firestore
+        //                               // await FirebaseFirestore.instance
+        //                               //     .runTransaction((transaction) async {
+        //                               //   DocumentReference documentReference =
+        //                               //       FirebaseFirestore.instance
+        //                               //           .collection("allitems")
+        //                               //           .doc(item.name);
+        //                               //   transaction.update(documentReference, {
+        //                               //     'posisi_id':
+        //                               //         "100", //ganti posisi sales (3) menjadi terjual (100)
+        //                               //     'customer_id': idtoko
+        //                               //         .toString(), //tambahkan customer id agar tahu terjual oleh tko mana
+        //                               //     'qty': 0 //set qty menjadi 0
+        //                               //   });
+        //                               // });
+
+        //                               // delete all items id
+        //                               // FirebaseFirestore.instance
+        //                               //     .collection('allitems')
+        //                               //     .doc(item.name)
+        //                               //     .delete();
+        //                             }
+        //                             // print('delete data firebase berhasil');
+        //                             context
+        //                                 .read<PCart>()
+        //                                 .clearCart(); //clear cart
+        //                             Navigator.push(
+        //                                 context,
+        //                                 MaterialPageRoute(
+        //                                     builder: (c) =>
+        //                                         const MySplashScreenTransaksi()));
+        //                           } else if (idform == 2) {
+        //                             //titipan
+        //                             await postAPIsales();
+        //                             // for (var item
+        //                             //     in context.read<PCart>().getItems) {
+        //                             //   CollectionReference orderRef =
+        //                             //       FirebaseFirestore.instance
+        //                             //           .collection('allitemstoko');
+        //                             //   await orderRef.doc(item.name).set({
+        //                             //     'brand_id': 9999,
+        //                             //     'category_id': '1',
+        //                             //     'created_at': DateTime.now(),
+        //                             //     'customer_id': idtoko.toString(),
+        //                             //     'description': item.description,
+        //                             //     'id': item.documentId,
+        //                             //     'image_name': item.imageUrl,
+        //                             //     'keterangan_barang':
+        //                             //         item.keterangan_barang,
+        //                             //     'kode_refrensi': 'null',
+        //                             //     'name': item.name,
+        //                             //     'posisi_id': 2,
+        //                             //     'price':
+        //                             //         item.price, //harus int atau double
+        //                             //     'qty': 1, //harus int
+        //                             //     'sales_id': int.parse(id!),
+        //                             //     'slug': item.name,
+        //                             //     'status_titipan': 0,
+        //                             //     'updated_at': DateTime.now()
+        //                             //   });
+        //                             //   // delete all items id
+        //                             //   // FirebaseFirestore.instance
+        //                             //   //     .collection('allitems')
+        //                             //   //     .doc(item.name)
+        //                             //   //     .delete();
+        //                             // }
+        //                             // print('delete data firebase berhasil');
+        //                             context.read<PCart>().clearCart();
+        //                             Navigator.push(
+        //                                 context,
+        //                                 MaterialPageRoute(
+        //                                     builder: (c) =>
+        //                                         const MySplashScreenTransaksi()));
+        //                           } else if (idform == 3) {
+        //                             //PAMERAN
+        //                             await postAPIsales();
+        //                             // for (var item
+        //                             //     in context.read<PCart>().getItems) {
+        //                             //   CollectionReference orderRef =
+        //                             //       FirebaseFirestore.instance
+        //                             //           .collection('allitemstoko');
+        //                             //   await orderRef.doc(item.name).set({
+        //                             //     'brand_id': 9999,
+        //                             //     'category_id': '1',
+        //                             //     'created_at': DateTime.now(),
+        //                             //     'customer_id': idtoko.toString(),
+        //                             //     'description': item.description,
+        //                             //     'id': int.parse(item.documentId),
+        //                             //     'image_name': item.imageUrl,
+        //                             //     'keterangan_barang':
+        //                             //         item.keterangan_barang,
+        //                             //     'kode_refrensi': 'null',
+        //                             //     'name': item.name,
+        //                             //     'posisi_id': 2,
+        //                             //     'price':
+        //                             //         item.price, //harus int atau double
+        //                             //     'qty': 1, //harus int
+        //                             //     'sales_id': int.parse(id!),
+        //                             //     'slug': item.name,
+        //                             //     'status_titipan': 1,
+        //                             //     'updated_at': DateTime.now()
+        //                             //   });
+
+        //                             //   // delete all items id
+        //                             //   // FirebaseFirestore.instance
+        //                             //   //     .collection('allitems')
+        //                             //   //     .doc(item.name)
+        //                             //   //     .delete();
+        //                             // }
+        //                             // print('delete data firebase berhasil');
+
+        //                             context.read<PCart>().clearCart();
+        //                             Navigator.push(
+        //                                 context,
+        //                                 MaterialPageRoute(
+        //                                     builder: (c) =>
+        //                                         const MySplashScreenTransaksi()));
+        //                           }
+        //                         },
+        //                         child: const Text('Save'))
+        //                   ],
+        //                 ),
+        //               ),
+        //             ));
+        //   },
+        //   child: const Text('Save Transaksi'),
+        // )),

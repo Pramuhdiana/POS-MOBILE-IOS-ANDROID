@@ -45,11 +45,11 @@ class _NewSearchScreenHistoryState extends State<NewSearchScreenHistory> {
           backgroundColor: Colors.white,
           elevation: 0,
           bottom: TabBar(
-              indicatorColor: Colors.blue,
-              indicatorWeight: 8,
+              indicatorColor: Colors.black,
+              indicatorWeight: 5,
               tabs: const [
                 RepeatedTab(label: 'Invoice'),
-                RepeatedTab(label: 'Kembali Baran'),
+                RepeatedTab(label: 'Kembali Barang'),
                 RepeatedTab(label: 'Titipan'),
               ]),
         ),
@@ -67,11 +67,11 @@ class _NewSearchScreenHistoryState extends State<NewSearchScreenHistory> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.grey.shade300,
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.blue,
+            color: Colors.black,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -92,7 +92,7 @@ class _NewSearchScreenHistoryState extends State<NewSearchScreenHistory> {
           ? Center(
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.black,
                     borderRadius: BorderRadius.circular(25)),
                 height: 30,
                 width: MediaQuery.of(context).size.width * 0.7,

@@ -31,10 +31,11 @@ class _AppbarCartTokoState extends State<AppbarCartToko> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Colors.white,
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back_ios_new,
-          color: Colors.white,
+          color: Colors.black,
         ),
         onPressed: () {
           // Navigator.push(
@@ -46,8 +47,8 @@ class _AppbarCartTokoState extends State<AppbarCartToko> {
         decoration: const BoxDecoration(
             gradient: LinearGradient(
           colors: [
-            Colors.blueAccent,
-            Colors.lightBlueAccent,
+            Colors.white,
+            Colors.white,
           ],
           begin: FractionalOffset(0.0, 0.0),
           end: FractionalOffset(1.0, 0.0),
@@ -59,6 +60,7 @@ class _AppbarCartTokoState extends State<AppbarCartToko> {
       title: Text(
         widget.title!.toString(),
         style: const TextStyle(
+          color: Colors.black,
           fontSize: 20,
           letterSpacing: 3,
         ),
@@ -89,7 +91,7 @@ class _AppbarCartTokoState extends State<AppbarCartToko> {
                   ),
                   child: const Icon(
                     Icons.shopping_cart,
-                    color: Colors.white,
+                    color: Colors.black,
                     size: 35,
                   ),
                 ),

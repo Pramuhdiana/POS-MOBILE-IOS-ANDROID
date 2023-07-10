@@ -73,7 +73,7 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                         widget.model!.name.toString(),
                         // widget.model!.name.toString(),
                         style: const TextStyle(
-                          color: Color.fromARGB(255, 2, 8, 193),
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
                           letterSpacing: 3,
@@ -105,7 +105,7 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                       Text(
                         "\$${widget.model!.price.toString()}",
                         style: const TextStyle(
-                          color: Color.fromARGB(255, 2, 8, 193),
+                          color: Colors.red,
                           fontSize: 12,
                         ),
                       ),
@@ -151,10 +151,6 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                               DbAllitems.db
                                   .updateAllitemsByname(widget.model?.name, 0);
                             });
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (c) => PosSalesScreen()));
                           } else {
                             Fluttertoast.showToast(
                                 msg: "Barang Sudah Ada Di Keranjang");
@@ -163,7 +159,7 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                         hoverColor: Colors.green,
                         icon: const Icon(
                           Icons.shopping_cart,
-                          color: Colors.blue,
+                          color: Colors.black,
                         ),
                       ),
                     ],

@@ -1,5 +1,6 @@
 import 'package:e_shop/cartScreens/cart_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
+import 'package:e_shop/testing/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
@@ -28,10 +29,11 @@ class _AppBarWithCartBadgeSalesState extends State<AppBarWithCartBadgeSales> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Colors.white,
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back_ios_new,
-          color: Colors.white,
+          color: Colors.black,
         ),
         onPressed: () {
           // Navigator.push(
@@ -43,8 +45,8 @@ class _AppBarWithCartBadgeSalesState extends State<AppBarWithCartBadgeSales> {
         decoration: const BoxDecoration(
             gradient: LinearGradient(
           colors: [
-            Colors.blueAccent,
-            Colors.lightBlueAccent,
+            Colors.white,
+            Colors.white,
           ],
           begin: FractionalOffset(0.0, 0.0),
           end: FractionalOffset(1.0, 0.0),
@@ -56,6 +58,7 @@ class _AppBarWithCartBadgeSalesState extends State<AppBarWithCartBadgeSales> {
       title: Text(
         widget.title!.toString(),
         style: const TextStyle(
+          color: Colors.black,
           fontSize: 20,
           letterSpacing: 3,
         ),
@@ -86,18 +89,19 @@ class _AppBarWithCartBadgeSalesState extends State<AppBarWithCartBadgeSales> {
                   showBadge:
                       context.read<PCart>().getItems.isEmpty ? false : true,
                   badgeStyle: const badges.BadgeStyle(
-                    badgeColor: Colors.green,
+                    badgeColor: AppColors.contentColorGreen,
                   ),
                   badgeContent: Text(
                     context.watch<PCart>().getItems.length.toString(),
                     style: const TextStyle(
+                      color: Colors.black,
                       fontSize: 8,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   child: const Icon(
                     Icons.shopping_cart,
-                    color: Colors.white,
+                    color: Colors.black,
                     size: 35,
                   ),
                 ),

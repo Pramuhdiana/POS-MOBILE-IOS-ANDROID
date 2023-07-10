@@ -97,25 +97,16 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey.shade200,
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           flexibleSpace: Container(
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-              colors: [
-                Colors.blueAccent,
-                Colors.lightBlueAccent,
-              ],
-              begin: FractionalOffset(0.0, 0.0),
-              end: FractionalOffset(1.0, 0.0),
-              stops: [0.0, 1.0],
-              tileMode: TileMode.clamp,
-            )),
+            color: Colors.white,
           ),
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back_ios_new,
-              color: Colors.white,
+              color: Colors.black,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -124,6 +115,7 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
           title: const Text(
             "FORM ADD REQUEST",
             style: TextStyle(
+              color: Colors.black,
               fontSize: 20,
               letterSpacing: 3,
             ),
@@ -680,11 +672,16 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black),
                         onPressed: () {
                           // myAlert();
                           openImages();
                         },
-                        child: const Text('Upload Photo'),
+                        child: const Text(
+                          'Upload Photo',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                       const SizedBox(
                         height: 10,
@@ -738,7 +735,7 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
         ),
         //save e ticketing
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 50, right: 50, bottom: 5),
+          padding: const EdgeInsets.only(left: 50, right: 50, bottom: 20),
           child: CustomLoadingButton(
             controller: btnController,
             onPressed: () {
@@ -762,8 +759,11 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
                 });
               }
             },
-            //  c: Colors.blue,
-            child: const Text("Save Request"),
+            backgroundColor: Colors.black,
+            child: const Text(
+              "Save Request",
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ));
   }
