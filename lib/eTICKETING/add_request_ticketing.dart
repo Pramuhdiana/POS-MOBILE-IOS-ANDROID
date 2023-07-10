@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print, non_constant_identifier_names, sized_box_for_whitespace, depend_on_referenced_packages
 
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -13,7 +12,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
 
 // ignore: use_key_in_widget_constructors
 class AddRequestEticketing extends StatefulWidget {
@@ -743,7 +741,8 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
                 Future.delayed(const Duration(milliseconds: 80))
                     .then((value) async {
                   btnController.success(); //sucses
-                  await sendMotificationToBc(fcmTokensandy);
+                  await notif.sendNotificationTo(fcmTokensandy, 'E-TICKETING',
+                      'BC : ${bcName.text} \nAdd request TICKETING to ${customerName.text}');
                   Future.delayed(const Duration(seconds: 1)).then((value) {
                     btnController.reset(); //reset
                   });
@@ -752,7 +751,7 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
                 Future.delayed(const Duration(milliseconds: 80))
                     .then((value) async {
                   btnController.error(); //error
-                  await sendMotificationToBc(fcmTokensandy);
+
                   Future.delayed(const Duration(seconds: 1)).then((value) {
                     btnController.reset(); //reset
                   });
@@ -768,27 +767,27 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
         ));
   }
 
-  //mengirim notif
-  sendMotificationToBc(tokenBC) {
-    Map bodyNotification = {
-      'title': 'E-TICKETING',
-      'body':
-          'BC : ${bcName.text} \nAdd request TICKETING to ${customerName.text}',
-      'sound': 'default'
-    };
-    Map<String, String> headersAPI = {
-      'Content-Type': 'application/json',
-      'Authorization': 'key=$fcmServerToken',
-    };
-    Map bodyAPI = {
-      'to': tokenBC,
-      'priority': 'high',
-      'notification': bodyNotification,
-      // 'data': dataMap,
-    };
-    http.post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
-        headers: headersAPI, body: jsonEncode(bodyAPI));
-  }
+  // //mengirim notif
+  // sendMotificationToBc(tokenBC) {
+  //   Map bodyNotification = {
+  //     'title': 'E-TICKETING',
+  //     'body':
+  //         'BC : ${bcName.text} \nAdd request TICKETING to ${customerName.text}',
+  //     'sound': 'default'
+  //   };
+  //   Map<String, String> headersAPI = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': 'key=$fcmServerToken',
+  //   };
+  //   Map bodyAPI = {
+  //     'to': tokenBC,
+  //     'priority': 'high',
+  //     'notification': bodyNotification,
+  //     // 'data': dataMap,
+  //   };
+  //   http.post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
+  //       headers: headersAPI, body: jsonEncode(bodyAPI));
+  // }
 
   Future<List<UserModel>> getData(filter) async {
     String token = sharedPreferences!.getString("token").toString();

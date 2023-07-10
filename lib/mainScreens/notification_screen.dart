@@ -4,8 +4,6 @@ import 'package:e_shop/global/global.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
@@ -143,7 +141,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
             onPressed: () {
               Future.delayed(const Duration(seconds: 1)).then((value) async {
                 btnController.success(); //sucses
-                await sendMotificationToBc(fcmTokensandy);
+                await notif.sendNotificationTo(
+                    fcmTokensandy, title.text, body.text);
                 Future.delayed(const Duration(seconds: 2)).then((value) {
                   btnController.reset(); //reset
                   title.clear();
@@ -159,57 +158,4 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ),
         ));
   }
-
-  sendMotificationToBc(tokenBC) {
-    Map bodyNotification = {
-      'title': title.text,
-      'body': body.text,
-      'sound': 'default'
-    };
-    Map<String, String> headersAPI = {
-      'Content-Type': 'application/json',
-      'Authorization': 'key=$fcmServerToken',
-    };
-    Map bodyAPI = {
-      'to': tokenBC,
-      'priority': 'high',
-      'notification': bodyNotification,
-      // 'data': dataMap,
-    };
-    http.post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
-        headers: headersAPI, body: jsonEncode(bodyAPI));
-  }
-
-  // notificationFormat(bcDeviceToken, userName) {
-  //   Map<String, String> headerNotification = {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'key=$fcmServerToken',
-  //   };
-
-  //   Map bodyNotification = {
-  //     'body': body.text,
-  //     'title': title.text,
-  //     'sound': 'default'
-  //   };
-
-  // Map dataMap = {
-  //   "click_action": "FLUTTER_NOTIFICATION_CLICK",
-  //   "id": "1",
-  //   "status": "done",
-  //   "bcOrderId": orderIdDiskon,
-  // };
-
-  // Map officialNotificationFormat = {
-  //   'to': bcDeviceToken,
-  //   'priority': 'high',
-  //   'notification': bodyNotification,
-  //   // 'data': dataMap,
-  // };
-
-  // http.post(
-  //   Uri.parse("https://fcm.googleapis.com/fcm/send"),
-  //   headers: headerNotification,
-  //   body: jsonEncode(officialNotificationFormat),
-  // );
 }
-// }

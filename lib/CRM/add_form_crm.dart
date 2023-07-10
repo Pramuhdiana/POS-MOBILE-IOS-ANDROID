@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print, non_constant_identifier_names, sized_box_for_whitespace, depend_on_referenced_packages
 
-import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -963,7 +962,9 @@ class _AddFormCRMState extends State<AddFormCRM> {
             nomor_invoice: selectedOmzet ?? '',
             detail: reportinput.text,
             nama_toko: toko));
-        await sendMotificationToBc(fcmTokensandy);
+        // await sendNotificationToBc(fcmTokensandy);
+        await notif.sendNotificationTo(fcmTokensandy, 'Report CRM',
+            'Report ${sharedPreferences!.getString('name')} \nDetail report : ${reportinput.text}\nTotal omzet : ${omzetS.text}');
         await postAPIreport();
         Fluttertoast.showToast(msg: 'Report success');
         Future.delayed(const Duration(seconds: 1)).then((value) {
@@ -974,28 +975,28 @@ class _AddFormCRMState extends State<AddFormCRM> {
     }
   }
 
-//mengirim notif
-  sendMotificationToBc(tokenBC) {
-    String? bcName = sharedPreferences!.getString('name');
-    Map bodyNotification = {
-      'title': 'Report CRM',
-      'body':
-          'Report $bcName \nDetail report : ${reportinput.text}\nTotal omzet : ${omzetS.text}',
-      'sound': 'default'
-    };
-    Map<String, String> headersAPI = {
-      'Content-Type': 'application/json',
-      'Authorization': 'key=$fcmServerToken',
-    };
-    Map bodyAPI = {
-      'to': tokenBC,
-      'priority': 'high',
-      'notification': bodyNotification,
-      // 'data': dataMap,
-    };
-    http.post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
-        headers: headersAPI, body: jsonEncode(bodyAPI));
-  }
+// //mengirim notif
+//   sendNotificationToBc(tokenBC) {
+//     String? bcName = sharedPreferences!.getString('name');
+//     Map bodyNotification = {
+//       'title': 'Report CRM',
+//       'body':
+//           'Report $bcName \nDetail report : ${reportinput.text}\nTotal omzet : ${omzetS.text}',
+//       'sound': 'default'
+//     };
+//     Map<String, String> headersAPI = {
+//       'Content-Type': 'application/json',
+//       'Authorization': 'key=$fcmServerToken',
+//     };
+//     Map bodyAPI = {
+//       'to': tokenBC,
+//       'priority': 'high',
+//       'notification': bodyNotification,
+//       // 'data': dataMap,
+//     };
+//     http.post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
+//         headers: headersAPI, body: jsonEncode(bodyAPI));
+//   }
 
 //send data to DATABASE with API
   postAPIreport() async {

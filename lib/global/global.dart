@@ -1,9 +1,11 @@
 import 'package:e_shop/assistantMethods/cart_methods.dart';
+import 'package:e_shop/push_notifications/notification_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 SharedPreferences? sharedPreferences;
 
 CartMethods cartMethods = CartMethods();
+Notification notif = Notification();
 // SearchScreens searchScreens = SearchScreens();
 // if (sharedPreferences!.getString("role")! != "SALES")
 String fcmTokenJonathan = "spxOYelPKaZ33WKvoFvWuL3k7uB2";
