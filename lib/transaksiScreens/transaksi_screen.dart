@@ -375,13 +375,12 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 50, right: 50, bottom: 20),
+          padding: const EdgeInsets.only(bottom: 20),
           child: CustomLoadingButton(
             controller: btnController,
             onPressed: () {
               formValidation();
             },
-            backgroundColor: Colors.black,
             child: const Text(
               "Save Transaction",
               style: TextStyle(color: Colors.white),

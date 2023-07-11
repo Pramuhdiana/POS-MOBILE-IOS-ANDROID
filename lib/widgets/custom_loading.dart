@@ -21,14 +21,14 @@ class CustomLoadingButton extends StatelessWidget {
       this.onPressed,
       required this.child,
       this.padding,
-      this.borderRadiusAll = 18,
+      this.borderRadiusAll = 25,
       this.backgroundColor = Colors.blue,
       this.successColor = Colors.green,
       this.errorColor = Colors.red,
       this.elevation = 4,
       this.splashColor,
-      this.height = 35,
-      this.width = 300})
+      this.height = 45,
+      this.width = 350})
       : super(key: key);
 
   @override

@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print
 
-import 'package:e_shop/CRM/list_crm_telephone.dart';
 import 'package:e_shop/database/db_notification_dummy.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/history/main_history.dart';
@@ -78,7 +77,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
         body: const TabBarView(children: [
           ListNewNotif(),
-          ListCrmTelephone(),
+          ListNewNotif(),
         ]),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {

@@ -779,15 +779,12 @@ class _AddFormCRMState extends State<AddFormCRM> {
           ],
         ), //Row
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 50, right: 50, bottom: 5),
+          padding: const EdgeInsets.only(bottom: 20),
           child: CustomLoadingButton(
             controller: btnController,
             onPressed: () {
               formValidation();
             },
-            //  c: Colors.black,
-            backgroundColor: Colors.black,
-
             child: const Text(
               "Save Report",
               style: TextStyle(color: Colors.white),

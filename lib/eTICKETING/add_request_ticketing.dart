@@ -733,7 +733,7 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
         ),
         //save e ticketing
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 50, right: 50, bottom: 20),
+          padding: const EdgeInsets.only(bottom: 20),
           child: CustomLoadingButton(
             controller: btnController,
             onPressed: () {
@@ -758,7 +758,6 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
                 });
               }
             },
-            backgroundColor: Colors.black,
             child: const Text(
               "Save Request",
               style: TextStyle(color: Colors.white),
