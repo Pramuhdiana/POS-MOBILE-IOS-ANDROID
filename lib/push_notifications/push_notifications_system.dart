@@ -1,5 +1,10 @@
+// ignore_for_file: avoid_print, use_build_context_synchronously, depend_on_referenced_packages
+
+import 'package:e_shop/database/db_notification_dummy.dart';
+import 'package:e_shop/database/model_notification_dummy.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class PushNotificationsSystem {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -10,8 +15,15 @@ class PushNotificationsSystem {
     //When the app is completely closed and opened directly from the push notification
     FirebaseMessaging.instance
         .getInitialMessage()
-        .then((RemoteMessage? remoteMessage) {
+        .then((RemoteMessage? remoteMessage) async {
       if (remoteMessage != null) {
+        print("message recieved");
+        await DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
+          id: 1,
+          title: remoteMessage.notification!.title,
+          body: remoteMessage.notification!.body,
+          created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        ));
         //open app and show notification data
         showNotificationWhenOpenApp(
           context,
@@ -21,8 +33,14 @@ class PushNotificationsSystem {
 
     //2. Foreground
     //When the app is open and it receives a push notification
-    FirebaseMessaging.onMessage.listen((RemoteMessage? remoteMessage) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage? remoteMessage) async {
       if (remoteMessage != null) {
+        await DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
+          id: 1,
+          title: remoteMessage.notification!.title,
+          body: remoteMessage.notification!.body,
+          created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        ));
         //directly show notification data
         showDialog(
             context: context,
@@ -93,15 +111,17 @@ class PushNotificationsSystem {
 
   Future notificationPopUp(BuildContext context) async {
     messaging = FirebaseMessaging.instance;
-
-    // FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-    //   print("message recieved");
-    //   print(event.notification!.body);
-    // });
     // FirebaseMessaging.onMessageOpenedApp.listen((message) {
     //   print('Message clicked!');
     // });
-    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) async {
+      print("message recieved");
+      await DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
+        id: 1,
+        title: event.notification!.title,
+        body: event.notification!.body,
+        created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+      ));
       showDialog(
           context: context,
           builder: (BuildContext context) {

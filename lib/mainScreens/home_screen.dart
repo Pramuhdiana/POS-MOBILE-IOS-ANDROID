@@ -223,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //star notifi
     PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
     pushNotificationsSystem.notificationPopUp(context);
-    pushNotificationsSystem.whenNotificationReceived(context);
+    // pushNotificationsSystem.whenNotificationReceived(context);
     //end notif
   }
 
