@@ -1,0 +1,99 @@
+// ignore_for_file: depend_on_referenced_packages, unnecessary_import, unused_local_variable, prefer_interpolation_to_compose_strings, unnecessary_string_interpolations, avoid_print, deprecated_member_use, must_be_immutable, unused_element
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class ListNotifScreen extends StatelessWidget {
+  //Read an image data from website/webspace
+  String nameToko = 'awal';
+
+  final dynamic notif;
+  final dynamic customer;
+  ListNotifScreen({Key? key, required this.notif, this.customer})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    void myAlert(detail) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+              title: Text(
+                detail,
+                style: const TextStyle(fontSize: 15),
+              ),
+              content: Container(
+                height: MediaQuery.of(context).size.height / 6,
+              ),
+            );
+          });
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: GestureDetector(
+        // style: ElevatedButton.styleFrom(
+        // primary: Colors.black, shape: const StadiumBorder()),
+        onTap: () {
+          myAlert(notif.body);
+        },
+
+        child: Container(
+          constraints: const BoxConstraints(maxHeight: 40),
+          width: double.infinity,
+          child: Row(
+            children: [
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'Title       : ${notif.title}',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text(
+                            notif.created_at,
+                            style: const TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Text(
+                            'Read more...',
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.blue.shade100,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      // ),
+    );
+  }
+}
