@@ -5,6 +5,9 @@ import 'package:e_shop/database/model_notification_dummy.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/provider_notification.dart';
 
 class PushNotificationsSystem {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -13,12 +16,43 @@ class PushNotificationsSystem {
   Future whenNotificationReceived(BuildContext context) async {
     //1. Terminated
     //When the app is completely closed and opened directly from the push notification
-    FirebaseMessaging.instance
-        .getInitialMessage()
-        .then((RemoteMessage? remoteMessage) async {
+    // FirebaseMessaging.instance
+    //     .getInitialMessage()
+    //     .then((RemoteMessage? remoteMessage) async {
+    //   if (remoteMessage != null) {
+    //     print("message recieved no 1");
+    //     //add to notif
+    //     print("add notif");
+    //     context.read<PNewNotif>().addItem(
+    //           1,
+    //         );
+    //     //add to database
+    //     DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
+    //       id: 1,
+    //       title: remoteMessage.notification!.title,
+    //       body: remoteMessage.notification!.body,
+    //       created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+    //     ));
+
+    //     //open app and show notification data
+    //     showNotificationWhenOpenApp(
+    //       context,
+    //     );
+    //   }
+    // });
+
+    //2. Foreground
+    //When the app is open and it receives a push notification
+    FirebaseMessaging.onMessage.listen((RemoteMessage? remoteMessage) async {
       if (remoteMessage != null) {
-        print("message recieved");
-        await DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
+        print("message recieved no 2");
+        //add to notif
+        print("add notif");
+        context.read<PNewNotif>().addItem(
+              1,
+            );
+        //add to database
+        DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
           id: 1,
           title: remoteMessage.notification!.title,
           body: remoteMessage.notification!.body,
@@ -31,46 +65,30 @@ class PushNotificationsSystem {
       }
     });
 
-    //2. Foreground
-    //When the app is open and it receives a push notification
-    FirebaseMessaging.onMessage.listen((RemoteMessage? remoteMessage) async {
-      if (remoteMessage != null) {
-        await DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
-          id: 1,
-          title: remoteMessage.notification!.title,
-          body: remoteMessage.notification!.body,
-          created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-        ));
-        //directly show notification data
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(remoteMessage.notification!.title!),
-                content: Text(remoteMessage.notification!.body!),
-                actions: [
-                  TextButton(
-                    child: const Text("Ok"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              );
-            });
-      }
-    });
-
     //3. Background
     //When the app is in the background and opened directly from the push notification.
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? remoteMessage) {
-      if (remoteMessage != null) {
-        //open the app - show notification data
-        showNotificationWhenOpenApp(
-          context,
-        );
-      }
-    });
+    // FirebaseMessaging.onMessageOpenedApp
+    //     .listen((RemoteMessage? remoteMessage) async {
+    //   if (remoteMessage != null) {
+    //     print("message recieved no 3");
+    //     // add to notif
+    //     print("add notif");
+    //     context.read<PNewNotif>().addItem(
+    //           1,
+    //         );
+    //     //add to database
+    //     DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
+    //       id: 1,
+    //       title: remoteMessage.notification!.title,
+    //       body: remoteMessage.notification!.body,
+    //       created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+    //     ));
+    //     //open the app - show notification data
+    //     showNotificationWhenOpenApp(
+    //       context,
+    //     );
+    //   }
+    // });
   }
 
   // //device recognition token
@@ -122,23 +140,23 @@ class PushNotificationsSystem {
         body: event.notification!.body,
         created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
       ));
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(event.notification!.title!),
-              content: Text(event.notification!.body!),
-              actions: [
-                TextButton(
-                  child: const Text("Ok"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            );
-          });
+      // showDialog(
+      //     context: context,
+      //     builder: (BuildContext context) {
+      //       return AlertDialog(
+      //         title: Text(event.notification!.title!),
+      //         content: Text(event.notification!.body!),
+      //         actions: [
+      //           TextButton(
+      //             child: const Text("Ok"),
+      //             onPressed: () {
+      //               Navigator.of(context).pop();
+      //             },
+      //           )
+      //         ],
+      //       );
+      //     });
     });
-    messaging.subscribeToTopic("messaging");
+    // messaging.subscribeToTopic("messaging");
   }
 }

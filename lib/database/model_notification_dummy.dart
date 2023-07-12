@@ -33,7 +33,7 @@ class ModelNotificationDummy {
         id: json["id"] ?? 0,
         title: json["title"] ?? '',
         body: json["body"] ?? 0,
-        status: json["status"] ?? '',
+        status: json["status"] ?? 0,
         created_at: json["created_at"] ?? '',
       );
 

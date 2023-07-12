@@ -93,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
     year = DateFormat('y').format(DateTime.now());
     //jan
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('1', year).then((value) {
@@ -222,8 +223,8 @@ class _HomeScreenState extends State<HomeScreen> {
     controller?.stopCamera();
     //star notifi
     PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
-    pushNotificationsSystem.notificationPopUp(context);
-    // pushNotificationsSystem.whenNotificationReceived(context);
+    // pushNotificationsSystem.notificationPopUp(context);
+    pushNotificationsSystem.whenNotificationReceived(context);
     //end notif
   }
 

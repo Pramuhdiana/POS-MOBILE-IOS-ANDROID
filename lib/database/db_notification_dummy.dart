@@ -41,10 +41,10 @@ class DbNotifDummy {
     });
   }
 
-  saveNotifDummy(ModelNotificationDummy newCrm) async {
-    final db = await database;
-    final res = await db.insert('allnotifdummy', newCrm.toJson());
+  saveNotifDummy(ModelNotificationDummy newNotif) async {
     print('notif masuk database');
+    final db = await database;
+    final res = await db.insert('allnotifdummy', newNotif.toJson());
     return res;
   }
 

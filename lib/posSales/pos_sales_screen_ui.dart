@@ -6,6 +6,7 @@ import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/model_allitems.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/posSales/main_posSales_screen.dart';
+import 'package:e_shop/provider/provider_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -146,6 +147,9 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                                   widget.model!.description.toString(),
                                   widget.model!.keterangan_barang.toString(),
                                 );
+                            //add to notif
+                            print("Barang Berhasil Di Tambahkan");
+
                             setState(() {
                               postAPIcart();
                               DbAllitems.db

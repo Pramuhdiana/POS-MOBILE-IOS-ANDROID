@@ -5,6 +5,7 @@ import 'package:e_shop/mainScreens/help_screen.dart';
 import 'package:e_shop/mainScreens/home_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
+import 'package:e_shop/provider/provider_notification.dart';
 import 'package:e_shop/testing/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -26,6 +27,7 @@ class _MainScreenState extends State<MainScreen> {
     const NotificationScreen(),
     const HelpScreen(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,10 +83,31 @@ class _MainScreenState extends State<MainScreen> {
                       color: Colors.black,
                     ),
                   ),
-                  icon: Icons.home,
+                  icon: Icons.shopping_cart,
                   text: 'Cart',
                 ),
-                const GButton(
+                GButton(
+                  gap: 12,
+                  leading: badges.Badge(
+                    showBadge: true,
+                    // showBadge:
+                    //     context.read<PCart>().getItems.isEmpty ? false : true,
+                    badgeStyle: const badges.BadgeStyle(
+                      badgeColor: AppColors.contentColorGreen,
+                    ),
+                    badgeContent: Text(
+                      context.watch<PNewNotif>().getItems.length.toString(),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.notifications,
+                      color: Colors.black,
+                    ),
+                  ),
                   icon: Icons.notifications,
                   text: 'Notifications',
                 ),
