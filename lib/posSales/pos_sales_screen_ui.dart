@@ -62,7 +62,7 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
             child: Card(
               color: Colors.white,
               elevation: 10,
-              shadowColor: const Color.fromARGB(255, 170, 201, 226),
+              shadowColor: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(4),
                 child: SizedBox(
@@ -82,8 +82,10 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                       ),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(40),
+
                         child: CachedNetworkImage(
                           // cacheManager: customCacheManager,
+
                           memCacheWidth: 85, //default 45
                           memCacheHeight: 100, //default 60
                           maxHeightDiskCache: 100, //default 60

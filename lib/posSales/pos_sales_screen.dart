@@ -9,11 +9,12 @@ import 'package:e_shop/mainScreens/notification_screen.dart';
 import 'package:e_shop/models/kode_keluarbarang.dart';
 import 'package:e_shop/posSales/pos_sales_screen_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
+import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
 import '../cartScreens/db_helper.dart';
 import '../global/global.dart';
 import '../mainScreens/home_screen.dart';
-import '../models/products.dart';
 import '../models/sales.dart';
 import '../qr/qr_scanner.dart';
 import '../widgets/appbar_cart_pos_sales.dart';
@@ -50,7 +51,6 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
   String query = '';
   String? selectedOmzet;
   String kodeRefrensi = 'null';
-  List<Products> products = [];
   var isLoading = false;
   int? qtyProduct = 0;
 
@@ -66,7 +66,6 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
     list = [];
     DbAllKodekeluarbarang.db.getAllkeluarbarang().then((listMap) {
       listMap.map((map) {
-        print(map.toString());
         return getDropDownWidget(map);
       }).forEach((dropDownItem) {
         list?.add(dropDownItem);
@@ -143,9 +142,13 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                       if (dataSnapshot.hasData) //if brands exists
                       {
                         kodeRefrensi == 'null'
-                            ? DbAllitems.db
-                                .getAllitems()
-                                .then((value) => {qtyProduct = value.length})
+                            ? DbAllitems.db.getAllitems().then((value) => {
+                                  setState(
+                                    () {
+                                      qtyProduct = value.length;
+                                    },
+                                  )
+                                })
                             : DbAllitems.db
                                 .getAllitemsBykode(kodeRefrensi)
                                 .then((value) => {
@@ -155,35 +158,43 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                                         },
                                       )
                                     });
-                        return GridView.builder(
-                          shrinkWrap: true,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                          itemBuilder: (BuildContext context, int index) {
-                            sharedPreferences!.setString('total_product_sales',
-                                dataSnapshot.data.length.toString());
-                            var item = (dataSnapshot.data[index]);
-                            return SalesItemsUiDesign(
-                              model: ModelAllitems(
-                                  id: item.id,
-                                  name: item.name,
-                                  slug: item.slug,
-                                  image_name: item.image_name,
-                                  description: item.description,
-                                  price: item.price,
-                                  category_id: item.category_id,
-                                  posisi_id: item.posisi_id,
-                                  customer_id: item.customer_id,
-                                  kode_refrensi: item.kode_refrensi,
-                                  sales_id: item.sales_id,
-                                  brand_id: item.brand_id,
-                                  qty: item.qty,
-                                  status_titipan: item.status_titipan,
-                                  keterangan_barang: item.keterangan_barang),
-                            );
-                          },
-                          itemCount: dataSnapshot.data.length,
+                        return SingleChildScrollView(
+                          child: StaggeredGridView.countBuilder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: dataSnapshot.data.length,
+                            crossAxisCount: 2,
+                            staggeredTileBuilder: (context) =>
+                                const StaggeredTile.fit(1),
+                            // gridDelegate:
+                            //     const SliverGridDelegateWithFixedCrossAxisCount(
+                            //         crossAxisCount: 2),
+
+                            itemBuilder: (BuildContext context, int index) {
+                              sharedPreferences!.setString(
+                                  'total_product_sales',
+                                  dataSnapshot.data.length.toString());
+                              var item = (dataSnapshot.data[index]);
+                              return SalesItemsUiDesign(
+                                model: ModelAllitems(
+                                    id: item.id,
+                                    name: item.name,
+                                    slug: item.slug,
+                                    image_name: item.image_name,
+                                    description: item.description,
+                                    price: item.price,
+                                    category_id: item.category_id,
+                                    posisi_id: item.posisi_id,
+                                    customer_id: item.customer_id,
+                                    kode_refrensi: item.kode_refrensi,
+                                    sales_id: item.sales_id,
+                                    brand_id: item.brand_id,
+                                    qty: item.qty,
+                                    status_titipan: item.status_titipan,
+                                    keterangan_barang: item.keterangan_barang),
+                              );
+                            },
+                          ),
                         );
                       } else if (dataSnapshot.hasError) {
                         return const CircularProgressIndicator();

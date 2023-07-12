@@ -44,7 +44,10 @@ class _MainScreenState extends State<MainScreen> {
           ),
           // color: Colors.white,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+            // padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, bottom: 40, top: 4),
+
             child: GNav(
               backgroundColor: Colors.white,
               color: Colors.black,
@@ -56,7 +59,7 @@ class _MainScreenState extends State<MainScreen> {
                   _selectedIndex = index;
                 });
               },
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(6),
               tabs: [
                 const GButton(
                   icon: Icons.home,

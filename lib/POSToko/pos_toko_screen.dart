@@ -18,6 +18,8 @@ import 'package:e_shop/widgets/fake_search_toko.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
+import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
 import '../cartScreens/db_helper.dart';
 import '../global/global.dart';
@@ -160,35 +162,39 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                         qtyProduct = value.length;
                       });
                     });
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2),
-                      itemBuilder: (BuildContext context, int index) {
-                        var itemsModel = (dataSnapshot.data[index]);
+                    return SingleChildScrollView(
+                      child: StaggeredGridView.countBuilder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: dataSnapshot.data.length,
+                        crossAxisCount: 2,
+                        staggeredTileBuilder: (context) =>
+                            const StaggeredTile.fit(1),
+                        itemBuilder: (BuildContext context, int index) {
+                          var itemsModel = (dataSnapshot.data[index]);
 
-                        return PosTokoUi(
-                          model: ModelAllitemsToko(
-                              id: itemsModel.id,
-                              name: itemsModel.name,
-                              slug: itemsModel.slug,
-                              image_name: itemsModel.image_name,
-                              description: itemsModel.description,
-                              price: itemsModel.price,
-                              category_id: itemsModel.category_id,
-                              posisi_id: itemsModel.posisi_id,
-                              customer_id: itemsModel.customer_id,
-                              kode_refrensi: itemsModel.kode_refrensi,
-                              sales_id: itemsModel.sales_id,
-                              brand_id: itemsModel.brand_id,
-                              qty: itemsModel.qty,
-                              status_titipan: itemsModel.status_titipan,
-                              keterangan_barang: itemsModel.keterangan_barang),
-                          idtoko: idtoko,
-                        );
-                      },
-                      itemCount: dataSnapshot.data.length,
+                          return PosTokoUi(
+                            model: ModelAllitemsToko(
+                                id: itemsModel.id,
+                                name: itemsModel.name,
+                                slug: itemsModel.slug,
+                                image_name: itemsModel.image_name,
+                                description: itemsModel.description,
+                                price: itemsModel.price,
+                                category_id: itemsModel.category_id,
+                                posisi_id: itemsModel.posisi_id,
+                                customer_id: itemsModel.customer_id,
+                                kode_refrensi: itemsModel.kode_refrensi,
+                                sales_id: itemsModel.sales_id,
+                                brand_id: itemsModel.brand_id,
+                                qty: itemsModel.qty,
+                                status_titipan: itemsModel.status_titipan,
+                                keterangan_barang:
+                                    itemsModel.keterangan_barang),
+                            idtoko: idtoko,
+                          );
+                        },
+                      ),
                     );
                   } else if (dataSnapshot.hasError) {
                     return const CircularProgressIndicator(color: Colors.black);
