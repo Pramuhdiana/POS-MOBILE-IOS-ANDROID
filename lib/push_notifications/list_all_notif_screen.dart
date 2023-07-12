@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ListNotifScreen extends StatelessWidget {
+class ListAllNotifScreen extends StatelessWidget {
   //Read an image data from website/webspace
   String nameToko = 'awal';
 
   final dynamic notif;
   final dynamic customer;
-  ListNotifScreen({Key? key, required this.notif, this.customer})
+  ListAllNotifScreen({Key? key, required this.notif, this.customer})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -33,13 +33,12 @@ class ListNotifScreen extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(3.0),
-      child: GestureDetector(
-        // style: ElevatedButton.styleFrom(
-        // primary: Colors.black, shape: const StadiumBorder()),
-        onTap: () {
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            primary: Colors.black, shape: const StadiumBorder()),
+        onPressed: () {
           myAlert(notif.body);
         },
-
         child: Container(
           constraints: const BoxConstraints(maxHeight: 40),
           width: double.infinity,
@@ -92,6 +91,49 @@ class ListNotifScreen extends StatelessWidget {
             ],
           ),
         ),
+        // subtitle: Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: [
+        //     Text(notif.created_at),
+        //     // Text(
+        //     //   CurrencyFormat.convertToIdr(crm.nominal_hasil, 2).toString(),
+        //     //   overflow: TextOverflow.ellipsis,
+        //     //   maxLines: 1,
+        //     //   style: TextStyle(
+        //     //       fontSize: 15,
+        //     //       color: Colors.grey.shade600,
+        //     //       fontWeight: FontWeight.w600),
+        //     // ),
+        //   ],
+        // ),
+        // children: [
+        //   Container(
+        //     height: 120,
+        //     width: double.infinity,
+        //     decoration: BoxDecoration(
+        //         color: Colors.grey.shade600.withOpacity(0.2),
+        //         borderRadius: BorderRadius.circular(15)),
+        //     child: Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: Column(
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         children: [
+        //           SizedBox(
+        //             height: 100,
+        //             width: 950,
+        //             child: SingleChildScrollView(
+        //               child: Text(
+        //                 ('Detail report : \n') + (notif.body),
+        //                 style: const TextStyle(fontSize: 15),
+        //               ),
+        //             ),
+        //           ),
+        //           const SizedBox(height: 2),
+        //         ],
+        //       ),
+        //     ),
+        //   )
+        // ],
       ),
       // ),
     );

@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:e_shop/database/db_notification_dummy.dart';
-import 'package:e_shop/push_notifications/list_notif_screen.dart';
+import 'package:e_shop/push_notifications/list_all_notif_screen.dart';
 import 'package:flutter/material.dart';
 
 class ListAllNotif extends StatelessWidget {
@@ -38,7 +38,7 @@ class ListAllNotif extends StatelessWidget {
             return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return ListNotifScreen(
+                  return ListAllNotifScreen(
                     // customer: snapshot2.data[index],
                     notif: snapshot.data[index],
                   );
