@@ -10,6 +10,7 @@ import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
+import 'package:e_shop/provider/provider_notification.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ import '../database/db_alldetailtransaksi.dart';
 import '../database/db_allitems.dart';
 import '../database/db_allitems_toko.dart';
 import '../database/db_alltransaksi.dart';
+import '../database/db_notification_dummy.dart';
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({super.key});
@@ -132,6 +134,14 @@ class _MySplashScreenState extends State<MySplashScreen> {
     await apiProvider.getAllCustomer();
     await apiProvider.getUsers();
 
+    context.read<PNewNotif>().clearNotif();
+    DbNotifDummy.db.getAllNotif().then((value) {
+      for (var i = 0; i < value.length; i++) {
+        context.read<PNewNotif>().addItem(
+              1,
+            );
+      }
+    });
     // wait for 2 seconds to simulate loading of data
     await Future.delayed(const Duration(seconds: 2));
 

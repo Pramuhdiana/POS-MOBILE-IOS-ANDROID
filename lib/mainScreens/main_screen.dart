@@ -1,7 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:e_shop/cartScreens/cart_screen_home.dart';
-import 'package:e_shop/mainScreens/help_screen.dart';
+import 'package:e_shop/mainScreens/profile_screen.dart';
 import 'package:e_shop/mainScreens/home_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
@@ -25,7 +25,7 @@ class _MainScreenState extends State<MainScreen> {
     const HomeScreen(),
     const CartScreenHome(),
     const NotificationScreen(),
-    const HelpScreen(),
+    const ProfileScreen(),
   ];
 
   @override

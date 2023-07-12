@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/model_allitems.dart';
-import 'package:e_shop/mainScreens/help_screen.dart';
+import 'package:e_shop/mainScreens/profile_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
 import 'package:e_shop/models/kode_keluarbarang.dart';
 import 'package:e_shop/posSales/pos_sales_screen_ui.dart';
@@ -40,7 +40,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
   final List<Widget> _tabs = [
     const HomeScreen(),
     const NotificationScreen(),
-    const HelpScreen(),
+    const ProfileScreen(),
   ];
 
   String token = sharedPreferences!.getString("token").toString();

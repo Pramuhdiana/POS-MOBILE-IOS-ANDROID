@@ -1,6 +1,8 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously, avoid_print
 
 import 'dart:math';
+import 'package:e_shop/database/db_notification_dummy.dart';
+import 'package:e_shop/provider/provider_notification.dart';
 import 'package:e_shop/search/new_search.dart';
 import 'package:intl/intl.dart';
 
@@ -223,8 +225,8 @@ class _HomeScreenState extends State<HomeScreen> {
     controller?.stopCamera();
     //star notifi
     PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
-    // pushNotificationsSystem.notificationPopUp(context);
     pushNotificationsSystem.whenNotificationReceived(context);
+    // pushNotificationsSystem.notificationPopUp(context);
     //end notif
   }
 
@@ -237,6 +239,14 @@ class _HomeScreenState extends State<HomeScreen> {
       context.read<PCart>().clearCart(); //clear cart
       loadCartFromApiPOSSALES();
       DbAlltransaksi.db.getAlltransaksi(1);
+      context.read<PNewNotif>().clearNotif();
+      DbNotifDummy.db.getAllNotif().then((value) {
+        for (var i = 0; i < value.length; i++) {
+          context.read<PNewNotif>().addItem(
+                1,
+              );
+        }
+      });
       // Fluttertoast.showToast(msg: "Refresh done");
     });
   }

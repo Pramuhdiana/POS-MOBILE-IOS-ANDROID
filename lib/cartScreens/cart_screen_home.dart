@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 import '../global/currency_format.dart';
+import '../push_notifications/push_notifications_system.dart';
 import '../transaksiScreens/transaksi_screen.dart';
 
 class CartScreenHome extends StatefulWidget {
@@ -33,6 +34,11 @@ class _CartScreenHomeState extends State<CartScreenHome> {
   void initState() {
     super.initState();
     title = "POS Cart";
+    //star notifi
+    PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
+    pushNotificationsSystem.whenNotificationReceived(context);
+    // pushNotificationsSystem.notificationPopUp(context);
+    //end notif
   }
 
   @override

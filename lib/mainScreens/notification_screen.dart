@@ -5,6 +5,7 @@ import 'package:e_shop/global/global.dart';
 import 'package:e_shop/history/main_history.dart';
 import 'package:e_shop/provider/provider_notification.dart';
 import 'package:e_shop/push_notifications/list_Newnotif.dart';
+import 'package:e_shop/push_notifications/push_notifications_system.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,11 +30,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   void initState() {
-    //  strat push notification
-    // PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
+//star notifi
+    PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
+    pushNotificationsSystem.whenNotificationReceived(context);
     // pushNotificationsSystem.notificationPopUp(context);
-    // pushNotificationsSystem.whenNotificationReceived(context); //popup dari bottom tanpa confirmasi oke
-    // end push notification
+    //end notif
     super.initState();
     DbNotifDummy.db.getAllNotif();
     print(fcmTokensandy);

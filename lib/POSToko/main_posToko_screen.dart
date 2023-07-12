@@ -1,7 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, file_names
 
 import 'package:e_shop/POSToko/pos_toko_screen.dart';
-import 'package:e_shop/mainScreens/help_screen.dart';
+import 'package:e_shop/mainScreens/profile_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ class _MainPosTokoScreenState extends State<MainPosTokoScreen> {
   final List<Widget> _tabs = [
     const PosTokoScreen(),
     const NotificationScreen(),
-    const HelpScreen(),
+    const ProfileScreen(),
   ];
   @override
   Widget build(BuildContext context) {

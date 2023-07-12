@@ -65,30 +65,30 @@ class PushNotificationsSystem {
       }
     });
 
-    //3. Background
-    //When the app is in the background and opened directly from the push notification.
-    // FirebaseMessaging.onMessageOpenedApp
-    //     .listen((RemoteMessage? remoteMessage) async {
-    //   if (remoteMessage != null) {
-    //     print("message recieved no 3");
-    //     // add to notif
-    //     print("add notif");
-    //     context.read<PNewNotif>().addItem(
-    //           1,
-    //         );
-    //     //add to database
-    //     DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
-    //       id: 1,
-    //       title: remoteMessage.notification!.title,
-    //       body: remoteMessage.notification!.body,
-    //       created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-    //     ));
-    //     //open the app - show notification data
-    //     showNotificationWhenOpenApp(
-    //       context,
-    //     );
-    //   }
-    // });
+    // 3. Background
+    // When the app is in the background and opened directly from the push notification.
+    FirebaseMessaging.onMessageOpenedApp
+        .listen((RemoteMessage? remoteMessage3) async {
+      if (remoteMessage3 != null) {
+        print("message recieved no 3");
+        // add to notif
+        print("add notif");
+        context.read<PNewNotif>().addItem(
+              1,
+            );
+        //add to database
+        DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
+          id: 1,
+          title: remoteMessage3.notification!.title,
+          body: remoteMessage3.notification!.body,
+          created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        ));
+        //open the app - show notification data
+        showNotificationWhenOpenApp(
+          context,
+        );
+      }
+    });
   }
 
   // //device recognition token
