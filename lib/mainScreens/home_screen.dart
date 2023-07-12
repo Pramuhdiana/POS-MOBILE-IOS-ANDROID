@@ -240,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
       loadCartFromApiPOSSALES();
       DbAlltransaksi.db.getAlltransaksi(1);
       context.read<PNewNotif>().clearNotif();
-      DbNotifDummy.db.getAllNotif().then((value) {
+      DbNotifDummy.db.getAllNotif(1).then((value) {
         for (var i = 0; i < value.length; i++) {
           context.read<PNewNotif>().addItem(
                 1,

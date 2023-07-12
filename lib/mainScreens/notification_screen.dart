@@ -5,6 +5,7 @@ import 'package:e_shop/global/global.dart';
 import 'package:e_shop/history/main_history.dart';
 import 'package:e_shop/provider/provider_notification.dart';
 import 'package:e_shop/push_notifications/list_Newnotif.dart';
+import 'package:e_shop/push_notifications/list_all_notification.dart';
 import 'package:e_shop/push_notifications/push_notifications_system.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     // pushNotificationsSystem.notificationPopUp(context);
     //end notif
     super.initState();
-    DbNotifDummy.db.getAllNotif();
+    DbNotifDummy.db.getAllNotif(1);
     print(fcmTokensandy);
   }
 
@@ -50,17 +51,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          // leading: IconButton(
-          //   icon: const Icon(
-          //     Icons.arrow_back_ios_new,
-          //     color: Colors.black,
-          //   ),
-          //   onPressed: () {
-          //     // Navigator.push(
-          //     //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
-          //     Navigator.pop(context);
-          //   },
-          // ),
           backgroundColor: Colors.white,
           elevation: 0,
           title: const Text(
@@ -74,21 +64,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
               indicatorColor: Colors.black,
               indicatorWeight: 5,
               tabs: [
-                RepeatedTab(label: 'New Notif'),
-                RepeatedTab(label: 'Notifictaion'),
+                RepeatedTab(label: 'Unread'),
+                RepeatedTab(label: 'Read'),
               ]),
         ),
-        body: const TabBarView(children: [
-          ListNewNotif(),
-          ListNewNotif(),
-        ]),
+        body: RefreshIndicator(
+          onRefresh: refresh,
+          child: const TabBarView(children: [
+            ListNewNotif(),
+            ListAllNotif(),
+          ]),
+        ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             DbNotifDummy.db.deleteAllnotif();
             context.read<PNewNotif>().clearNotif();
-
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (c) => AddFormCRM()));
           },
           label: const Text(
             "Delete Data",
@@ -103,87 +93,4 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
     );
   }
-  // body: RefreshIndicator(
-  //   onRefresh: refresh,
-  //   child: Padding(
-  //     padding: const EdgeInsets.only(top: 150),
-  //     child: Center(
-  //       child: Form(
-  //         key: formKey,
-  //         child: Column(
-  //           children: [
-  //             SizedBox(
-  //               width: 257,
-  //               child: TextFormField(
-  //                   textAlign: TextAlign.center,
-  //                   controller: title,
-  //                   decoration: InputDecoration(
-  //                     hintStyle: const TextStyle(
-  //                         fontSize: 18.0, color: Colors.black),
-  //                     hintText: "Title",
-  //                     // suffixIcon: IconButton(
-  //                     //   onPressed: title.clear,
-  //                     //   icon: const Icon(Icons.clear),
-  //                     //   color: Colors.red,
-  //                     // ),
-  //                     fillColor: Colors.white,
-  //                     filled: true,
-  //                     enabledBorder: OutlineInputBorder(
-  //                       borderSide: const BorderSide(
-  //                           color: Colors.black, width: 1),
-  //                       borderRadius: BorderRadius.circular(100.0),
-  //                     ),
-  //                   )),
-  //             ),
-  //             const SizedBox(
-  //               height: 20,
-  //             ),
-  //             SizedBox(
-  //               width: 257,
-  //               child: TextFormField(
-  //                   textAlign: TextAlign.center,
-  //                   controller: body,
-  //                   decoration: InputDecoration(
-  //                     hintStyle: const TextStyle(
-  //                         fontSize: 18.0, color: Colors.black),
-  //                     hintText: "Body",
-  //                     fillColor: Colors.white,
-  //                     filled: true,
-  //                     enabledBorder: OutlineInputBorder(
-  //                       borderSide: const BorderSide(
-  //                           color: Colors.black, width: 1),
-  //                       borderRadius: BorderRadius.circular(100.0),
-  //                     ),
-  //                   )),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   ),
-  // ),
-  // bottomNavigationBar: Padding(
-  //   padding: const EdgeInsets.only(left: 50, right: 50, bottom: 5),
-  //   child: CustomLoadingButton(
-  //     backgroundColor: Colors.black,
-  //     controller: btnController,
-  //     onPressed: () {
-  //       Future.delayed(const Duration(seconds: 1)).then((value) async {
-  //         btnController.success(); //sucses
-  //         await notif.sendNotificationTo(
-  //             fcmTokensandy, title.text, body.text);
-  //         Future.delayed(const Duration(seconds: 2)).then((value) {
-  //           btnController.reset(); //reset
-  //           title.clear();
-  //           body.clear();
-  //         });
-  //       });
-  //     },
-  //     //  c: Colors.blue,
-  //     child: const Text(
-  //       "Send Notification",
-  //       style: TextStyle(color: Colors.white),
-  //     ),
-  //   ),
-  // )
 }

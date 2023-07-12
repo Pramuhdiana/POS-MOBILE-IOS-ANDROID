@@ -4,13 +4,13 @@ import 'package:e_shop/database/db_notification_dummy.dart';
 import 'package:e_shop/push_notifications/list_notif_screen.dart';
 import 'package:flutter/material.dart';
 
-class ListNewNotif extends StatelessWidget {
-  const ListNewNotif({Key? key}) : super(key: key);
+class ListAllNotif extends StatelessWidget {
+  const ListAllNotif({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: DbNotifDummy.db.getAllNotif(),
+        future: DbNotifDummy.db.getAllNotif(2),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
             return const Text('Something went wrong');

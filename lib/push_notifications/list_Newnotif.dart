@@ -10,7 +10,7 @@ class ListNewNotif extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: DbNotifDummy.db.getAllNotif(),
+        future: DbNotifDummy.db.getAllNotif(1),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
             return const Text('Something went wrong');

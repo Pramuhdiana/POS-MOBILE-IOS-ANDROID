@@ -32,7 +32,7 @@ class DbNotifDummy {
         onCreate: (Database db, int version) async {
       await db.execute('''
       CREATE TABLE allnotifdummy(
-          id INTEGER,
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
           title TEXT,
           body TEXT,
           status INTEGER,
@@ -56,11 +56,12 @@ class DbNotifDummy {
     return res;
   }
 
-  Future<List<ModelNotificationDummy>> getAllNotif() async {
+  Future<List<ModelNotificationDummy>> getAllNotif(int status) async {
     final db = await database;
     // final res = await db
     //     .rawQuery('SELECT * FROM allcrm WHERE alamat!=?', ['null']);
-    final res = await db.rawQuery("SELECT * FROM allnotifdummy");
+    final res = await db
+        .rawQuery('SELECT * FROM allnotifdummy WHERE status=?', [status]);
 
     List<ModelNotificationDummy> list = res.isNotEmpty
         ? res
@@ -70,4 +71,31 @@ class DbNotifDummy {
 
     return list;
   }
+
+  // Update an item by id
+  Future<int> updateAllnotifByid(idNotif) async {
+    final db = await database;
+
+    final data = {'status': 2};
+
+    final result = await db
+        .update('allnotifdummy', data, where: "id = ?", whereArgs: [idNotif]);
+    return result;
+  }
+
+  // Future<List<ModelNotificationDummy>> getAllNotifByStatus(int status) async {
+  //   final db = await database;
+  //   // final res = await db
+  //   //     .rawQuery('SELECT * FROM allcrm WHERE alamat!=?', ['null']);
+  //   final res = await db
+  //       .rawQuery('SELECT * FROM allnotifdummy WHERE status=?', [status]);
+
+  //   List<ModelNotificationDummy> list = res.isNotEmpty
+  //       ? res
+  //           .map((c) => ModelNotificationDummy.fromJson(c, String: null))
+  //           .toList()
+  //       : [];
+
+  //   return list;
+  // }
 }

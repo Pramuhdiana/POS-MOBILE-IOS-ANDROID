@@ -135,7 +135,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     await apiProvider.getUsers();
 
     context.read<PNewNotif>().clearNotif();
-    DbNotifDummy.db.getAllNotif().then((value) {
+    DbNotifDummy.db.getAllNotif(1).then((value) {
       for (var i = 0; i < value.length; i++) {
         context.read<PNewNotif>().addItem(
               1,

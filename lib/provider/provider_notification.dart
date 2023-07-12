@@ -36,6 +36,11 @@ class PNewNotif extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removesItem() {
+    _list.removeLast();
+    notifyListeners();
+  }
+
   void increament(NewNotification newnotification) {
     newnotification.increase();
     notifyListeners();

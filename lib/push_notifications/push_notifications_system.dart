@@ -53,11 +53,10 @@ class PushNotificationsSystem {
             );
         //add to database
         DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
-          id: 1,
-          title: remoteMessage.notification!.title,
-          body: remoteMessage.notification!.body,
-          created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-        ));
+            title: remoteMessage.notification!.title,
+            body: remoteMessage.notification!.body,
+            created_at: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
+            status: 1));
         //open app and show notification data
         showNotificationWhenOpenApp(
           context,
@@ -78,11 +77,10 @@ class PushNotificationsSystem {
             );
         //add to database
         DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
-          id: 1,
-          title: remoteMessage3.notification!.title,
-          body: remoteMessage3.notification!.body,
-          created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-        ));
+            title: remoteMessage3.notification!.title,
+            body: remoteMessage3.notification!.body,
+            created_at: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
+            status: 1));
         //open the app - show notification data
         showNotificationWhenOpenApp(
           context,
@@ -135,11 +133,10 @@ class PushNotificationsSystem {
     FirebaseMessaging.onMessage.listen((RemoteMessage event) async {
       print("message recieved");
       await DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
-        id: 1,
-        title: event.notification!.title,
-        body: event.notification!.body,
-        created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-      ));
+          title: event.notification!.title,
+          body: event.notification!.body,
+          created_at: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
+          status: 1));
       // showDialog(
       //     context: context,
       //     builder: (BuildContext context) {
