@@ -309,27 +309,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      // bottomNavigationBar: BottomAppBar(
-      //     child: ElevatedButton(
-      //   onPressed: () async {
-      //     if (Platform.isAndroid) {
-      //       SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
-      //     }
-      //     exit(0);
-
-      //     // await _deleteAlldetailtransaksifirebase();
-      //     // await _deleteAlltransaksifirebase();
-      //     // await _deleteAllitemsfirebase();
-      //     // await _deleteAllitemstokofirebase();
-      //     // await _loadAllDataApi();
-      //   },
-      //   child: const Icon(
-      //     Icons.home,
-      //     color: Colors.white,
-      //     size: 50,
-      //   ),
-      // )
-      // ),
     );
   }
 
