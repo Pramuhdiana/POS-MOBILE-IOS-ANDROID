@@ -101,6 +101,17 @@ class DbAllitemsRetur {
     return list;
   }
 
+  Future<List<ModelAllitemsRetur>> getAllRetur() async {
+    final db = await database;
+    final res = await db.rawQuery('SELECT * FROM allitemsretur');
+
+    List<ModelAllitemsRetur> list = res.isNotEmpty
+        ? res.map((c) => ModelAllitemsRetur.fromJson(c)).toList()
+        : [];
+
+    return list;
+  }
+
   //gett all items toko with search lot
   Future<List<ModelAllitemsRetur>> getAllitemsReturBylot(idtoko, name) async {
     final db = await database;

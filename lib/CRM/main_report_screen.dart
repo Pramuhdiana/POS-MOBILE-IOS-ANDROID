@@ -2,7 +2,7 @@
 
 import 'package:e_shop/mainScreens/profile_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
-import 'package:e_shop/CRM/home_report.dart';
+import 'package:e_shop/CRM/crm_screen.dart';
 import 'package:flutter/material.dart';
 
 class MainReportScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class MainReportScreen extends StatefulWidget {
 class _MainReportScreenState extends State<MainReportScreen> {
   int _selectedIndex = 0;
   final List<Widget> _tabs = [
-    HomeReport(),
+    CrmScreen(),
     const NotificationScreen(),
     const ProfileScreen(),
   ];

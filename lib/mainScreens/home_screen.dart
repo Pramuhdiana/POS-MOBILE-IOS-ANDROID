@@ -1,21 +1,27 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously, avoid_print
 
 import 'dart:math';
+import 'package:e_shop/database/db_allcustomer.dart';
+import 'package:e_shop/database/db_allitems.dart';
+import 'package:e_shop/database/db_allitems_retur.dart';
+import 'package:e_shop/database/db_allitems_toko.dart';
+import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/database/db_notification_dummy.dart';
 import 'package:e_shop/provider/provider_notification.dart';
 import 'package:e_shop/search/new_search.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:e_shop/CRM/home_report.dart';
+import 'package:e_shop/CRM/crm_screen.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/testing/color_extensions.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_alltransaksi.dart';
-import 'package:e_shop/eTICKETING/home_ticketing.dart';
+import 'package:e_shop/eTICKETING/ticketing_screen.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/history/main_history.dart';
 import 'package:e_shop/posRetur/pos_retur_screen.dart';
@@ -91,10 +97,53 @@ class _HomeScreenState extends State<HomeScreen> {
   QRViewController? controller;
   XFile? imgXFile;
   final ImagePicker imagePicker = ImagePicker();
+  int? qtyProductSales = 0;
+  int? qtyProductToko = 0;
+  int? qtyProductRetur = 0;
+  int? qtyProductHistory = 0;
+  int? qtyProductCustomer = 0;
+  int? qtyProductCRM = 0;
+  int? qtyProductTicketing = 0;
 
   @override
   void initState() {
     super.initState();
+    //initial sales
+    DbAllitems.db.getAllitems().then((value) {
+      setState(() {
+        qtyProductSales = value.length;
+      });
+    });
+    //initial toko
+    DbAllitemsToko.db.getAllitems().then((value) {
+      setState(() {
+        qtyProductToko = value.length;
+      });
+    });
+    //initial retur
+    DbAllitemsRetur.db.getAllRetur().then((value) {
+      setState(() {
+        qtyProductRetur = value.length;
+      });
+    });
+    //initial history
+    DbAlltransaksi.db.getAllHistory().then((value) {
+      setState(() {
+        qtyProductHistory = value.length;
+      });
+    });
+    //initial customer
+    DbAllCustomer.db.getAllcustomer().then((value) {
+      setState(() {
+        qtyProductCustomer = value.length;
+      });
+    });
+    //initial customer
+    DbCRM.db.getAllcrm().then((value) {
+      setState(() {
+        qtyProductCRM = value.length;
+      });
+    });
 
     year = DateFormat('y').format(DateTime.now());
     //jan
@@ -263,50 +312,42 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       body: RefreshIndicator(
         onRefresh: refresh,
-        child: ListView(
-          physics: const ClampingScrollPhysics(),
-          children: <Widget>[
-            Container(
-                padding: const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
-                color: Colors.white,
-                child: RefreshIndicator(
-                  onRefresh: refresh,
-                  child: Column(
-                    children: <Widget>[
-                      _bodyatas(),
-
-                      const SizedBox(height: 10),
-                      const Divider(
-                        height: 1,
-                        thickness: 2,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(height: 5),
-
-                      _bodytengah(),
-                      const SizedBox(height: 15),
-                      _bodybawah(),
-                      const Padding(
-                        padding: EdgeInsets.only(
-                            bottom: 7.0, top: 10.0, left: 40.0, right: 40.0),
-                        child: Divider(
-                          height: 1,
-                          thickness: 5,
-                          color: Colors.black,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 25),
+          child: ListView(
+            physics:
+                const ClampingScrollPhysics(), //agar buka keyboard tidak overflow
+            children: <Widget>[
+              Container(
+                  color: Colors.white,
+                  child: RefreshIndicator(
+                    onRefresh: refresh,
+                    child: Column(
+                      children: <Widget>[
+                        _bodyatas(),
+                        _bodytengah(),
+                        const Padding(
+                          padding: EdgeInsets.only(
+                              bottom: 7.0, top: 10.0, left: 40.0, right: 40.0),
+                          child: Divider(
+                            height: 1,
+                            thickness: 5,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                      Text(
-                        version,
-                        style: TextStyle(
-                            color: Colors.grey[800],
-                            fontStyle: FontStyle.italic),
-                      )
-                      // if (sharedPreferences!.getString("role")! != "SALES")
-                      //   _widget3()
-                    ],
-                  ),
-                )),
-          ],
+                        Text(
+                          version,
+                          style: TextStyle(
+                              color: Colors.grey[800],
+                              fontStyle: FontStyle.italic),
+                        )
+                        // if (sharedPreferences!.getString("role")! != "SALES")
+                        //   _widget3()
+                      ],
+                    ),
+                  )),
+            ],
+          ),
         ),
       ),
     );
@@ -324,205 +365,96 @@ class _HomeScreenState extends State<HomeScreen> {
       return 'Evening';
     }
 
-    return RefreshIndicator(
-        onRefresh: refresh,
-        child: Container(
-          width: MediaQuery.of(context).size.width * 1.0,
-          height: 90,
-          decoration: const BoxDecoration(color: Colors.white),
-          // decoration: const BoxDecoration(
-          //     image: DecorationImage(
-          //   image: AssetImage("images/bgatas2.png"),
-          //   fit: BoxFit.cover,
-          // )),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 20.0),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Transform.scale(
-                          scale: 2.5,
-                          child: IconButton(
-                            onPressed: () {
-                              MyAlertDilaog.showMyDialog(
-                                  context: context,
-                                  title: 'Sign-Out',
-                                  content: 'Are you sure to sign-out ?',
-                                  tabNo: () {
-                                    Navigator.pop(context);
+    return Padding(
+      padding: const EdgeInsets.only(top: 53),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 1.0,
+        decoration: const BoxDecoration(color: Colors.white),
+        child: Column(
+          children: [
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(),
+                          child: Column(children: [
+                            Transform.scale(
+                              scale: 1.4,
+                              child: IconButton(
+                                  onPressed: () {
+                                    myMenu();
                                   },
-                                  tabYes: () async {
-                                    SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-                                    prefs.clear();
-                                    prefs.setString('token', 'null');
-                                    // FirebaseAuth.instance.signOut();
-                                    await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (c) =>
-                                                const MySplashScreen()));
-                                  });
-                            },
-                            icon: Image.asset(
-                              "images/user.png",
-                              // size: 50,
+                                  icon: Image.asset(
+                                    "assets/menu.png",
+                                  )),
                             ),
-                          ),
+                          ]),
                         ),
+                      ],
+                    ),
+                  ),
+                  Transform.scale(
+                    scale: 1.4,
+                    child: IconButton(
+                      onPressed: () {
+                        MyAlertDilaog.showMyDialog(
+                            context: context,
+                            title: 'Sign-Out',
+                            content: 'Are you sure to sign-out ?',
+                            tabNo: () {
+                              Navigator.pop(context);
+                            },
+                            tabYes: () async {
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              prefs.clear();
+                              prefs.setString('token', 'null');
+                              await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (c) => const MySplashScreen()));
+                            });
+                      },
+                      icon: Image.asset(
+                        "images/user.png",
+                        // size: 50,
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 42.0,
-                  ),
-                  child: Column(
+                ]),
+            Padding(
+              padding: const EdgeInsets.only(top: 28),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Good ${greeting()}, \n${sharedPreferences!.getString("name")!}",
+                        "Good ${greeting()},",
+                        textAlign: TextAlign.left,
                         style: const TextStyle(
                           color: Colors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        sharedPreferences!.getString("name")!,
+                        style: const TextStyle(
+                          color: Colors.grey,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, right: 10),
-                  child: Column(children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (c) => NewSearchScreen()));
-                      },
-                      icon: const Icon(
-                        Icons.search,
-                        color: Colors.black,
-                        size: 50,
-                      ),
-                    ),
-                  ]),
-                ),
-              ]),
-        ));
-  }
-
-  Widget _bodytengah() {
-    return RefreshIndicator(
-      onRefresh: refresh,
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.50,
-        decoration: const BoxDecoration(color: Colors.white),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 100, bottom: 5),
-              child: Text(
-                'Sales progress ${year.toString()}',
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 20.0),
-              ),
-            ),
-            LinearPercentIndicator(
-              width: MediaQuery.of(context).size.width - 20,
-              animation: true,
-              lineHeight: 20.0,
-              animationDuration: 2500, //kecepatan animasi
-              percent: percentYear,
-              center: Text(
-                '${(list / targetByYear * 100).round()}%',
-              ),
-              // ignore: deprecated_member_use
-              linearStrokeCap: LinearStrokeCap.roundAll,
-              progressColor: AppColors.contentColorGreen,
-            ),
-            Text('${CurrencyFormat.convertToIdr(list, 2)} / 10.000.000.000,00'),
-            // CircularPercentIndicator(
-            //   radius: 120.0,
-            //   lineWidth: 13.0,
-            //   animation: true,
-            //   percent: percentYear,
-            //   center: Text(
-            //     '${percentYear * 100}%',
-            //     style: const TextStyle(
-            //         fontWeight: FontWeight.bold, fontSize: 50.0),
-            //   ),
-            //   footer: const Text(
-            //     "Sales this year",
-            //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
-            //   ),
-            //   circularStrokeCap: CircularStrokeCap.round,
-            //   progressColor: Colors.green,
-            // ),
-            const SizedBox(
-              height: 5,
-            ),
-            SizedBox(
-              // aspectRatio: 1.1,
-              height: MediaQuery.of(context).size.height * 0.40,
-              child: Card(
-                color: Colors.white,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'Monthly',
-                            style: TextStyle(
-                              color: AppColors.contentColorBlack,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                              icon: Icon(
-                                isPlaying ? Icons.pause : Icons.play_arrow,
-                                color: AppColors.contentColorBlack,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  isPlaying = !isPlaying;
-                                  if (isPlaying) {
-                                    refreshState();
-                                  }
-                                });
-                              },
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      // height: 250,
-                      height: MediaQuery.of(context).size.height * 0.31,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: BarChart(
-                          isPlaying ? randomData() : mainBarData(),
-                          swapAnimationDuration: animDuration,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                ],
               ),
             ),
           ],
@@ -531,434 +463,179 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _bodybawah() {
-    return RefreshIndicator(
-      onRefresh: refresh,
-      child: Container(
-          height: 200,
-          width: 320,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                color: Colors.black,
-              ),
-              borderRadius: const BorderRadius.all(Radius.circular(30))),
-          child: ListView(scrollDirection: Axis.horizontal, children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _bodytengah() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 25),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          const Color(0xFBF3F4F5),
+                        ),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    side: BorderSide(
+                                        color: Colors.grey.shade200)))),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (c) => NewSearchScreen()));
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Iconsax.search_normal_14,
+                          color: Colors.black,
+                        ),
+                        Expanded(
+                          child: Text('Search by Lot...',
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: Colors.grey.shade400,
+                                fontSize: 16,
+                                overflow: TextOverflow.fade,
+                              )),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Transform.scale(
+                  scale: 1.5,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (c) => NewSearchScreen()));
+                    },
+                    icon: Image.asset(
+                      "assets/filtter.png",
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 1,
+            decoration: const BoxDecoration(color: Colors.white),
+            child: Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.only(right: 100, bottom: 5, top: 19),
+                  child: Text(
+                    'Sales progress ${year.toString()}',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 20.0),
+                  ),
+                ),
+                LinearPercentIndicator(
+                  animation: true,
+                  lineHeight: 20.0,
+                  animationDuration: 2500, //kecepatan animasi
+                  percent: percentYear,
+                  center: Text(
+                    '${(list / targetByYear * 100).round()}%',
+                  ),
+                  // ignore: deprecated_member_use
+                  linearStrokeCap: LinearStrokeCap.roundAll,
+                  progressColor: AppColors.contentColorGreen,
+                ),
+                Text(
+                    '${CurrencyFormat.convertToIdr(list, 2)} / 10.000.000.000,00'),
+                // CircularPercentIndicator(
+                //   radius: 120.0,
+                //   lineWidth: 13.0,
+                //   animation: true,
+                //   percent: percentYear,
+                //   center: Text(
+                //     '${percentYear * 100}%',
+                //     style: const TextStyle(
+                //         fontWeight: FontWeight.bold, fontSize: 50.0),
+                //   ),
+                //   footer: const Text(
+                //     "Sales this year",
+                //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                //   ),
+                //   circularStrokeCap: CircularStrokeCap.round,
+                //   progressColor: Colors.green,
+                // ),
                 const SizedBox(
-                  height: 15,
+                  height: 5,
                 ),
-                //bagian atas
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //HISTORY
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                SizedBox(
+                  // aspectRatio: 1.1,
+                  height: MediaQuery.of(context).size.height * 0.40,
+                  child: Card(
+                    color: Colors.white,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        Transform.scale(
-                          scale: 1.2,
-                          child: OutlinedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (c) => const MainHistory()));
-                              // builder: (c) => MainHistoryScreen()));
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.black),
-                              shape: const CircleBorder(),
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (c) => const MainHistory()));
-                              },
-                              icon: Image.asset(
-                                "images/history.png",
+                        Row(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Monthly',
+                                style: TextStyle(
+                                  color: AppColors.contentColorBlack,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 10.0),
-                        ),
-                        const Text(
-                          "HISTORY",
-                          style: TextStyle(color: Colors.black, fontSize: 12.0),
-                        ),
-                      ],
-                    ),
-                    //report
-                    // if (sharedPreferences!.getString("role")! != "SALES")
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Transform.scale(
-                          scale: 1.2,
-                          child: OutlinedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (c) => HomeReport()));
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.black),
-                              shape: const CircleBorder(
-                                  // borderRadius: BorderRadius.circular(360),
+                            Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: Icon(
+                                    isPlaying ? Icons.pause : Icons.play_arrow,
+                                    color: AppColors.contentColorBlack,
                                   ),
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (c) => HomeReport()));
-                                // builder: (c) => MainReportScreen()));
-                              },
-                              icon: Image.asset(
-                                "images/crm (1).png",
-                                // "images/offer.png",
+                                  onPressed: () {
+                                    setState(() {
+                                      isPlaying = !isPlaying;
+                                      if (isPlaying) {
+                                        refreshState();
+                                      }
+                                    });
+                                  },
+                                ),
                               ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          // height: 250,
+                          height: MediaQuery.of(context).size.height * 0.31,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: BarChart(
+                              isPlaying ? randomData() : mainBarData(),
+                              swapAnimationDuration: animDuration,
                             ),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 10.0),
-                        ),
-                        const Text(
-                          "CRM",
-                          style: TextStyle(color: Colors.black, fontSize: 12.0),
-                        ),
                       ],
                     ),
-
-                    //ADD TOKO
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Transform.scale(
-                          scale: 1.2,
-                          child: OutlinedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (c) =>
-                                          const UploadTokoScreen()));
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.black),
-                              shape: const CircleBorder(
-                                  // borderRadius: BorderRadius.circular(360),
-                                  ),
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (c) =>
-                                            const UploadTokoScreen()));
-                              },
-                              icon: Image.asset(
-                                "images/store (2).png",
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 10.0),
-                        ),
-                        const Text(
-                          "ADD TOKO",
-                          style: TextStyle(color: Colors.black, fontSize: 12.0),
-                        ),
-                      ],
-                    ),
-
-                    //e-ticketing report
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Transform.scale(
-                          scale: 1.2,
-                          child: OutlinedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (c) => HomeEticketing()));
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.black),
-                              shape: const CircleBorder(
-                                  // borderRadius: BorderRadius.circular(360),
-                                  ),
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (c) => HomeEticketing()));
-                              },
-                              icon: Image.asset(
-                                "images/ticket (1).png",
-                                // "images/offer.png",
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 10.0),
-                        ),
-                        const Text(
-                          "E-TICKETING",
-                          style: TextStyle(color: Colors.black, fontSize: 12.0),
-                        ),
-                      ],
-                    ),
-
-                    // //setting
-                    // Column(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: <Widget>[
-                    //     Transform.scale(
-                    //       scale: 1.2,
-                    //       child: OutlinedButton(
-                    //         onPressed: () {},
-                    //         style: OutlinedButton.styleFrom(
-                    //           side: const BorderSide(color: Colors.black),
-                    //           shape: const CircleBorder(
-                    //               // borderRadius: BorderRadius.circular(360),
-                    //               ),
-                    //         ),
-                    //         child: IconButton(
-                    //           onPressed: () {
-                    //             Fluttertoast.showToast(msg: "Not Available");
-                    //           },
-                    //           icon: Image.asset(
-                    //             "images/settings.png",
-                    //             // "images/offer.png",
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     const Padding(
-                    //       padding: EdgeInsets.only(top: 10.0),
-                    //     ),
-                    //     const Text(
-                    //       "SETTINGS",
-                    //       style: TextStyle(color: Colors.black, fontSize: 12.0),
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
-                ),
-
-                //slot 2 widget
-                const SizedBox(
-                  height: 25,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //POS SALES
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Transform.scale(
-                          scale: 1.2,
-                          child: OutlinedButton(
-                            onPressed: () async {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (c) => PosSalesScreen()));
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.black),
-                              shape: const CircleBorder(),
-                            ),
-                            child: IconButton(
-                              onPressed: () async {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (c) => PosSalesScreen()));
-                              },
-                              icon: Image.asset(
-                                "images/sales-team.png",
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 10.0),
-                        ),
-                        const Text(
-                          "POS SALES",
-                          style: TextStyle(color: Colors.black, fontSize: 12.0),
-                        ),
-                      ],
-                    ),
-
-                    //pos retur
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Transform.scale(
-                          scale: 1.2,
-                          child: OutlinedButton(
-                            onPressed: () async {
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              prefs.setString('customer_id', 0.toString());
-                              context.read<PCartRetur>().clearCart();
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (c) => const PosReturScreen()));
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.black),
-                              shape: const CircleBorder(),
-                            ),
-                            child: IconButton(
-                              onPressed: () async {
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-                                prefs.setString('customer_id', 0.toString());
-                                context.read<PCartRetur>().clearCart();
-                                // _loadFromApiPOSTOKO();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (c) =>
-                                            const PosReturScreen()));
-                              },
-                              icon: Image.asset(
-                                "images/return.png",
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 10.0),
-                        ),
-                        const Text(
-                          "POS RETUR",
-                          style: TextStyle(color: Colors.black, fontSize: 12.0),
-                        ),
-                      ],
-                    ),
-
-                    //POS TOKO
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Transform.scale(
-                          scale: 1.2,
-                          child: OutlinedButton(
-                            onPressed: () async {
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              prefs.setString('customer_id', 0.toString());
-                              prefs.setString('total_product', 0.toString());
-                              context.read<PCartToko>().clearCart();
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (c) => const PosTokoScreen()));
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.black),
-                              shape: const CircleBorder(),
-                            ),
-                            child: IconButton(
-                              onPressed: () async {
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-                                prefs.setString('customer_id', 0.toString());
-                                prefs.setString('total_product', 0.toString());
-
-                                context.read<PCartToko>().clearCart();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (c) => const PosTokoScreen()));
-                              },
-                              icon: Image.asset(
-                                "images/shop.png",
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 10.0),
-                        ),
-                        const Text(
-                          "POS TOKO",
-                          style: TextStyle(color: Colors.black, fontSize: 12.0),
-                        ),
-                      ],
-                    ),
-
-                    //SCAN QR
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Transform.scale(
-                          scale: 1.2,
-                          child: OutlinedButton(
-                            onPressed: () {
-                              // scanQR();
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (c) => const QrScanner()));
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.black),
-                              shape: const CircleBorder(),
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (c) => const QrScanner()));
-                              },
-                              icon: Image.asset(
-                                "images/qr-code-scan.png",
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 10.0),
-                        ),
-                        const Text(
-                          "QR",
-                          style: TextStyle(color: Colors.black, fontSize: 12.0),
-                        ),
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),
-          ])),
+          ),
+        ],
+      ),
     );
   }
 
@@ -1435,5 +1112,435 @@ class _HomeScreenState extends State<HomeScreen> {
       }),
       gridData: const FlGridData(show: false),
     );
+  }
+
+  //show popup dialog
+  void myMenu() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            title: const Text(
+              'Please choose menu to select',
+            ),
+            content: SizedBox(
+              height: MediaQuery.of(context).size.height / 2,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    //pos sales
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                            // side: BorderSide(color: Colors.grey.shade200)
+                          ))),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (c) => PosSalesScreen()));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Image.asset(
+                                  "images/sales-team.png",
+                                  color: Colors.white,
+                                  width: 25,
+                                  height: 25,
+                                ),
+                              ),
+                              const Expanded(
+                                child: Text(
+                                  'Pos Sales',
+                                  style: TextStyle(fontSize: 16),
+                                  maxLines: 1,
+                                ),
+                              ),
+                              Text(
+                                '$qtyProductSales Products',
+                                style: const TextStyle(fontSize: 11),
+                                maxLines: 2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    //pos toko
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                            // side: BorderSide(color: Colors.grey.shade200)
+                          ))),
+                          onPressed: () async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            prefs.setString('customer_id', 0.toString());
+                            prefs.setString('total_product', 0.toString());
+                            context.read<PCartToko>().clearCart();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (c) => const PosTokoScreen()));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Image.asset(
+                                  "images/shop.png",
+                                  color: Colors.white,
+                                  width: 25,
+                                  height: 25,
+                                ),
+                              ),
+                              const Expanded(
+                                child: Text(
+                                  'Pos Toko',
+                                  style: TextStyle(fontSize: 16),
+                                  maxLines: 1,
+                                ),
+                              ),
+                              Text(
+                                '$qtyProductToko Products',
+                                style: const TextStyle(fontSize: 11),
+                                maxLines: 2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    //pos retur
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                            // side: BorderSide(color: Colors.grey.shade200)
+                          ))),
+                          onPressed: () async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            prefs.setString('customer_id', 0.toString());
+                            context.read<PCartRetur>().clearCart();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (c) => const PosReturScreen()));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Image.asset(
+                                  "images/return.png",
+                                  color: Colors.white,
+                                  width: 25,
+                                  height: 25,
+                                ),
+                              ),
+                              const Expanded(
+                                child: Text(
+                                  'Pos Retur',
+                                  style: TextStyle(fontSize: 16),
+                                  maxLines: 1,
+                                ),
+                              ),
+                              Text(
+                                '${CurrencyFormat.convertToTitik(qtyProductRetur, 0)} Products',
+                                style: const TextStyle(fontSize: 11),
+                                maxLines: 2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    //QR
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                            // side: BorderSide(color: Colors.grey.shade200)
+                          ))),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (c) => const QrScanner()));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Image.asset(
+                                  "images/qr-code-scan.png",
+                                  color: Colors.white,
+                                  width: 25,
+                                  height: 25,
+                                ),
+                              ),
+                              const Expanded(
+                                child: Text(
+                                  'QR',
+                                  style: TextStyle(fontSize: 16),
+                                  maxLines: 1,
+                                ),
+                              ),
+                              Text(
+                                '$qtyProductSales Products',
+                                style: const TextStyle(fontSize: 11),
+                                maxLines: 2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    //history
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                            // side: BorderSide(color: Colors.grey.shade200)
+                          ))),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (c) => const MainHistory()));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Image.asset(
+                                  "images/history.png",
+                                  color: Colors.white,
+                                  width: 25,
+                                  height: 25,
+                                ),
+                              ),
+                              const Expanded(
+                                child: Text(
+                                  'History',
+                                  style: TextStyle(fontSize: 16),
+                                  maxLines: 1,
+                                ),
+                              ),
+                              Text(
+                                '$qtyProductHistory Transaksi',
+                                style: const TextStyle(fontSize: 11),
+                                maxLines: 2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    //add toko
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                            // side: BorderSide(color: Colors.grey.shade200)
+                          ))),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (c) => const UploadTokoScreen()));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Image.asset(
+                                  "images/store (2).png",
+                                  color: Colors.white,
+                                  width: 25,
+                                  height: 25,
+                                ),
+                              ),
+                              const Expanded(
+                                child: Text(
+                                  'Add toko',
+                                  style: TextStyle(fontSize: 16),
+                                  maxLines: 1,
+                                ),
+                              ),
+                              Text(
+                                '${CurrencyFormat.convertToTitik(qtyProductCustomer, 0)} Customers',
+                                style: const TextStyle(fontSize: 11),
+                                maxLines: 2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    //CRM
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                            // side: BorderSide(color: Colors.grey.shade200)
+                          ))),
+                          onPressed: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (c) => CrmScreen()));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Image.asset(
+                                  "images/crm (1).png",
+                                  color: Colors.white,
+                                  width: 25,
+                                  height: 25,
+                                ),
+                              ),
+                              const Expanded(
+                                child: Text(
+                                  'CRM',
+                                  style: TextStyle(fontSize: 16),
+                                  maxLines: 1,
+                                ),
+                              ),
+                              Text(
+                                '$qtyProductCRM Reports',
+                                style: const TextStyle(fontSize: 11),
+                                maxLines: 2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    //E TICKETING
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                            // side: BorderSide(color: Colors.grey.shade200)
+                          ))),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (c) => TicketingScreen()));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Image.asset(
+                                  "images/ticket (1).png",
+                                  color: Colors.white,
+                                  width: 25,
+                                  height: 25,
+                                ),
+                              ),
+                              const Expanded(
+                                child: Text(
+                                  'E-Ticketing',
+                                  style: TextStyle(fontSize: 16),
+                                  maxLines: 1,
+                                ),
+                              ),
+                              Text(
+                                '$qtyProductTicketing Reports',
+                                style: const TextStyle(fontSize: 11),
+                                maxLines: 2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

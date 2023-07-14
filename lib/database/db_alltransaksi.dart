@@ -107,6 +107,21 @@ class DbAlltransaksi {
     return list;
   }
 
+  Future<List<ModelAlltransaksi>> getAllHistory() async {
+    final db = await database;
+    final res = await db.rawQuery('SELECT * FROM alltransaksi WHERE user_id=?',
+        [sharedPreferences!.getString('id')]);
+    // final res = await db.query('allitems', where: '"sales_id" = $id');
+    // final res = await db.rawQuery("SELECT * FROM allitems");
+
+    List<ModelAlltransaksi> list = res.isNotEmpty
+        ? res.map((c) => ModelAlltransaksi.fromJson(c)).toList()
+        // ? res.map((c) => ModelAllitems.fromMap(c)).toList()
+        : [];
+
+    return list;
+  }
+
   Future<List<ModelAlltransaksi>> getAlltransaksiNominal(year) async {
     final db = await database;
     final res = await db.rawQuery(

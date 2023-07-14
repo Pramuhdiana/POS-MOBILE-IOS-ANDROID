@@ -1,6 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, file_names
 
-import 'package:e_shop/eTICKETING/home_ticketing.dart';
+import 'package:e_shop/eTICKETING/ticketing_screen.dart';
 import 'package:e_shop/mainScreens/profile_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ class MainEticketingScreen extends StatefulWidget {
 class _MainEticketingScreenState extends State<MainEticketingScreen> {
   int _selectedIndex = 0;
   final List<Widget> _tabs = [
-    HomeEticketing(),
+    TicketingScreen(),
     const NotificationScreen(),
     const ProfileScreen(),
   ];

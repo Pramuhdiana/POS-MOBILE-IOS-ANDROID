@@ -108,91 +108,311 @@ class _LoginTabPageState extends State<LoginTabPage> {
         });
   }
 
+  Future refresh() async {
+    setState(() {
+      // Fluttertoast.showToast(msg: "Refresh done");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: Image.asset(
-            "images/try.png",
-            height: MediaQuery.of(context).size.height * 0.40,
-          ),
-        ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.2,
-        ),
-        Form(
-          key: formKey,
-          child: Column(
-            children: [
-              SizedBox(
-                width: 257,
-                child: TextFormField(
-                    textAlign: TextAlign.center,
-                    controller: emailTextEditingController,
-                    decoration: InputDecoration(
-                      hintStyle:
-                          const TextStyle(fontSize: 18.0, color: Colors.white),
-                      hintText: "Email",
-                      fillColor: Colors.black26,
-                      filled: true,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.white, width: 1),
-                        borderRadius: BorderRadius.circular(100.0),
-                      ),
-                    )),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                width: 257,
-                child: TextFormField(
-                    textAlign: TextAlign.center,
-                    obscureText: true,
-                    controller: passwordTextEditingController,
-                    decoration: InputDecoration(
-                      hintStyle:
-                          const TextStyle(fontSize: 18.0, color: Colors.white),
-                      hintText: "Password",
-                      fillColor: Colors.black26,
-                      filled: true,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.white, width: 1),
-                        borderRadius: BorderRadius.circular(100.0),
-                      ),
-                    )),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: Transform.scale(
-            scale: 1.5,
-            child: OutlinedButton(
-              onPressed: () {
-                validateForm();
-              },
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: Colors.white, width: 7.9),
-                shape: const CircleBorder(),
-              ),
-              child: IconButton(
-                onPressed: () {
-                  validateForm();
-                },
-                icon: Image.asset(
-                  "images/log-in.png",
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: RefreshIndicator(
+        onRefresh: refresh,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 25),
+          child: ListView(children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 112),
+                  child: SizedBox(
+                      height: 95,
+                      child: Column(
+                        children: [
+                          Text(
+                            'POS',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 55),
+                          ),
+                          Text(
+                            'Mobile',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 25),
+                          )
+                        ],
+                      )),
                 ),
-              ),
+                const Padding(
+                    padding: EdgeInsets.only(top: 52, bottom: 10),
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        'Welcome!',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    )),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'please login or sign up to continue our app',
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ),
+                const SizedBox(height: 66),
+
+                //email
+                TextFormField(
+                  textInputAction: TextInputAction.next,
+                  style: const TextStyle(fontSize: 14, color: Colors.black),
+                  controller: emailTextEditingController,
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                  decoration: InputDecoration(
+                    floatingLabelStyle: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                    labelText: 'Email',
+                    suffixIcon: emailTextEditingController.text == ''
+                        ? const Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Icon(
+                              Icons.check_circle,
+                              size: 20,
+                            ),
+                          )
+                        : const Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Icon(
+                              Icons.check_circle,
+                              size: 20,
+                            ),
+                          ),
+                    // IconButton(
+                    //     onPressed: emailTextEditingController.clear,
+                    //     icon: const Icon(Icons.clear),
+                    //   ),
+                  ),
+                ),
+
+                //pasword
+                TextFormField(
+                  obscureText: true,
+                  style: const TextStyle(fontSize: 14, color: Colors.black),
+                  controller: passwordTextEditingController,
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                  decoration: InputDecoration(
+                    floatingLabelStyle: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                    labelText: 'Password',
+                    suffixIcon: passwordTextEditingController.text == ''
+                        ? const Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Icon(
+                              Icons.check_circle,
+                              size: 20,
+                            ),
+                          )
+                        : const Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Icon(
+                              Icons.check_circle,
+                              size: 20,
+                            ),
+                          ),
+                    // IconButton(
+                    //     onPressed: emailTextEditingController.clear,
+                    //     icon: const Icon(Icons.clear),
+                    //   ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 52,
+                ),
+                //button login
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 1,
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ))),
+                    onPressed: () {
+                      validateForm();
+                    },
+                    child: const Text('Login',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  child: Row(children: <Widget>[
+                    Expanded(
+                        child: Divider(
+                      thickness: 1,
+                    )),
+                    Text("or"),
+                    Expanded(
+                        child: Divider(
+                      thickness: 1,
+                    )),
+                  ]),
+                ),
+                //button login facebook
+
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 1,
+                  height: 50,
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color(0xFB3B5998)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ))),
+                      onPressed: () {
+                        Fluttertoast.showToast(msg: "Not available");
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 45),
+                        child: Row(
+                          children: [
+                            Icon(Icons.facebook),
+                            Text('  Continue with ',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                )),
+                            Text(
+                              'Facebook',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+
+                //button login google
+                Padding(
+                  padding: const EdgeInsets.only(top: 15, bottom: 15),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 1,
+                    height: 50,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    side: BorderSide(
+                                        color: Colors.grey.shade200)))),
+                        onPressed: () {
+                          Fluttertoast.showToast(msg: "Not available");
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 50),
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                "assets/icon.png",
+                                height: 15,
+                                width: 15,
+                              ),
+                              // Icon(
+                              //   Icons.apple,
+                              //   color: Colors.black,
+                              // ),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 4),
+                                child: Text('  Continue with ',
+                                    style: TextStyle(
+                                      color: Color(0xF6666666),
+                                      fontSize: 16,
+                                    )),
+                              ),
+                              const Text(
+                                'Google',
+                                style: TextStyle(
+                                    color: Color(0xF6666666),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        )),
+                  ),
+                ),
+
+                //button login apple
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 1,
+                  height: 50,
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      side: BorderSide(
+                                          color: Colors.grey.shade200)))),
+                      onPressed: () {
+                        Fluttertoast.showToast(msg: "Not available");
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 45),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.apple,
+                              color: Colors.black,
+                            ),
+                            Text('  Continue with ',
+                                style: TextStyle(
+                                  color: Color(0xF6666666),
+                                  fontSize: 16,
+                                )),
+                            Text(
+                              'Apple',
+                              style: TextStyle(
+                                  color: Color(0xF6666666),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+              ],
             ),
-          ),
+          ]),
         ),
-      ]),
+      ),
     );
   }
 }
@@ -215,6 +435,91 @@ class GetToken {
     );
   }
 }
+
+// SingleChildScrollView(
+//       child: Column(children: [
+//         Padding(
+//           padding: const EdgeInsets.all(30.0),
+//           child: Image.asset(
+//             "images/try.png",
+//             height: MediaQuery.of(context).size.height * 0.40,
+//           ),
+//         ),
+//         SizedBox(
+//           height: MediaQuery.of(context).size.height * 0.2,
+//         ),
+//         Form(
+//           key: formKey,
+//           child: Column(
+//             children: [
+//               SizedBox(
+//                 width: 257,
+//                 child: TextFormField(
+//                     textAlign: TextAlign.center,
+//                     controller: emailTextEditingController,
+//                     decoration: InputDecoration(
+//                       hintStyle:
+//                           const TextStyle(fontSize: 18.0, color: Colors.white),
+//                       hintText: "Email",
+//                       fillColor: Colors.black26,
+//                       filled: true,
+//                       enabledBorder: OutlineInputBorder(
+//                         borderSide:
+//                             const BorderSide(color: Colors.white, width: 1),
+//                         borderRadius: BorderRadius.circular(100.0),
+//                       ),
+//                     )),
+//               ),
+//               const SizedBox(
+//                 height: 20,
+//               ),
+//               SizedBox(
+//                 width: 257,
+//                 child: TextFormField(
+//                     textAlign: TextAlign.center,
+//                     obscureText: true,
+//                     controller: passwordTextEditingController,
+//                     decoration: InputDecoration(
+//                       hintStyle:
+//                           const TextStyle(fontSize: 18.0, color: Colors.white),
+//                       hintText: "Password",
+//                       fillColor: Colors.black26,
+//                       filled: true,
+//                       enabledBorder: OutlineInputBorder(
+//                         borderSide:
+//                             const BorderSide(color: Colors.white, width: 1),
+//                         borderRadius: BorderRadius.circular(100.0),
+//                       ),
+//                     )),
+//               ),
+//             ],
+//           ),
+//         ),
+//         Padding(
+//           padding: const EdgeInsets.only(top: 20),
+//           child: Transform.scale(
+//             scale: 1.5,
+//             child: OutlinedButton(
+//               onPressed: () {
+//                 validateForm();
+//               },
+//               style: OutlinedButton.styleFrom(
+//                 side: const BorderSide(color: Colors.white, width: 7.9),
+//                 shape: const CircleBorder(),
+//               ),
+//               child: IconButton(
+//                 onPressed: () {
+//                   validateForm();
+//                 },
+//                 icon: Image.asset(
+//                   "images/log-in.png",
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ),
+//       ]),
+//     );
 //method login
   // loginNow() async {
   //   showDialog(

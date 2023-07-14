@@ -13,6 +13,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:iconsax/iconsax.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -38,94 +39,112 @@ class _MainScreenState extends State<MainScreen> {
       onWillPop: () => _onBackButtonClicked(context),
       child: Scaffold(
         body: _tabs[_selectedIndex],
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 1),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25.5),
-              color: Colors.white,
-              boxShadow: const [
-                BoxShadow(color: Colors.black, spreadRadius: 0.2),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25.5),
+            color: Colors.white,
+            boxShadow: const [
+              BoxShadow(color: Colors.black, spreadRadius: 0.2),
+            ],
+          ),
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 30, right: 30, bottom: 25, top: 15),
+            child: GNav(
+              backgroundColor: Colors.white,
+              color: Colors.black,
+              activeColor: Colors.black,
+              tabBackgroundColor: const Color(0xFBEEEEEE),
+              gap: 8,
+              onTabChange: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              padding: const EdgeInsets.all(5),
+              tabs: [
+                const GButton(
+                  iconActiveColor: Colors.white,
+                  backgroundColor: Colors.black,
+                  icon: Iconsax.home_25,
+                  text: 'Home',
+                  textStyle: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                GButton(
+                  backgroundColor: Colors.black,
+                  gap: 12,
+                  leading: badges.Badge(
+                    showBadge:
+                        context.read<PCart>().getItems.isEmpty ? false : true,
+                    badgeStyle: const badges.BadgeStyle(
+                      badgeColor: AppColors.contentColorGreen,
+                    ),
+                    badgeContent: Text(
+                      context.watch<PCart>().getItems.length.toString(),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    child: _selectedIndex != 1
+                        ? const Icon(
+                            Iconsax.shopping_cart5,
+                            color: Colors.black,
+                          )
+                        : const Icon(
+                            Iconsax.shopping_cart5,
+                            color: Colors.white,
+                          ),
+                  ),
+                  icon: Icons.shopping_cart,
+                  text: 'Cart',
+                  textStyle: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                GButton(
+                  backgroundColor: Colors.black,
+                  gap: 12,
+                  leading: badges.Badge(
+                    showBadge: true,
+                    // showBadge:
+                    //     context.read<PCart>().getItems.isEmpty ? false : true,
+                    badgeStyle: const badges.BadgeStyle(
+                      badgeColor: AppColors.contentColorGreen,
+                    ),
+                    badgeContent: Text(
+                      context.watch<PNewNotif>().getItems.length.toString(),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    child: _selectedIndex != 2
+                        ? const Icon(
+                            Iconsax.notification1,
+                            color: Colors.black,
+                          )
+                        : const Icon(
+                            Iconsax.notification1,
+                            color: Colors.white,
+                          ),
+                  ),
+                  icon: Icons.notifications,
+                  text: 'Notification',
+                  textStyle: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                const GButton(
+                  iconActiveColor: Colors.white,
+                  backgroundColor: Colors.black,
+                  icon: Icons.person,
+                  text: 'Profile',
+                  textStyle: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
               ],
-            ),
-            // color: Colors.white,
-            child: Padding(
-              // padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-              padding: const EdgeInsets.only(
-                  left: 20, right: 20, bottom: 20, top: 10),
-
-              child: GNav(
-                backgroundColor: Colors.white,
-                color: Colors.black,
-                activeColor: Colors.black,
-                tabBackgroundColor: Colors.grey.shade300,
-                gap: 8,
-                onTabChange: (index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                },
-                padding: const EdgeInsets.all(7),
-                tabs: [
-                  const GButton(
-                    icon: Icons.home,
-                    text: 'Home',
-                  ),
-                  GButton(
-                    gap: 12,
-                    leading: badges.Badge(
-                      showBadge:
-                          context.read<PCart>().getItems.isEmpty ? false : true,
-                      badgeStyle: const badges.BadgeStyle(
-                        badgeColor: AppColors.contentColorGreen,
-                      ),
-                      badgeContent: Text(
-                        context.watch<PCart>().getItems.length.toString(),
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      child: const Icon(
-                        Icons.shopping_cart,
-                        color: Colors.black,
-                      ),
-                    ),
-                    icon: Icons.shopping_cart,
-                    text: 'Cart',
-                  ),
-                  GButton(
-                    gap: 12,
-                    leading: badges.Badge(
-                      showBadge: true,
-                      // showBadge:
-                      //     context.read<PCart>().getItems.isEmpty ? false : true,
-                      badgeStyle: const badges.BadgeStyle(
-                        badgeColor: AppColors.contentColorGreen,
-                      ),
-                      badgeContent: Text(
-                        context.watch<PNewNotif>().getItems.length.toString(),
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      child: const Icon(
-                        Icons.notifications,
-                        color: Colors.black,
-                      ),
-                    ),
-                    icon: Icons.notifications,
-                    text: 'Notification',
-                  ),
-                  const GButton(
-                    icon: Icons.person,
-                    text: 'Profile',
-                  ),
-                ],
-              ),
             ),
           ),
         ),

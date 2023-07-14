@@ -4,12 +4,12 @@ import 'package:e_shop/eTICKETING/add_request_ticketing.dart';
 import 'package:flutter/material.dart';
 
 // ignore: use_key_in_widget_constructors
-class HomeEticketing extends StatefulWidget {
+class TicketingScreen extends StatefulWidget {
   @override
-  State<HomeEticketing> createState() => _HomeEticketingState();
+  State<TicketingScreen> createState() => _TicketingScreenState();
 }
 
-class _HomeEticketingState extends State<HomeEticketing> {
+class _TicketingScreenState extends State<TicketingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

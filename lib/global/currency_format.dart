@@ -17,6 +17,17 @@ class CurrencyFormat {
       symbol: '',
       decimalDigits: decimalDigit,
     );
+
+    return currencyFormatter.format(number);
+  }
+
+  static String convertToTitik(dynamic number, int decimalDigit) {
+    NumberFormat currencyFormatter = NumberFormat.currency(
+      locale: 'en',
+      symbol: '',
+      decimalDigits: decimalDigit,
+    );
+
     return currencyFormatter.format(number);
   }
 }

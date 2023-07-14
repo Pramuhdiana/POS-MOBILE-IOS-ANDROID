@@ -10,12 +10,12 @@ import 'package:e_shop/history/main_history.dart';
 import 'package:flutter/material.dart';
 
 // ignore: use_key_in_widget_constructors
-class HomeReport extends StatefulWidget {
+class CrmScreen extends StatefulWidget {
   @override
-  State<HomeReport> createState() => _HomeReportState();
+  State<CrmScreen> createState() => _CrmScreenState();
 }
 
-class _HomeReportState extends State<HomeReport> {
+class _CrmScreenState extends State<CrmScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
