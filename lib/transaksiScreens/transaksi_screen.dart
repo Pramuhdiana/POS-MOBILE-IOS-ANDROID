@@ -106,6 +106,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          elevation: 0,
           backgroundColor: Colors.white,
           title: const Text(
             "Billing Information",
@@ -113,13 +114,12 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
           ),
           centerTitle: true,
           leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.black,
+            icon: Image.asset(
+              "assets/arrow.png",
+              width: 35,
+              height: 35,
             ),
             onPressed: () {
-              // Navigator.push(
-              //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
               Navigator.pop(context);
             },
           ),

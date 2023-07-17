@@ -1,5 +1,6 @@
 import 'package:e_shop/search/new_search.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 class FakeSearch extends StatelessWidget {
   const FakeSearch({
@@ -13,42 +14,29 @@ class FakeSearch extends StatelessWidget {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => NewSearchScreen()));
       },
-      child: Container(
-        height: 35,
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 1.4),
-            borderRadius: BorderRadius.circular(25)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  'Search lot number',
-                  style: TextStyle(fontSize: 18, color: Colors.black),
-                ),
-              ],
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 30),
+        child: SizedBox(
+          height: 50,
+          child: IconButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (c) => NewSearchScreen()));
+            },
+            icon: const Icon(
+              Iconsax.search_normal_14,
+              color: Colors.black,
             ),
-            Container(
-              height: 32,
-              width: 75,
-              decoration: BoxDecoration(
-                  color: Colors.black, borderRadius: BorderRadius.circular(25)),
-              child: const Center(
-                child: Text(
-                  'Search',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-              ),
-            )
-          ],
+            // Expanded(
+            //   child: Text('Search by Lot...',
+            //       maxLines: 1,
+            //       style: TextStyle(
+            //         color: Colors.grey.shade400,
+            //         fontSize: 16,
+            //         overflow: TextOverflow.fade,
+            //       )),
+            // ),
+          ),
         ),
       ),
     );

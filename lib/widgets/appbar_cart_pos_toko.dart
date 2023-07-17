@@ -31,6 +31,7 @@ class _AppbarCartTokoState extends State<AppbarCartToko> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 0,
       backgroundColor: Colors.white,
       leading: IconButton(
         icon: const Icon(

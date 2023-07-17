@@ -29,15 +29,15 @@ class _AppBarWithCartBadgeSalesState extends State<AppBarWithCartBadgeSales> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 0,
       backgroundColor: Colors.white,
       leading: IconButton(
-        icon: const Icon(
-          Icons.arrow_back_ios_new,
-          color: Colors.black,
+        icon: Image.asset(
+          "assets/arrow.png",
+          width: 35,
+          height: 35,
         ),
         onPressed: () {
-          // Navigator.push(
-          //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
           Navigator.pop(context);
         },
       ),
@@ -69,40 +69,32 @@ class _AppBarWithCartBadgeSalesState extends State<AppBarWithCartBadgeSales> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (c) => const CartScreen(
-                            /*
-                              pindah halaman + mengirim data ID
-                              di halaman yang di tuju harus ada variabel yang menangkapnya
-                              contoh >>>  String? namavariable
-                              nama class ({this.nama variable,});
-                              */
-                            //  sellerUID: widget.sellerUID,
-                            )));
-                // }
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (c) => const CartScreen()));
               },
               icon: Padding(
-                padding: const EdgeInsets.all(2),
+                padding: const EdgeInsets.all(3),
                 child: badges.Badge(
                   showBadge:
                       context.read<PCart>().getItems.isEmpty ? false : true,
                   badgeStyle: const badges.BadgeStyle(
-                    badgeColor: AppColors.contentColorGreen,
+                    badgeColor: AppColors.contentColorBlack,
                   ),
                   badgeContent: Text(
                     context.watch<PCart>().getItems.length.toString(),
                     style: const TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 8,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  child: const Icon(
-                    Icons.shopping_cart,
-                    color: Colors.black,
-                    size: 35,
+                  child: Transform.scale(
+                    scale: 1.3,
+                    child: Image.asset(
+                      "assets/cart.png",
+                      width: 45,
+                      height: 45,
+                    ),
                   ),
                 ),
               ),

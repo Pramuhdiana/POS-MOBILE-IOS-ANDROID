@@ -8,6 +8,7 @@ import 'package:e_shop/mainScreens/profile_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
 import 'package:e_shop/models/kode_keluarbarang.dart';
 import 'package:e_shop/posSales/pos_sales_screen_ui.dart';
+import 'package:e_shop/widgets/appbar_cart_pos_sales.dart';
 import 'package:flutter/material.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
@@ -17,7 +18,6 @@ import '../global/global.dart';
 import '../mainScreens/home_screen.dart';
 import '../models/sales.dart';
 import '../qr/qr_scanner.dart';
-import '../widgets/appbar_cart_pos_sales.dart';
 import '../widgets/fake_search.dart';
 
 // ignore: must_be_immutable
@@ -62,7 +62,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
         qtyProduct = value.length;
       });
     });
-    title = 'POS ${sharedPreferences!.getString("name")!}';
+    // title = 'POS ${sharedPreferences!.getString("name")!}';
     list = [];
     DbAllKodekeluarbarang.db.getAllkeluarbarang().then((listMap) {
       listMap.map((map) {
@@ -85,7 +85,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBarWithCartBadgeSales(
-        title: title,
+        title: '$qtyProduct product ',
       ),
       body: isLoading
           ? const Center(
@@ -93,119 +93,117 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
             )
           : RefreshIndicator(
               onRefresh: refresh,
-              child: Column(children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: FakeSearch(),
-                ),
-                DropdownButton(
-                  style: const TextStyle(
-                      color: Colors.black, //<-- SEE HERE
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                  icon: const Icon(
-                    Icons.arrow_drop_down,
-                    color: Colors.black, // <-- SEE HERE
+              child: Container(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: Column(children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      DropdownButton(
+                        style: const TextStyle(
+                            color: Colors.black, //<-- SEE HERE
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                        icon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.black, // <-- SEE HERE
+                        ),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.black, //<-- SEE HERE
+                        ),
+                        focusColor: Colors.white,
+                        value: selectedOmzet,
+                        hint: const Text(
+                          'Refrence code',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onChanged: (value) {
+                          print(value);
+                          setState(() {
+                            selectedOmzet = value;
+                            kodeRefrensi = value!;
+                          });
+                        },
+                        items: list,
+                      ),
+                      Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(),
+                        child: const FakeSearch(),
+                      ),
+                    ],
                   ),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.black, //<-- SEE HERE
-                  ),
-                  focusColor: Colors.white,
-                  value: selectedOmzet,
-                  hint: const Text(
-                    'Refrence code',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  onChanged: (value) {
-                    print(value);
-                    setState(() {
-                      selectedOmzet = value;
-                      kodeRefrensi = value!;
-                    });
-                  },
-                  items: list,
-                ),
-                SizedBox(
-                  child: Text(
-                    '$qtyProduct product ',
-                    style: const TextStyle(fontSize: 20, color: Colors.black),
-                  ),
-                ),
-                Expanded(
-                  child: FutureBuilder(
-                    future: kodeRefrensi == 'null'
-                        ? DbAllitems.db.getAllitems()
-                        : DbAllitems.db.getAllitemsBykode(kodeRefrensi),
-                    builder:
-                        (BuildContext context, AsyncSnapshot dataSnapshot) {
-                      if (dataSnapshot.hasData) //if brands exists
-                      {
-                        kodeRefrensi == 'null'
-                            ? DbAllitems.db.getAllitems().then((value) => {
-                                  setState(
-                                    () {
-                                      qtyProduct = value.length;
-                                    },
-                                  )
-                                })
-                            : DbAllitems.db
-                                .getAllitemsBykode(kodeRefrensi)
-                                .then((value) => {
-                                      setState(
-                                        () {
-                                          qtyProduct = value.length;
-                                        },
-                                      )
-                                    });
-                        return SingleChildScrollView(
-                          child: StaggeredGridView.countBuilder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: dataSnapshot.data.length,
-                            crossAxisCount: 2,
-                            staggeredTileBuilder: (context) =>
-                                const StaggeredTile.fit(1),
-                            // gridDelegate:
-                            //     const SliverGridDelegateWithFixedCrossAxisCount(
-                            //         crossAxisCount: 2),
-
-                            itemBuilder: (BuildContext context, int index) {
-                              sharedPreferences!.setString(
-                                  'total_product_sales',
-                                  dataSnapshot.data.length.toString());
-                              var item = (dataSnapshot.data[index]);
-                              return SalesItemsUiDesign(
-                                model: ModelAllitems(
-                                    id: item.id,
-                                    name: item.name,
-                                    slug: item.slug,
-                                    image_name: item.image_name,
-                                    description: item.description,
-                                    price: item.price,
-                                    category_id: item.category_id,
-                                    posisi_id: item.posisi_id,
-                                    customer_id: item.customer_id,
-                                    kode_refrensi: item.kode_refrensi,
-                                    sales_id: item.sales_id,
-                                    brand_id: item.brand_id,
-                                    qty: item.qty,
-                                    status_titipan: item.status_titipan,
-                                    keterangan_barang: item.keterangan_barang),
-                              );
-                            },
-                          ),
-                        );
-                      } else if (dataSnapshot.hasError) {
+                  Expanded(
+                    child: FutureBuilder(
+                      future: kodeRefrensi == 'null'
+                          ? DbAllitems.db.getAllitems()
+                          : DbAllitems.db.getAllitemsBykode(kodeRefrensi),
+                      builder:
+                          (BuildContext context, AsyncSnapshot dataSnapshot) {
+                        if (dataSnapshot.hasData) //if brands exists
+                        {
+                          kodeRefrensi == 'null'
+                              ? DbAllitems.db.getAllitems().then((value) => {
+                                    setState(
+                                      () {
+                                        qtyProduct = value.length;
+                                      },
+                                    )
+                                  })
+                              : DbAllitems.db
+                                  .getAllitemsBykode(kodeRefrensi)
+                                  .then((value) => {
+                                        setState(
+                                          () {
+                                            qtyProduct = value.length;
+                                          },
+                                        )
+                                      });
+                          return SingleChildScrollView(
+                            child: StaggeredGridView.countBuilder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: dataSnapshot.data.length,
+                              crossAxisCount: 2,
+                              staggeredTileBuilder: (context) =>
+                                  const StaggeredTile.fit(1),
+                              itemBuilder: (BuildContext context, int index) {
+                                sharedPreferences!.setString(
+                                    'total_product_sales',
+                                    dataSnapshot.data.length.toString());
+                                var item = (dataSnapshot.data[index]);
+                                return SalesItemsUiDesign(
+                                  model: ModelAllitems(
+                                      id: item.id,
+                                      name: item.name,
+                                      slug: item.slug,
+                                      image_name: item.image_name,
+                                      description: item.description,
+                                      price: item.price,
+                                      category_id: item.category_id,
+                                      posisi_id: item.posisi_id,
+                                      customer_id: item.customer_id,
+                                      kode_refrensi: item.kode_refrensi,
+                                      sales_id: item.sales_id,
+                                      brand_id: item.brand_id,
+                                      qty: item.qty,
+                                      status_titipan: item.status_titipan,
+                                      keterangan_barang:
+                                          item.keterangan_barang),
+                                );
+                              },
+                            ),
+                          );
+                        } else if (dataSnapshot.hasError) {
+                          return const CircularProgressIndicator();
+                        } //if data NOT exists
                         return const CircularProgressIndicator();
-                      } //if data NOT exists
-                      return const CircularProgressIndicator();
-                    },
-                  ),
-                  // ],
-                  // ),
-                )
-              ]),
+                      },
+                    ),
+                  )
+                ]),
+              ),
             ),
       // ),
       floatingActionButton: FloatingActionButton(

@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/database/db_notification_dummy.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/history/main_history.dart';
@@ -28,6 +29,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   TextEditingController title = TextEditingController();
   TextEditingController body = TextEditingController();
   late FirebaseMessaging messaging;
+  String? mtoken = " ";
 
   @override
   void initState() {
@@ -39,6 +41,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     super.initState();
     DbNotifDummy.db.getAllNotif(1);
     print(fcmTokensandy);
+    getToken();
   }
 
   Future refresh() async {
@@ -92,5 +95,26 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
       ),
     );
+  }
+
+  //get token
+  getToken() async {
+    await FirebaseMessaging.instance.getToken().then((token) {
+      setState(() {
+        mtoken = token;
+        print("token notif is $mtoken");
+      });
+      saveToken(token!);
+    });
+  }
+
+  //save token
+  saveToken(String token) async {
+    await FirebaseFirestore.instance
+        .collection("UserTokens")
+        .doc(sharedPreferences!.getString("name").toString())
+        .set({
+      'token': token,
+    });
   }
 }

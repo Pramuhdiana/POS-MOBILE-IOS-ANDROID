@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/model_allitems.dart';
+import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/posSales/main_posSales_screen.dart';
 import 'package:e_shop/provider/provider_notification.dart';
@@ -59,117 +60,192 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                             model: widget.model,
                           )));
             },
-            child: Card(
-              color: Colors.white,
-              elevation: 10,
-              shadowColor: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: SizedBox(
-                  height: 200,
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    children: [
-                      Text(
-                        widget.model!.name.toString(),
-                        // widget.model!.name.toString(),
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                          letterSpacing: 3,
-                        ),
-                      ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15)),
+                child: Column(
+                  children: [
+                    Stack(children: <Widget>[
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
-
-                        child: CachedNetworkImage(
-                          // cacheManager: customCacheManager,
-
-                          memCacheWidth: 85, //default 45
-                          memCacheHeight: 100, //default 60
-                          maxHeightDiskCache: 100, //default 60
-                          maxWidthDiskCache: 85, //default 45
-                          imageUrl:
-                              'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
-                          placeholder: (context, url) =>
-                              const CircularProgressIndicator(),
-                          errorWidget: (context, url, error) => const Icon(
-                            Icons.error,
-                            color: Colors.red,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15),
+                        ),
+                        child: Container(
+                          width: 150,
+                          constraints: const BoxConstraints(
+                              minHeight: 150, maxHeight: 250),
+                          // child: Image(
+                          //   image: NetworkImage(
+                          //     'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+                          //   ),
+                          // ),
+                          child: CachedNetworkImage(
+                            // cacheManager: customCacheManager,
+                            memCacheWidth: 85, //default 45
+                            memCacheHeight: 100, //default 60
+                            maxHeightDiskCache: 100, //default 60
+                            maxWidthDiskCache: 85, //default 45
+                            imageUrl:
+                                'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => const Icon(
+                              Icons.error,
+                              color: Colors.black,
+                            ),
+                            height: 150,
+                            fit: BoxFit.cover,
                           ),
-                          height: 100,
-                          fit: BoxFit.cover,
-                        ),
-                        // child: Image.network(
-                        //   'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
-                        // ),
-                      ),
-                      Text(
-                        "\$${widget.model!.price.toString()}",
-                        style: const TextStyle(
-                          color: Colors.red,
-                          fontSize: 12,
                         ),
                       ),
-                      IconButton(
-                        onPressed: () async {
-                          var existingitemcart = context
-                              .read<PCart>()
-                              .getItems
-                              .firstWhereOrNull((element) =>
-                                  element.name == widget.model?.name);
+                      //menambahkan icon kanan atas
 
-                          print(existingitemcart);
-                          if (existingitemcart == null) {
-                            //cart API
+                      Positioned(
+                        top: 1,
+                        right: 1,
+                        child: IconButton(
+                          onPressed: () async {
+                            var existingitemcart = context
+                                .read<PCart>()
+                                .getItems
+                                .firstWhereOrNull((element) =>
+                                    element.name == widget.model?.name);
 
-                            // await FirebaseFirestore.instance
-                            //     .runTransaction((transaction) async {
-                            //   DocumentReference documentReference =
-                            //       FirebaseFirestore.instance
-                            //           // .collection("users")
-                            //           // .doc(sharedPreferences!
-                            //           //     .getString("uid"))
-                            //           .collection("allitems")
-                            //           .doc(widget.model!.name);
-                            //   transaction
-                            //       .update(documentReference, {'posisi_id': 99});
-                            // });
-                            print(widget.model);
-                            Fluttertoast.showToast(
-                                msg: "Barang Berhasil Di Tambahkan");
-                            context.read<PCart>().addItem(
-                                  widget.model!.name.toString(),
-                                  int.parse(widget.model!.price.toString()),
-                                  1,
-                                  widget.model!.image_name.toString(),
-                                  widget.model!.id.toString(),
-                                  widget.model!.sales_id.toString(),
-                                  widget.model!.description.toString(),
-                                  widget.model!.keterangan_barang.toString(),
-                                );
-                            //add to notif
-                            print("Barang Berhasil Di Tambahkan");
+                            print(existingitemcart);
+                            if (existingitemcart == null) {
+                              print(widget.model);
+                              Fluttertoast.showToast(
+                                  msg: "Barang Berhasil Di Tambahkan");
+                              context.read<PCart>().addItem(
+                                    widget.model!.name.toString(),
+                                    int.parse(widget.model!.price.toString()),
+                                    1,
+                                    widget.model!.image_name.toString(),
+                                    widget.model!.id.toString(),
+                                    widget.model!.sales_id.toString(),
+                                    widget.model!.description.toString(),
+                                    widget.model!.keterangan_barang.toString(),
+                                  );
+                              //add to notif
+                              print("Barang Berhasil Di Tambahkan");
 
-                            setState(() {
-                              postAPIcart();
-                              DbAllitems.db
-                                  .updateAllitemsByname(widget.model?.name, 0);
-                            });
-                          } else {
-                            Fluttertoast.showToast(
-                                msg: "Barang Sudah Ada Di Keranjang");
-                          }
-                        },
-                        hoverColor: Colors.green,
-                        icon: const Icon(
-                          Icons.shopping_cart,
-                          color: Colors.black,
+                              setState(() {
+                                postAPIcart();
+                                DbAllitems.db.updateAllitemsByname(
+                                    widget.model?.name, 0);
+                              });
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: "Barang Sudah Ada Di Keranjang");
+                            }
+                          },
+                          icon: Image.asset(
+                            "assets/shopping-bag.png",
+                            width: 25,
+                            height: 25,
+                          ),
                         ),
                       ),
-                    ],
-                  ),
+                      // Align(
+                      //   alignment: Alignment.center,
+                      //   child: Image.asset(
+                      //     "assets/love.png",
+                      //     width: 25,
+                      //     height: 25,
+                      //   ),
+                      // )
+                    ]),
+
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black26),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12))),
+                      padding: const EdgeInsets.only(top: 11, bottom: 5),
+                      width: 160,
+                      child: Column(
+                        children: [
+                          Text(
+                            widget.model!.name.toString(),
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              // letterSpacing: 3,
+                            ),
+                          ),
+                          Text(
+                            widget.model!.description.toString(),
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(
+                              color: Colors.grey.shade500,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              // letterSpacing: 3,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: Text(
+                              "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 2).toString()}",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // IconButton(
+                    //   onPressed: () async {
+                    //     var existingitemcart = context
+                    //         .read<PCart>()
+                    //         .getItems
+                    //         .firstWhereOrNull((element) =>
+                    //             element.name == widget.model?.name);
+
+                    //     print(existingitemcart);
+                    //     if (existingitemcart == null) {
+                    //       print(widget.model);
+                    //       Fluttertoast.showToast(
+                    //           msg: "Barang Berhasil Di Tambahkan");
+                    //       context.read<PCart>().addItem(
+                    //             widget.model!.name.toString(),
+                    //             int.parse(widget.model!.price.toString()),
+                    //             1,
+                    //             widget.model!.image_name.toString(),
+                    //             widget.model!.id.toString(),
+                    //             widget.model!.sales_id.toString(),
+                    //             widget.model!.description.toString(),
+                    //             widget.model!.keterangan_barang.toString(),
+                    //           );
+                    //       //add to notif
+                    //       print("Barang Berhasil Di Tambahkan");
+
+                    //       setState(() {
+                    //         postAPIcart();
+                    //         DbAllitems.db
+                    //             .updateAllitemsByname(widget.model?.name, 0);
+                    //       });
+                    //     } else {
+                    //       Fluttertoast.showToast(
+                    //           msg: "Barang Sudah Ada Di Keranjang");
+                    //     }
+                    //   },
+                    //   hoverColor: Colors.green,
+                    //   icon: const Icon(
+                    //     Icons.shopping_cart,
+                    //     color: Colors.black,
+                    //   ),
+                    // ),
+                  ],
                 ),
               ),
             ),
