@@ -110,7 +110,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
           backgroundColor: Colors.white,
           title: const Text(
             "Billing Information",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
           leading: IconButton(
@@ -328,35 +328,6 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                     ],
                   ),
                 ),
-
-//add diskon request
-                //rate
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // const Text("Approve Diskon"),
-                // const Divider(),
-
-                // Row(
-                //   children: [
-                //     const Padding(padding: EdgeInsets.all(4)),
-                //     Expanded(
-                //       child: TextField(
-                //         decoration: const InputDecoration(
-                //           labelText: '80',
-                //           border: OutlineInputBorder(),
-                //         ),
-                //         enabled: false,
-                //         readOnly: true,
-                //         onChanged: (value) {
-                //           setState(() {
-                //             diskonrequest = 60;
-                //           });
-                //         },
-                //       ),
-                //     ),
-                //   ],
-                // ),
                 const SizedBox(height: 30),
                 const Divider(
                   color: Colors.black,
@@ -375,7 +346,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 20),
+          padding: const EdgeInsets.only(bottom: 40),
           child: CustomLoadingButton(
             controller: btnController,
             onPressed: () {

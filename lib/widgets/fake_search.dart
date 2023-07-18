@@ -27,15 +27,6 @@ class FakeSearch extends StatelessWidget {
               Iconsax.search_normal_14,
               color: Colors.black,
             ),
-            // Expanded(
-            //   child: Text('Search by Lot...',
-            //       maxLines: 1,
-            //       style: TextStyle(
-            //         color: Colors.grey.shade400,
-            //         fontSize: 16,
-            //         overflow: TextOverflow.fade,
-            //       )),
-            // ),
           ),
         ),
       ),

@@ -16,20 +16,21 @@ class MainHistory extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.black,
+            icon: Image.asset(
+              "assets/arrow.png",
+              width: 35,
+              height: 35,
             ),
             onPressed: () {
-              // Navigator.push(
-              //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
               Navigator.pop(context);
             },
           ),
           backgroundColor: Colors.white,
           elevation: 0,
           // title: Text("History"),
-          title: FakeSearchHistory(),
+          actions: const [
+            FakeSearchHistory(),
+          ],
           automaticallyImplyLeading: false,
           centerTitle: true,
           bottom: const TabBar(

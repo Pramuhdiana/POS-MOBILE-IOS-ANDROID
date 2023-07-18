@@ -58,9 +58,9 @@ class _AppBarWithCartBadgeSalesState extends State<AppBarWithCartBadgeSales> {
       title: Text(
         widget.title!.toString(),
         style: const TextStyle(
+          fontWeight: FontWeight.bold,
           color: Colors.black,
           fontSize: 20,
-          letterSpacing: 3,
         ),
       ),
       centerTitle: true,

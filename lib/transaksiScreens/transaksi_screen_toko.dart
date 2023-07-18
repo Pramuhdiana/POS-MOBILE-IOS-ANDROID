@@ -98,20 +98,20 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          elevation: 0,
           backgroundColor: Colors.white,
           title: const Text(
             "Billing Information",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
           leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.black,
+            icon: Image.asset(
+              "assets/arrow.png",
+              width: 35,
+              height: 35,
             ),
             onPressed: () {
-              // Navigator.push(
-              //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
               Navigator.pop(context);
             },
           ),
@@ -312,7 +312,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 20),
+          padding: const EdgeInsets.only(bottom: 40),
           child: CustomLoadingButton(
             controller: btnController,
             onPressed: () {

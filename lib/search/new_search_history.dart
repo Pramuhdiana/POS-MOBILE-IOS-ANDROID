@@ -69,9 +69,10 @@ class _NewSearchScreenHistoryState extends State<NewSearchScreenHistory> {
         elevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black,
+          icon: Image.asset(
+            "assets/arrow.png",
+            width: 35,
+            height: 35,
           ),
           onPressed: () {
             Navigator.pop(context);

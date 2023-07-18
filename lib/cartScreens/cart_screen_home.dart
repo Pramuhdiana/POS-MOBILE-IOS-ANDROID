@@ -9,8 +9,9 @@ import 'package:e_shop/global/global.dart';
 import 'package:e_shop/itemsScreens/items_photo.dart';
 import 'package:e_shop/provider/provider_cart.dart';
 import 'package:e_shop/widgets/alert_dialog.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -46,27 +47,13 @@ class _CartScreenHomeState extends State<CartScreenHome> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-            colors: [
-              Colors.white,
-              Colors.white,
-            ],
-            begin: FractionalOffset(0.0, 0.0),
-            end: FractionalOffset(1.0, 0.0),
-            stops: [0.0, 1.0],
-            tileMode: TileMode.clamp,
-          )),
-        ),
         automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        elevation: 0,
         title: const Text(
-          "Cart Sales",
+          "My Cart",
           style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            letterSpacing: 3,
-          ),
+              fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [
@@ -112,51 +99,76 @@ class _CartScreenHomeState extends State<CartScreenHome> {
       body: context.watch<PCart>().getItems.isNotEmpty
           ? const CartItems()
           : const EmptyCart(),
-      bottomSheet: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      bottomNavigationBar: Container(
+        height: 150,
+        padding: const EdgeInsets.only(left: 25, right: 25),
+        child: Column(
           children: [
-            Row(
-              children: [
-                const Text(
-                  'Total: \$',
-                  style: TextStyle(fontSize: 18),
-                ),
-                Text(
-                  // context.watch<PCart>().totalPrice.toStringAsFixed(2),
-                  CurrencyFormat.convertToDollar(
-                      context.watch<PCart>().totalPrice, 2),
-                  style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red),
-                ),
-              ],
-            ),
-            context.watch<PCart>().getItems.isNotEmpty
-                ? Container(
-                    height: 35,
-                    width: MediaQuery.of(context).size.width * 0.45,
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(25)),
-                    child: MaterialButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (c) => const TransaksiScreen()));
-                      },
-                      child: const Text(
-                        'Check Out',
-                        style: TextStyle(color: Colors.white),
+            context.watch<PCart>().getItems.isEmpty
+                ? const SizedBox()
+                : SizedBox(
+                    height: 42,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Total (${context.watch<PCart>().getItems.length} item)',
+                          style:
+                              const TextStyle(fontSize: 18, color: Colors.grey),
+                        ),
+                        Text(
+                          '\$ ${CurrencyFormat.convertToDollar(context.watch<PCart>().totalPrice, 2)}',
+                          style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+            context.watch<PCart>().getItems.isEmpty
+                ? const SizedBox()
+                : Padding(
+                    padding: const EdgeInsets.only(top: 17),
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * 1,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: MaterialButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (c) => const TransaksiScreen()));
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Procced to Checkout',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) =>
+                                            const TransaksiScreen()));
+                              },
+                              icon: Image.asset(
+                                "assets/arrow (1).png",
+                                width: 35,
+                                height: 35,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  )
-                : SizedBox(
-                    height: 35,
-                    width: MediaQuery.of(context).size.width * 0.45,
                   )
           ],
         ),
@@ -211,165 +223,183 @@ class CartItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PCart>(builder: (context, cart, child) {
-      return ListView.builder(
-        itemCount: cart.count,
-        itemBuilder: (context, index) {
-          print(cart.count);
-          final product = cart.getItems[index];
-          return Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (c) => ItemsPhoto(
-                              model: ModelAllitems(
-                                  name: product.name,
-                                  image_name: product.imageUrl,
-                                  description: product.description,
-                                  price: product.price,
-                                  qty: product.qty,
-                                  keterangan_barang: product.keterangan_barang),
-                            )));
-              },
-              child: Card(
-                child: SizedBox(
-                  height: 100,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        height: 100,
-                        width: 120,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(40),
-                          child: CachedNetworkImage(
-                            memCacheWidth: 85, //default 45
-                            memCacheHeight: 100, //default 60
-                            maxHeightDiskCache: 100, //default 60
-                            maxWidthDiskCache: 85, //default 45
-                            imageUrl:
-                                'https://parvabisnis.id/uploads/products/${product.imageUrl.toString()}',
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) => const Icon(
-                              Icons.error,
-                              color: Colors.red,
-                            ),
-                            height: 100,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                          child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Container(
+      padding: const EdgeInsets.only(left: 25, right: 25),
+      child: Consumer<PCart>(builder: (context, cart, child) {
+        return ListView.builder(
+          itemCount: cart.count,
+          itemBuilder: (context, index) {
+            final product = cart.getItems[index];
+            return Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (c) => ItemsPhoto(
+                                  model: ModelAllitems(
+                                      name: product.name,
+                                      image_name: product.imageUrl,
+                                      description: product.description,
+                                      price: product.price,
+                                      qty: product.qty,
+                                      keterangan_barang:
+                                          product.keterangan_barang),
+                                )));
+                  },
+                  child: Slidable(
+                    key: UniqueKey(),
+                    endActionPane: ActionPane(
+                        motion: const BehindMotion(),
+                        dismissible: DismissiblePane(onDismissed: () async {
+                          cart.removeItem(product);
+                          await deleteAPIcart(product.documentId);
+                          await DbAllitems.db
+                              .updateAllitemsByname(product.name, 1);
+                        }),
+                        children: [
+                          SlidableAction(
+                              backgroundColor: Colors.black,
+                              icon: Iconsax.trash4,
+                              onPressed: (context) async {
+                                cart.removeItem(product);
+                                await deleteAPIcart(product.documentId);
+                                await DbAllitems.db
+                                    .updateAllitemsByname(product.name, 1);
+                                // _onDismissed();
+                              })
+                        ]),
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 10),
+                      color: Colors.grey.shade100,
+                      height: 100,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(
-                              product.name,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade700),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  product.price.toStringAsFixed(2),
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                            Container(
+                              color: Colors.white,
+                              height: 80,
+                              width: 80,
+                              child: ClipRRect(
+                                child: CachedNetworkImage(
+                                  // memCacheWidth: 85, //default 45
+                                  // memCacheHeight: 100, //default 60
+                                  // maxHeightDiskCache: 100, //default 60
+                                  // maxWidthDiskCache: 85, //default 45
+                                  imageUrl:
+                                      'https://parvabisnis.id/uploads/products/${product.imageUrl.toString()}',
+                                  placeholder: (context, url) =>
+                                      const CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(
+                                    Icons.error,
                                     color: Colors.red,
                                   ),
+                                  height: 80,
+                                  width: 80,
+                                  fit: BoxFit.cover,
                                 ),
-                                Container(
-                                  height: 35,
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey.shade200,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Row(children: [
-                                    product.qty == 1
-                                        ? IconButton(
-                                            onPressed: () async {
-                                              // await FirebaseFirestore.instance
-                                              //     .runTransaction(
-                                              //         (transaction) async {
-                                              //   DocumentReference
-                                              //       documentReference =
-                                              //       FirebaseFirestore.instance
-                                              //           // .collection("users")
-                                              //           // .doc(sharedPreferences!
-                                              //           //     .getString("uid"))
-                                              //           .collection("allitems")
-                                              //           .doc(product.name);
-                                              //   transaction.update(
-                                              //       documentReference,
-                                              //       {'posisi_id': 3});
-                                              // });
-                                              cart.removeItem(product);
-                                              await deleteAPIcart(
-                                                  product.documentId);
-                                              await DbAllitems.db
-                                                  .updateAllitemsByname(
-                                                      product.name, 1);
-                                            },
-                                            icon: const Icon(
-                                              Icons.delete_forever,
-                                              size: 18,
-                                            ))
-                                        : IconButton(
-                                            onPressed: () {
-                                              cart.reduceByOne(product);
-                                            },
-                                            icon: const Icon(
-                                              FontAwesomeIcons.minus,
-                                              size: 18,
-                                            )),
-                                    Text(
-                                      product.qty.toString(),
-                                      style: product.qty == 1 //3 adalah stok
-                                          ? const TextStyle(
-                                              fontSize: 20,
-                                              fontFamily: 'Acme',
-                                              color: Colors.red,
-                                            )
-                                          : const TextStyle(
-                                              fontSize: 20,
-                                              fontFamily: 'Acme',
-                                            ),
+                              ),
+                            ),
+                            Flexible(
+                                child: Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    product.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 20),
+                                    child: Text(
+                                      product.description,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey.shade500),
                                     ),
-                                    IconButton(
-                                        onPressed: product.qty == 1
-                                            ? null
-                                            : () {
-                                                cart.increament(product);
-                                              },
-                                        icon: const Icon(
-                                          FontAwesomeIcons.plus,
-                                          size: 18,
-                                        )),
-                                  ]),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ))
-                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          '\$ ${CurrencyFormat.convertToTitik(product.price, 2)}',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                      // Container(
+                                      //   height: 35,
+                                      //   decoration: BoxDecoration(
+                                      //       color: Colors.grey.shade200,
+                                      //       borderRadius:
+                                      //           BorderRadius.circular(15)),
+                                      //   child: Row(children: [
+                                      //     IconButton(
+                                      //         onPressed: product.qty == 1
+                                      //             ? null
+                                      //             : () {
+                                      //                 cart.reduceByOne(product);
+                                      //               },
+                                      //         icon: const Icon(
+                                      //           FontAwesomeIcons.minus,
+                                      //           size: 18,
+                                      //         )),
+                                      //     Text(
+                                      //       product.qty.toString(),
+                                      //       style:
+                                      //           product.qty == 1 //3 adalah stok
+                                      //               ? const TextStyle(
+                                      //                   fontSize: 20,
+                                      //                   fontFamily: 'Acme',
+                                      //                   color: Colors.red,
+                                      //                 )
+                                      //               : const TextStyle(
+                                      //                   fontSize: 20,
+                                      //                   fontFamily: 'Acme',
+                                      //                 ),
+                                      //     ),
+                                      //     IconButton(
+                                      //         onPressed: product.qty == 1
+                                      //             ? null
+                                      //             : () {
+                                      //                 cart.increament(product);
+                                      //               },
+                                      //         icon: const Icon(
+                                      //           FontAwesomeIcons.plus,
+                                      //           size: 18,
+                                      //         )),
+                                      //   ]),
+                                      // )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ))
+                          ]),
+                    ),
                   ),
-                ),
-              ),
-            ),
-          );
-        },
-      );
-    });
+                ));
+          },
+        );
+      }),
+    );
   }
 
   deleteAPIcart(productId) async {

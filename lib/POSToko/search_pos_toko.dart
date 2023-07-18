@@ -40,47 +40,6 @@ class _SearchPosToko extends State<SearchPosToko> {
   DBHelper dbHelper = DBHelper();
   @override
   Widget build(BuildContext context) {
-    var existingitemcart = context
-        .read<PCartToko>()
-        .getItems
-        .firstWhereOrNull((element) => element.name == widget.model?.name);
-    if (existingitemcart == null) {
-      if (Platform.isAndroid) {
-        FlutterBeep.playSysSound(AndroidSoundIDs.TONE_CDMA_ABBR_ALERT);
-        Fluttertoast.showToast(msg: "Barang Berhasil Di Tambahkan");
-        context.read<PCartToko>().addItem(
-              widget.model!.name.toString(),
-              int.parse(widget.model!.price.toString()),
-              1,
-              widget.model!.image_name.toString(),
-              widget.model!.id.toString(),
-              widget.model!.sales_id.toString(),
-              widget.model!.description.toString(),
-              widget.model!.keterangan_barang.toString(),
-            );
-        setState(() {
-          postAPIcart();
-          DbAllitemsToko.db.updateAllitemsTokoByname(widget.model?.name, 0);
-        });
-      } else {
-        FlutterBeep.playSysSound(iOSSoundIDs.AudioToneBusy);
-        Fluttertoast.showToast(msg: "Barang Berhasil Di Tambahkan");
-        context.read<PCartToko>().addItem(
-              widget.model!.name.toString(),
-              int.parse(widget.model!.price.toString()),
-              1,
-              widget.model!.image_name.toString(),
-              widget.model!.id.toString(),
-              widget.model!.sales_id.toString(),
-              widget.model!.description.toString(),
-              widget.model!.keterangan_barang.toString(),
-            );
-        setState(() {
-          postAPIcart();
-          DbAllitemsToko.db.updateAllitemsTokoByname(widget.model?.name, 0);
-        });
-      }
-    }
     return isLoading
         ? const Center(
             child: CircularProgressIndicator(),

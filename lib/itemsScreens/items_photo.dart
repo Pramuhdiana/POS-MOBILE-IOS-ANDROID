@@ -41,7 +41,10 @@ class _ItemsPhoto extends State<ItemsPhoto> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('${widget.model!.name} / ${widget.model!.description}'),
+        title: Text(
+          '${widget.model!.name} / ${widget.model!.description}',
+          style: const TextStyle(color: Colors.black),
+        ),
         backgroundColor: Colors.white,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -57,9 +60,10 @@ class _ItemsPhoto extends State<ItemsPhoto> {
           )),
         ),
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black,
+          icon: Image.asset(
+            "assets/arrow.png",
+            width: 35,
+            height: 35,
           ),
           onPressed: () {
             Navigator.pop(context);

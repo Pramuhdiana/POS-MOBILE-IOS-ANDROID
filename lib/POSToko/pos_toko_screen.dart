@@ -65,7 +65,7 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppbarCartToko(
-        title: title,
+        title: '$qtyProduct product ',
       ),
       body: RefreshIndicator(
         onRefresh: refresh,
@@ -145,12 +145,6 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                 ),
               ],
             ),
-            SizedBox(
-              child: Text(
-                '$qtyProduct product ',
-                style: const TextStyle(fontSize: 20, color: Colors.black),
-              ),
-            ),
             Expanded(
               child: FutureBuilder(
                 future: DbAllitemsToko.db.getAllitemsToko(idtoko),
@@ -200,16 +194,6 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                     return const CircularProgressIndicator(color: Colors.black);
                   } //if data NOT exists
                   return const CircularProgressIndicator(color: Colors.black);
-                  //   }, else //if data NOT exists
-                  // {
-                  //   return const SliverToBoxAdapter(
-                  //     child: Center(
-                  //       child: Text(
-                  //         "No items exists",
-                  //       ),
-                  //     ),
-                  //   );
-                  // }
                 },
               ),
             ),

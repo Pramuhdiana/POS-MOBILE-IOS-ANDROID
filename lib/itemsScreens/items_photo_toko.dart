@@ -40,14 +40,17 @@ class _ItemsPhotoToko extends State<ItemsPhotoToko> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('${widget.model!.name} / ${widget.model!.description}'),
+        title: Text(
+          '${widget.model!.name} / ${widget.model!.description}',
+          style: const TextStyle(color: Colors.black),
+        ),
         backgroundColor: Colors.white,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
             colors: [
-              Colors.blueAccent,
-              Colors.lightBlueAccent,
+              Colors.white,
+              Colors.white,
             ],
             begin: FractionalOffset(0.0, 0.0),
             end: FractionalOffset(1.0, 0.0),
@@ -56,9 +59,10 @@ class _ItemsPhotoToko extends State<ItemsPhotoToko> {
           )),
         ),
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.white,
+          icon: Image.asset(
+            "assets/arrow.png",
+            width: 35,
+            height: 35,
           ),
           onPressed: () {
             Navigator.pop(context);

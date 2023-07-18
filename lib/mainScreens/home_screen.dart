@@ -284,10 +284,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future refresh() async {
-    setState(() {
+    setState(() async {
       context.read<PCart>().clearCart(); //clear cart
-      loadCartFromApiPOSSALES();
-      DbAlltransaksi.db.getAlltransaksi(1);
+      loadCartFromApiPOSSALES(); //a,bil data cart
+      DbAlltransaksi.db.getAlltransaksi(1); //ambil data
       context.read<PNewNotif>().clearNotif();
       DbNotifDummy.db.getAllNotif(1).then((value) {
         for (var i = 0; i < value.length; i++) {
@@ -296,28 +296,19 @@ class _HomeScreenState extends State<HomeScreen> {
               );
         }
       });
-      // Fluttertoast.showToast(msg: "Refresh done");
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        toolbarHeight: 0,
-      ),
       backgroundColor: Colors.white,
       body: RefreshIndicator(
         onRefresh: refresh,
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 25),
           child: ListView(
-            physics:
-                const ClampingScrollPhysics(), //agar buka keyboard tidak overflow
-            children: <Widget>[
+            children: [
               Container(
                   color: Colors.white,
                   child: RefreshIndicator(
@@ -546,10 +537,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   percent: percentYear,
                   center: Text(
                     '${(list / targetByYear * 100).round()}%',
+                    style: const TextStyle(color: Colors.white),
                   ),
                   // ignore: deprecated_member_use
                   linearStrokeCap: LinearStrokeCap.roundAll,
-                  progressColor: AppColors.contentColorGreen,
+                  progressColor: AppColors.contentColorBlack,
                 ),
                 Text(
                     '${CurrencyFormat.convertToIdr(list, 2)} / 10.000.000.000,00'),
@@ -728,14 +720,14 @@ class _HomeScreenState extends State<HomeScreen> {
     double width = 22,
     List<int> showTooltips = const [],
   }) {
-    barColor ??= AppColors.contentColorGreen;
+    barColor ??= AppColors.contentColorBlack;
     return BarChartGroupData(
       x: x,
       barRods: [
         BarChartRodData(
           toY: isTouched ? (y).toDouble() : y.toDouble(),
           // toY: isTouched ? y + 1 : y,
-          color: isTouched ? AppColors.contentColorBlack : barColor,
+          color: isTouched ? AppColors.contentColorGreen : barColor,
           width: width,
           borderSide: isTouched
               ? BorderSide(color: AppColors.contentColorGreen.darken(80))
@@ -862,7 +854,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         text:
                             '${(rod.toY * 10).toString()[0]},${(rod.toY * 10).toString()[1]}M',
                         style: const TextStyle(
-                          color: AppColors.contentColorGreen,
+                          color: AppColors.contentColorWhite,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
@@ -871,7 +863,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         text:
                             '${(rod.toY * 10).toString()[0]}${(rod.toY * 10).toString()[1]}${(rod.toY * 10).toString()[2]}JT',
                         style: const TextStyle(
-                          color: AppColors.contentColorGreen,
+                          color: AppColors.contentColorWhite,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),

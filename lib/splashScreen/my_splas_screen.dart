@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/authScreens/auth_screen.dart';
+import 'package:e_shop/database/db_allitems_retur.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
@@ -123,6 +124,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     await DbAllitems.db.deleteAllitems();
     await DbAllitemsToko.db.deleteAllitemsToko();
     await DbAlltransaksi.db.deleteAlltransaksi();
+    await DbAllitemsRetur.db.deleteAllitemsRetur();
     await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
     await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
     await apiProvider.getAllItems();
@@ -185,8 +187,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
         decoration: const BoxDecoration(
             gradient: LinearGradient(
           colors: [
-            Colors.blueAccent,
-            Colors.lightBlueAccent,
+            Colors.white,
+            Colors.white,
           ],
           begin: FractionalOffset(0.0, 0.0),
           end: FractionalOffset(1.0, 0.0),

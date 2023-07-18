@@ -91,10 +91,13 @@ class _QrScannerState extends State<QrScanner> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            child: const Icon(
-              Icons.shopping_cart_checkout,
-              color: Colors.black,
-              size: 50,
+            child: Transform.scale(
+              scale: 1.3,
+              child: Image.asset(
+                "assets/cart.png",
+                width: 45,
+                height: 45,
+              ),
             ),
           ),
         ),
@@ -194,58 +197,21 @@ class _QrScannerState extends State<QrScanner> {
         elevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black,
+          icon: Image.asset(
+            "assets/arrow.png",
+            width: 35,
+            height: 35,
           ),
-          onPressed: () async {
+          onPressed: () {
             controller?.stopCamera();
             Navigator.pop(context);
           },
         ),
-        // title: CupertinoSearchTextField(
-        //   autofocus: false,
-        //   backgroundColor: Colors.white,
-        //   keyboardType: TextInputType.number,
-        //   enabled: false,
-        //   onChanged: (value) {
-        //     setState(() {
-        //       searchInput = value;
-        //     });
-        //   },
-        // ),
       ),
       body: searchInput == ''
           ? Center(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(25)),
-                      height: 30,
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: Icon(Icons.qr_code_scanner_outlined,
-                                  color: Colors.white),
-                            ),
-                            Text(
-                              'Scan QR ...',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: Icon(Icons.search, color: Colors.white),
-                            ),
-                          ]),
-                    ),
-                  ),
                   const SizedBox(
                     height: 30,
                   ),
@@ -349,17 +315,7 @@ class SearchModel extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => ProductDetailsScreen(proList: e)));
         Fluttertoast.showToast(msg: "Not Available");
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (c) => ItemsDetailsScreen(
-        //               model: e.model,
-        //             )));
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
@@ -426,43 +382,6 @@ class SearchModel extends StatelessWidget {
                     ],
                   ),
                 ),
-                // IconButton(
-                //   onPressed: () {
-
-                //     var existingitemcart = context
-                //         .read<PCart>()
-                //         .getItems
-                //         .firstWhereOrNull(
-                //             (element) => element.name == e['name'].toString());
-
-                //     // ignore: avoid_print
-                //     print(existingitemcart);
-                //     // existingitemcart == null
-                //     if (existingitemcart == null) {
-                //       var documentId = DateTime.now().millisecond;
-                //       Fluttertoast.showToast(
-                //           msg: "Barang Berhasil Di Tambahkan");
-                //       context.read<PCart>().addItem(
-                //             e['name'].toString(),
-                //             int.parse(e['price'].toString()),
-                //             1,
-                //             e['image_name'].toString(),
-                //             DateTime.now.toString(),
-                //             documentId.toString(),
-                //             e['salesUID'].toString(),
-                //             e['keterangan_barang'].toString(),
-                //           );
-                //     } else {
-                //       Fluttertoast.showToast(
-                //           msg: "Barang Sudah Ada Di Keranjang");
-                //     }
-                //   },
-                //   hoverColor: Colors.green,
-                //   icon: const Icon(
-                //     Icons.shopping_cart,
-                //     color: Colors.blue,
-                //   ),
-                // ),
               ],
             ),
           ),

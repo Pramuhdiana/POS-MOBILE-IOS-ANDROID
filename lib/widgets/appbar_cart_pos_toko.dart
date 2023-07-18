@@ -34,13 +34,12 @@ class _AppbarCartTokoState extends State<AppbarCartToko> {
       elevation: 0,
       backgroundColor: Colors.white,
       leading: IconButton(
-        icon: const Icon(
-          Icons.arrow_back_ios_new,
-          color: Colors.black,
+        icon: Image.asset(
+          "assets/arrow.png",
+          width: 35,
+          height: 35,
         ),
         onPressed: () {
-          // Navigator.push(
-          //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
           Navigator.pop(context);
         },
       ),
@@ -61,9 +60,9 @@ class _AppbarCartTokoState extends State<AppbarCartToko> {
       title: Text(
         widget.title!.toString(),
         style: const TextStyle(
+          fontWeight: FontWeight.bold,
           color: Colors.black,
           fontSize: 20,
-          letterSpacing: 3,
         ),
       ),
       centerTitle: true,
@@ -90,10 +89,13 @@ class _AppbarCartTokoState extends State<AppbarCartToko> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  child: const Icon(
-                    Icons.shopping_cart,
-                    color: Colors.black,
-                    size: 35,
+                  child: Transform.scale(
+                    scale: 1.3,
+                    child: Image.asset(
+                      "assets/cart.png",
+                      width: 45,
+                      height: 45,
+                    ),
                   ),
                 ),
               ),

@@ -31,9 +31,10 @@ class _SearchScreenState extends State<NewSearchScreen> {
         elevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black,
+          icon: Image.asset(
+            "assets/arrow.png",
+            width: 35,
+            height: 35,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -77,10 +78,13 @@ class _SearchScreenState extends State<NewSearchScreen> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      child: const Icon(
-                        Icons.shopping_cart_checkout,
-                        color: Colors.black,
-                        size: 35,
+                      child: Transform.scale(
+                        scale: 1.3,
+                        child: Image.asset(
+                          "assets/cart.png",
+                          width: 45,
+                          height: 45,
+                        ),
                       ),
                     ),
                   ),

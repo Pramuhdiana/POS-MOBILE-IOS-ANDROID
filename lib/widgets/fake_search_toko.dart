@@ -18,10 +18,10 @@ class FakeSearchToko extends StatelessWidget {
         decoration: BoxDecoration(
             border: Border.all(color: Colors.black, width: 1.4),
             borderRadius: BorderRadius.circular(25)),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Row(
+            Row(
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -31,23 +31,11 @@ class FakeSearchToko extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'What are you looking for?',
+                  'Search lot...',
                   style: TextStyle(fontSize: 18, color: Colors.black),
                 ),
               ],
             ),
-            Container(
-              height: 32,
-              width: 75,
-              decoration: BoxDecoration(
-                  color: Colors.black, borderRadius: BorderRadius.circular(25)),
-              child: const Center(
-                child: Text(
-                  'Search',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-              ),
-            )
           ],
         ),
       ),

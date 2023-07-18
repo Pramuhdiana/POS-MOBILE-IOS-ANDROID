@@ -62,7 +62,6 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
         qtyProduct = value.length;
       });
     });
-    // title = 'POS ${sharedPreferences!.getString("name")!}';
     list = [];
     DbAllKodekeluarbarang.db.getAllkeluarbarang().then((listMap) {
       listMap.map((map) {
@@ -76,6 +75,9 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
 
   Future refresh() async {
     setState(() {
+      // context.read<PCart>().clearCart();
+      // DbAllitems.db.deleteAllitems();
+      // ApiServices().getAllItems();
       DbAllitems.db.getAllitems();
     });
   }

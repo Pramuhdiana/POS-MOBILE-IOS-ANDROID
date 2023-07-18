@@ -60,29 +60,22 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                             model: widget.model,
                           )));
             },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15)),
-                child: Column(
-                  children: [
-                    Stack(children: <Widget>[
-                      ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15),
-                        ),
-                        child: Container(
-                          width: 150,
-                          constraints: const BoxConstraints(
-                              minHeight: 150, maxHeight: 250),
-                          // child: Image(
-                          //   image: NetworkImage(
-                          //     'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
-                          //   ),
-                          // ),
+            child: Stack(children: [
+              Card(
+                shadowColor: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: SizedBox(
+                    height: 170,
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
+                          ),
                           child: CachedNetworkImage(
                             // cacheManager: customCacheManager,
                             memCacheWidth: 85, //default 45
@@ -97,158 +90,85 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                               Icons.error,
                               color: Colors.black,
                             ),
-                            height: 150,
+                            height: 100,
                             fit: BoxFit.cover,
                           ),
                         ),
-                      ),
-                      //menambahkan icon kanan atas
-
-                      Positioned(
-                        top: 1,
-                        right: 1,
-                        child: IconButton(
-                          onPressed: () async {
-                            var existingitemcart = context
-                                .read<PCart>()
-                                .getItems
-                                .firstWhereOrNull((element) =>
-                                    element.name == widget.model?.name);
-
-                            print(existingitemcart);
-                            if (existingitemcart == null) {
-                              print(widget.model);
-                              Fluttertoast.showToast(
-                                  msg: "Barang Berhasil Di Tambahkan");
-                              context.read<PCart>().addItem(
-                                    widget.model!.name.toString(),
-                                    int.parse(widget.model!.price.toString()),
-                                    1,
-                                    widget.model!.image_name.toString(),
-                                    widget.model!.id.toString(),
-                                    widget.model!.sales_id.toString(),
-                                    widget.model!.description.toString(),
-                                    widget.model!.keterangan_barang.toString(),
-                                  );
-                              //add to notif
-                              print("Barang Berhasil Di Tambahkan");
-
-                              setState(() {
-                                postAPIcart();
-                                DbAllitems.db.updateAllitemsByname(
-                                    widget.model?.name, 0);
-                              });
-                            } else {
-                              Fluttertoast.showToast(
-                                  msg: "Barang Sudah Ada Di Keranjang");
-                            }
-                          },
-                          icon: Image.asset(
-                            "assets/shopping-bag.png",
-                            width: 25,
-                            height: 25,
+                        Text(
+                          widget.model!.name.toString(),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
                           ),
                         ),
-                      ),
-                      // Align(
-                      //   alignment: Alignment.center,
-                      //   child: Image.asset(
-                      //     "assets/love.png",
-                      //     width: 25,
-                      //     height: 25,
-                      //   ),
-                      // )
-                    ]),
-
-                    Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black26),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12))),
-                      padding: const EdgeInsets.only(top: 11, bottom: 5),
-                      width: 160,
-                      child: Column(
-                        children: [
-                          Text(
-                            widget.model!.name.toString(),
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              // letterSpacing: 3,
-                            ),
+                        Text(
+                          widget.model!.description.toString(),
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(
+                            color: Colors.grey.shade500,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10,
+                            // letterSpacing: 3,
                           ),
-                          Text(
-                            widget.model!.description.toString(),
-                            textAlign: TextAlign.justify,
-                            style: TextStyle(
-                              color: Colors.grey.shade500,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              // letterSpacing: 3,
-                            ),
+                        ),
+                        Text(
+                          "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 2).toString()}",
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15),
-                            child: Text(
-                              "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 2).toString()}",
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-
-                    // IconButton(
-                    //   onPressed: () async {
-                    //     var existingitemcart = context
-                    //         .read<PCart>()
-                    //         .getItems
-                    //         .firstWhereOrNull((element) =>
-                    //             element.name == widget.model?.name);
-
-                    //     print(existingitemcart);
-                    //     if (existingitemcart == null) {
-                    //       print(widget.model);
-                    //       Fluttertoast.showToast(
-                    //           msg: "Barang Berhasil Di Tambahkan");
-                    //       context.read<PCart>().addItem(
-                    //             widget.model!.name.toString(),
-                    //             int.parse(widget.model!.price.toString()),
-                    //             1,
-                    //             widget.model!.image_name.toString(),
-                    //             widget.model!.id.toString(),
-                    //             widget.model!.sales_id.toString(),
-                    //             widget.model!.description.toString(),
-                    //             widget.model!.keterangan_barang.toString(),
-                    //           );
-                    //       //add to notif
-                    //       print("Barang Berhasil Di Tambahkan");
-
-                    //       setState(() {
-                    //         postAPIcart();
-                    //         DbAllitems.db
-                    //             .updateAllitemsByname(widget.model?.name, 0);
-                    //       });
-                    //     } else {
-                    //       Fluttertoast.showToast(
-                    //           msg: "Barang Sudah Ada Di Keranjang");
-                    //     }
-                    //   },
-                    //   hoverColor: Colors.green,
-                    //   icon: const Icon(
-                    //     Icons.shopping_cart,
-                    //     color: Colors.black,
-                    //   ),
-                    // ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+              Positioned(
+                top: 1,
+                right: 1,
+                child: IconButton(
+                  onPressed: () async {
+                    var existingitemcart = context
+                        .read<PCart>()
+                        .getItems
+                        .firstWhereOrNull(
+                            (element) => element.name == widget.model?.name);
+
+                    print(existingitemcart);
+                    // existingitemcart == null
+                    if (existingitemcart == null) {
+                      Fluttertoast.showToast(
+                          msg: "Barang Berhasil Di Tambahkan");
+                      context.read<PCart>().addItem(
+                            widget.model!.name.toString(),
+                            int.parse(widget.model!.price.toString()),
+                            1,
+                            widget.model!.image_name.toString(),
+                            widget.model!.id.toString(),
+                            widget.model!.sales_id.toString(),
+                            widget.model!.description.toString(),
+                            widget.model!.keterangan_barang.toString(),
+                          );
+                      setState(() {
+                        postAPIcart();
+                        DbAllitems.db
+                            .updateAllitemsByname(widget.model?.name, 0);
+                      });
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "Barang Sudah Ada Di Keranjang");
+                    }
+                  },
+                  icon: Image.asset(
+                    "assets/shopping-bag.png",
+                    width: 25,
+                    height: 25,
+                  ),
+                ),
+              ),
+            ]),
           );
   }
 

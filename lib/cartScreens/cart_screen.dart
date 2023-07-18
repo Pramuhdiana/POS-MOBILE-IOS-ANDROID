@@ -50,16 +50,12 @@ class _CartScreenState extends State<CartScreen> {
             height: 35,
           ),
           onPressed: () {
-            setState(() {
-              DbAllitems.db.getAllitems();
-            });
             Navigator.pop(context);
           },
         ),
         title: const Text(
           "My Cart",
-          style: TextStyle(
-              fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [
@@ -103,51 +99,76 @@ class _CartScreenState extends State<CartScreen> {
       body: context.watch<PCart>().getItems.isNotEmpty
           ? const CartItems()
           : const EmptyCart(),
-      bottomSheet: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      bottomNavigationBar: Container(
+        height: 150,
+        padding: const EdgeInsets.only(left: 25, right: 25),
+        child: Column(
           children: [
-            Row(
-              children: [
-                const Text(
-                  'Total: \$',
-                  style: TextStyle(fontSize: 18),
-                ),
-                Text(
-                  // context.watch<PCart>().totalPrice.toStringAsFixed(2),
-                  CurrencyFormat.convertToDollar(
-                      context.watch<PCart>().totalPrice, 2),
-                  style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red),
-                ),
-              ],
-            ),
-            context.watch<PCart>().getItems.isNotEmpty
-                ? Container(
-                    height: 35,
-                    width: MediaQuery.of(context).size.width * 0.45,
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(25)),
-                    child: MaterialButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (c) => const TransaksiScreen()));
-                      },
-                      child: const Text(
-                        'Check Out',
-                        style: TextStyle(color: Colors.white),
+            context.watch<PCart>().getItems.isEmpty
+                ? const SizedBox()
+                : SizedBox(
+                    height: 42,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Total (${context.watch<PCart>().getItems.length} item)',
+                          style:
+                              const TextStyle(fontSize: 18, color: Colors.grey),
+                        ),
+                        Text(
+                          '\$ ${CurrencyFormat.convertToDollar(context.watch<PCart>().totalPrice, 2)}',
+                          style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+            context.watch<PCart>().getItems.isEmpty
+                ? const SizedBox()
+                : Padding(
+                    padding: const EdgeInsets.only(top: 17),
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * 1,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: MaterialButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (c) => const TransaksiScreen()));
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Procced to Checkout',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) =>
+                                            const TransaksiScreen()));
+                              },
+                              icon: Image.asset(
+                                "assets/arrow (1).png",
+                                width: 35,
+                                height: 35,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  )
-                : SizedBox(
-                    height: 35,
-                    width: MediaQuery.of(context).size.width * 0.45,
                   )
           ],
         ),
@@ -210,7 +231,6 @@ class CartItems extends StatelessWidget {
         return ListView.builder(
           itemCount: cart.count,
           itemBuilder: (context, index) {
-            print(cart.count);
             final product = cart.getItems[index];
             return Padding(
                 padding: const EdgeInsets.only(bottom: 15),

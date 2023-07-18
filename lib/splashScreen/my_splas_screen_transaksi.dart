@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/api/api_services.dart';
+import 'package:e_shop/database/db_allitems_retur.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gif/flutter_gif.dart';
@@ -34,6 +35,7 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
     await DbAllitems.db.deleteAllitems();
     await DbAllitemsToko.db.deleteAllitemsToko();
     await DbAlltransaksi.db.deleteAlltransaksi();
+    await DbAllitemsRetur.db.deleteAllitemsRetur();
     await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
     await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
     await apiProvider.getAllItems();
@@ -41,9 +43,9 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
     await apiProvider.getAllTransaksi();
     await apiProvider.getAllItemsRetur();
     await apiProvider.getAllDetailTransaksi();
-    // await apiProvider.getAllKodekeluarbarang();
-    // await apiProvider.getAllCustomer();
-    // await apiProvider.getUsers();
+    await apiProvider.getAllKodekeluarbarang();
+    await apiProvider.getAllCustomer();
+    await apiProvider.getUsers();
 
     // wait for 2 seconds to simulate loading of data
     await Future.delayed(const Duration(seconds: 2));

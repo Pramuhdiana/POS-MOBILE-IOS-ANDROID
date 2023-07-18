@@ -16,6 +16,8 @@ import 'package:e_shop/widgets/appbar_cart_pos_retur.dart';
 import 'package:e_shop/widgets/fake_search_retur.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
+import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
 import '../cartScreens/db_helper.dart';
 import '../global/global.dart';
@@ -41,6 +43,7 @@ class _PosReturScreenState extends State<PosReturScreen> {
   String query = ''; //filter
   String queryBrandId = '';
   String? title = '';
+  int qtyProduct = 0;
 
   @override
   void initState() {
@@ -59,7 +62,7 @@ class _PosReturScreenState extends State<PosReturScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppbarCartRetur(
-        title: title,
+        title: '$qtyProduct product ',
       ),
       body: RefreshIndicator(
         onRefresh: refresh,
@@ -91,19 +94,21 @@ class _PosReturScreenState extends State<PosReturScreen> {
                         print('diskonnya  : ${item?.diskon_customer}');
                         idtoko = item?.id; // menyimpan id toko
                         toko = item?.name; // menyimpan nama toko
-
+                        sharedPreferences!
+                            .setString('customer_name_retur', toko.toString());
+                        sharedPreferences!
+                            .setString('customer_id_retur', idtoko.toString());
                         // sharedPreferences!
                         //     .setString('customer_id', idtoko.toString());
                         loadCartFromApiPOSRetur(idtoko);
                         DbAllitemsRetur.db.getAllitemsRetur(idtoko);
                       });
                     },
-                    dropdownDecoratorProps: DropDownDecoratorProps(
+                    dropdownDecoratorProps: const DropDownDecoratorProps(
                       dropdownSearchDecoration: InputDecoration(
-                        labelText: 'Pilih Toko',
+                        labelText: 'Choose customer',
                         filled: true,
-                        fillColor:
-                            Theme.of(context).inputDecorationTheme.fillColor,
+                        fillColor: Colors.white,
                       ),
                     ),
                   ),
@@ -116,51 +121,49 @@ class _PosReturScreenState extends State<PosReturScreen> {
                 builder: (context, AsyncSnapshot dataSnapshot) {
                   if (dataSnapshot.hasData) //if brands exists
                   {
-                    print(idtoko);
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2),
-                      itemBuilder: (BuildContext context, int index) {
-                        var itemsModel = (dataSnapshot.data[index]);
+                    DbAllitemsRetur.db.getAllitemsRetur(idtoko).then((value) {
+                      setState(() {
+                        qtyProduct = value.length;
+                      });
+                    });
+                    return SingleChildScrollView(
+                      child: StaggeredGridView.countBuilder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: dataSnapshot.data.length,
+                        crossAxisCount: 2,
+                        staggeredTileBuilder: (context) =>
+                            const StaggeredTile.fit(1),
+                        itemBuilder: (BuildContext context, int index) {
+                          var itemsModel = (dataSnapshot.data[index]);
 
-                        return PosReturUi(
-                          model: ModelAllitemsRetur(
-                              id: itemsModel.id,
-                              name: itemsModel.name,
-                              slug: itemsModel.slug,
-                              image_name: itemsModel.image_name,
-                              description: itemsModel.description,
-                              price: itemsModel.price,
-                              category_id: itemsModel.category_id,
-                              posisi_id: itemsModel.posisi_id,
-                              customer_id: itemsModel.customer_id,
-                              kode_refrensi: itemsModel.kode_refrensi,
-                              sales_id: itemsModel.sales_id,
-                              brand_id: itemsModel.brand_id,
-                              qty: itemsModel.qty,
-                              status_titipan: itemsModel.status_titipan,
-                              keterangan_barang: itemsModel.keterangan_barang),
-                          idtoko: idtoko,
-                        );
-                      },
-                      itemCount: dataSnapshot.data.length,
+                          return PosReturUi(
+                            model: ModelAllitemsRetur(
+                                id: itemsModel.id,
+                                name: itemsModel.name,
+                                slug: itemsModel.slug,
+                                image_name: itemsModel.image_name,
+                                description: itemsModel.description,
+                                price: itemsModel.price,
+                                category_id: itemsModel.category_id,
+                                posisi_id: itemsModel.posisi_id,
+                                customer_id: itemsModel.customer_id,
+                                kode_refrensi: itemsModel.kode_refrensi,
+                                sales_id: itemsModel.sales_id,
+                                brand_id: itemsModel.brand_id,
+                                qty: itemsModel.qty,
+                                status_titipan: itemsModel.status_titipan,
+                                keterangan_barang:
+                                    itemsModel.keterangan_barang),
+                            idtoko: idtoko,
+                          );
+                        },
+                      ),
                     );
                   } else if (dataSnapshot.hasError) {
-                    return const CircularProgressIndicator();
+                    return const CircularProgressIndicator(color: Colors.black);
                   } //if data NOT exists
-                  return const CircularProgressIndicator();
-                  //   }, else //if data NOT exists
-                  // {
-                  //   return const SliverToBoxAdapter(
-                  //     child: Center(
-                  //       child: Text(
-                  //         "No items exists",
-                  //       ),
-                  //     ),
-                  //   );
-                  // }
+                  return const CircularProgressIndicator(color: Colors.black);
                 },
               ),
             ),
