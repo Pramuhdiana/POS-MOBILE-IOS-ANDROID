@@ -97,14 +97,16 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          elevation: 0,
           backgroundColor: Colors.white,
           flexibleSpace: Container(
             color: Colors.white,
           ),
           leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.black,
+            icon: Image.asset(
+              "assets/arrow.png",
+              width: 35,
+              height: 35,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -112,11 +114,7 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
           ),
           title: const Text(
             "FORM ADD REQUEST",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              letterSpacing: 3,
-            ),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -733,7 +731,7 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
         ),
         //save e ticketing
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 20),
+          padding: const EdgeInsets.only(bottom: 40),
           child: CustomLoadingButton(
             controller: btnController,
             onPressed: () {

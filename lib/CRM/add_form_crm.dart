@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print, non_constant_identifier_names, sized_box_for_whitespace, depend_on_referenced_packages
 
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
@@ -178,11 +177,13 @@ class _AddFormCRMState extends State<AddFormCRM> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          elevation: 0,
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.black,
+            icon: Image.asset(
+              "assets/arrow.png",
+              width: 35,
+              height: 35,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -190,8 +191,7 @@ class _AddFormCRMState extends State<AddFormCRM> {
           ),
           title: const Text(
             "FORM ADD REPORT",
-            style:
-                TextStyle(fontSize: 20, letterSpacing: 3, color: Colors.black),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
           ),
           centerTitle: true,
         ),
@@ -691,44 +691,44 @@ class _AddFormCRMState extends State<AddFormCRM> {
                                     ],
                                   ),
                                 ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                ),
-                                onPressed: () {
-                                  // null;
-                                  // myAlert();
-                                  Fluttertoast.showToast(msg: "Not Available");
-                                  // openImages();
-                                },
-                                child: const Text('Upload Photo'),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
+                          // Column(
+                          //   mainAxisAlignment: MainAxisAlignment.center,
+                          //   children: [
+                          //     ElevatedButton(
+                          //       style: ElevatedButton.styleFrom(
+                          //         backgroundColor: Colors.red,
+                          //       ),
+                          //       onPressed: () {
+                          //         // null;
+                          //         // myAlert();
+                          //         Fluttertoast.showToast(msg: "Not Available");
+                          //         // openImages();
+                          //       },
+                          //       child: const Text('Upload Photo'),
+                          //     ),
+                          //     const SizedBox(
+                          //       height: 10,
+                          //     ),
 
-                              //multi img
-                              imagefiles != null
-                                  ? Wrap(
-                                      children: imagefiles!.map((imageone) {
-                                        return Card(
-                                          child: Container(
-                                            height: 100,
-                                            width: 100,
-                                            child: Image.file(
-                                              File(imageone.path),
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        );
-                                      }).toList(),
-                                    )
-                                  : Container()
-                            ],
-                          ),
+                          //     //multi img
+                          //     imagefiles != null
+                          //         ? Wrap(
+                          //             children: imagefiles!.map((imageone) {
+                          //               return Card(
+                          //                 child: Container(
+                          //                   height: 100,
+                          //                   width: 100,
+                          //                   child: Image.file(
+                          //                     File(imageone.path),
+                          //                     fit: BoxFit.cover,
+                          //                   ),
+                          //                 ),
+                          //               );
+                          //             }).toList(),
+                          //           )
+                          //         : Container()
+                          //   ],
+                          // ),
                           //   //video
                           //   const SizedBox(
                           //     height: 10,
@@ -779,7 +779,7 @@ class _AddFormCRMState extends State<AddFormCRM> {
           ],
         ), //Row
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 20),
+          padding: const EdgeInsets.only(bottom: 40),
           child: CustomLoadingButton(
             controller: btnController,
             onPressed: () {

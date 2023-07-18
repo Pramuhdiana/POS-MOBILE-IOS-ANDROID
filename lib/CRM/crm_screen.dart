@@ -23,13 +23,12 @@ class _CrmScreenState extends State<CrmScreen> {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.black,
+            icon: Image.asset(
+              "assets/arrow.png",
+              width: 35,
+              height: 35,
             ),
             onPressed: () {
-              // Navigator.push(
-              //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
               Navigator.pop(context);
             },
           ),
@@ -37,7 +36,7 @@ class _CrmScreenState extends State<CrmScreen> {
           elevation: 0,
           title: const Text(
             "CRM",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           // title: const FakeSearch(),
           automaticallyImplyLeading: false,

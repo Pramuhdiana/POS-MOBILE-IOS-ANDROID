@@ -275,7 +275,7 @@ class CartItems extends StatelessWidget {
                         ]),
                     child: Container(
                       padding: const EdgeInsets.only(left: 10),
-                      color: Colors.grey.shade100,
+                      color: Colors.white,
                       height: 100,
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
