@@ -40,7 +40,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
     //end notif
     super.initState();
     DbNotifDummy.db.getAllNotif(1);
-    // print(fcmTokensandy);
     getToken();
   }
 
@@ -105,6 +104,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         print("token notif is $mtoken");
       });
       saveToken(token!);
+      // messaging.subscribeToTopic("allUsers");
     });
   }
 

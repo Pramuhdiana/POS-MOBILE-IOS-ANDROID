@@ -411,7 +411,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             });
                       },
                       icon: Image.asset(
-                        "images/user.png",
+                        // "assets/user (1).png",
+                        "assets/account.png",
                         // size: 50,
                       ),
                     ),

@@ -78,6 +78,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
         .set({
       'token': token,
     });
+    FirebaseMessaging.instance.subscribeToTopic("allUsers");
   }
 
   //request permission

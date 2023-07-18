@@ -98,31 +98,17 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
   uploadFormScreen() {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black,
+          icon: Image.asset(
+            "assets/arrow.png",
+            width: 35,
+            height: 35,
           ),
           onPressed: () {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
             Navigator.pop(context);
           },
-        ),
-        flexibleSpace: Container(
-          color: Colors.white,
-          // decoration: const BoxDecoration(
-          //     gradient: LinearGradient(
-          //   colors: [
-          //     Colors.blueAccent,
-          //     Colors.lightBlueAccent,
-          //   ],
-          //   begin: FractionalOffset(0.0, 0.0),
-          //   end: FractionalOffset(1.0, 0.0),
-          //   stops: [0.0, 1.0],
-          //   tileMode: TileMode.clamp,
-          // )),
         ),
         actions: [
           Padding(
@@ -259,14 +245,14 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        elevation: 0,
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black,
+          icon: Image.asset(
+            "assets/arrow.png",
+            width: 35,
+            height: 35,
           ),
           onPressed: () {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (c) => PosSalesScreen()));
             Navigator.pop(context);
           },
         ),
@@ -336,53 +322,44 @@ class _UploadTokoScreenState extends State<UploadTokoScreen> {
   obtainImageDialogBox() {
     return showDialog(
         context: context,
-        builder: (context) {
-          return SimpleDialog(
-            title: const Text(
-              "Toko Image",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            title: const Text('Please choose media to select'),
+            content: SizedBox(
+              height: MediaQuery.of(context).size.height / 6,
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    //if user click this button, user can upload image from gallery
+                    onPressed: () {
+                      Navigator.pop(context);
+                      // getImage(ImageSource.gallery);
+                      getImageFromGallery();
+                    },
+                    child: const Row(
+                      children: [
+                        Icon(Icons.image),
+                        Text('From Gallery'),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    //if user click this button. user can upload image from camera
+                    onPressed: () {
+                      captureImagewithPhoneCamera();
+                    },
+                    child: const Row(
+                      children: [
+                        Icon(Icons.camera),
+                        Text('From Camera'),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-            children: [
-              SimpleDialogOption(
-                onPressed: () {
-                  captureImagewithPhoneCamera();
-                },
-                child: const Text(
-                  "Capture image with Camera",
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              SimpleDialogOption(
-                onPressed: () {
-                  getImageFromGallery();
-                },
-                child: const Text(
-                  "Select image from Gallery",
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              SimpleDialogOption(
-                onPressed: () {
-                  Navigator.pop(
-                      context,
-                      MaterialPageRoute(
-                          builder: (c) => const UploadTokoScreen()));
-                },
-                child: const Text(
-                  "Cancel",
-                  style: TextStyle(
-                    color: Colors.red,
-                  ),
-                ),
-              ),
-            ],
           );
         });
   }
