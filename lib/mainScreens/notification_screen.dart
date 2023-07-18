@@ -40,7 +40,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     //end notif
     super.initState();
     DbNotifDummy.db.getAllNotif(1);
-    print(fcmTokensandy);
+    // print(fcmTokensandy);
     getToken();
   }
 
@@ -116,5 +116,28 @@ class _NotificationScreenState extends State<NotificationScreen> {
         .set({
       'token': token,
     });
+  }
+
+  //request permission
+  requestPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      print('User granted provosional permission');
+    } else {
+      print('user declined or has not accepted permission');
+    }
   }
 }

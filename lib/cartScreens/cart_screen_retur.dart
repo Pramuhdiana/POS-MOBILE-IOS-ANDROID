@@ -302,7 +302,8 @@ class CartItems extends StatelessWidget {
                   child: Slidable(
                     key: UniqueKey(),
                     endActionPane: ActionPane(
-                        motion: const BehindMotion(),
+                      extentRatio: 0.3,
+                        motion: const ScrollMotion(),
                         dismissible: DismissiblePane(onDismissed: () async {
                           cart.removeItem(product);
                           await deleteAPIcart(product.documentId);

@@ -101,6 +101,10 @@ class _ItemsDetailsScreenTokoState extends State<ItemsDetailsScreenToko> {
                   child: CachedNetworkImage(
                     imageUrl:
                         'https://parvabisnis.id/uploads/products/${widget.model!.image_name}',
+                    errorWidget: (context, url, error) => const Icon(
+                      Icons.error,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
                 Padding(
