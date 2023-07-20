@@ -3,9 +3,9 @@
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
+import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_alltransaksi.dart';
 import 'package:e_shop/database/db_crm.dart';
-import 'package:e_shop/database/model_crm.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/models/user_model.dart';
@@ -825,8 +825,8 @@ class _AddFormCRMState extends State<AddFormCRM> {
             ),
       child: ListTile(
         selected: isSelected,
-        title: Text(item?.name ?? ''), // menampilkan nama
-        subtitle: Text(item?.alamat?.toString() ?? ''), // menampilkan alamat
+        title: Text(item?.name ?? ''),
+        subtitle: Text(item?.alamat?.toString() ?? ''),
       ),
     );
   }
@@ -946,24 +946,14 @@ class _AddFormCRMState extends State<AddFormCRM> {
       Future.delayed(const Duration(seconds: 1)).then((value) async {
         // ignore: unnecessary_null_comparison
         btnController.success(); //sucses
-        print(toko);
-        await DbCRM.db.createAllcrm(ModelCRM(
-            user_id: sharedPreferences!.getString('id'),
-            customer_id: idtoko,
-            tanggal_aktivitas:
-                '$tanggal_aktivitas ${_timeController.text}:00.000',
-            aktivitas_id: idaktivitas.toString(),
-            visit_id: idvisit.toString(),
-            hasil_aktivitas: idomzet.toString(),
-            nominal_hasil: omzet,
-            nomor_invoice: selectedOmzet ?? '',
-            detail: reportinput.text,
-            nama_toko: toko));
         // await sendNotificationToBc(fcmTokensandy);
         await notif.sendNotificationTo(fcmTokensandy, 'Report CRM',
             'Report ${sharedPreferences!.getString('name')} \nDetail report : ${reportinput.text}\nTotal omzet : ${omzetS.text}');
         await postAPIreport();
+        await DbCRM.db.deleteAllcrm();
+        await ApiServices().getAllTCRM();
         Fluttertoast.showToast(msg: 'Report success');
+
         Future.delayed(const Duration(seconds: 1)).then((value) {
           Navigator.push(
               context, MaterialPageRoute(builder: (c) => const MainScreen()));

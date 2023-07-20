@@ -69,20 +69,10 @@ class _DashboardErickState extends State<DashboardErick> {
     return Scaffold(
       resizeToAvoidBottomInset: false, //anti error jika keyboard active
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
         flexibleSpace: Container(
           color: Colors.white,
-          // decoration: const BoxDecoration(
-          //     gradient: LinearGradient(
-          //   colors: [
-          //     Colors.blueAccent,
-          //     Colors.lightBlueAccent,
-          //   ],
-          //   begin: FractionalOffset(0.0, 0.0),
-          //   end: FractionalOffset(1.0, 0.0),
-          //   stops: [0.0, 1.0],
-          //   tileMode: TileMode.clamp,
-          // )),
         ),
         leading: IconButton(
           icon: Image.asset(
@@ -105,110 +95,161 @@ class _DashboardErickState extends State<DashboardErick> {
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
-      body: FutureBuilder(
-        future: DbCRM.db.getAllcrm(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          // WHEN THE CALL IS DONE BUT HAPPENS TO HAVE AN ERROR
-          if (snapshot.hasError) {
-            return const Center(child: Text('Something went wrong'));
-          }
-
-          return Container(
-            padding: const EdgeInsets.all(8.0),
+      body: // child: TextField(
+          //   controller: controller,
+          //   decoration: const InputDecoration(
+          //       hintText: "Enter something to filter"),
+          //   onChanged: (value) {
+          //     myCrm = removeDuplicates(filterCrm!)
+          //         .where((element) => element.nama_toko!
+          //             .toLowerCase()
+          //             .contains(value))
+          //         .toList();
+          //     setState(() {});
+          //   },
+          // ),
+          Column(
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width * 0.7,
+            height: 45,
+            padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: Theme.of(context).canvasColor,
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
+                border: Border.all(
+                  color: Colors.grey,
+                ),
+                borderRadius: BorderRadius.circular(12)),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: TextField(
+                textAlign: TextAlign.center,
+                controller: controller,
+                decoration: const InputDecoration(
+                    hintText: "Enter name Customer to filter"),
+                onChanged: (value) {
+                  myCrm = removeDuplicates(filterCrm!)
+                      .where((element) =>
+                          element.nama_toko!.toLowerCase().contains(value))
+                      .toList();
+                  setState(() {});
+                },
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                    width: double.infinity,
-                    child: Theme(
-                      data: ThemeData.light()
-                          .copyWith(cardColor: Theme.of(context).canvasColor),
-                      child: PaginatedDataTable(
-                        // ignore: deprecated_member_use
-                        dataRowHeight: 70,
-                        sortColumnIndex: 0,
-                        sortAscending: sort,
-                        header: Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey,
+          ),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.only(top: 20),
+              height: MediaQuery.of(context).size.height * 1,
+              child: FutureBuilder(
+                future: DbCRM.db.getAllcrm(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  // WHEN THE CALL IS DONE BUT HAPPENS TO HAVE AN ERROR
+                  if (snapshot.hasError) {
+                    return const Center(child: Text('Something went wrong'));
+                  }
+
+                  return Container(
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).canvasColor,
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                            width: double.infinity,
+                            child: Theme(
+                              data: ThemeData.light().copyWith(
+                                  cardColor: Theme.of(context).canvasColor),
+                              child: PaginatedDataTable(
+                                // ignore: deprecated_member_use
+                                dataRowHeight: 70,
+                                sortColumnIndex: 0,
+                                sortAscending: sort,
+                                // header: Container(
+                                //   padding: const EdgeInsets.all(5),
+                                //   decoration: BoxDecoration(
+                                //       border: Border.all(
+                                //         color: Colors.grey,
+                                //       ),
+                                //       borderRadius: BorderRadius.circular(12)),
+                                //   child: TextField(
+                                //     controller: controller,
+                                //     decoration: const InputDecoration(
+                                //         hintText: "Enter something to filter"),
+                                //     onChanged: (value) {
+                                //       myCrm = removeDuplicates(filterCrm!)
+                                //           .where((element) => element.nama_toko!
+                                //               .toLowerCase()
+                                //               .contains(value))
+                                //           .toList();
+                                //       setState(() {});
+                                //     },
+                                //   ),
+                                // ),
+                                source: RowSource(
+                                  myData: myCrm,
+                                  count: myCrm!.length,
+                                ),
+                                rowsPerPage: 5,
+                                columnSpacing: 5,
+                                columns: [
+                                  const DataColumn(
+                                    label: Text(
+                                      "Name",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14),
+                                    ),
+                                    // onSort: (columnIndex, ascending) {
+                                    // sort = !sort;
+                                    // setState(() {
+                                    //   sort = !sort;
+                                    // });
+                                    // onsortColum(columnIndex, ascending);
+                                    // }
+                                  ),
+                                  DataColumn(label: _verticalDivider),
+                                  const DataColumn(
+                                      label: Text('Adit',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600))),
+                                  DataColumn(label: _verticalDivider),
+                                  const DataColumn(
+                                      label: Text('Erick',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600))),
+                                  DataColumn(label: _verticalDivider),
+                                  const DataColumn(
+                                      label: Text('Febri',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600))),
+                                  DataColumn(label: _verticalDivider),
+                                  const DataColumn(
+                                      label: Text('Jonathan',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600))),
+                                ],
                               ),
-                              borderRadius: BorderRadius.circular(12)),
-                          child: TextField(
-                            controller: controller,
-                            decoration: const InputDecoration(
-                                hintText: "Enter something to filter"),
-                            onChanged: (value) {
-                              myCrm = removeDuplicates(filterCrm!)
-                                  .where((element) => element.nama_toko!
-                                      .toLowerCase()
-                                      .contains(value))
-                                  .toList();
-                              setState(() {});
-                            },
-                          ),
-                        ),
-                        source: RowSource(
-                          myData: myCrm,
-                          count: myCrm!.length,
-                        ),
-                        rowsPerPage: 5,
-                        columnSpacing: 5,
-                        columns: [
-                          DataColumn(
-                              label: const Text(
-                                "Name",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 14),
-                              ),
-                              onSort: (columnIndex, ascending) {
-                                sort = !sort;
-                                setState(() {
-                                  sort = !sort;
-                                });
-                                onsortColum(columnIndex, ascending);
-                              }),
-                          DataColumn(label: _verticalDivider),
-                          const DataColumn(
-                              label: Text('Adit',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600))),
-                          DataColumn(label: _verticalDivider),
-                          const DataColumn(
-                              label: Text('Erick',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600))),
-                          DataColumn(label: _verticalDivider),
-                          const DataColumn(
-                              label: Text('Febri',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600))),
-                          DataColumn(label: _verticalDivider),
-                          const DataColumn(
-                              label: Text('Jonathan',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600))),
-                        ],
-                      ),
-                    )),
-              ],
+                            )),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }

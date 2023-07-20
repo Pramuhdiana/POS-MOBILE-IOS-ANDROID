@@ -13,6 +13,7 @@ class ApiConstants {
   static String GETkeranjangtokoendpoint = '/indexcartpostoko/';
   static String GETkeranjangreturendpoint = '/indexcartposretur/';
   static String GETdetailtransaksiendpoint = '/indextdetailtransaksi';
+  static String GETcrmendpoint = '/indexcrmsales';
   static String POSTkeranjangsalesendpoint = '/createcartpossales';
   static String POSTkeranjangtokoendpoint = '/createcartpostoko';
   static String POSTkeranjangreturendpoint = '/createcartposretur';

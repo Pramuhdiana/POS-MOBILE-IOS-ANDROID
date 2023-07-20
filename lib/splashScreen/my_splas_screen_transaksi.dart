@@ -4,9 +4,11 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_allitems_retur.dart';
+import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gif/flutter_gif.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../database/db_alldetailtransaksi.dart';
 import '../database/db_allitems.dart';
@@ -38,14 +40,53 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
     await DbAllitemsRetur.db.deleteAllitemsRetur();
     await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
     await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-    await apiProvider.getAllItems();
-    await apiProvider.getAllItemsToko();
-    await apiProvider.getAllTransaksi();
-    await apiProvider.getAllItemsRetur();
-    await apiProvider.getAllDetailTransaksi();
-    await apiProvider.getAllKodekeluarbarang();
-    await apiProvider.getAllCustomer();
-    await apiProvider.getUsers();
+    try {
+      await apiProvider.getAllItems();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items");
+    }
+    try {
+      await apiProvider.getAllItemsToko();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items toko");
+    }
+    try {
+      await apiProvider.getAllTransaksi();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+    }
+    try {
+      await apiProvider.getAllItemsRetur();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
+    }
+    try {
+      await apiProvider.getAllDetailTransaksi();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all details transaksi");
+    }
+    try {
+      await apiProvider.getAllKodekeluarbarang();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all code refrence");
+    }
+    try {
+      await apiProvider.getAllCustomer();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all customer");
+    }
+    try {
+      await apiProvider.getUsers();
+    } catch (c) {
+      sharedPreferences!.setString('name', 'Failed To Load Data');
+
+      Fluttertoast.showToast(msg: "Failed To Load Data User");
+    }
+    try {
+      await apiProvider.getAllTCRM();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data CRM");
+    }
 
     // wait for 2 seconds to simulate loading of data
     await Future.delayed(const Duration(seconds: 2));

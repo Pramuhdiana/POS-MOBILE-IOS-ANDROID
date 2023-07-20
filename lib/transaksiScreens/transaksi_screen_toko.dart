@@ -6,6 +6,7 @@ import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
+import 'package:e_shop/widgets/keyboard_overlay.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,8 @@ class TransaksiScreenToko extends StatefulWidget {
 }
 
 class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
+  FocusNode numberFocusNode = FocusNode();
+  FocusNode numberFocusNode2 = FocusNode();
   RoundedLoadingButtonController btnController =
       RoundedLoadingButtonController();
   String qty = '';
@@ -92,6 +95,35 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
   void showProgress() {
     ProgressDialog progress = ProgressDialog(context: context);
     progress.show(max: 100, msg: 'please wait ..', progressBgColor: Colors.red);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    numberFocusNode.addListener(() {
+      bool hasFocus = numberFocusNode.hasFocus;
+      if (hasFocus) {
+        KeyboardOverlay.showOverlay(context);
+      } else {
+        KeyboardOverlay.removeOverlay();
+      }
+    });
+    numberFocusNode2.addListener(() {
+      bool hasFocus = numberFocusNode2.hasFocus;
+      if (hasFocus) {
+        KeyboardOverlay.showOverlay(context);
+      } else {
+        KeyboardOverlay.removeOverlay();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // Clean up the focus node
+    numberFocusNode.dispose();
+    numberFocusNode2.dispose();
+    super.dispose();
   }
 
   @override
@@ -257,6 +289,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                       decoration:
                           const InputDecoration(labelText: "ADD DISKON"),
                       controller: addDiskon,
+                      focusNode: numberFocusNode,
                       keyboardType: TextInputType.number,
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.digitsOnly
@@ -282,6 +315,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                       },
                       decoration: const InputDecoration(labelText: "DP"),
                       controller: dp,
+                      focusNode: numberFocusNode2,
                       keyboardType: TextInputType.number,
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.digitsOnly

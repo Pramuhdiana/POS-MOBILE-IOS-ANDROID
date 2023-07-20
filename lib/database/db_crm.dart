@@ -33,16 +33,17 @@ class DbCRM {
         onCreate: (Database db, int version) async {
       await db.execute('''
       CREATE TABLE allcrm(
-          id INTEGER,
-          user_id TEXT,
+          id INTEGER PRIMARY KEY,
+          user_id INTEGER,
           customer_id INTEGER,
-          tanggal_aktivitas TEXT,
-          aktivitas_id TEXT,
-          visit_id TEXT,
-          hasil_aktivitas TEXT,
+          aktivitas_id INTEGER,
+          visit_id INTEGER,
+          hasil_aktivitas INTEGER,
           nominal_hasil INTEGER,
           nomor_invoice TEXT,
           detail TEXT,
+          tanggal_aktivitas TEXT,
+          created_at TEXT,
           nama_toko TEXT
                    )''');
     });
@@ -95,16 +96,27 @@ class DbCRM {
 
   Future<List<ModelCRM>> getAllcrm() async {
     final db = await database;
-    // final res = await db
-    //     .rawQuery('SELECT * FROM allcrm WHERE alamat!=?', ['null']);
     final res = await db.rawQuery("SELECT * FROM allcrm");
 
-    List<ModelCRM> list = res.isNotEmpty
-        ? res.map((c) => ModelCRM.fromJson(c, String: null)).toList()
-        : [];
+    List<ModelCRM> list =
+        res.isNotEmpty ? res.map((c) => ModelCRM.fromJson(c)).toList() : [];
 
     return list;
   }
+
+  Future<List<ModelCRM>> getAllcrmByDate(fromDate, toDate) async {
+    final db = await database;
+    final res = await db.rawQuery(
+        'SELECT * FROM allcrm WHERE tanggal_aktivitas >=? and tanggal_aktivitas <=?',
+        [fromDate, toDate]);
+
+    List<ModelCRM> list =
+        res.isNotEmpty ? res.map((c) => ModelCRM.fromJson(c)).toList() : [];
+
+    return list;
+  }
+  //  .rawQuery("SELECT * FROM $tableName where $columnDate >= '2021-01-01' and
+  //   $columnDate <= '2022-10-10' ");
 
   Future<List<ModelCRM>> getAllCrmById(aktivitasId) async {
     final db = await database;
@@ -113,9 +125,8 @@ class DbCRM {
         [aktivitasId, sharedPreferences!.getString('id')]);
     // final res = await db.rawQuery("SELECT * FROM allcrm");
 
-    List<ModelCRM> list = res.isNotEmpty
-        ? res.map((c) => ModelCRM.fromJson(c, String: null)).toList()
-        : [];
+    List<ModelCRM> list =
+        res.isNotEmpty ? res.map((c) => ModelCRM.fromJson(c)).toList() : [];
 
     return list;
   }
@@ -128,9 +139,8 @@ class DbCRM {
         [aktivitasId, idcustomer, userId]);
     // final res = await db.rawQuery("SELECT * FROM allcrm");
 
-    List<ModelCRM> list = res.isNotEmpty
-        ? res.map((c) => ModelCRM.fromJson(c, String: null)).toList()
-        : [];
+    List<ModelCRM> list =
+        res.isNotEmpty ? res.map((c) => ModelCRM.fromJson(c)).toList() : [];
 
     return list;
   }

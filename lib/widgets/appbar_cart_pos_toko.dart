@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:e_shop/cartScreens/cart_screen_toko.dart';
+import 'package:e_shop/global/global.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
@@ -66,43 +67,49 @@ class _AppbarCartTokoState extends State<AppbarCartToko> {
         ),
       ),
       centerTitle: true,
-      actions: [
-        Stack(
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (c) => const CartScreenToko()));
-              },
-              icon: Padding(
-                padding: const EdgeInsets.all(2),
-                child: badges.Badge(
-                  showBadge:
-                      context.read<PCartToko>().getItems.isEmpty ? false : true,
-                  badgeStyle: const badges.BadgeStyle(
-                    badgeColor: Colors.green,
-                  ),
-                  badgeContent: Text(
-                    context.watch<PCartToko>().getItems.length.toString(),
-                    style: const TextStyle(
-                      fontSize: 8,
-                      fontWeight: FontWeight.w600,
+      actions: sharedPreferences!.getString('customer_id').toString() ==
+              0.toString()
+          ? null
+          : [
+              Stack(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (c) => const CartScreenToko()));
+                    },
+                    icon: Padding(
+                      padding: const EdgeInsets.all(2),
+                      child: badges.Badge(
+                        showBadge: context.read<PCartToko>().getItems.isEmpty
+                            ? false
+                            : true,
+                        badgeStyle: const badges.BadgeStyle(
+                          badgeColor: Colors.green,
+                        ),
+                        badgeContent: Text(
+                          context.watch<PCartToko>().getItems.length.toString(),
+                          style: const TextStyle(
+                            fontSize: 8,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        child: Transform.scale(
+                          scale: 1.3,
+                          child: Image.asset(
+                            "assets/cart.png",
+                            width: 45,
+                            height: 45,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  child: Transform.scale(
-                    scale: 1.3,
-                    child: Image.asset(
-                      "assets/cart.png",
-                      width: 45,
-                      height: 45,
-                    ),
-                  ),
-                ),
+                ],
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
     );
   }
 }

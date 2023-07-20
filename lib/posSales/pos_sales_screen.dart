@@ -255,7 +255,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
             ),
       child: ListTile(
         selected: isSelected,
-        title: Text(item?.kode_refrensi.toString() ?? ''), // menampilkan nama
+        title: Text(item?.kode_refrensi.toString() ?? ''),
       ),
     );
   }

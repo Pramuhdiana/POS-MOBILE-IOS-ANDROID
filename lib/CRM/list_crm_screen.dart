@@ -46,7 +46,7 @@ class ListCrmScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w600),
                               );
                             } else {
-                              return const Text('0');
+                              return const Text('');
                             }
                           }),
                     ],

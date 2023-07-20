@@ -9,6 +9,7 @@ import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/db_allitems_retur.dart';
 import 'package:e_shop/database/db_allitems_toko.dart';
 import 'package:e_shop/database/db_alltransaksi.dart';
+import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/database/model_allcustomer.dart';
 import 'package:e_shop/database/model_alldetailtransaksi.dart';
 import 'package:e_shop/database/model_allitems.dart';
@@ -19,6 +20,8 @@ import 'package:e_shop/global/global.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../database/model_crm.dart';
 
 class ApiServices {
   late BuildContext context;
@@ -140,6 +143,32 @@ class ApiServices {
       DbAllitemsRetur.db
           .createAllitemsRetur(ModelAllitemsRetur.fromJson(itemsretur));
       print('insert to database allitems retur');
+    }).toList();
+  }
+
+  Future<List<Null>> getAllTCRM() async {
+    Response response = await Dio().get(
+        ApiConstants.baseUrl + ApiConstants.GETcrmendpoint,
+        options: Options(headers: {"Authorization": "Bearer $token"}));
+
+    return (response.data as List).map((crm) {
+      DbAllCustomer.db.getNameCustomer(crm['customer_id']).then((value) {
+        DbCRM.db.createAllcrm(ModelCRM(
+          user_id: crm['user_id'],
+          customer_id: crm['customer_id'],
+          aktivitas_id: crm['aktivitas_id'],
+          visit_id: crm['visit_id'],
+          hasil_aktivitas: crm['hasil_aktivitas'],
+          nominal_hasil: crm['nominal_hasil'],
+          nomor_invoice: crm['nomor_invoice'],
+          detail: crm['detail'],
+          tanggal_aktivitas: crm['tanggal_aktivitas'],
+          created_at: crm['created_at'],
+          nama_toko: value,
+        ));
+      });
+      // DbCRM.db.createAllcrm(ModelCRM.fromJson(crm));
+      print('Inserting CRM berhasil');
     }).toList();
   }
 }

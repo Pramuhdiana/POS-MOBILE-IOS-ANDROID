@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:e_shop/cartScreens/cart_screen_retur.dart';
+import 'package:e_shop/global/global.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/testing/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -67,45 +68,54 @@ class _AppbarCartReturState extends State<AppbarCartRetur> {
         ),
       ),
       centerTitle: true,
-      actions: [
-        Stack(
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (c) => const CartScreenRetur()));
-              },
-              icon: Padding(
-                padding: const EdgeInsets.all(2),
-                child: badges.Badge(
-                  showBadge: context.read<PCartRetur>().getItems.isEmpty
-                      ? false
-                      : true,
-                  badgeStyle: const badges.BadgeStyle(
-                    badgeColor: AppColors.contentColorGreen,
-                  ),
-                  badgeContent: Text(
-                    context.watch<PCartRetur>().getItems.length.toString(),
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 8,
-                      fontWeight: FontWeight.w600,
+      actions: sharedPreferences!.getString('customer_id_retur').toString() ==
+              0.toString()
+          ? null
+          : [
+              Stack(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (c) => const CartScreenRetur()));
+                    },
+                    icon: Padding(
+                      padding: const EdgeInsets.all(2),
+                      child: badges.Badge(
+                        showBadge: context.read<PCartRetur>().getItems.isEmpty
+                            ? false
+                            : true,
+                        badgeStyle: const badges.BadgeStyle(
+                          badgeColor: AppColors.contentColorGreen,
+                        ),
+                        badgeContent: Text(
+                          context
+                              .watch<PCartRetur>()
+                              .getItems
+                              .length
+                              .toString(),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 8,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        child: Transform.scale(
+                          scale: 1.3,
+                          child: Image.asset(
+                            "assets/cart.png",
+                            width: 45,
+                            height: 45,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  child: Transform.scale(
-                    scale: 1.3,
-                    child: Image.asset(
-                      "assets/cart.png",
-                      width: 45,
-                      height: 45,
-                    ),
-                  ),
-                ),
+                ],
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
     );
   }
 }

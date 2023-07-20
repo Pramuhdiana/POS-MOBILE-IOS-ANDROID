@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously, avoid_print
 
 import 'dart:math';
+import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_allcustomer.dart';
 import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/db_allitems_retur.dart';
@@ -270,7 +271,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // percentYear = 0.7;
     percentMonth = 0.3;
     percentWeek = 0.1;
-    loadCartFromApiPOSSALES();
     controller?.stopCamera();
     //star notifi
     PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
@@ -284,7 +284,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future refresh() async {
-    setState(() async {
+    setState(() {
+      print(DbAllCustomer.db.getNameCustomer(764).then((value) => value));
+      _loadFromApi();
       context.read<PCart>().clearCart(); //clear cart
       loadCartFromApiPOSSALES(); //a,bil data cart
       DbAlltransaksi.db.getAlltransaksi(1); //ambil data
@@ -1245,7 +1247,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onPressed: () async {
                             SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
-                            prefs.setString('customer_id', 0.toString());
+                            prefs.setString('customer_id_retur', 0.toString());
                             context.read<PCartRetur>().clearCart();
                             Navigator.push(
                                 context,
@@ -1535,5 +1537,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
         });
+  }
+
+  _loadFromApi() async {
+    var apiProvider = ApiServices();
+    await DbCRM.db.deleteAllcrm();
+    await apiProvider.getAllTCRM();
+    await Future.delayed(const Duration(seconds: 2));
   }
 }

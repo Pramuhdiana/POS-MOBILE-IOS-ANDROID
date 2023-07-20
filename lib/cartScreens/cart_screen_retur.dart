@@ -185,7 +185,7 @@ class _CartScreenReturState extends State<CartScreenRetur> {
     String cart_totalquantity = context.read<PCartRetur>().count.toString();
     String bayar = 0.toString();
     String customer_idAPI =
-        sharedPreferences!.getString('customer_id').toString();
+        sharedPreferences!.getString('customer_id_retur').toString();
     String jenisform_id = 7.toString();
     String basicdiskon = 1.toString();
     String addesdiskon = '0';
@@ -302,7 +302,7 @@ class CartItems extends StatelessWidget {
                   child: Slidable(
                     key: UniqueKey(),
                     endActionPane: ActionPane(
-                      extentRatio: 0.3,
+                        extentRatio: 0.3,
                         motion: const ScrollMotion(),
                         dismissible: DismissiblePane(onDismissed: () async {
                           cart.removeItem(product);

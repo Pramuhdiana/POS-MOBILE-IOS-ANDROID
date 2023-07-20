@@ -254,8 +254,8 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
             ),
       child: ListTile(
         selected: isSelected,
-        title: Text(item?.name ?? ''), // menampilkan nama
-        subtitle: Text(item?.alamat?.toString() ?? ''), // menampilkan alamat
+        title: Text(item?.name ?? ''),
+        subtitle: Text(item?.alamat?.toString() ?? ''),
       ),
     );
   }

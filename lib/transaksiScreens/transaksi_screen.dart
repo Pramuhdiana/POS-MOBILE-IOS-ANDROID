@@ -6,6 +6,7 @@ import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
+import 'package:e_shop/widgets/keyboard_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,9 @@ class TransaksiScreen extends StatefulWidget {
 }
 
 class _TransaksiScreenState extends State<TransaksiScreen> {
+  FocusNode numberFocusNode = FocusNode();
+  FocusNode numberFocusNode2 = FocusNode();
+
   RoundedLoadingButtonController btnController =
       RoundedLoadingButtonController();
   String qty = '';
@@ -99,6 +103,30 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
   @override
   void initState() {
     super.initState();
+    numberFocusNode.addListener(() {
+      bool hasFocus = numberFocusNode.hasFocus;
+      if (hasFocus) {
+        KeyboardOverlay.showOverlay(context);
+      } else {
+        KeyboardOverlay.removeOverlay();
+      }
+    });
+    numberFocusNode2.addListener(() {
+      bool hasFocus = numberFocusNode2.hasFocus;
+      if (hasFocus) {
+        KeyboardOverlay.showOverlay(context);
+      } else {
+        KeyboardOverlay.removeOverlay();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // Clean up the focus node
+    numberFocusNode.dispose();
+    numberFocusNode2.dispose();
+    super.dispose();
   }
 
   @override
@@ -300,9 +328,8 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                     decoration: const InputDecoration(labelText: "ADD DISKON"),
                     controller: addDiskon,
                     keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
+                    focusNode: numberFocusNode,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   ),
                 ),
 
@@ -322,6 +349,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                     },
                     decoration: const InputDecoration(labelText: "DP"),
                     controller: dp,
+                    focusNode: numberFocusNode2,
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly

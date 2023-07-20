@@ -17,6 +17,11 @@ class CrmScreen extends StatefulWidget {
 
 class _CrmScreenState extends State<CrmScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,

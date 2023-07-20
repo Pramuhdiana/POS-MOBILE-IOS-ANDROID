@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/authScreens/auth_screen.dart';
 import 'package:e_shop/database/db_allitems_retur.dart';
+import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
@@ -14,6 +15,7 @@ import 'package:e_shop/provider/provider_cart_toko.dart';
 import 'package:e_shop/provider/provider_notification.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../database/db_alldetailtransaksi.dart';
@@ -40,19 +42,27 @@ class _MySplashScreenState extends State<MySplashScreen> {
       print('token $token');
       if (sharedPreferences!.getString("token").toString() != "null") {
         await requestPermission();
-        await _loadFromApi();
         try {
-          sharedPreferences!.setString('total_product_sales', '0');
-          await getToken();
-          Navigator.push(
-              context, MaterialPageRoute(builder: (c) => const MainScreen()));
+          await _loadFromApi();
+          try {
+            sharedPreferences!.setString('total_product_sales', '0');
+            await getToken();
+            Navigator.push(
+                context, MaterialPageRoute(builder: (c) => const MainScreen()));
+          } catch (c) {
+            sharedPreferences!.setString('total_product_sales', '0');
+            Navigator.push(
+                context, MaterialPageRoute(builder: (c) => const MainScreen()));
+          }
         } catch (c) {
-          sharedPreferences!.setString('total_product_sales', '0');
+          Fluttertoast.showToast(msg: "Failed To Load Data");
           Navigator.push(
-              context, MaterialPageRoute(builder: (c) => const MainScreen()));
+              context, MaterialPageRoute(builder: (c) => const AuthScreen()));
         }
       } else //user is NOT already Logged-in
       {
+        Fluttertoast.showToast(msg: "Failed To Load Data");
+
         Navigator.push(
             context, MaterialPageRoute(builder: (c) => const AuthScreen()));
       }
@@ -128,14 +138,54 @@ class _MySplashScreenState extends State<MySplashScreen> {
     await DbAllitemsRetur.db.deleteAllitemsRetur();
     await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
     await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-    await apiProvider.getAllItems();
-    await apiProvider.getAllItemsToko();
-    await apiProvider.getAllTransaksi();
-    await apiProvider.getAllItemsRetur();
-    await apiProvider.getAllDetailTransaksi();
-    await apiProvider.getAllKodekeluarbarang();
-    await apiProvider.getAllCustomer();
-    await apiProvider.getUsers();
+    await DbCRM.db.deleteAllcrm();
+    try {
+      await apiProvider.getAllItems();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items");
+    }
+    try {
+      await apiProvider.getAllItemsToko();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items toko");
+    }
+    try {
+      await apiProvider.getAllTransaksi();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+    }
+    try {
+      await apiProvider.getAllItemsRetur();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
+    }
+    try {
+      await apiProvider.getAllDetailTransaksi();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all details transaksi");
+    }
+    try {
+      await apiProvider.getAllKodekeluarbarang();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all code refrence");
+    }
+    try {
+      await apiProvider.getAllCustomer();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all customer");
+    }
+    try {
+      await apiProvider.getUsers();
+    } catch (c) {
+      sharedPreferences!.setString('name', 'Failed To Load Data');
+
+      Fluttertoast.showToast(msg: "Failed To Load Data User");
+    }
+    try {
+      await apiProvider.getAllTCRM();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data CRM");
+    }
 
     context.read<PNewNotif>().clearNotif();
     DbNotifDummy.db.getAllNotif(1).then((value) {
