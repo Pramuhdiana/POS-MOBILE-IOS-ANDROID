@@ -78,12 +78,12 @@ class _MainScreenState extends State<MainScreen> {
                     showBadge:
                         context.read<PCart>().getItems.isEmpty ? false : true,
                     badgeStyle: const badges.BadgeStyle(
-                      badgeColor: AppColors.contentColorGreen,
+                      badgeColor: AppColors.contentColorBlack,
                     ),
                     badgeContent: Text(
                       context.watch<PCart>().getItems.length.toString(),
                       style: const TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
                       ),
@@ -111,12 +111,12 @@ class _MainScreenState extends State<MainScreen> {
                     // showBadge:
                     //     context.read<PCart>().getItems.isEmpty ? false : true,
                     badgeStyle: const badges.BadgeStyle(
-                      badgeColor: AppColors.contentColorGreen,
+                      badgeColor: AppColors.contentColorBlack,
                     ),
                     badgeContent: Text(
                       context.watch<PNewNotif>().getItems.length.toString(),
                       style: const TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
                       ),

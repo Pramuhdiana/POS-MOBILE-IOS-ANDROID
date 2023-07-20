@@ -60,7 +60,7 @@ class _AppBarWithCartBadgeSalesState extends State<AppBarWithCartBadgeSales> {
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.black,
-          fontSize: 20,
+          fontSize: 25,
         ),
       ),
       centerTitle: true,

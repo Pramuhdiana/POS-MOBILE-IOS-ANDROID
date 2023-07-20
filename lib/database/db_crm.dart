@@ -100,19 +100,21 @@ class DbCRM {
 
     List<ModelCRM> list =
         res.isNotEmpty ? res.map((c) => ModelCRM.fromJson(c)).toList() : [];
-
+    print('get date oke');
     return list;
   }
 
   Future<List<ModelCRM>> getAllcrmByDate(fromDate, toDate) async {
     final db = await database;
     final res = await db.rawQuery(
-        'SELECT * FROM allcrm WHERE tanggal_aktivitas >=? and tanggal_aktivitas <=?',
+        'SELECT * FROM allcrm WHERE tanggal_aktivitas>=? and tanggal_aktivitas<=?',
+        // ['2023-07-19', '2023-07-20']);
         [fromDate, toDate]);
 
     List<ModelCRM> list =
         res.isNotEmpty ? res.map((c) => ModelCRM.fromJson(c)).toList() : [];
-
+    print('filter range date oke');
+    print(list);
     return list;
   }
   //  .rawQuery("SELECT * FROM $tableName where $columnDate >= '2021-01-01' and

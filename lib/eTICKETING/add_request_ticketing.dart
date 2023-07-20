@@ -114,7 +114,8 @@ class _AddRequestEticketingState extends State<AddRequestEticketing> {
           ),
           title: const Text(
             "FORM ADD REQUEST",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),

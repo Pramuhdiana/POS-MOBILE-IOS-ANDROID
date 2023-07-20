@@ -43,40 +43,46 @@ class ListAllNotifScreen extends StatelessWidget {
           constraints: const BoxConstraints(maxHeight: 40),
           width: double.infinity,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(
+              Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        'Title       : ${notif.title}',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: const TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Align(
-                          alignment: Alignment.bottomLeft,
+                        Expanded(
                           child: Text(
-                            notif.created_at,
+                            'Title   :  ${notif.title}',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                             style: const TextStyle(
                                 fontSize: 15,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.bottomRight,
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            notif.created_at,
+                            maxLines: 1,
+                            style: const TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Expanded(
                           child: Text(
                             'Read more...',
+                            textAlign: TextAlign.right,
+                            maxLines: 1,
                             style: TextStyle(
                                 fontSize: 15,
                                 color: Colors.blue.shade100,

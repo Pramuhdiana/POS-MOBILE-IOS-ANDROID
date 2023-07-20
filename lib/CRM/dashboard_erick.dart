@@ -1,8 +1,10 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
 
 import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/database/model_crm.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
+import 'package:intl/intl.dart';
 
 class DashboardErick extends StatefulWidget {
   const DashboardErick({super.key});
@@ -21,6 +23,9 @@ Widget _verticalDivider = const VerticalDivider(
 void initState() {}
 
 class _DashboardErickState extends State<DashboardErick> {
+  TextEditingController fromDate = TextEditingController();
+  TextEditingController toDate = TextEditingController();
+
   bool sort = true;
   List<ModelCRM>? filterCrm;
   List<ModelCRM>? myCrm;
@@ -55,10 +60,17 @@ class _DashboardErickState extends State<DashboardErick> {
   void initState() {
     super.initState();
 
+    // DbCRM.db.getAllcrmByDate(fromDate.text, toDate.text).then((value) {
+    //   setState(() {
+    //     filterCrm = value;
+    //     // myCrm = filterCrm;
+    //     myCrm = removeDuplicates(filterCrm!);
+    //   });
+    // });
+
     DbCRM.db.getAllcrm().then((value) {
       setState(() {
         filterCrm = value;
-        // myCrm = filterCrm;
         myCrm = removeDuplicates(filterCrm!);
       });
     });
@@ -88,28 +100,138 @@ class _DashboardErickState extends State<DashboardErick> {
           "HELICOPTER VIEW",
           style: TextStyle(
             color: Colors.black,
-            fontSize: 20,
-            letterSpacing: 3,
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
           ),
         ),
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
-      body: // child: TextField(
-          //   controller: controller,
-          //   decoration: const InputDecoration(
-          //       hintText: "Enter something to filter"),
-          //   onChanged: (value) {
-          //     myCrm = removeDuplicates(filterCrm!)
-          //         .where((element) => element.nama_toko!
-          //             .toLowerCase()
-          //             .contains(value))
-          //         .toList();
-          //     setState(() {});
-          //   },
-          // ),
-          Column(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SizedBox(
+                    width: 100,
+                    child: TextField(
+                      style: const TextStyle(fontSize: 12),
+                      controller:
+                          fromDate, //editing controller of this TextField
+                      decoration: const InputDecoration(
+                          icon: Icon(
+                            Icons.calendar_month,
+                            color: Colors.black,
+                          ), //icon of text field
+                          labelText: "From..." //label text of field
+                          ),
+                      readOnly:
+                          true, //set it true, so that user will not able to edit text
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(
+                              2000), //DateTime.now() - not to allow to choose before today.
+                          lastDate: DateTime(2025),
+                        );
+
+                        if (pickedDate != null) {
+                          print(
+                              pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                          String formattedDate =
+                              DateFormat('yyyy-MM-dd').format(pickedDate);
+                          // DateFormat('dd-MM-yyyy').format(pickedDate);
+
+                          print(
+                              formattedDate); //formatted date output using intl package =>  2021-03-16
+                          //you can implement different kind of Date Format here according to your requirement
+                          setState(() {
+                            fromDate.text =
+                                formattedDate; //set output date to TextField value.
+                            DbCRM.db
+                                .getAllcrmByDate(fromDate.text, toDate.text)
+                                .then((value) {
+                              setState(() {
+                                filterCrm = value;
+                                myCrm = removeDuplicates(filterCrm!);
+                              });
+                            });
+                          });
+                        } else {
+                          print("Date is not selected");
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                    child: Text(
+                      ':',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                  ),
+                  //to date
+                  SizedBox(
+                    width: 100,
+                    child: TextField(
+                      style: const TextStyle(fontSize: 12),
+                      controller: toDate, //editing controller of this TextField
+                      decoration: const InputDecoration(
+                          icon: Icon(
+                            Icons.calendar_month,
+                            color: Colors.black,
+                          ), //icon of text field
+                          labelText: "To..." //label text of field
+                          ),
+                      readOnly:
+                          true, //set it true, so that user will not able to edit text
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(
+                              2000), //DateTime.now() - not to allow to choose before today.
+                          lastDate: DateTime(2025),
+                        );
+
+                        if (pickedDate != null) {
+                          print(
+                              pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                          String formattedDate =
+                              DateFormat('yyyy-MM-dd').format(pickedDate);
+
+                          print(
+                              formattedDate); //formatted date output using intl package =>  2021-03-16
+                          //you can implement different kind of Date Format here according to your requirement
+                          setState(() {
+                            toDate.text =
+                                formattedDate; //set output date to TextField value.
+                            DbCRM.db
+                                .getAllcrmByDate(fromDate.text, toDate.text)
+                                .then((value) {
+                              setState(() {
+                                filterCrm = value;
+                                myCrm = removeDuplicates(filterCrm!);
+                              });
+                            });
+                          });
+                        } else {
+                          print("Date is not selected");
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           Container(
             width: MediaQuery.of(context).size.width * 0.7,
             height: 45,
@@ -141,7 +263,9 @@ class _DashboardErickState extends State<DashboardErick> {
               padding: const EdgeInsets.only(top: 20),
               height: MediaQuery.of(context).size.height * 1,
               child: FutureBuilder(
-                future: DbCRM.db.getAllcrm(),
+                future: toDate.text.isNotEmpty && fromDate.text.isNotEmpty
+                    ? DbCRM.db.getAllcrmByDate(fromDate.text, toDate.text)
+                    : DbCRM.db.getAllcrm(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(

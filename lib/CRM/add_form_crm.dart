@@ -191,7 +191,8 @@ class _AddFormCRMState extends State<AddFormCRM> {
           ),
           title: const Text(
             "FORM ADD REPORT",
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            style: TextStyle(
+                fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black),
           ),
           centerTitle: true,
         ),
@@ -294,7 +295,7 @@ class _AddFormCRMState extends State<AddFormCRM> {
                                     initialDate: DateTime.now(),
                                     firstDate: DateTime(
                                         2000), //DateTime.now() - not to allow to choose before today.
-                                    lastDate: DateTime(2024),
+                                    lastDate: DateTime(2025),
                                     selectableDayPredicate: _rangeDate);
 
                                 if (pickedDate != null) {
@@ -582,39 +583,41 @@ class _AddFormCRMState extends State<AddFormCRM> {
                           const SizedBox(
                             height: 10,
                           ),
-                          Row(
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const Text("Omzet"),
-                              Checkbox(
-                                checkColor: Colors.white,
-                                activeColor: Colors.black,
-                                value: cek_omzet,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    cek_omzet = value!;
-                                    if (cek_omzet == true) {
-                                      idomzet = 1;
-                                      selectedOmzet = null;
-                                      omzetS.text = '0';
-                                    } else {
-                                      idomzet = 0;
-                                    }
-                                  });
-                                },
+                              Row(
+                                children: [
+                                  const Text("Omzet"),
+                                  Checkbox(
+                                    checkColor: Colors.white,
+                                    activeColor: Colors.black,
+                                    value: cek_omzet,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        cek_omzet = value!;
+                                        if (cek_omzet == true) {
+                                          idomzet = 1;
+                                          selectedOmzet = null;
+                                          omzetS.text = '0';
+                                        } else {
+                                          idomzet = 0;
+                                        }
+                                      });
+                                    },
+                                  ),
+                                ],
                               ),
                               cek_omzet == false
                                   ? const Text('')
                                   :
                                   //no invoices
-                                  DropdownButton(
+
+                                  DropdownButton<String>(
+                                      itemHeight: null,
+                                      isExpanded: true,
                                       icon: selectedOmzet == null
-                                          ? IconButton(
-                                              onPressed: () {},
-                                              icon: const Icon(
-                                                Icons.arrow_drop_down,
-                                                color: Colors.black,
-                                              ),
-                                            )
+                                          ? null
                                           : IconButton(
                                               onPressed: () {
                                                 setState(() {
@@ -634,7 +637,10 @@ class _AddFormCRMState extends State<AddFormCRM> {
                                       ),
                                       value: selectedOmzet,
                                       hint: const Text(
-                                          'Select transaction codes'),
+                                        'Select transaction codes',
+                                        maxLines: 1,
+                                      ),
+
                                       onChanged: (value) {
                                         setState(() {
                                           selectedOmzet = value;
@@ -666,7 +672,7 @@ class _AddFormCRMState extends State<AddFormCRM> {
                                       },
                                       //end of fungsi
                                       items: list,
-                                    )
+                                    ),
                             ],
                           ),
                           const Divider(),

@@ -285,7 +285,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future refresh() async {
     setState(() {
-      print(DbAllCustomer.db.getNameCustomer(764).then((value) => value));
       _loadFromApi();
       context.read<PCart>().clearCart(); //clear cart
       loadCartFromApiPOSSALES(); //a,bil data cart
@@ -425,28 +424,30 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Good ${greeting()},",
-                        textAlign: TextAlign.left,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Good ${greeting()},",
+                          maxLines: 1,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      Text(
-                        sharedPreferences!.getString("name")!,
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                        Text(
+                          sharedPreferences!.getString("name")!,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -468,7 +469,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.6,
+                  width: MediaQuery.of(context).size.width * 0.7,
                   height: 50,
                   child: ElevatedButton(
                     style: ButtonStyle(
@@ -504,15 +505,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                Transform.scale(
-                  scale: 1.5,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (c) => NewSearchScreen()));
-                    },
-                    icon: Image.asset(
-                      "assets/filtter.png",
+                Expanded(
+                  child: Transform.scale(
+                    scale: 1.5,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (c) => NewSearchScreen()));
+                      },
+                      icon: Image.asset(
+                        "assets/filtter.png",
+                      ),
                     ),
                   ),
                 )
@@ -795,6 +800,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //main bar data (awal)
   BarChartData mainBarData() {
     return BarChartData(
+      //tampilan awal
       barTouchData: BarTouchData(
         touchTooltipData: BarTouchTooltipData(
           tooltipBgColor: Colors.blueGrey,
@@ -887,6 +893,7 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
       ),
+
       titlesData: FlTitlesData(
         show: true,
         rightTitles: const AxisTitles(
@@ -1164,10 +1171,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   maxLines: 1,
                                 ),
                               ),
-                              Text(
-                                '$qtyProductSales Products',
-                                style: const TextStyle(fontSize: 11),
-                                maxLines: 2,
+                              Expanded(
+                                child: Text(
+                                  '$qtyProductSales Products',
+                                  textAlign: TextAlign.right,
+                                  style: const TextStyle(fontSize: 11),
+                                  maxLines: 2,
+                                ),
                               ),
                             ],
                           ),
@@ -1219,10 +1229,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   maxLines: 1,
                                 ),
                               ),
-                              Text(
-                                '$qtyProductToko Products',
-                                style: const TextStyle(fontSize: 11),
-                                maxLines: 2,
+                              Expanded(
+                                child: Text(
+                                  '$qtyProductToko Products',
+                                  textAlign: TextAlign.right,
+                                  style: const TextStyle(fontSize: 11),
+                                  maxLines: 2,
+                                ),
                               ),
                             ],
                           ),
@@ -1273,10 +1286,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   maxLines: 1,
                                 ),
                               ),
-                              Text(
-                                '${CurrencyFormat.convertToTitik(qtyProductRetur, 0)} Products',
-                                style: const TextStyle(fontSize: 11),
-                                maxLines: 2,
+                              Expanded(
+                                child: Text(
+                                  '${CurrencyFormat.convertToTitik(qtyProductRetur, 0)} Products',
+                                  textAlign: TextAlign.right,
+                                  style: const TextStyle(fontSize: 11),
+                                  maxLines: 2,
+                                ),
                               ),
                             ],
                           ),
@@ -1323,10 +1339,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   maxLines: 1,
                                 ),
                               ),
-                              Text(
-                                '$qtyProductSales Products',
-                                style: const TextStyle(fontSize: 11),
-                                maxLines: 2,
+                              Expanded(
+                                child: Text(
+                                  '$qtyProductSales Products',
+                                  textAlign: TextAlign.right,
+                                  style: const TextStyle(fontSize: 11),
+                                  maxLines: 2,
+                                ),
                               ),
                             ],
                           ),
@@ -1373,10 +1392,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   maxLines: 1,
                                 ),
                               ),
-                              Text(
-                                '$qtyProductHistory Transaksi',
-                                style: const TextStyle(fontSize: 11),
-                                maxLines: 2,
+                              Expanded(
+                                child: Text(
+                                  '$qtyProductHistory Transaksi',
+                                  textAlign: TextAlign.right,
+                                  style: const TextStyle(fontSize: 11),
+                                  maxLines: 2,
+                                ),
                               ),
                             ],
                           ),
@@ -1423,10 +1445,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   maxLines: 1,
                                 ),
                               ),
-                              Text(
-                                '${CurrencyFormat.convertToTitik(qtyProductCustomer, 0)} Customers',
-                                style: const TextStyle(fontSize: 11),
-                                maxLines: 2,
+                              Expanded(
+                                child: Text(
+                                  '${CurrencyFormat.convertToTitik(qtyProductCustomer, 0)} Customers',
+                                  textAlign: TextAlign.right,
+                                  style: const TextStyle(fontSize: 11),
+                                  maxLines: 2,
+                                ),
                               ),
                             ],
                           ),
@@ -1471,10 +1496,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   maxLines: 1,
                                 ),
                               ),
-                              Text(
-                                '$qtyProductCRM Reports',
-                                style: const TextStyle(fontSize: 11),
-                                maxLines: 2,
+                              Expanded(
+                                child: Text(
+                                  '$qtyProductCRM Reports',
+                                  textAlign: TextAlign.right,
+                                  style: const TextStyle(fontSize: 11),
+                                  maxLines: 2,
+                                ),
                               ),
                             ],
                           ),
@@ -1521,10 +1549,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   maxLines: 1,
                                 ),
                               ),
-                              Text(
-                                '$qtyProductTicketing Reports',
-                                style: const TextStyle(fontSize: 11),
-                                maxLines: 2,
+                              Expanded(
+                                child: Text(
+                                  '$qtyProductTicketing Reports',
+                                  textAlign: TextAlign.right,
+                                  style: const TextStyle(fontSize: 11),
+                                  maxLines: 2,
+                                ),
                               ),
                             ],
                           ),

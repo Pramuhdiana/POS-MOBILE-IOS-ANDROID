@@ -47,15 +47,17 @@ class HistoryModelNew extends StatelessWidget {
                     child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      // 'Kode ID       : ${order['name']}',
-                      'Kode ID       : ${order.invoices_number}',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey.shade600,
-                          fontWeight: FontWeight.w600),
+                    Expanded(
+                      child: Text(
+                        // 'Kode ID       : ${order['name']}',
+                        'Kode ID       : ${order.invoices_number}',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey.shade600,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ],
                 ))
@@ -65,9 +67,11 @@ class HistoryModelNew extends StatelessWidget {
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                DateFormat('EEEE, dd MMMM yyyy HH:mm')
-                    .format(DateTime.parse(order.created_at)),
+              Expanded(
+                child: Text(
+                  DateFormat('EEEE, dd MMMM yyyy HH:mm')
+                      .format(DateTime.parse(order.created_at)),
+                ),
               ),
             ],
           ),
@@ -83,72 +87,71 @@ class HistoryModelNew extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      ('Customer          : ') + (order.customer),
-                      style: const TextStyle(fontSize: 15),
+                    Expanded(
+                      child: Text(
+                        ('Customer          : ') + (order.customer),
+                        style: const TextStyle(fontSize: 15),
+                      ),
                     ),
-                    Text(
-                      ('Total item     : ') + (order.total_quantity.toString()),
-                      style: const TextStyle(fontSize: 15),
+                    Expanded(
+                      child: Text(
+                        ('Total item     : ') +
+                            (order.total_quantity.toString()),
+                        style: const TextStyle(fontSize: 15),
+                      ),
                     ),
-                    Text(
-                      'Total price   : ${CurrencyFormat.convertToIdr(int.parse(order.total_rupiah), 2)}',
-                      style: const TextStyle(fontSize: 15),
+                    Expanded(
+                      child: Text(
+                        'Total price   : ${CurrencyFormat.convertToIdr(int.parse(order.total_rupiah), 2)}',
+                        style: const TextStyle(fontSize: 15),
+                      ),
                     ),
                     const SizedBox(height: 2),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 120),
-                          child: IconButton(
-                              onPressed: () async {
-                                // _launchURLInApp();
-                                _launchURLInBrowser();
-                              },
-                              icon: const Icon(
-                                Icons.link_sharp,
-                                color: Colors.red,
-                                size: 30,
-                              )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: IconButton(
-                              onPressed: () async {
-                                showDialog(
-                                    context: context,
-                                    builder: (c) {
-                                      return const LoadingDialogWidget(
-                                        message: "",
-                                      );
-                                    });
-                                _createPdf();
-                              },
-                              icon: const Icon(
-                                Icons.print,
-                                color: Colors.black,
-                                size: 30,
-                              )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: IconButton(
-                              onPressed: () async {
-                                showDialog(
-                                    context: context,
-                                    builder: (c) {
-                                      return const LoadingDialogWidget(
-                                        message: "",
-                                      );
-                                    });
-                                _sharePdf();
-                              },
-                              icon: const Icon(
-                                Icons.share,
-                                color: Colors.greenAccent,
-                                size: 30,
-                              )),
-                        ),
+                        IconButton(
+                            onPressed: () async {
+                              // _launchURLInApp();
+                              _launchURLInBrowser();
+                            },
+                            icon: const Icon(
+                              Icons.link_sharp,
+                              color: Colors.red,
+                              size: 30,
+                            )),
+                        IconButton(
+                            onPressed: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (c) {
+                                    return const LoadingDialogWidget(
+                                      message: "",
+                                    );
+                                  });
+                              _createPdf();
+                            },
+                            icon: const Icon(
+                              Icons.print,
+                              color: Colors.black,
+                              size: 30,
+                            )),
+                        IconButton(
+                            onPressed: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (c) {
+                                    return const LoadingDialogWidget(
+                                      message: "",
+                                    );
+                                  });
+                              _sharePdf();
+                            },
+                            icon: const Icon(
+                              Icons.share,
+                              color: Colors.greenAccent,
+                              size: 30,
+                            )),
                       ],
                     )
                   ],

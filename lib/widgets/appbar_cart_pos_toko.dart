@@ -63,7 +63,7 @@ class _AppbarCartTokoState extends State<AppbarCartToko> {
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.black,
-          fontSize: 20,
+          fontSize: 25,
         ),
       ),
       centerTitle: true,

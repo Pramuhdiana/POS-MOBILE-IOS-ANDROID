@@ -32,7 +32,8 @@ class _TicketingScreenState extends State<TicketingScreen> {
         ),
         title: const Text(
           "E-TICKETING",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),

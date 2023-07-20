@@ -4,13 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/database/db_notification_dummy.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/history/main_history.dart';
-import 'package:e_shop/provider/provider_notification.dart';
 import 'package:e_shop/push_notifications/list_Newnotif.dart';
 import 'package:e_shop/push_notifications/list_all_notification.dart';
 import 'package:e_shop/push_notifications/push_notifications_system.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
@@ -57,7 +55,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           elevation: 0,
           title: const Text(
             "Notification",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(fontSize: 25, color: Colors.black),
           ),
           // title: const FakeSearch(),
           automaticallyImplyLeading: false,
@@ -77,21 +75,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ListAllNotif(),
           ]),
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            DbNotifDummy.db.deleteAllnotif();
-            context.read<PNewNotif>().clearNotif();
-          },
-          label: const Text(
-            "Delete Data",
-            style: TextStyle(color: Colors.white),
-          ),
-          icon: const Icon(
-            Icons.add_circle_outline_sharp,
-            color: Colors.white,
-          ),
-          backgroundColor: Colors.black,
-        ),
+        // floatingActionButton: FloatingActionButton.extended(
+        //   onPressed: () {
+        //     DbNotifDummy.db.deleteAllnotif();
+        //     context.read<PNewNotif>().clearNotif();
+        //   },
+        //   label: const Text(
+        //     "Delete Data",
+        //     style: TextStyle(color: Colors.white),
+        //   ),
+        //   icon: const Icon(
+        //     Icons.add_circle_outline_sharp,
+        //     color: Colors.white,
+        //   ),
+        //   backgroundColor: Colors.black,
+        // ),
       ),
     );
   }

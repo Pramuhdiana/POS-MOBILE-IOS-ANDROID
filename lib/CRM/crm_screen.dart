@@ -41,7 +41,8 @@ class _CrmScreenState extends State<CrmScreen> {
           elevation: 0,
           title: const Text(
             "CRM",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
           ),
           // title: const FakeSearch(),
           automaticallyImplyLeading: false,

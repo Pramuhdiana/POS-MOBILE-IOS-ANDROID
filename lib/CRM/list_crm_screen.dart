@@ -58,15 +58,18 @@ class ListCrmScreen extends StatelessWidget {
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(crm.tanggal_aktivitas),
-              Text(
-                CurrencyFormat.convertToIdr(crm.nominal_hasil, 2).toString(),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey.shade600,
-                    fontWeight: FontWeight.w600),
+              Expanded(child: Text(crm.tanggal_aktivitas)),
+              Expanded(
+                child: Text(
+                  CurrencyFormat.convertToIdr(crm.nominal_hasil, 2).toString(),
+                  textAlign: TextAlign.right,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w600),
+                ),
               ),
             ],
           ),
@@ -92,64 +95,7 @@ class ListCrmScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Text(
-                    //   'Total price   : ${CurrencyFormat.convertToIdr(int.parse(order.nominal_hasil), 2)}',
-                    //   style: const TextStyle(fontSize: 15),
-                    // ),
                     const SizedBox(height: 2),
-                    // Row(
-                    //   children: [
-                    //     Padding(
-                    //       padding: const EdgeInsets.only(left: 120),
-                    //       child: IconButton(
-                    //           onPressed: () async {
-                    //             // _launchURLInApp();
-                    //             // _launchURLInBrowser();
-                    //           },
-                    //           icon: const Icon(
-                    //             Icons.link_sharp,
-                    //             color: Colors.red,
-                    //             size: 30,
-                    //           )),
-                    //     ),
-                    //     Padding(
-                    //       padding: const EdgeInsets.only(left: 15),
-                    //       child: IconButton(
-                    //           onPressed: () async {
-                    //             showDialog(
-                    //                 context: context,
-                    //                 builder: (c) {
-                    //                   return const LoadingDialogWidget(
-                    //                     message: "",
-                    //                   );
-                    //                 });
-                    //           },
-                    //           icon: const Icon(
-                    //             Icons.print,
-                    //             color: Colors.blue,
-                    //             size: 30,
-                    //           )),
-                    //     ),
-                    //     Padding(
-                    //       padding: const EdgeInsets.only(left: 15),
-                    //       child: IconButton(
-                    //           onPressed: () async {
-                    //             showDialog(
-                    //                 context: context,
-                    //                 builder: (c) {
-                    //                   return const LoadingDialogWidget(
-                    //                     message: "",
-                    //                   );
-                    //                 });
-                    //           },
-                    //           icon: const Icon(
-                    //             Icons.share,
-                    //             color: Colors.greenAccent,
-                    //             size: 30,
-                    //           )),
-                    //     ),
-                    //   ],
-                    // )
                   ],
                 ),
               ),

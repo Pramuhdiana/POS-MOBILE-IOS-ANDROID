@@ -56,7 +56,8 @@ class _CartScreenReturState extends State<CartScreenRetur> {
         ),
         title: Text(
           "Cart Retur ${sharedPreferences!.getString('customer_name_retur')!}",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [
