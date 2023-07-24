@@ -102,7 +102,7 @@ class HistoryModelNew extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        'Total price   : ${CurrencyFormat.convertToIdr(int.parse(order.total_rupiah), 2)}',
+                        'Total price   : ${CurrencyFormat.convertToIdr(int.parse(order.net), 2)}',
                         style: const TextStyle(fontSize: 15),
                       ),
                     ),
@@ -619,7 +619,7 @@ class HistoryModelNew extends StatelessWidget {
                                 width: 100,
                                 child: pw.Text(
                                     CurrencyFormat.convertToIdr(
-                                            int.parse(order.total_rupiah), 2)
+                                            int.parse(order.net), 2)
                                         .toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
@@ -1119,7 +1119,7 @@ class HistoryModelNew extends StatelessWidget {
                           width: 100,
                           child: pw.Text(
                               CurrencyFormat.convertToIdr(
-                                      int.parse(order.total_rupiah), 2)
+                                      int.parse(order.net), 2)
                                   .toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
@@ -1585,7 +1585,7 @@ class HistoryModelNew extends StatelessWidget {
                                 width: 100,
                                 child: pw.Text(
                                     CurrencyFormat.convertToIdr(
-                                            int.parse(order.total_rupiah), 2)
+                                            int.parse(order.net), 2)
                                         .toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
@@ -2085,7 +2085,7 @@ class HistoryModelNew extends StatelessWidget {
                           width: 100,
                           child: pw.Text(
                               CurrencyFormat.convertToIdr(
-                                      int.parse(order.total_rupiah), 2)
+                                      int.parse(order.net), 2)
                                   .toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
