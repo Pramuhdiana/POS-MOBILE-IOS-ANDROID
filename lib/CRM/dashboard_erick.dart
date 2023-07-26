@@ -118,7 +118,7 @@ class _DashboardErickState extends State<DashboardErick> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   SizedBox(
-                    width: 100,
+                    width: 130,
                     child: TextField(
                       style: const TextStyle(fontSize: 12),
                       controller:
@@ -179,7 +179,7 @@ class _DashboardErickState extends State<DashboardErick> {
                   ),
                   //to date
                   SizedBox(
-                    width: 100,
+                    width: 130,
                     child: TextField(
                       style: const TextStyle(fontSize: 12),
                       controller: toDate, //editing controller of this TextField
