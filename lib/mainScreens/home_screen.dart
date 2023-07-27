@@ -150,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //jan
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('1', year).then((value) {
       for (var i = 0; i < value.length; i++) {
-        barJan += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+        barJan += value[i].nett!; //menjumlahkan ke list
       }
       setState(() {
         barJan = (barJan / targetByMonth).round();
@@ -159,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //feb
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('2', year).then((value) {
       for (var i = 0; i < value.length; i++) {
-        barFeb += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+        barFeb += value[i].nett!; //menjumlahkan ke list
       }
       setState(() {
         barFeb = (barFeb / targetByMonth).round();
@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //mar
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('3', year).then((value) {
       for (var i = 0; i < value.length; i++) {
-        barMar += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+        barMar += value[i].nett!; //menjumlahkan ke list
       }
       setState(() {
         barMar = (barMar / targetByMonth).round();
@@ -177,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //apr
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('4', year).then((value) {
       for (var i = 0; i < value.length; i++) {
-        barApr += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+        barApr += value[i].nett!; //menjumlahkan ke list
       }
       setState(() {
         barApr = (barApr / targetByMonth).round();
@@ -186,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //may
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('5', year).then((value) {
       for (var i = 0; i < value.length; i++) {
-        barMay += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+        barMay += value[i].nett!; //menjumlahkan ke list
       }
       setState(() {
         barMay = (barMay / targetByMonth).round();
@@ -195,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //jun
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('6', year).then((value) {
       for (var i = 0; i < value.length; i++) {
-        barJun += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+        barJun += value[i].nett!; //menjumlahkan ke list
       }
       setState(() {
         barJun = (barJun / targetByMonth).round();
@@ -204,7 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //jul
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('7', year).then((value) {
       for (var i = 0; i < value.length; i++) {
-        barJul += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+        barJul += value[i].nett!; //menjumlahkan ke list
       }
       setState(() {
         barJul = (barJul / targetByMonth).round();
@@ -213,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //agus
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('8', year).then((value) {
       for (var i = 0; i < value.length; i++) {
-        barAug += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+        barAug += value[i].nett!; //menjumlahkan ke list
       }
       setState(() {
         barAug = (barAug / targetByMonth).round();
@@ -222,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //sept
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('9', year).then((value) {
       for (var i = 0; i < value.length; i++) {
-        barSep += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+        barSep += value[i].nett!; //menjumlahkan ke list
       }
       setState(() {
         barSep = (barSep / targetByMonth).round();
@@ -231,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //okt
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('10', year).then((value) {
       for (var i = 0; i < value.length; i++) {
-        barOct += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+        barOct += value[i].nett!; //menjumlahkan ke list
       }
       setState(() {
         barOct = (barOct / targetByMonth).round();
@@ -240,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //nov
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('11', year).then((value) {
       for (var i = 0; i < value.length; i++) {
-        barNov += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+        barNov += value[i].nett!; //menjumlahkan ke list
       }
       setState(() {
         barNov = (barNov / targetByMonth).round();
@@ -249,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //desc
     DbAlltransaksi.db.getAlltransaksiNominalByMonth('12', year).then((value) {
       for (var i = 0; i < value.length; i++) {
-        barDec += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
+        barDec += value[i].nett!; //menjumlahkan ke list
       }
       setState(() {
         barDec = (barDec / targetByMonth).round();
@@ -258,8 +258,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     DbAlltransaksi.db.getAlltransaksiNominal(year).then((value) {
       for (var i = 0; i < value.length; i++) {
-        list += int.parse(value[i].total_rupiah!); //menjumlahkan ke list
-        listNominal.add(value[i].total_rupiah); //memasukan ke list
+        list += value[i].nett!; //menjumlahkan ke list
+        listNominal.add(value[i].nett); //memasukan ke list
       }
       percentYear = (list / targetByYear);
       setState(() {

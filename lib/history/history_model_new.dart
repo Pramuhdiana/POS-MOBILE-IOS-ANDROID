@@ -102,7 +102,7 @@ class HistoryModelNew extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        'Total price   : ${CurrencyFormat.convertToIdr(int.parse(order.net), 2)}',
+                        'Total price   : ${CurrencyFormat.convertToIdr(order.nett, 2)}',
                         style: const TextStyle(fontSize: 15),
                       ),
                     ),
@@ -191,7 +191,7 @@ class HistoryModelNew extends StatelessWidget {
     }
   }
 
-//convert image network to uint8list
+//convert image nettwork to uint8list
   getImageBytes(String assetImage) async {
     Response response = await get(
       Uri.parse(assetImage),
@@ -618,8 +618,7 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    CurrencyFormat.convertToIdr(
-                                            int.parse(order.net), 2)
+                                    CurrencyFormat.convertToIdr(order.nett, 2)
                                         .toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
@@ -1118,8 +1117,7 @@ class HistoryModelNew extends StatelessWidget {
                         pw.SizedBox(
                           width: 100,
                           child: pw.Text(
-                              CurrencyFormat.convertToIdr(
-                                      int.parse(order.net), 2)
+                              CurrencyFormat.convertToIdr(order.nett, 2)
                                   .toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
@@ -1584,8 +1582,7 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    CurrencyFormat.convertToIdr(
-                                            int.parse(order.net), 2)
+                                    CurrencyFormat.convertToIdr(order.nett, 2)
                                         .toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
@@ -2084,8 +2081,7 @@ class HistoryModelNew extends StatelessWidget {
                         pw.SizedBox(
                           width: 100,
                           child: pw.Text(
-                              CurrencyFormat.convertToIdr(
-                                      int.parse(order.net), 2)
+                              CurrencyFormat.convertToIdr(order.nett, 2)
                                   .toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),

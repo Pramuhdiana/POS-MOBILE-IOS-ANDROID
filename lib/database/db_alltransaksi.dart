@@ -125,7 +125,7 @@ class DbAlltransaksi {
   Future<List<ModelAlltransaksi>> getAlltransaksiNominal(year) async {
     final db = await database;
     final res = await db.rawQuery(
-        'SELECT * FROM alltransaksi WHERE user_id=? and total_rupiah !=? and year =? and jenisform_id=?',
+        'SELECT * FROM alltransaksi WHERE user_id=? and nett !=? and year =? and jenisform_id=?',
         [sharedPreferences!.getString('id'), 0, year, 1]);
     // final res = await db.query('allitems', where: '"sales_id" = $id');
     // final res = await db.rawQuery("SELECT * FROM allitems");
@@ -142,7 +142,7 @@ class DbAlltransaksi {
       month, year) async {
     final db = await database;
     final res = await db.rawQuery(
-        'SELECT * FROM alltransaksi WHERE user_id=? and total_rupiah !=? and month =? and year =? and jenisform_id=?',
+        'SELECT * FROM alltransaksi WHERE user_id=? and nett !=? and month =? and year =? and jenisform_id=?',
         [sharedPreferences!.getString('id'), 0, month, year, 1]);
     // final res = await db.query('allitems', where: '"sales_id" = $id');
     // final res = await db.rawQuery("SELECT * FROM allitems");
