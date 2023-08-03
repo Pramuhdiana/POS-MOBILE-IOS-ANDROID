@@ -547,7 +547,8 @@ class _AddFormCRMState extends State<AddFormCRM> {
                                 padding: const EdgeInsets.all(0),
                                 child: TextField(
                                   // textInputAction: TextInputAction.next,
-                                  keyboardType: TextInputType.text,
+                                  keyboardType: TextInputType.multiline,
+                                  focusNode: numberFocusNode,
                                   onChanged: (reportinput) {
                                     setState(() {
                                       btnController.reset();

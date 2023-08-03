@@ -13,7 +13,7 @@ import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/posRetur/pos_retur_screen_ui.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/widgets/appbar_cart_pos_retur.dart';
-import 'package:e_shop/widgets/fake_search_retur.dart';
+// import 'package:e_shop/widgets/fake_search_retur.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
@@ -68,12 +68,12 @@ class _PosReturScreenState extends State<PosReturScreen> {
         onRefresh: refresh,
         child: Column(
           children: <Widget>[
-            if (sharedPreferences!.getString('customer_id').toString() !=
-                0.toString())
-              const Padding(
-                padding: EdgeInsets.all(8),
-                child: FakeSearchRetur(),
-              ),
+            // if (sharedPreferences!.getString('customer_id').toString() !=
+            //     0.toString())
+            //   const Padding(
+            //     padding: EdgeInsets.all(8),
+            //     child: FakeSearchRetur(),
+            //   ),
             Row(
               children: [
                 const Padding(padding: EdgeInsets.all(4)),

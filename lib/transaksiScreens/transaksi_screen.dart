@@ -42,7 +42,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
   int rate = 1;
   int diskonrequest = 90;
   int result = 0;
-  int diskon = 100;
+  int diskon = 0;
   TextEditingController dp = TextEditingController();
   TextEditingController addDiskon = TextEditingController();
   int dpp = 0;
@@ -52,17 +52,19 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
 
   double get totalPrice {
     // var dpin = int.parse(dp);
-    var total = ((context.read<PCart>().totalPrice2) * rate) * (diskon / 100) -
-        dpp -
-        addesdiskon;
+    var total =
+        ((context.read<PCart>().totalPrice2) * rate) * (1 - (diskon / 100)) -
+            dpp -
+            addesdiskon;
     return total;
   }
 
   String get totalPrice3 {
     // var dpin = int.parse(dp);
-    var total = ((context.read<PCart>().totalPrice2) * rate) * (diskon / 100) -
-        dpp -
-        addesdiskon;
+    var total =
+        ((context.read<PCart>().totalPrice2) * rate) * (1 - (diskon / 100)) -
+            dpp -
+            addesdiskon;
     if (rate <= 2) {
       return '\$ ${CurrencyFormat.convertToDollar(total, 2)}';
     } else {
@@ -72,17 +74,19 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
 
   String get totalPriceAPI {
     // var dpin = int.parse(dp);
-    var total = ((context.read<PCart>().totalPrice2) * rate) * (diskon / 100) -
-        dpp -
-        addesdiskon;
+    var total =
+        ((context.read<PCart>().totalPrice2) * rate) * (1 - (diskon / 100)) -
+            dpp -
+            addesdiskon;
     return total.toString();
   }
 
   String get totalDiskonRp {
     // var dpin = int.parse(dp);
-    var total1 = ((context.read<PCart>().totalPrice2) * rate) * (diskon / 100) -
-        dpp -
-        addesdiskon;
+    var total1 =
+        ((context.read<PCart>().totalPrice2) * rate) * (1 - (diskon / 100)) -
+            dpp -
+            addesdiskon;
     var total = ((context.read<PCart>().totalPrice2) * rate);
     var result = total - total1;
 
