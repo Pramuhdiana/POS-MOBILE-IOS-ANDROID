@@ -66,9 +66,9 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
             dpp -
             addesdiskon;
     if (rate <= 2) {
-      return '\$ ${CurrencyFormat.convertToDollar(total, 2)}';
+      return '\$ ${CurrencyFormat.convertToDollar(total, 0)}';
     } else {
-      return CurrencyFormat.convertToIdr(total, 2);
+      return CurrencyFormat.convertToIdr(total, 0);
     }
   }
 

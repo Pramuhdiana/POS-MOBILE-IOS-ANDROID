@@ -158,7 +158,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
     }
     try {
-      await apiProvider.getAllItemsRetur();
+      apiProvider.getAllItemsRetur();
     } catch (c) {
       Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
     }
