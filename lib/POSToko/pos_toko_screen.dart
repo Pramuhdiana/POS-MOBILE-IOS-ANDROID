@@ -142,6 +142,11 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                         child: DropdownSearch<UserModel>(
                           asyncItems: (String? filter) => getData(filter),
                           popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                            searchFieldProps: const TextFieldProps(
+                                decoration: InputDecoration(
+                              labelText: "Search..",
+                              prefixIcon: Icon(Icons.search),
+                            )),
                             showSelectedItems: true,
                             itemBuilder: _customPopupItemBuilderExample2,
                             showSearchBox: true,

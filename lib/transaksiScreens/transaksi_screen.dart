@@ -174,6 +174,11 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                       child: DropdownSearch<UserModel>(
                         asyncItems: (String? filter) => getData(filter),
                         popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                          searchFieldProps: const TextFieldProps(
+                              decoration: InputDecoration(
+                            labelText: "Search..",
+                            prefixIcon: Icon(Icons.search),
+                          )),
                           showSelectedItems: true,
                           itemBuilder: _customPopupItemBuilderExample2,
                           showSearchBox: true,
