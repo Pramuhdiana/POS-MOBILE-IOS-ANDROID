@@ -66,7 +66,7 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                 child: Padding(
                   padding: const EdgeInsets.all(4),
                   child: SizedBox(
-                    height: 170,
+                    // height: 170,
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,54 +76,55 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                             topLeft: Radius.circular(15),
                             topRight: Radius.circular(15),
                           ),
-                          child: Image.network(
-                            'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
-                            height: 100,
-                            fit: BoxFit.fill,
-                            //cache
-                            cacheHeight: 150,
-                            cacheWidth: 200,
-                            //error builder
-                            errorBuilder: (BuildContext context,
-                                Object exception, StackTrace? stackTrace) {
-                              return const Icon(
-                                Icons.error,
-                                color: Colors.black,
-                                size: 100,
-                              );
-                            },
-                            //loading builder
-                            loadingBuilder: (BuildContext context, Widget child,
-                                ImageChunkEvent? loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                                ),
-                              );
-                            },
-                          ),
-                          // child: CachedNetworkImage(
-                          //   // cacheManager: customCacheManager,
-                          //   memCacheWidth: 85, //default 45
-                          //   memCacheHeight: 100, //default 60
-                          //   maxHeightDiskCache: 100, //default 60
-                          //   maxWidthDiskCache: 85, //default 45
-                          //   imageUrl:
-                          //       'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
-                          //   placeholder: (context, url) =>
-                          //       const CircularProgressIndicator(),
-                          //   errorWidget: (context, url, error) => const Icon(
-                          //     Icons.error,
-                          //     color: Colors.black,
-                          //   ),
+                          // child: Image.network(
+                          //   'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
                           //   height: 100,
-                          //   fit: BoxFit.cover,
+                          //   fit: BoxFit.fill,
+                          //   //cache
+                          //   cacheHeight: 150,
+                          //   cacheWidth: 200,
+                          //   //error builder
+                          //   errorBuilder: (BuildContext context,
+                          //       Object exception, StackTrace? stackTrace) {
+                          //     return const Icon(
+                          //       Icons.error,
+                          //       color: Colors.black,
+                          //       size: 100,
+                          //     );
+                          //   },
+                          //   //loading builder
+                          //   loadingBuilder: (BuildContext context, Widget child,
+                          //       ImageChunkEvent? loadingProgress) {
+                          //     if (loadingProgress == null) return child;
+                          //     return Center(
+                          //       child: CircularProgressIndicator(
+                          //         value: loadingProgress.expectedTotalBytes !=
+                          //                 null
+                          //             ? loadingProgress.cumulativeBytesLoaded /
+                          //                 loadingProgress.expectedTotalBytes!
+                          //             : null,
+                          //       ),
+                          //     );
+                          //   },
                           // ),
+                          child: CachedNetworkImage(
+                            // cacheManager: customCacheManager,
+                            // memCacheWidth: 85, //default 45
+                            // memCacheHeight: 100, //default 60
+                            // maxHeightDiskCache: 100, //default 60
+                            // maxWidthDiskCache: 85, //default 45
+                            imageUrl:
+                                'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => const Icon(
+                              Icons.error,
+                              color: Colors.black,
+                              size: 50,
+                            ),
+                            // height: 100,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                         Text(
                           widget.model!.name.toString(),
@@ -133,18 +134,11 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                             fontSize: 16,
                           ),
                         ),
-                        Text(
-                          widget.model!.description.toString(),
-                          textAlign: TextAlign.justify,
-                          style: TextStyle(
-                            color: Colors.grey.shade500,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                            // letterSpacing: 3,
-                          ),
+                        const SizedBox(
+                          height: 10,
                         ),
                         Text(
-                          "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 2).toString()}",
+                          "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,

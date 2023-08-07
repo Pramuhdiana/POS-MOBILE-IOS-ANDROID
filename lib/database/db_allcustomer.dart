@@ -94,9 +94,9 @@ class DbAllCustomer {
 
   Future<List<ModelAllCustomer>> getAllcustomer() async {
     final db = await database;
-    final res = await db
-        .rawQuery('SELECT * FROM allcustomer WHERE alamat!=?', ['null']);
-    // final res = await db.rawQuery("SELECT * FROM allcustomer");
+    // final res = await db
+    //     .rawQuery('SELECT * FROM allcustomer WHERE alamat!=?', ['null']);
+    final res = await db.rawQuery("SELECT * FROM allcustomer");
 
     List<ModelAllCustomer> list = res.isNotEmpty
         ? res.map((c) => ModelAllCustomer.fromJson(c)).toList()

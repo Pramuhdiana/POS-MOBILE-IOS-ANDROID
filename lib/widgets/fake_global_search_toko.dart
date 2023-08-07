@@ -1,8 +1,9 @@
-import 'package:e_shop/search/new_search_toko.dart';
 import 'package:flutter/material.dart';
 
-class FakeSearchToko extends StatelessWidget {
-  const FakeSearchToko({
+import '../search/new_search_global_toko.dart';
+
+class FakeGlobalSearchToko extends StatelessWidget {
+  const FakeGlobalSearchToko({
     Key? key,
   }) : super(key: key);
 
@@ -10,8 +11,10 @@ class FakeSearchToko extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => NewSearchScreenToko()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => NewSearchScreenGlobalToko()));
       },
       child: Container(
         height: 35,
@@ -31,7 +34,7 @@ class FakeSearchToko extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Search lot by Toko...',
+                  'Global search all Toko..',
                   style: TextStyle(fontSize: 18, color: Colors.black),
                 ),
               ],

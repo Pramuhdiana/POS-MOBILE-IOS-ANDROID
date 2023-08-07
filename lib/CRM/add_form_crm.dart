@@ -291,6 +291,7 @@ class _AddFormCRMState extends State<AddFormCRM> {
                                   true, //set it true, so that user will not able to edit text
                               onTap: () async {
                                 DateTime? pickedDate = await showDatePicker(
+                                    locale: const Locale('en', 'GB'),
                                     context: context,
                                     initialDate: DateTime.now(),
                                     firstDate: DateTime(

@@ -3,13 +3,13 @@
 import 'dart:math';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_allcustomer.dart';
-import 'package:e_shop/database/db_allitems.dart';
-import 'package:e_shop/database/db_allitems_retur.dart';
-import 'package:e_shop/database/db_allitems_toko.dart';
 import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/database/db_notification_dummy.dart';
+import 'package:e_shop/database/model_allitems_retur.dart';
+import 'package:e_shop/database/model_alltransaksi.dart';
 import 'package:e_shop/provider/provider_notification.dart';
 import 'package:e_shop/search/new_search.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
@@ -41,6 +41,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../database/model_allitems_toko.dart';
 import '../splashScreen/my_splas_screen.dart';
 import '../testing/app_colors.dart';
 
@@ -98,36 +99,62 @@ class _HomeScreenState extends State<HomeScreen> {
   QRViewController? controller;
   XFile? imgXFile;
   final ImagePicker imagePicker = ImagePicker();
-  int? qtyProductSales = 0;
-  int? qtyProductToko = 0;
-  int? qtyProductRetur = 0;
+  int? qtyProductSales = sharedPreferences!.getInt('qtyProductSales');
+  int? qtyProductToko = sharedPreferences!.getInt('qtyProductToko');
+  int? qtyProductRetur = sharedPreferences!.getInt('qtyProductRetur');
   int? qtyProductHistory = 0;
   int? qtyProductCustomer = 0;
   int? qtyProductCRM = 0;
   int? qtyProductTicketing = 0;
+  String token = sharedPreferences!.getString("token").toString();
+  String newOpen = sharedPreferences!.getString("newOpenHome").toString();
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   if (newOpen == 'true') {
+  //     print('harus 1x');
+  //     _getDataToko(token);
+  //     _getDataRetur(token);
+  //     _getDataSales(token);
+  //   } else {
+  //     print('stop');
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
+    if (newOpen == 'true') {
+      print('harus 1x');
+      _getDataToko(token);
+      _getDataRetur(token);
+      _getDataSales(token);
+      // _getDataHistory(token);
+      setState(() {
+        sharedPreferences!.setString('newOpenHome', 'false');
+      });
+    }
+
     //initial sales
-    DbAllitems.db.getAllitems().then((value) {
-      setState(() {
-        qtyProductSales = value.length;
-      });
-    });
+    // DbAllitems.db.getAllitems().then((value) {
+    //   setState(() {
+    //     qtyProductSales = value.length;
+    //   });
+    // });
     //initial toko
-    DbAllitemsToko.db.getAllitems().then((value) {
-      setState(() {
-        qtyProductToko = value.length;
-      });
-    });
+    // DbAllitemsToko.db.getAllitems().then((value) {
+    //   setState(() {
+    //     qtyProductToko = value.length;
+    //   });
+    // });
     //initial retur
-    DbAllitemsRetur.db.getAllRetur().then((value) {
-      setState(() {
-        qtyProductRetur = value.length;
-      });
-    });
-    //initial history
+    // DbAllitemsRetur.db.getAllRetur().then((value) {
+    //   setState(() {
+    //     qtyProductRetur = value.length;
+    //   });
+    // });
+    // initial history
     DbAlltransaksi.db.getAllHistory().then((value) {
       setState(() {
         qtyProductHistory = value.length;
@@ -277,6 +304,108 @@ class _HomeScreenState extends State<HomeScreen> {
     pushNotificationsSystem.whenNotificationReceived(context);
     // pushNotificationsSystem.notificationPopUp(context);
     //end notif
+  }
+
+  //get data toko
+  Future<List<ModelAllitemsToko>> _getDataToko(token) async {
+    var url = ApiConstants.baseUrl + ApiConstants.GETposTokoendpoint;
+    final response = await Dio().get(url,
+        options: Options(headers: {"Authorization": "Bearer $token"}));
+    if (response.statusCode == 200) {
+      List jsonResponse = response.data;
+      var g =
+          jsonResponse.map((data) => ModelAllitemsToko.fromJson(data)).toList();
+      setState(() {
+        sharedPreferences!.setInt('qtyProductToko', g.length);
+        qtyProductToko = g.length;
+        print(qtyProductToko);
+      });
+      return g;
+    } else {
+      throw Exception('Unexpected error occured!');
+    }
+  }
+
+  //get data retur
+  Future<List<ModelAllitemsRetur>> _getDataRetur(token) async {
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.GETposReturendpoint;
+      final response = await Dio().get(url,
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+      if (response.statusCode == 200) {
+        List jsonResponse = response.data;
+
+        var g = jsonResponse
+            .map((data) => ModelAllitemsRetur.fromJson(data))
+            .toList();
+        setState(() {
+          sharedPreferences!.setInt('qtyProductRetur', g.length);
+          qtyProductRetur = g.length;
+          print(qtyProductRetur);
+        });
+        return g;
+      } else {
+        throw Exception('Unexpected error occured!');
+      }
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
+      throw Exception('Unexpected error occured!');
+    }
+  }
+
+  //get data sales
+  Future<List<ModelAllitemsRetur>> _getDataSales(token) async {
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.GETposSalesendpoint;
+      final response = await Dio().get(url,
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+      if (response.statusCode == 200) {
+        List jsonResponse = response.data;
+
+        var g = jsonResponse
+            .map((data) => ModelAllitemsRetur.fromJson(data))
+            .toList();
+        setState(() {
+          sharedPreferences!.setInt('qtyProductSales', g.length);
+          qtyProductSales = g.length;
+          print(qtyProductSales);
+        });
+        return g;
+      } else {
+        throw Exception('Unexpected error occured!');
+      }
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
+      throw Exception('Unexpected error occured!');
+    }
+  }
+
+  //get data history
+  // ignore: unused_element
+  Future<List<ModelAlltransaksi>> _getDataHistory(token) async {
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.GETtransaksiendpoint;
+      final response = await Dio().get(url,
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+      if (response.statusCode == 200) {
+        List jsonResponse = response.data;
+
+        var g = jsonResponse
+            .map((data) => ModelAlltransaksi.fromJson(data))
+            .toList();
+        setState(() {
+          sharedPreferences!.setInt('qtyProductHistory', g.length);
+          qtyProductHistory = g.length;
+          print(qtyProductHistory);
+        });
+        return g;
+      } else {
+        throw Exception('Unexpected error occured!');
+      }
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
+      throw Exception('Unexpected error occured!');
+    }
   }
 
   void main() async {
@@ -551,8 +680,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   linearStrokeCap: LinearStrokeCap.roundAll,
                   progressColor: AppColors.contentColorBlack,
                 ),
-                Text(
-                    '${CurrencyFormat.convertToIdr(list, 2)} / 10.000.000.000,00'),
+                Text(CurrencyFormat.convertToIdr(list, 0)),
                 // CircularPercentIndicator(
                 //   radius: 120.0,
                 //   lineWidth: 13.0,

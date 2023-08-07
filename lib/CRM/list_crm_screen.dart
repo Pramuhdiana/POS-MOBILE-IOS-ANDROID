@@ -61,7 +61,7 @@ class ListCrmScreen extends StatelessWidget {
               Expanded(child: Text(crm.tanggal_aktivitas)),
               Expanded(
                 child: Text(
-                  CurrencyFormat.convertToIdr(crm.nominal_hasil, 2).toString(),
+                  CurrencyFormat.convertToIdr(crm.nominal_hasil, 0).toString(),
                   textAlign: TextAlign.right,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,

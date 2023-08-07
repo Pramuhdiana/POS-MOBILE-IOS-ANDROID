@@ -15,10 +15,12 @@ import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/widgets/appbar_cart_pos_retur.dart';
 // import 'package:e_shop/widgets/fake_search_retur.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
+import '../api/api_services.dart';
 import '../cartScreens/db_helper.dart';
 import '../global/global.dart';
 
@@ -44,11 +46,49 @@ class _PosReturScreenState extends State<PosReturScreen> {
   String queryBrandId = '';
   String? title = '';
   int qtyProduct = 0;
+  int page = 0;
+  int limit = 10;
+  bool isLoading = false;
+  ScrollController scrollController = ScrollController();
+  String newOpen = sharedPreferences!.getString("newOpenPosRetur").toString();
 
   @override
   void initState() {
     super.initState();
+    if (newOpen == 'true') {
+      print('harus 1x');
+      _loadFromApi();
+      setState(() {
+        sharedPreferences!.setString('newOpenPosRetur', 'false');
+      });
+    }
     title = 'POS RETUR';
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        if (page != qtyProduct) {
+          // on bottom scroll API Call until last page
+          limit += 5;
+          DbAllitemsRetur.db.getAllitemsReturByPage(idtoko, page, limit);
+        }
+      }
+    });
+  }
+
+  _loadFromApi() async {
+    setState(() {
+      isLoading = true;
+    });
+    var apiProvider = ApiServices();
+    await DbAllitemsRetur.db.deleteAllitemsRetur();
+    try {
+      await apiProvider.getAllItemsRetur();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
+    }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future refresh() async {
@@ -64,112 +104,120 @@ class _PosReturScreenState extends State<PosReturScreen> {
       appBar: AppbarCartRetur(
         title: '$qtyProduct product ',
       ),
-      body: RefreshIndicator(
-        onRefresh: refresh,
-        child: Column(
-          children: <Widget>[
-            // if (sharedPreferences!.getString('customer_id').toString() !=
-            //     0.toString())
-            //   const Padding(
-            //     padding: EdgeInsets.all(8),
-            //     child: FakeSearchRetur(),
-            //   ),
-            Row(
-              children: [
-                const Padding(padding: EdgeInsets.all(4)),
-                Expanded(
-                  child: DropdownSearch<UserModel>(
-                    asyncItems: (String? filter) => getData(filter),
-                    popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                      showSelectedItems: true,
-                      itemBuilder: _customPopupItemBuilderExample2,
-                      showSearchBox: true,
-                    ),
-                    compareFn: (item, sItem) => item.id == sItem.id,
-                    onChanged: (item) {
-                      setState(() {
-                        context.read<PCartRetur>().clearCart();
-                        print('toko : ${item?.name}');
-                        print('id  : ${item?.id}');
-                        print('diskonnya  : ${item?.diskon_customer}');
-                        idtoko = item?.id; // menyimpan id toko
-                        toko = item?.name; // menyimpan nama toko
-                        sharedPreferences!
-                            .setString('customer_name_retur', toko.toString());
-                        sharedPreferences!
-                            .setString('customer_id_retur', idtoko.toString());
-                        // sharedPreferences!
-                        //     .setString('customer_id', idtoko.toString());
-                        loadCartFromApiPOSRetur(idtoko);
-                        DbAllitemsRetur.db.getAllitemsRetur(idtoko);
-                      });
-                    },
-                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                        labelText: 'Choose customer',
-                        filled: true,
-                        fillColor: Colors.white,
+      body: isLoading == true
+          ? const Center(child: CircularProgressIndicator(color: Colors.black))
+          : RefreshIndicator(
+              onRefresh: refresh,
+              child: Column(
+                children: <Widget>[
+                  // if (sharedPreferences!.getString('customer_id').toString() !=
+                  //     0.toString())
+                  //   const Padding(
+                  //     padding: EdgeInsets.all(8),
+                  //     child: FakeSearchRetur(),
+                  //   ),
+                  Row(
+                    children: [
+                      const Padding(padding: EdgeInsets.all(4)),
+                      Expanded(
+                        child: DropdownSearch<UserModel>(
+                          asyncItems: (String? filter) => getData(filter),
+                          popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                            showSelectedItems: true,
+                            itemBuilder: _customPopupItemBuilderExample2,
+                            showSearchBox: true,
+                          ),
+                          compareFn: (item, sItem) => item.id == sItem.id,
+                          onChanged: (item) {
+                            setState(() {
+                              context.read<PCartRetur>().clearCart();
+                              print('toko : ${item?.name}');
+                              print('id  : ${item?.id}');
+                              print('diskonnya  : ${item?.diskon_customer}');
+                              idtoko = item?.id; // menyimpan id toko
+                              toko = item?.name; // menyimpan nama toko
+                              sharedPreferences!.setString(
+                                  'customer_name_retur', toko.toString());
+                              sharedPreferences!.setString(
+                                  'customer_id_retur', idtoko.toString());
+                              // sharedPreferences!
+                              //     .setString('customer_id', idtoko.toString());
+                              loadCartFromApiPOSRetur(idtoko);
+                              DbAllitemsRetur.db.getAllitemsRetur(idtoko);
+                            });
+                          },
+                          dropdownDecoratorProps: const DropDownDecoratorProps(
+                            dropdownSearchDecoration: InputDecoration(
+                              labelText: 'Choose customer',
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                          ),
+                        ),
                       ),
+                    ],
+                  ),
+                  Expanded(
+                    child: FutureBuilder(
+                      future: DbAllitemsRetur.db
+                          .getAllitemsReturByPage(idtoko, page, limit),
+                      builder: (context, AsyncSnapshot dataSnapshot) {
+                        if (dataSnapshot.hasData) //if brands exists
+                        {
+                          DbAllitemsRetur.db
+                              .getAllitemsRetur(idtoko)
+                              .then((value) {
+                            setState(() {
+                              qtyProduct = value.length;
+                            });
+                          });
+                          return SingleChildScrollView(
+                            controller: scrollController,
+                            child: StaggeredGridView.countBuilder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: dataSnapshot.data.length,
+                              crossAxisCount: 2,
+                              staggeredTileBuilder: (context) =>
+                                  const StaggeredTile.fit(1),
+                              itemBuilder: (BuildContext context, int index) {
+                                var itemsModel = (dataSnapshot.data[index]);
+
+                                return PosReturUi(
+                                  model: ModelAllitemsRetur(
+                                      id: itemsModel.id,
+                                      name: itemsModel.name,
+                                      slug: itemsModel.slug,
+                                      image_name: itemsModel.image_name,
+                                      description: itemsModel.description,
+                                      price: itemsModel.price,
+                                      category_id: itemsModel.category_id,
+                                      posisi_id: itemsModel.posisi_id,
+                                      customer_id: itemsModel.customer_id,
+                                      kode_refrensi: itemsModel.kode_refrensi,
+                                      sales_id: itemsModel.sales_id,
+                                      brand_id: itemsModel.brand_id,
+                                      qty: itemsModel.qty,
+                                      status_titipan: itemsModel.status_titipan,
+                                      keterangan_barang:
+                                          itemsModel.keterangan_barang),
+                                  idtoko: idtoko,
+                                );
+                              },
+                            ),
+                          );
+                        } else if (dataSnapshot.hasError) {
+                          return const CircularProgressIndicator(
+                              color: Colors.black);
+                        } //if data NOT exists
+                        return const CircularProgressIndicator(
+                            color: Colors.black);
+                      },
                     ),
                   ),
-                ),
-              ],
-            ),
-            Expanded(
-              child: FutureBuilder(
-                future: DbAllitemsRetur.db.getAllitemsRetur(idtoko),
-                builder: (context, AsyncSnapshot dataSnapshot) {
-                  if (dataSnapshot.hasData) //if brands exists
-                  {
-                    DbAllitemsRetur.db.getAllitemsRetur(idtoko).then((value) {
-                      setState(() {
-                        qtyProduct = value.length;
-                      });
-                    });
-                    return SingleChildScrollView(
-                      child: StaggeredGridView.countBuilder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: dataSnapshot.data.length,
-                        crossAxisCount: 2,
-                        staggeredTileBuilder: (context) =>
-                            const StaggeredTile.fit(1),
-                        itemBuilder: (BuildContext context, int index) {
-                          var itemsModel = (dataSnapshot.data[index]);
-
-                          return PosReturUi(
-                            model: ModelAllitemsRetur(
-                                id: itemsModel.id,
-                                name: itemsModel.name,
-                                slug: itemsModel.slug,
-                                image_name: itemsModel.image_name,
-                                description: itemsModel.description,
-                                price: itemsModel.price,
-                                category_id: itemsModel.category_id,
-                                posisi_id: itemsModel.posisi_id,
-                                customer_id: itemsModel.customer_id,
-                                kode_refrensi: itemsModel.kode_refrensi,
-                                sales_id: itemsModel.sales_id,
-                                brand_id: itemsModel.brand_id,
-                                qty: itemsModel.qty,
-                                status_titipan: itemsModel.status_titipan,
-                                keterangan_barang:
-                                    itemsModel.keterangan_barang),
-                            idtoko: idtoko,
-                          );
-                        },
-                      ),
-                    );
-                  } else if (dataSnapshot.hasError) {
-                    return const CircularProgressIndicator(color: Colors.black);
-                  } //if data NOT exists
-                  return const CircularProgressIndicator(color: Colors.black);
-                },
+                ],
               ),
             ),
-          ],
-        ),
-      ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {
       //     Navigator.push(

@@ -91,7 +91,22 @@ class DbAllitemsRetur {
   Future<List<ModelAllitemsRetur>> getAllitemsRetur(idtoko) async {
     final db = await database;
     final res = await db
-        .rawQuery('SELECT * FROM allitemsretur WHERE customer_id=?', [idtoko]);
+        .rawQuery('SELECT * FROM allitemsretur WHERE customer_id=? ', [idtoko]);
+    // final res = await db.rawQuery("SELECT * FROM allitemstoko");
+
+    List<ModelAllitemsRetur> list = res.isNotEmpty
+        ? res.map((c) => ModelAllitemsRetur.fromJson(c)).toList()
+        : [];
+
+    return list;
+  }
+
+  Future<List<ModelAllitemsRetur>> getAllitemsReturByPage(
+      idtoko, page, limit) async {
+    final db = await database;
+    final res = await db.rawQuery(
+        'SELECT * FROM allitemsretur WHERE customer_id=? LIMIT $limit OFFSET $page',
+        [idtoko]);
     // final res = await db.rawQuery("SELECT * FROM allitemstoko");
 
     List<ModelAllitemsRetur> list = res.isNotEmpty

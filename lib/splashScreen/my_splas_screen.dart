@@ -8,7 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/authScreens/auth_screen.dart';
-import 'package:e_shop/database/db_allitems_retur.dart';
+import 'package:e_shop/database/db_allcustomer.dart';
 import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
@@ -23,7 +23,6 @@ import 'package:provider/provider.dart';
 
 import '../database/db_alldetailtransaksi.dart';
 import '../database/db_allitems.dart';
-import '../database/db_allitems_toko.dart';
 import '../database/db_alltransaksi.dart';
 import '../database/db_notification_dummy.dart';
 
@@ -48,11 +47,22 @@ class _MySplashScreenState extends State<MySplashScreen> {
         try {
           await _loadFromApi();
           try {
+            sharedPreferences!.setString('newOpen', 'true');
+            sharedPreferences!.setString('newOpenHome', 'true');
+            sharedPreferences!.setString('newOpenPosSales', 'true');
+            sharedPreferences!.setString('newOpenPosToko', 'true');
+            sharedPreferences!.setString('newOpenPosRetur', 'true');
+            // sharedPreferences!.setString('newOpenHistory', 'true');
             sharedPreferences!.setString('total_product_sales', '0');
             await getToken();
             Navigator.push(
                 context, MaterialPageRoute(builder: (c) => const MainScreen()));
           } catch (c) {
+            sharedPreferences!.setString('newOpen', 'true');
+            sharedPreferences!.setString('newOpenHome', 'true');
+            sharedPreferences!.setString('newOpenPosSales', 'true');
+            sharedPreferences!.setString('newOpenPosToko', 'true');
+            sharedPreferences!.setString('newOpenPosRetur', 'true');
             sharedPreferences!.setString('total_product_sales', '0');
             Navigator.push(
                 context, MaterialPageRoute(builder: (c) => const MainScreen()));
@@ -135,33 +145,34 @@ class _MySplashScreenState extends State<MySplashScreen> {
     context.read<PCartToko>().clearCart();
     context.read<PCartRetur>().clearCart();
     var apiProvider = ApiServices();
-    await DbAllitems.db.deleteAllitems();
-    await DbAllitemsToko.db.deleteAllitemsToko();
+    // await DbAllitems.db.deleteAllitems();
+    // await DbAllitemsToko.db.deleteAllitemsToko();
     await DbAlltransaksi.db.deleteAlltransaksi();
-    await DbAllitemsRetur.db.deleteAllitemsRetur();
+    await DbAllCustomer.db.deleteAllcustomer();
+    // await DbAllitemsRetur.db.deleteAllitemsRetur();
     await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
     await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
     await DbCRM.db.deleteAllcrm();
-    try {
-      await apiProvider.getAllItems();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all items");
-    }
-    try {
-      await apiProvider.getAllItemsToko();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all items toko");
-    }
+    // try {
+    //   await apiProvider.getAllItems();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all items");
+    // }
+    // try {
+    //   await apiProvider.getAllItemsToko();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all items toko");
+    // }
     try {
       await apiProvider.getAllTransaksi();
     } catch (c) {
       Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
     }
-    try {
-      apiProvider.getAllItemsRetur();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
-    }
+    // try {
+    //   apiProvider.getAllItemsRetur();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
+    // }
     try {
       await apiProvider.getAllDetailTransaksi();
     } catch (c) {
@@ -286,7 +297,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Image.asset("images/welcomeIcon.png"),
+                child: Image.asset("images/splashLogo.png"),
               ),
               const SizedBox(
                 height: 10,

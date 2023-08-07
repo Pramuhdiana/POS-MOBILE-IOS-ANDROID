@@ -102,7 +102,7 @@ class HistoryModelNew extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        'Total price   : ${CurrencyFormat.convertToIdr(order.nett, 2)}',
+                        'Total price   : ${CurrencyFormat.convertToIdr(order.nett, 0)}',
                         style: const TextStyle(fontSize: 15),
                       ),
                     ),
@@ -618,7 +618,7 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    CurrencyFormat.convertToIdr(order.nett, 2)
+                                    CurrencyFormat.convertToIdr(order.nett, 0)
                                         .toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
@@ -1117,7 +1117,7 @@ class HistoryModelNew extends StatelessWidget {
                         pw.SizedBox(
                           width: 100,
                           child: pw.Text(
-                              CurrencyFormat.convertToIdr(order.nett, 2)
+                              CurrencyFormat.convertToIdr(order.nett, 0)
                                   .toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
@@ -1582,7 +1582,7 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    CurrencyFormat.convertToIdr(order.nett, 2)
+                                    CurrencyFormat.convertToIdr(order.nett, 0)
                                         .toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
@@ -2081,7 +2081,7 @@ class HistoryModelNew extends StatelessWidget {
                         pw.SizedBox(
                           width: 100,
                           child: pw.Text(
-                              CurrencyFormat.convertToIdr(order.nett, 2)
+                              CurrencyFormat.convertToIdr(order.nett, 0)
                                   .toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),

@@ -100,10 +100,25 @@ class DbAllitems {
     return list;
   }
 
-  Future<List<ModelAllitems>> getAllitemsBykode(kodeRefrensi) async {
+  Future<List<ModelAllitems>> getAllitemsBtPage(page, limit) async {
     final db = await database;
     final res = await db.rawQuery(
-        'SELECT * FROM allitems WHERE sales_id=? and qty=? and kode_refrensi =?',
+        'SELECT * FROM allitems WHERE sales_id=? and qty=? LIMIT $limit OFFSET $page',
+        [sharedPreferences!.getString('id'), 1]);
+
+    List<ModelAllitems> list = res.isNotEmpty
+        ? res.map((c) => ModelAllitems.fromJson(c)).toList()
+        // ? res.map((c) => ModelAllitems.fromMap(c)).toList()
+        : [];
+
+    return list;
+  }
+
+  Future<List<ModelAllitems>> getAllitemsBykode(
+      kodeRefrensi, page, limit) async {
+    final db = await database;
+    final res = await db.rawQuery(
+        'SELECT * FROM allitems WHERE sales_id=? and qty=? and kode_refrensi =? LIMIT $limit OFFSET $page',
         [sharedPreferences!.getString('id'), 1, kodeRefrensi]);
 
     List<ModelAllitems> list = res.isNotEmpty

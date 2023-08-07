@@ -10,9 +10,11 @@ import 'package:e_shop/models/kode_keluarbarang.dart';
 import 'package:e_shop/posSales/pos_sales_screen_ui.dart';
 import 'package:e_shop/widgets/appbar_cart_pos_sales.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
+import '../api/api_services.dart';
 import '../cartScreens/db_helper.dart';
 import '../global/global.dart';
 import '../mainScreens/home_screen.dart';
@@ -51,12 +53,34 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
   String query = '';
   String? selectedOmzet;
   String kodeRefrensi = 'null';
-  var isLoading = false;
+  bool isLoading = false;
   int? qtyProduct = 0;
+  int page = 0;
+  int limit = 10;
+  ScrollController scrollController = ScrollController();
+  String newOpen = sharedPreferences!.getString("newOpenPosSales").toString();
 
   @override
   void initState() {
     super.initState();
+    if (newOpen == 'true') {
+      print('harus 1x');
+      _loadFromApi();
+      setState(() {
+        sharedPreferences!.setString('newOpenPosSales', 'false');
+      });
+    }
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        if (page != qtyProduct) {
+          // on bottom scroll API Call until last page
+          limit += 5;
+          DbAllitems.db.getAllitemsBtPage(page, limit);
+        }
+      }
+    });
+
     DbAllitems.db.getAllitems().then((value) {
       setState(() {
         qtyProduct = value.length;
@@ -73,12 +97,36 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
     });
   }
 
+  _loadFromApi() async {
+    setState(() {
+      isLoading = true;
+    });
+    var apiProvider = ApiServices();
+    await DbAllitems.db.deleteAllitems();
+    try {
+      await apiProvider.getAllItems();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items");
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   Future refresh() async {
     setState(() {
       // context.read<PCart>().clearCart();
       // DbAllitems.db.deleteAllitems();
       // ApiServices().getAllItems();
-      DbAllitems.db.getAllitems();
+      var apiProvider = ApiServices();
+      DbAllitems.db.deleteAllitems();
+      try {
+        apiProvider.getAllItems();
+      } catch (c) {
+        Fluttertoast.showToast(msg: "Failed To Load Data all items");
+      }
+
+      limit = 10;
     });
   }
 
@@ -89,10 +137,8 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
       appBar: AppBarWithCartBadgeSales(
         title: '$qtyProduct product ',
       ),
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
+      body: isLoading == true
+          ? const Center(child: CircularProgressIndicator(color: Colors.black))
           : RefreshIndicator(
               onRefresh: refresh,
               child: Container(
@@ -139,8 +185,9 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                   Expanded(
                     child: FutureBuilder(
                       future: kodeRefrensi == 'null'
-                          ? DbAllitems.db.getAllitems()
-                          : DbAllitems.db.getAllitemsBykode(kodeRefrensi),
+                          ? DbAllitems.db.getAllitemsBtPage(page, limit)
+                          : DbAllitems.db
+                              .getAllitemsBykode(kodeRefrensi, page, limit),
                       builder:
                           (BuildContext context, AsyncSnapshot dataSnapshot) {
                         if (dataSnapshot.hasData) //if brands exists
@@ -154,7 +201,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                                     )
                                   })
                               : DbAllitems.db
-                                  .getAllitemsBykode(kodeRefrensi)
+                                  .getAllitemsBykode(kodeRefrensi, page, limit)
                                   .then((value) => {
                                         setState(
                                           () {
@@ -163,6 +210,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                                         )
                                       });
                           return SingleChildScrollView(
+                            controller: scrollController,
                             child: StaggeredGridView.countBuilder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
