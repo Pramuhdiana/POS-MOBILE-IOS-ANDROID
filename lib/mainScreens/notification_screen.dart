@@ -31,12 +31,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   void initState() {
+    super.initState();
 //star notifi
     PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
     pushNotificationsSystem.whenNotificationReceived(context);
     // pushNotificationsSystem.notificationPopUp(context);
     //end notif
-    super.initState();
     DbNotifDummy.db.getAllNotif(1);
     getToken();
   }

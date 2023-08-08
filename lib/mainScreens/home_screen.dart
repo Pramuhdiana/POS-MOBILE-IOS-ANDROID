@@ -1884,6 +1884,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isLoading = false;
     });
+    sharedPreferences!.setString('msg', 'refresh');
     var apiProvider = ApiServices();
     context.read<PCart>().clearCart();
     context.read<PCartToko>().clearCart();
