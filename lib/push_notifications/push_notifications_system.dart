@@ -29,11 +29,10 @@ class PushNotificationsSystem {
               );
           //add to database
           DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
-            id: 1,
-            title: remoteMessage.notification!.title,
-            body: remoteMessage.notification!.body,
-            created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-          ));
+              title: remoteMessage.notification!.title,
+              body: remoteMessage.notification!.body,
+              created_at: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
+              status: 1));
 
           // //open app and show notification data
           // showNotificationWhenOpenApp(
