@@ -115,18 +115,19 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
 
   Future refresh() async {
     setState(() {
-      // context.read<PCart>().clearCart();
-      // DbAllitems.db.deleteAllitems();
-      // ApiServices().getAllItems();
-      var apiProvider = ApiServices();
-      DbAllitems.db.deleteAllitems();
-      try {
-        apiProvider.getAllItems();
-      } catch (c) {
-        Fluttertoast.showToast(msg: "Failed To Load Data all items");
-      }
-
+      isLoading = true;
+    });
+    // await DbAllitems.db.getAllitems();
+    var apiProvider = ApiServices();
+    await DbAllitems.db.deleteAllitems();
+    try {
+      apiProvider.getAllItems();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items");
+    }
+    setState(() {
       limit = 10;
+      isLoading = false;
     });
   }
 
@@ -137,125 +138,125 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
       appBar: AppBarWithCartBadgeSales(
         title: '$qtyProduct product ',
       ),
-      body: isLoading == true
-          ? const Center(child: CircularProgressIndicator(color: Colors.black))
-          : RefreshIndicator(
-              onRefresh: refresh,
-              child: Container(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                child: Column(children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      DropdownButton(
-                        style: const TextStyle(
-                            color: Colors.black, //<-- SEE HERE
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                        icon: const Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.black, // <-- SEE HERE
-                        ),
-                        underline: Container(
-                          height: 2,
-                          color: Colors.black, //<-- SEE HERE
-                        ),
-                        focusColor: Colors.white,
-                        value: selectedOmzet,
-                        hint: const Text(
-                          'Refrence code',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        onChanged: (value) {
-                          print(value);
-                          setState(() {
-                            selectedOmzet = value;
-                            kodeRefrensi = value!;
-                          });
-                        },
-                        items: list,
-                      ),
-                      Container(
-                        height: 50,
-                        padding: const EdgeInsets.only(),
-                        child: const FakeSearch(),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: FutureBuilder(
-                      future: kodeRefrensi == 'null'
-                          ? DbAllitems.db.getAllitemsBtPage(page, limit)
-                          : DbAllitems.db
-                              .getAllitemsBykode(kodeRefrensi, page, limit),
-                      builder:
-                          (BuildContext context, AsyncSnapshot dataSnapshot) {
-                        if (dataSnapshot.hasData) //if brands exists
-                        {
-                          kodeRefrensi == 'null'
-                              ? DbAllitems.db.getAllitems().then((value) => {
-                                    setState(
-                                      () {
-                                        qtyProduct = value.length;
-                                      },
-                                    )
-                                  })
-                              : DbAllitems.db
-                                  .getAllitemsBykode(kodeRefrensi, page, limit)
-                                  .then((value) => {
-                                        setState(
-                                          () {
-                                            qtyProduct = value.length;
-                                          },
-                                        )
-                                      });
-                          return SingleChildScrollView(
-                            controller: scrollController,
-                            child: StaggeredGridView.countBuilder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: dataSnapshot.data.length,
-                              crossAxisCount: 2,
-                              staggeredTileBuilder: (context) =>
-                                  const StaggeredTile.fit(1),
-                              itemBuilder: (BuildContext context, int index) {
-                                sharedPreferences!.setString(
-                                    'total_product_sales',
-                                    dataSnapshot.data.length.toString());
-                                var item = (dataSnapshot.data[index]);
-                                return SalesItemsUiDesign(
-                                  model: ModelAllitems(
-                                      id: item.id,
-                                      name: item.name,
-                                      slug: item.slug,
-                                      image_name: item.image_name,
-                                      description: item.description,
-                                      price: item.price,
-                                      category_id: item.category_id,
-                                      posisi_id: item.posisi_id,
-                                      customer_id: item.customer_id,
-                                      kode_refrensi: item.kode_refrensi,
-                                      sales_id: item.sales_id,
-                                      brand_id: item.brand_id,
-                                      qty: item.qty,
-                                      status_titipan: item.status_titipan,
-                                      keterangan_barang:
-                                          item.keterangan_barang),
-                                );
-                              },
-                            ),
-                          );
-                        } else if (dataSnapshot.hasError) {
-                          return const CircularProgressIndicator();
-                        } //if data NOT exists
-                        return const CircularProgressIndicator();
-                      },
-                    ),
-                  )
-                ]),
+      body: Container(
+        padding: const EdgeInsets.only(left: 15, right: 15),
+        child: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              DropdownButton(
+                style: const TextStyle(
+                    color: Colors.black, //<-- SEE HERE
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.black, // <-- SEE HERE
+                ),
+                underline: Container(
+                  height: 2,
+                  color: Colors.black, //<-- SEE HERE
+                ),
+                focusColor: Colors.white,
+                value: selectedOmzet,
+                hint: const Text(
+                  'Refrence code',
+                  style: TextStyle(color: Colors.black),
+                ),
+                onChanged: (value) {
+                  print(value);
+                  setState(() {
+                    selectedOmzet = value;
+                    kodeRefrensi = value!;
+                  });
+                },
+                items: list,
               ),
-            ),
-      // ),
+              Container(
+                height: 50,
+                padding: const EdgeInsets.only(),
+                child: const FakeSearch(),
+              ),
+            ],
+          ),
+          Expanded(
+              child: isLoading == true
+                  ? const Center(
+                      child: CircularProgressIndicator(color: Colors.black))
+                  : RefreshIndicator(
+                      onRefresh: refresh,
+                      child: FutureBuilder(
+                        future: kodeRefrensi == 'null'
+                            ? DbAllitems.db.getAllitemsBtPage(page, limit)
+                            : DbAllitems.db
+                                .getAllitemsBykode(kodeRefrensi, page, limit),
+                        builder:
+                            (BuildContext context, AsyncSnapshot dataSnapshot) {
+                          if (dataSnapshot.hasData) //if brands exists
+                          {
+                            kodeRefrensi == 'null'
+                                ? DbAllitems.db.getAllitems().then((value) => {
+                                      setState(
+                                        () {
+                                          qtyProduct = value.length;
+                                        },
+                                      )
+                                    })
+                                : DbAllitems.db
+                                    .getAllitemsBykode(
+                                        kodeRefrensi, page, limit)
+                                    .then((value) => {
+                                          setState(
+                                            () {
+                                              qtyProduct = value.length;
+                                            },
+                                          )
+                                        });
+                            return SingleChildScrollView(
+                              controller: scrollController,
+                              child: StaggeredGridView.countBuilder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: dataSnapshot.data.length,
+                                crossAxisCount: 2,
+                                staggeredTileBuilder: (context) =>
+                                    const StaggeredTile.fit(1),
+                                itemBuilder: (BuildContext context, int index) {
+                                  sharedPreferences!.setString(
+                                      'total_product_sales',
+                                      dataSnapshot.data.length.toString());
+                                  var item = (dataSnapshot.data[index]);
+                                  return SalesItemsUiDesign(
+                                    model: ModelAllitems(
+                                        id: item.id,
+                                        name: item.name,
+                                        slug: item.slug,
+                                        image_name: item.image_name,
+                                        description: item.description,
+                                        price: item.price,
+                                        category_id: item.category_id,
+                                        posisi_id: item.posisi_id,
+                                        customer_id: item.customer_id,
+                                        kode_refrensi: item.kode_refrensi,
+                                        sales_id: item.sales_id,
+                                        brand_id: item.brand_id,
+                                        qty: item.qty,
+                                        status_titipan: item.status_titipan,
+                                        keterangan_barang:
+                                            item.keterangan_barang),
+                                  );
+                                },
+                              ),
+                            );
+                          } else if (dataSnapshot.hasError) {
+                            return const CircularProgressIndicator();
+                          } //if data NOT exists
+                          return const CircularProgressIndicator();
+                        },
+                      ),
+                    ))
+        ]),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

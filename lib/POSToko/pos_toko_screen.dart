@@ -97,16 +97,20 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
 
   Future refresh() async {
     setState(() {
-      // DbAllitemsToko.db.getAllitemsToko(idtoko);
-      var apiProvider = ApiServices();
-      DbAllitemsToko.db.deleteAllitemsToko();
-      try {
-        apiProvider.getAllItemsToko();
-      } catch (c) {
-        Fluttertoast.showToast(msg: "Failed To Load Data all items toko");
-      }
-
+      isLoading = true;
+      qtyProduct = 0;
+    });
+    // await DbAllitemsToko.db.getAllitemsToko(idtoko);
+    var apiProvider = ApiServices();
+    await DbAllitemsToko.db.deleteAllitemsToko();
+    try {
+      await apiProvider.getAllItemsToko();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items toko");
+    }
+    setState(() {
       limit = 10;
+      isLoading = false;
     });
   }
 
@@ -117,98 +121,99 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
       appBar: AppbarCartToko(
         title: '$qtyProduct product ',
       ),
-      body: isLoading == true
-          ? const Center(child: CircularProgressIndicator(color: Colors.black))
-          : RefreshIndicator(
-              onRefresh: refresh,
-              child: Column(
-                children: <Widget>[
-                  if (sharedPreferences!.getString('customer_id').toString() !=
-                      0.toString())
-                    const Padding(
-                      padding: EdgeInsets.all(8),
-                      child: FakeSearchToko(),
-                    ),
-                  if (sharedPreferences!.getString('customer_id').toString() ==
-                      0.toString())
-                    const Padding(
-                      padding: EdgeInsets.all(8),
-                      child: FakeGlobalSearchToko(),
-                    ),
-                  Row(
-                    children: [
-                      const Padding(padding: EdgeInsets.all(4)),
-                      Expanded(
-                        child: DropdownSearch<UserModel>(
-                          asyncItems: (String? filter) => getData(filter),
-                          popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                            searchFieldProps: const TextFieldProps(
-                                decoration: InputDecoration(
-                              labelText: "Search..",
-                              prefixIcon: Icon(Icons.search),
-                            )),
-                            showSelectedItems: true,
-                            itemBuilder: _customPopupItemBuilderExample2,
-                            showSearchBox: true,
-                          ),
-                          compareFn: (item, sItem) => item.id == sItem.id,
-                          onChanged: (item) {
-                            setState(() {
-                              context.read<PCartToko>().clearCart();
-                              print('toko : ${item?.name}');
-                              print('id  : ${item?.id}');
-                              print('diskonnya  : ${item?.diskon_customer}');
-                              idtoko = item?.id; // menyimpan id toko
-                              toko = item?.name; // menyimpan nama toko
-                              sharedPreferences!
-                                  .setString('customer_name', toko.toString());
-                              sharedPreferences!
-                                  .setString('customer_id', idtoko.toString());
-                              loadCartFromApiPOSTOKO();
-                              DbAllitemsToko.db.getAllitemsToko(idtoko);
-                            });
-                          },
-                          dropdownDecoratorProps: const DropDownDecoratorProps(
-                            dropdownSearchDecoration: InputDecoration(
-                              labelText: 'Choose customer',
-                              filled: true,
-                              fillColor: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+      body: Column(
+        children: <Widget>[
+          if (sharedPreferences!.getString('customer_id').toString() !=
+              0.toString())
+            const Padding(
+              padding: EdgeInsets.all(8),
+              child: FakeSearchToko(),
+            ),
+          if (sharedPreferences!.getString('customer_id').toString() ==
+              0.toString())
+            const Padding(
+              padding: EdgeInsets.all(8),
+              child: FakeGlobalSearchToko(),
+            ),
+          Row(
+            children: [
+              const Padding(padding: EdgeInsets.all(4)),
+              Expanded(
+                child: DropdownSearch<UserModel>(
+                  asyncItems: (String? filter) => getData(filter),
+                  popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                    searchFieldProps: const TextFieldProps(
+                        decoration: InputDecoration(
+                      labelText: "Search..",
+                      prefixIcon: Icon(Icons.search),
+                    )),
+                    showSelectedItems: true,
+                    itemBuilder: _customPopupItemBuilderExample2,
+                    showSearchBox: true,
                   ),
-                  Row(
-                    children: [
-                      const Padding(padding: EdgeInsets.all(4)),
-                      Expanded(
-                        child: DropdownSearch<String>(
-                          items: const ["PAMERAN", "TITIPAN"],
-                          onChanged: (jenisform) {
-                            setState(() {
-                              jenisform = jenisform;
-                              if (jenisform == "TITIPAN") {
-                                idform = 3;
-                                jenisform = "null";
-                              } else if (jenisform == "PAMERAN") {
-                                idform = 2;
-                                jenisform = "pameran";
-                              }
-                            });
-                          },
-                          dropdownDecoratorProps: const DropDownDecoratorProps(
-                            dropdownSearchDecoration: InputDecoration(
-                              labelText: 'Select type of form',
-                              filled: true,
-                              fillColor: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  compareFn: (item, sItem) => item.id == sItem.id,
+                  onChanged: (item) {
+                    setState(() {
+                      context.read<PCartToko>().clearCart();
+                      print('toko : ${item?.name}');
+                      print('id  : ${item?.id}');
+                      print('diskonnya  : ${item?.diskon_customer}');
+                      idtoko = item?.id; // menyimpan id toko
+                      toko = item?.name; // menyimpan nama toko
+                      sharedPreferences!
+                          .setString('customer_name', toko.toString());
+                      sharedPreferences!
+                          .setString('customer_id', idtoko.toString());
+                      loadCartFromApiPOSTOKO();
+                      DbAllitemsToko.db.getAllitemsToko(idtoko);
+                    });
+                  },
+                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(
+                      labelText: 'Choose customer',
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
                   ),
-                  Expanded(
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              const Padding(padding: EdgeInsets.all(4)),
+              Expanded(
+                child: DropdownSearch<String>(
+                  items: const ["PAMERAN", "TITIPAN"],
+                  onChanged: (jenisform) {
+                    setState(() {
+                      jenisform = jenisform;
+                      if (jenisform == "TITIPAN") {
+                        idform = 3;
+                        jenisform = "null";
+                      } else if (jenisform == "PAMERAN") {
+                        idform = 2;
+                        jenisform = "pameran";
+                      }
+                    });
+                  },
+                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(
+                      labelText: 'Select type of form',
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: isLoading == true
+                ? const Center(
+                    child: CircularProgressIndicator(color: Colors.black))
+                : RefreshIndicator(
+                    onRefresh: refresh,
                     child: FutureBuilder(
                       future: DbAllitemsToko.db
                           .getAllitemsTokoByPage(idtoko, page, limit),
@@ -258,17 +263,20 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                             ),
                           );
                         } else if (dataSnapshot.hasError) {
-                          return const CircularProgressIndicator(
-                              color: Colors.black);
+                          return const Center(
+                            child:
+                                CircularProgressIndicator(color: Colors.black),
+                          );
                         } //if data NOT exists
-                        return const CircularProgressIndicator(
-                            color: Colors.black);
+                        return const Center(
+                          child: CircularProgressIndicator(color: Colors.black),
+                        );
                       },
                     ),
                   ),
-                ],
-              ),
-            ),
+          ),
+        ],
+      ),
       floatingActionButton: sharedPreferences!
                   .getString('customer_id')
                   .toString() ==

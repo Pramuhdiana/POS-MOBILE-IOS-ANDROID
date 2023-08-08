@@ -6,25 +6,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
-import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/authScreens/auth_screen.dart';
-import 'package:e_shop/database/db_allcustomer.dart';
-import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
-import 'package:e_shop/provider/provider_cart_retur.dart';
-import 'package:e_shop/provider/provider_cart_toko.dart';
-import 'package:e_shop/provider/provider_notification.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-
-import '../database/db_alldetailtransaksi.dart';
-import '../database/db_allitems.dart';
-import '../database/db_alltransaksi.dart';
-import '../database/db_notification_dummy.dart';
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({super.key});
@@ -39,7 +28,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
 
   var isLoading = false;
   splashScreenTimer() {
-    Timer(const Duration(seconds: 2), () async {
+    Timer(const Duration(seconds: 1), () async {
       //user sudah login
       print('token $token');
       if (sharedPreferences!.getString("token").toString() != "null") {
@@ -141,18 +130,18 @@ class _MySplashScreenState extends State<MySplashScreen> {
         print('token sandy done');
       });
     });
-    context.read<PCart>().clearCart();
-    context.read<PCartToko>().clearCart();
-    context.read<PCartRetur>().clearCart();
-    var apiProvider = ApiServices();
+    // context.read<PCart>().clearCart();
+    // context.read<PCartToko>().clearCart();
+    // context.read<PCartRetur>().clearCart();
+    // var apiProvider = ApiServices();
     // await DbAllitems.db.deleteAllitems();
     // await DbAllitemsToko.db.deleteAllitemsToko();
-    await DbAlltransaksi.db.deleteAlltransaksi();
-    await DbAllCustomer.db.deleteAllcustomer();
+    // await DbAlltransaksi.db.deleteAlltransaksi();
+    // await DbAllCustomer.db.deleteAllcustomer();
     // await DbAllitemsRetur.db.deleteAllitemsRetur();
-    await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
-    await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-    await DbCRM.db.deleteAllcrm();
+    // await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
+    // await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
+    // await DbCRM.db.deleteAllcrm();
     // try {
     //   await apiProvider.getAllItems();
     // } catch (c) {
@@ -163,56 +152,56 @@ class _MySplashScreenState extends State<MySplashScreen> {
     // } catch (c) {
     //   Fluttertoast.showToast(msg: "Failed To Load Data all items toko");
     // }
-    try {
-      await apiProvider.getAllTransaksi();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
-    }
+    // try {
+    //   await apiProvider.getAllTransaksi();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+    // }
     // try {
     //   apiProvider.getAllItemsRetur();
     // } catch (c) {
     //   Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
     // }
-    try {
-      await apiProvider.getAllDetailTransaksi();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all details transaksi");
-    }
-    try {
-      await apiProvider.getAllKodekeluarbarang();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all code refrence");
-    }
-    try {
-      await apiProvider.getAllCustomer();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all customer");
-    }
-    try {
-      await apiProvider.getUsers();
-    } catch (c) {
-      sharedPreferences!.setString('name', 'Failed To Load Data');
+    // try {
+    //   await apiProvider.getAllDetailTransaksi();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all details transaksi");
+    // }
+    // try {
+    //   await apiProvider.getAllKodekeluarbarang();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all code refrence");
+    // }
+    // try {
+    //   await apiProvider.getAllCustomer();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all customer");
+    // }
+    // try {
+    //   await apiProvider.getUsers();
+    // } catch (c) {
+    //   sharedPreferences!.setString('name', 'Failed To Load Data');
 
-      Fluttertoast.showToast(msg: "Failed To Load Data User");
-    }
-    try {
-      await apiProvider.getAllTCRM();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data CRM");
-    }
+    //   Fluttertoast.showToast(msg: "Failed To Load Data User");
+    // }
+    // try {
+    //   await apiProvider.getAllTCRM();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data CRM");
+    // }
 
-    context.read<PNewNotif>().clearNotif();
-    DbNotifDummy.db.getAllNotif(1).then((value) {
-      for (var i = 0; i < value.length; i++) {
-        context.read<PNewNotif>().addItem(
-              1,
-            );
-      }
-    });
+    // context.read<PNewNotif>().clearNotif();
+    // DbNotifDummy.db.getAllNotif(1).then((value) {
+    //   for (var i = 0; i < value.length; i++) {
+    //     context.read<PNewNotif>().addItem(
+    //           1,
+    //         );
+    //   }
+    // });
 
     await loadCartFromApiPOSSALES();
     // wait for 2 seconds to simulate loading of data
-    await Future.delayed(const Duration(seconds: 2));
+    // await Future.delayed(const Duration(seconds: 2));
 
     setState(() {
       isLoading = false;

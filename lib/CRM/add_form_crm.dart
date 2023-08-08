@@ -84,6 +84,7 @@ class _AddFormCRMState extends State<AddFormCRM> {
   late FToast fToast;
   @override
   void initState() {
+    toko = 'false';
     numberFocusNode.addListener(() {
       bool hasFocus = numberFocusNode.hasFocus;
       if (hasFocus) {
@@ -942,7 +943,7 @@ class _AddFormCRMState extends State<AddFormCRM> {
 
   //form validasi
   formValidation() async {
-    if (toko == null ||
+    if (toko == 'false' ||
         dateinput.text.isEmpty ||
         reportinput.text.isEmpty ||
         cek_wa == false && cek_tlp == false && cek_visit == false) {

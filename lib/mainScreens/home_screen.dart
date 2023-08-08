@@ -9,9 +9,11 @@ import 'package:e_shop/database/model_allitems_retur.dart';
 import 'package:e_shop/database/model_alltransaksi.dart';
 import 'package:e_shop/provider/provider_notification.dart';
 import 'package:e_shop/search/new_search.dart';
+import 'package:e_shop/widgets/shimmer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
@@ -41,6 +43,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../database/db_alldetailtransaksi.dart';
+import '../database/db_allitems.dart';
+import '../database/db_allitems_retur.dart';
+import '../database/db_allitems_toko.dart';
 import '../database/model_allitems_toko.dart';
 import '../splashScreen/my_splas_screen.dart';
 import '../testing/app_colors.dart';
@@ -94,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var listNominal = [];
   int list = 0;
 
-  var isLoading = false;
+  bool? isLoading;
   late FirebaseMessaging messaging;
   QRViewController? controller;
   XFile? imgXFile;
@@ -107,8 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int? qtyProductCRM = 0;
   int? qtyProductTicketing = 0;
   String token = sharedPreferences!.getString("token").toString();
-  String newOpen = sharedPreferences!.getString("newOpenHome").toString();
-
+  String newOpen = '';
   // @override
   // void didChangeDependencies() {
   //   super.didChangeDependencies();
@@ -125,36 +130,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    isLoading = true;
+    newOpen = sharedPreferences!.getString("newOpenHome").toString();
+    controller?.stopCamera();
     if (newOpen == 'true') {
-      print('harus 1x');
-      _getDataToko(token);
-      _getDataRetur(token);
-      _getDataSales(token);
-      // _getDataHistory(token);
-      setState(() {
-        sharedPreferences!.setString('newOpenHome', 'false');
-      });
+      _loadFromApi();
     }
-
-    //initial sales
-    // DbAllitems.db.getAllitems().then((value) {
-    //   setState(() {
-    //     qtyProductSales = value.length;
-    //   });
-    // });
-    //initial toko
-    // DbAllitemsToko.db.getAllitems().then((value) {
-    //   setState(() {
-    //     qtyProductToko = value.length;
-    //   });
-    // });
-    //initial retur
-    // DbAllitemsRetur.db.getAllRetur().then((value) {
-    //   setState(() {
-    //     qtyProductRetur = value.length;
-    //   });
-    // });
-    // initial history
     DbAlltransaksi.db.getAllHistory().then((value) {
       setState(() {
         qtyProductHistory = value.length;
@@ -298,7 +279,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // percentYear = 0.7;
     percentMonth = 0.3;
     percentWeek = 0.1;
-    controller?.stopCamera();
     //star notifi
     PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
     pushNotificationsSystem.whenNotificationReceived(context);
@@ -413,18 +393,25 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future refresh() async {
-    setState(() {
-      _loadFromApi();
-      context.read<PCart>().clearCart(); //clear cart
-      loadCartFromApiPOSSALES(); //a,bil data cart
-      DbAlltransaksi.db.getAlltransaksi(1); //ambil data
-      context.read<PNewNotif>().clearNotif();
-      DbNotifDummy.db.getAllNotif(1).then((value) {
-        for (var i = 0; i < value.length; i++) {
-          context.read<PNewNotif>().addItem(
-                1,
-              );
-        }
+    context.read<PCart>().clearCart(); //clear cart
+    await loadCartFromApiPOSSALES(); //ambil data cart
+    context.read<PNewNotif>().clearNotif(); //clear notif
+    DbNotifDummy.db.getAllNotif(1).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        context.read<PNewNotif>().addItem(
+              1,
+            );
+      }
+    }); //ambil data notif
+    await DbAlltransaksi.db.getAlltransaksi(1); //ambil data ntransaksi
+    await DbAlltransaksi.db.getAllHistory().then((value) {
+      setState(() {
+        qtyProductHistory = value.length;
+      });
+    });
+    await DbCRM.db.getAllcrm().then((value) {
+      setState(() {
+        qtyProductCRM = value.length;
       });
     });
   }
@@ -433,46 +420,241 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: RefreshIndicator(
-        onRefresh: refresh,
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 25),
-          child: ListView(
-            children: [
-              Container(
-                  color: Colors.white,
-                  child: RefreshIndicator(
-                    onRefresh: refresh,
-                    child: Column(
-                      children: <Widget>[
-                        _bodyatas(),
-                        _bodytengah(),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                              bottom: 7.0, top: 10.0, left: 40.0, right: 40.0),
-                          child: Divider(
-                            height: 1,
-                            thickness: 5,
-                            color: Colors.black,
+      body: isLoading == false
+          ? shimmerEffect()
+          : RefreshIndicator(
+              onRefresh: refresh,
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 25),
+                child: ListView(
+                  children: [
+                    Container(
+                        color: Colors.white,
+                        child: RefreshIndicator(
+                          onRefresh: refresh,
+                          child: Column(
+                            children: <Widget>[
+                              _bodyatas(),
+                              _bodytengah(),
+                              const Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: 7.0,
+                                    top: 10.0,
+                                    left: 40.0,
+                                    right: 40.0),
+                                child: Divider(
+                                  height: 1,
+                                  thickness: 5,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Text(
+                                version,
+                                style: TextStyle(
+                                    color: Colors.grey[800],
+                                    fontStyle: FontStyle.italic),
+                              )
+                              // if (sharedPreferences!.getString("role")! != "SALES")
+                              //   _widget3()
+                            ],
                           ),
-                        ),
-                        Text(
-                          version,
-                          style: TextStyle(
-                              color: Colors.grey[800],
-                              fontStyle: FontStyle.italic),
-                        )
-                        // if (sharedPreferences!.getString("role")! != "SALES")
-                        //   _widget3()
-                      ],
-                    ),
-                  )),
-            ],
-          ),
-        ),
-      ),
+                        )),
+                  ],
+                ),
+              ),
+            ),
     );
   }
+
+  Widget shimmerEffect() {
+    return Shimmer.fromColors(
+        baseColor: Colors.black,
+        period: const Duration(seconds: 2),
+        highlightColor: Colors.grey[300]!,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            //atas
+            const Padding(
+                padding: EdgeInsets.only(top: 83, left: 7, right: 7),
+                child: ListTile(
+                  leading: ShimmerWidget.circular(height: 45, width: 45),
+                  trailing: ShimmerWidget.circular(height: 45, width: 45),
+                )),
+            //atas 2
+            Padding(
+                padding: const EdgeInsets.only(top: 23, left: 7, right: 7),
+                child: ListTile(
+                  title: Align(
+                    alignment: Alignment.centerLeft,
+                    child: ShimmerWidget.rectangular(
+                      height: 25,
+                      width: MediaQuery.of(context).size.width * 0.4,
+                    ),
+                  ),
+                  subtitle: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: ShimmerWidget.rectangular(
+                        height: 20,
+                        width: MediaQuery.of(context).size.width * 0.25,
+                      ),
+                    ),
+                  ),
+                )),
+            //atas 3
+            Padding(
+                padding: const EdgeInsets.only(top: 18, left: 7, right: 17),
+                child: ListTile(
+                  title: Align(
+                    alignment: Alignment.centerLeft,
+                    child: SizedBox(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      // color: Colors.black,
+
+                      child: const ShimmerWidget.rectangular(
+                        height: 35,
+                      ),
+                    ),
+                  ),
+                  trailing: const ShimmerWidget.circular(height: 45, width: 45),
+                )),
+            Padding(
+              padding: const EdgeInsets.only(top: 25, left: 17, right: 7),
+              child: ListTile(
+                  title: Align(
+                      alignment: Alignment.centerLeft,
+                      child: ShimmerWidget.rectangular(
+                        height: 20,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                      )),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[400]!,
+                        ),
+                        height: 20,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                      ),
+                    ),
+                  )),
+            ),
+            //motnhly
+            Padding(
+                padding: const EdgeInsets.only(left: 7, right: 7),
+                child: ListTile(
+                  leading: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey[400]!,
+                        border: Border.all(),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(36))),
+                    height: 30,
+                    width: MediaQuery.of(context).size.width * 0.3,
+                  ),
+                )),
+            Padding(
+                padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      height: 210,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[400]!,
+                          border: Border.all(),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(36))),
+                      width: MediaQuery.of(context).size.width * 0.07,
+                    ),
+                    Container(
+                      height: 210,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[400]!,
+                          border: Border.all(),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(36))),
+                      width: MediaQuery.of(context).size.width * 0.07,
+                    ),
+                    Container(
+                      height: 210,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[400]!,
+                          border: Border.all(),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(36))),
+                      width: MediaQuery.of(context).size.width * 0.07,
+                    ),
+                    Container(
+                      height: 210,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[400]!,
+                          border: Border.all(),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(36))),
+                      width: MediaQuery.of(context).size.width * 0.07,
+                    ),
+                    Container(
+                      height: 210,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[400]!,
+                          border: Border.all(),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(36))),
+                      width: MediaQuery.of(context).size.width * 0.07,
+                    ),
+                    Container(
+                      height: 210,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[400]!,
+                          border: Border.all(),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(36))),
+                      width: MediaQuery.of(context).size.width * 0.07,
+                    ),
+                    Container(
+                      height: 210,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[400]!,
+                          border: Border.all(),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(36))),
+                      width: MediaQuery.of(context).size.width * 0.07,
+                    ),
+                    Container(
+                      height: 210,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[400]!,
+                          border: Border.all(),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(36))),
+                      width: MediaQuery.of(context).size.width * 0.07,
+                    ),
+                    Container(
+                      height: 210,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[400]!,
+                          border: Border.all(),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(36))),
+                      width: MediaQuery.of(context).size.width * 0.07,
+                    ),
+                  ],
+                )),
+          ],
+        ));
+  }
+  // Widget shimmerEffect() => const ListTile(
+  //       leading: ShimmerWidget.circular(height: 64, width: 64),
+  //       // title: ShimmerWidget.rectangular(height: 16),
+  //       // subtitle: ShimmerWidget.rectangular(height: 14),
+  //       trailing: ShimmerWidget.circular(height: 64, width: 64),
+  //     );
 
   Widget _bodyatas() {
     String greeting() {
@@ -1699,9 +1881,76 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _loadFromApi() async {
+    setState(() {
+      isLoading = false;
+    });
     var apiProvider = ApiServices();
+    context.read<PCart>().clearCart();
+    context.read<PCartToko>().clearCart();
+    context.read<PCartRetur>().clearCart();
+    await DbAllitems.db.deleteAllitems();
+    await DbAllitemsToko.db.deleteAllitemsToko();
+    await DbAlltransaksi.db.deleteAlltransaksi();
+    await DbAllCustomer.db.deleteAllcustomer();
+    await DbAllitemsRetur.db.deleteAllitemsRetur();
+    await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
+    await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
     await DbCRM.db.deleteAllcrm();
-    await apiProvider.getAllTCRM();
-    await Future.delayed(const Duration(seconds: 2));
+    await _getDataToko(token);
+    await _getDataRetur(token);
+    await _getDataSales(token);
+    try {
+      await apiProvider.getAllTransaksi();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+    }
+    try {
+      await apiProvider.getAllDetailTransaksi();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all details transaksi");
+    }
+    try {
+      await apiProvider.getAllKodekeluarbarang();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all code refrence");
+    }
+    try {
+      await apiProvider.getAllCustomer();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all customer");
+    }
+    try {
+      await apiProvider.getUsers();
+    } catch (c) {
+      sharedPreferences!.setString('name', 'Failed To Load Data');
+
+      Fluttertoast.showToast(msg: "Failed To Load Data User");
+    }
+    try {
+      await apiProvider.getAllTCRM();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data CRM");
+    }
+
+    context.read<PNewNotif>().clearNotif();
+    await DbNotifDummy.db.getAllNotif(1).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        context.read<PNewNotif>().addItem(
+              1,
+            );
+      }
+    });
+
+    //initial sales
+    // DbAllitems.db.getAllitems().then((value) {
+    //   setState(() {
+    //     qtyProductSales = value.length;
+    //   });
+    // });
+
+    setState(() {
+      sharedPreferences!.setString('newOpenHome', 'false');
+      isLoading = true;
+    });
   }
 }

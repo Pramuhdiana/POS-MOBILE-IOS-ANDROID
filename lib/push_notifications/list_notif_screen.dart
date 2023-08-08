@@ -43,12 +43,12 @@ class ListNotifScreen extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             primary: Colors.black, shape: const StadiumBorder()),
-        onPressed: () {
+        onPressed: () async {
           context.read<PNewNotif>().getItems.isEmpty
               ? null
               : context.read<PNewNotif>().removesItem();
-          DbNotifDummy.db.updateAllnotifByid(notif.id);
           myAlert(notif.body);
+          await DbNotifDummy.db.updateAllnotifByid(notif.id);
         },
         child: Container(
           constraints: const BoxConstraints(maxHeight: 40),

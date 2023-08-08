@@ -93,7 +93,12 @@ class _PosReturScreenState extends State<PosReturScreen> {
 
   Future refresh() async {
     setState(() {
-      DbAllitemsRetur.db.getAllitemsRetur(idtoko);
+      isLoading = true;
+    });
+    await DbAllitemsRetur.db.getAllitemsRetur(idtoko);
+    setState(() {
+      limit = 10;
+      isLoading = false;
     });
   }
 
@@ -104,65 +109,66 @@ class _PosReturScreenState extends State<PosReturScreen> {
       appBar: AppbarCartRetur(
         title: '$qtyProduct product ',
       ),
-      body: isLoading == true
-          ? const Center(child: CircularProgressIndicator(color: Colors.black))
-          : RefreshIndicator(
-              onRefresh: refresh,
-              child: Column(
-                children: <Widget>[
-                  // if (sharedPreferences!.getString('customer_id').toString() !=
-                  //     0.toString())
-                  //   const Padding(
-                  //     padding: EdgeInsets.all(8),
-                  //     child: FakeSearchRetur(),
-                  //   ),
-                  Row(
-                    children: [
-                      const Padding(padding: EdgeInsets.all(4)),
-                      Expanded(
-                        child: DropdownSearch<UserModel>(
-                          asyncItems: (String? filter) => getData(filter),
-                          popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                            searchFieldProps: const TextFieldProps(
-                                decoration: InputDecoration(
-                              labelText: "Search..",
-                              prefixIcon: Icon(Icons.search),
-                            )),
-                            showSelectedItems: true,
-                            itemBuilder: _customPopupItemBuilderExample2,
-                            showSearchBox: true,
-                          ),
-                          compareFn: (item, sItem) => item.id == sItem.id,
-                          onChanged: (item) {
-                            setState(() {
-                              context.read<PCartRetur>().clearCart();
-                              print('toko : ${item?.name}');
-                              print('id  : ${item?.id}');
-                              print('diskonnya  : ${item?.diskon_customer}');
-                              idtoko = item?.id; // menyimpan id toko
-                              toko = item?.name; // menyimpan nama toko
-                              sharedPreferences!.setString(
-                                  'customer_name_retur', toko.toString());
-                              sharedPreferences!.setString(
-                                  'customer_id_retur', idtoko.toString());
-                              // sharedPreferences!
-                              //     .setString('customer_id', idtoko.toString());
-                              loadCartFromApiPOSRetur(idtoko);
-                              DbAllitemsRetur.db.getAllitemsRetur(idtoko);
-                            });
-                          },
-                          dropdownDecoratorProps: const DropDownDecoratorProps(
-                            dropdownSearchDecoration: InputDecoration(
-                              labelText: 'Choose customer',
-                              filled: true,
-                              fillColor: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+      body: Column(
+        children: <Widget>[
+          // if (sharedPreferences!.getString('customer_id').toString() !=
+          //     0.toString())
+          //   const Padding(
+          //     padding: EdgeInsets.all(8),
+          //     child: FakeSearchRetur(),
+          //   ),
+          Row(
+            children: [
+              const Padding(padding: EdgeInsets.all(4)),
+              Expanded(
+                child: DropdownSearch<UserModel>(
+                  asyncItems: (String? filter) => getData(filter),
+                  popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                    searchFieldProps: const TextFieldProps(
+                        decoration: InputDecoration(
+                      labelText: "Search..",
+                      prefixIcon: Icon(Icons.search),
+                    )),
+                    showSelectedItems: true,
+                    itemBuilder: _customPopupItemBuilderExample2,
+                    showSearchBox: true,
                   ),
-                  Expanded(
+                  compareFn: (item, sItem) => item.id == sItem.id,
+                  onChanged: (item) {
+                    setState(() {
+                      context.read<PCartRetur>().clearCart();
+                      print('toko : ${item?.name}');
+                      print('id  : ${item?.id}');
+                      print('diskonnya  : ${item?.diskon_customer}');
+                      idtoko = item?.id; // menyimpan id toko
+                      toko = item?.name; // menyimpan nama toko
+                      sharedPreferences!
+                          .setString('customer_name_retur', toko.toString());
+                      sharedPreferences!
+                          .setString('customer_id_retur', idtoko.toString());
+                      // sharedPreferences!
+                      //     .setString('customer_id', idtoko.toString());
+                      loadCartFromApiPOSRetur(idtoko);
+                      DbAllitemsRetur.db.getAllitemsRetur(idtoko);
+                    });
+                  },
+                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(
+                      labelText: 'Choose customer',
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: isLoading == true
+                ? const Center(
+                    child: CircularProgressIndicator(color: Colors.black))
+                : RefreshIndicator(
+                    onRefresh: refresh,
                     child: FutureBuilder(
                       future: DbAllitemsRetur.db
                           .getAllitemsReturByPage(idtoko, page, limit),
@@ -220,9 +226,10 @@ class _PosReturScreenState extends State<PosReturScreen> {
                       },
                     ),
                   ),
-                ],
-              ),
-            ),
+          )
+        ],
+      ),
+
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {
       //     Navigator.push(

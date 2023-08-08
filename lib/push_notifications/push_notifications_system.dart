@@ -16,77 +16,116 @@ class PushNotificationsSystem {
   Future whenNotificationReceived(BuildContext context) async {
     //1. Terminated
     //When the app is completely closed and opened directly from the push notification
-    // FirebaseMessaging.instance
-    //     .getInitialMessage()
-    //     .then((RemoteMessage? remoteMessage) async {
-    //   if (remoteMessage != null) {
-    //     print("message recieved no 1");
-    //     //add to notif
-    //     print("add notif");
-    //     context.read<PNewNotif>().addItem(
-    //           1,
-    //         );
-    //     //add to database
-    //     DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
-    //       id: 1,
-    //       title: remoteMessage.notification!.title,
-    //       body: remoteMessage.notification!.body,
-    //       created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-    //     ));
+    try {
+      FirebaseMessaging.instance
+          .getInitialMessage()
+          .then((RemoteMessage? remoteMessage) {
+        if (remoteMessage != null) {
+          // print("message recieved no 1");
+          // add to notif
+          print("add notif");
+          context.read<PNewNotif>().addItem(
+                1,
+              );
+          //add to database
+          DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
+            id: 1,
+            title: remoteMessage.notification!.title,
+            body: remoteMessage.notification!.body,
+            created_at: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+          ));
 
-    //     //open app and show notification data
-    //     showNotificationWhenOpenApp(
-    //       context,
-    //     );
-    //   }
-    // });
+          // //open app and show notification data
+          // showNotificationWhenOpenApp(
+          //   context,
+          // );
+        } else {}
+      });
+    } catch (c) {
+      print(c);
+    }
 
     //2. Foreground
     //When the app is open and it receives a push notification
-    FirebaseMessaging.onMessage.listen((RemoteMessage? remoteMessage) async {
-      if (remoteMessage != null) {
-        print("message recieved no 2");
-        //add to notif
-        print("add notif");
-        context.read<PNewNotif>().addItem(
-              1,
-            );
-        //add to database
-        DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
-            title: remoteMessage.notification!.title,
-            body: remoteMessage.notification!.body,
-            created_at: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
-            status: 1));
-        //open app and show notification data
-        showNotificationWhenOpenApp(
-          context,
-        );
-      }
-    });
+    try {
+      print(FirebaseMessaging.onMessage);
+      FirebaseMessaging.onMessage.listen((RemoteMessage? remoteMessage) async {
+        if (remoteMessage != null) {
+          print("message recieved no 2");
+          //add to notif
+          print("add notif");
+          context.read<PNewNotif>().addItem(
+                1,
+              );
+          //add to database
+          DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
+              title: remoteMessage.notification!.title,
+              body: remoteMessage.notification!.body,
+              created_at: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
+              status: 1));
+          // //open app and show notification data
+          showNotificationWhenOpenApp(
+            context,
+          );
+        } else {}
+      });
+    } catch (c) {
+      print(c);
+    }
 
     // 3. Background
     // When the app is in the background and opened directly from the push notification.
-    FirebaseMessaging.onMessageOpenedApp
-        .listen((RemoteMessage? remoteMessage3) async {
-      if (remoteMessage3 != null) {
-        print("message recieved no 3");
-        // add to notif
-        print("add notif");
-        context.read<PNewNotif>().addItem(
-              1,
-            );
-        //add to database
-        DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
-            title: remoteMessage3.notification!.title,
-            body: remoteMessage3.notification!.body,
-            created_at: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
-            status: 1));
-        //open the app - show notification data
-        showNotificationWhenOpenApp(
-          context,
-        );
-      }
-    });
+    try {
+      FirebaseMessaging.onMessageOpenedApp
+          .listen((RemoteMessage? remoteMessage3) async {
+        if (remoteMessage3 != null) {
+          print("message recieved no 3");
+          // add to notif
+          print("add notif");
+          context.read<PNewNotif>().addItem(
+                1,
+              );
+          //add to database
+          DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
+              title: remoteMessage3.notification!.title,
+              body: remoteMessage3.notification!.body,
+              created_at: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
+              status: 1));
+          //open the app - show notification data
+          showNotificationWhenOpenApp(
+            context,
+          );
+        } else {}
+      });
+    } catch (c) {
+      print(c);
+    }
+
+    // try {
+    //   FirebaseMessaging.onBackgroundMessage(
+    //       (RemoteMessage? remoteMessage4) async {
+    //     if (remoteMessage4 != null) {
+    //       print("message recieved no 4");
+    //       // add to notif
+    //       print("add notif");
+    //       context.read<PNewNotif>().addItem(
+    //             1,
+    //           );
+    //       //add to database
+    //       DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
+    //           title: remoteMessage4.notification!.title,
+    //           body: remoteMessage4.notification!.body,
+    //           created_at: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
+    //           status: 1));
+    //       //open the app - show notification data
+    //       showNotificationWhenOpenApp(
+    //         context,
+    //       );
+    //     } else {}
+    //   });
+    // } catch (c) {
+    //   print(c);
+    // }
   }
 
   // //device recognition token
