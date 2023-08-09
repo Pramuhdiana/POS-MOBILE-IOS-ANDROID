@@ -56,7 +56,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
   bool isLoading = false;
   int? qtyProduct = 0;
   int page = 0;
-  int limit = 10;
+  int limit = 8;
   ScrollController scrollController = ScrollController();
   String newOpen = sharedPreferences!.getString("newOpenPosSales").toString();
 
@@ -75,7 +75,8 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
           scrollController.position.maxScrollExtent) {
         if (page != qtyProduct) {
           // on bottom scroll API Call until last page
-          limit += 5;
+
+          page += 1;
           DbAllitems.db.getAllitemsBtPage(page, limit);
         }
       }
@@ -126,6 +127,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
       Fluttertoast.showToast(msg: "Failed To Load Data all items");
     }
     setState(() {
+      page = 0;
       limit = 10;
       isLoading = false;
     });
@@ -203,8 +205,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                                       )
                                     })
                                 : DbAllitems.db
-                                    .getAllitemsBykode(
-                                        kodeRefrensi, page, limit)
+                                    .getAllitemsBykode(kodeRefrensi, 0, 9999)
                                     .then((value) => {
                                           setState(
                                             () {

@@ -7,6 +7,7 @@ import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/authScreens/auth_screen.dart';
+import 'package:e_shop/buStephanie/approve_pricing_screen.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
@@ -14,6 +15,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+
+import '../api/api_services.dart';
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({super.key});
@@ -25,6 +28,7 @@ class MySplashScreen extends StatefulWidget {
 class _MySplashScreenState extends State<MySplashScreen> {
   String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
+  int role = 0;
 
   var isLoading = false;
   splashScreenTimer() {
@@ -44,8 +48,10 @@ class _MySplashScreenState extends State<MySplashScreen> {
             // sharedPreferences!.setString('newOpenHistory', 'true');
             sharedPreferences!.setString('total_product_sales', '0');
             await getToken();
-            Navigator.push(
-                context, MaterialPageRoute(builder: (c) => const MainScreen()));
+            role == 15
+                ? dialogBox()
+                : Navigator.push(context,
+                    MaterialPageRoute(builder: (c) => const MainScreen()));
           } catch (c) {
             sharedPreferences!.setString('newOpen', 'true');
             sharedPreferences!.setString('newOpenHome', 'true');
@@ -53,8 +59,10 @@ class _MySplashScreenState extends State<MySplashScreen> {
             sharedPreferences!.setString('newOpenPosToko', 'true');
             sharedPreferences!.setString('newOpenPosRetur', 'true');
             sharedPreferences!.setString('total_product_sales', '0');
-            Navigator.push(
-                context, MaterialPageRoute(builder: (c) => const MainScreen()));
+            role == 15
+                ? dialogBox()
+                : Navigator.push(context,
+                    MaterialPageRoute(builder: (c) => const MainScreen()));
           }
         } catch (c) {
           Fluttertoast.showToast(msg: "Failed To Load Data");
@@ -133,7 +141,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     // context.read<PCart>().clearCart();
     // context.read<PCartToko>().clearCart();
     // context.read<PCartRetur>().clearCart();
-    // var apiProvider = ApiServices();
+    var apiProvider = ApiServices();
     // await DbAllitems.db.deleteAllitems();
     // await DbAllitemsToko.db.deleteAllitemsToko();
     // await DbAlltransaksi.db.deleteAlltransaksi();
@@ -177,13 +185,16 @@ class _MySplashScreenState extends State<MySplashScreen> {
     // } catch (c) {
     //   Fluttertoast.showToast(msg: "Failed To Load Data all customer");
     // }
-    // try {
-    //   await apiProvider.getUsers();
-    // } catch (c) {
-    //   sharedPreferences!.setString('name', 'Failed To Load Data');
-
-    //   Fluttertoast.showToast(msg: "Failed To Load Data User");
-    // }
+    try {
+      await apiProvider.getUsers();
+      setState(() {
+        role = int.parse(sharedPreferences!.getString('role_sales_brand')!);
+        print(role);
+      });
+    } catch (c) {
+      sharedPreferences!.setString('name', 'Failed To Load Data');
+      Fluttertoast.showToast(msg: "Failed To Load Data User");
+    }
     // try {
     //   await apiProvider.getAllTCRM();
     // } catch (c) {
@@ -305,6 +316,56 @@ class _MySplashScreenState extends State<MySplashScreen> {
         ),
       ),
     );
+  }
+
+  dialogBox() {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            title: const Text('Please choose aplikasi'),
+            content: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    //if user click this button, user can upload image from gallery
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (c) => const MainScreen()));
+                    },
+                    child: const Row(
+                      children: [
+                        Icon(Icons.trending_up_sharp),
+                        Text('Pos Mobile'),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    //if user click this button. user can upload image from camera
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (c) => ApprovePricingScreen()));
+                    },
+                    child: const Row(
+                      children: [
+                        Icon(Icons.price_check_sharp),
+                        Text('Approval Pricing'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
 

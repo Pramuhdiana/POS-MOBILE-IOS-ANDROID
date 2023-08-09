@@ -135,155 +135,157 @@ class _HomeScreenState extends State<HomeScreen> {
     controller?.stopCamera();
     if (newOpen == 'true') {
       _loadFromApi();
+    } else {
+      DbAlltransaksi.db.getAllHistory().then((value) {
+        setState(() {
+          qtyProductHistory = value.length;
+        });
+      });
+      //initial customer
+      DbAllCustomer.db.getAllcustomer().then((value) {
+        setState(() {
+          qtyProductCustomer = value.length;
+        });
+      });
+      //initial customer
+      DbCRM.db.getAllcrm().then((value) {
+        setState(() {
+          qtyProductCRM = value.length;
+        });
+      });
+
+      year = DateFormat('y').format(DateTime.now());
+      //jan
+      DbAlltransaksi.db.getAlltransaksiNominalByMonth('1', year).then((value) {
+        for (var i = 0; i < value.length; i++) {
+          barJan += value[i].nett!; //menjumlahkan ke list
+        }
+        setState(() {
+          barJan = (barJan / targetByMonth).round();
+        });
+      });
+      //feb
+      DbAlltransaksi.db.getAlltransaksiNominalByMonth('2', year).then((value) {
+        for (var i = 0; i < value.length; i++) {
+          barFeb += value[i].nett!; //menjumlahkan ke list
+        }
+        setState(() {
+          barFeb = (barFeb / targetByMonth).round();
+        });
+      });
+      //mar
+      DbAlltransaksi.db.getAlltransaksiNominalByMonth('3', year).then((value) {
+        for (var i = 0; i < value.length; i++) {
+          barMar += value[i].nett!; //menjumlahkan ke list
+        }
+        setState(() {
+          barMar = (barMar / targetByMonth).round();
+        });
+      });
+      //apr
+      DbAlltransaksi.db.getAlltransaksiNominalByMonth('4', year).then((value) {
+        for (var i = 0; i < value.length; i++) {
+          barApr += value[i].nett!; //menjumlahkan ke list
+        }
+        setState(() {
+          barApr = (barApr / targetByMonth).round();
+        });
+      });
+      //may
+      DbAlltransaksi.db.getAlltransaksiNominalByMonth('5', year).then((value) {
+        for (var i = 0; i < value.length; i++) {
+          barMay += value[i].nett!; //menjumlahkan ke list
+        }
+        setState(() {
+          barMay = (barMay / targetByMonth).round();
+        });
+      });
+      //jun
+      DbAlltransaksi.db.getAlltransaksiNominalByMonth('6', year).then((value) {
+        for (var i = 0; i < value.length; i++) {
+          barJun += value[i].nett!; //menjumlahkan ke list
+        }
+        setState(() {
+          barJun = (barJun / targetByMonth).round();
+        });
+      });
+      //jul
+      DbAlltransaksi.db.getAlltransaksiNominalByMonth('7', year).then((value) {
+        for (var i = 0; i < value.length; i++) {
+          barJul += value[i].nett!; //menjumlahkan ke list
+        }
+        setState(() {
+          barJul = (barJul / targetByMonth).round();
+        });
+      });
+      //agus
+      DbAlltransaksi.db.getAlltransaksiNominalByMonth('8', year).then((value) {
+        for (var i = 0; i < value.length; i++) {
+          barAug += value[i].nett!; //menjumlahkan ke list
+        }
+        setState(() {
+          barAug = (barAug / targetByMonth).round();
+        });
+      });
+      //sept
+      DbAlltransaksi.db.getAlltransaksiNominalByMonth('9', year).then((value) {
+        for (var i = 0; i < value.length; i++) {
+          barSep += value[i].nett!; //menjumlahkan ke list
+        }
+        setState(() {
+          barSep = (barSep / targetByMonth).round();
+        });
+      });
+      //okt
+      DbAlltransaksi.db.getAlltransaksiNominalByMonth('10', year).then((value) {
+        for (var i = 0; i < value.length; i++) {
+          barOct += value[i].nett!; //menjumlahkan ke list
+        }
+        setState(() {
+          barOct = (barOct / targetByMonth).round();
+        });
+      });
+      //nov
+      DbAlltransaksi.db.getAlltransaksiNominalByMonth('11', year).then((value) {
+        for (var i = 0; i < value.length; i++) {
+          barNov += value[i].nett!; //menjumlahkan ke list
+        }
+        setState(() {
+          barNov = (barNov / targetByMonth).round();
+        });
+      });
+      //desc
+      DbAlltransaksi.db.getAlltransaksiNominalByMonth('12', year).then((value) {
+        for (var i = 0; i < value.length; i++) {
+          barDec += value[i].nett!; //menjumlahkan ke list
+        }
+        setState(() {
+          barDec = (barDec / targetByMonth).round();
+        });
+      });
+
+      DbAlltransaksi.db.getAlltransaksiNominal(year).then((value) {
+        for (var i = 0; i < value.length; i++) {
+          list += value[i].nett!; //menjumlahkan ke list
+          listNominal.add(value[i].nett); //memasukan ke list
+        }
+        percentYear = (list / targetByYear);
+        setState(() {
+          (percentYear > 1.0)
+              ? percentYear = 1.0
+              : percentYear = list / targetByYear;
+        });
+      });
+      // percentYear = 0.7;
+      percentMonth = 0.3;
+      percentWeek = 0.1;
+      //star notifi
+      PushNotificationsSystem pushNotificationsSystem =
+          PushNotificationsSystem();
+      pushNotificationsSystem.whenNotificationReceived(context);
+      // pushNotificationsSystem.notificationPopUp(context);
+      //end notif
     }
-    DbAlltransaksi.db.getAllHistory().then((value) {
-      setState(() {
-        qtyProductHistory = value.length;
-      });
-    });
-    //initial customer
-    DbAllCustomer.db.getAllcustomer().then((value) {
-      setState(() {
-        qtyProductCustomer = value.length;
-      });
-    });
-    //initial customer
-    DbCRM.db.getAllcrm().then((value) {
-      setState(() {
-        qtyProductCRM = value.length;
-      });
-    });
-
-    year = DateFormat('y').format(DateTime.now());
-    //jan
-    DbAlltransaksi.db.getAlltransaksiNominalByMonth('1', year).then((value) {
-      for (var i = 0; i < value.length; i++) {
-        barJan += value[i].nett!; //menjumlahkan ke list
-      }
-      setState(() {
-        barJan = (barJan / targetByMonth).round();
-      });
-    });
-    //feb
-    DbAlltransaksi.db.getAlltransaksiNominalByMonth('2', year).then((value) {
-      for (var i = 0; i < value.length; i++) {
-        barFeb += value[i].nett!; //menjumlahkan ke list
-      }
-      setState(() {
-        barFeb = (barFeb / targetByMonth).round();
-      });
-    });
-    //mar
-    DbAlltransaksi.db.getAlltransaksiNominalByMonth('3', year).then((value) {
-      for (var i = 0; i < value.length; i++) {
-        barMar += value[i].nett!; //menjumlahkan ke list
-      }
-      setState(() {
-        barMar = (barMar / targetByMonth).round();
-      });
-    });
-    //apr
-    DbAlltransaksi.db.getAlltransaksiNominalByMonth('4', year).then((value) {
-      for (var i = 0; i < value.length; i++) {
-        barApr += value[i].nett!; //menjumlahkan ke list
-      }
-      setState(() {
-        barApr = (barApr / targetByMonth).round();
-      });
-    });
-    //may
-    DbAlltransaksi.db.getAlltransaksiNominalByMonth('5', year).then((value) {
-      for (var i = 0; i < value.length; i++) {
-        barMay += value[i].nett!; //menjumlahkan ke list
-      }
-      setState(() {
-        barMay = (barMay / targetByMonth).round();
-      });
-    });
-    //jun
-    DbAlltransaksi.db.getAlltransaksiNominalByMonth('6', year).then((value) {
-      for (var i = 0; i < value.length; i++) {
-        barJun += value[i].nett!; //menjumlahkan ke list
-      }
-      setState(() {
-        barJun = (barJun / targetByMonth).round();
-      });
-    });
-    //jul
-    DbAlltransaksi.db.getAlltransaksiNominalByMonth('7', year).then((value) {
-      for (var i = 0; i < value.length; i++) {
-        barJul += value[i].nett!; //menjumlahkan ke list
-      }
-      setState(() {
-        barJul = (barJul / targetByMonth).round();
-      });
-    });
-    //agus
-    DbAlltransaksi.db.getAlltransaksiNominalByMonth('8', year).then((value) {
-      for (var i = 0; i < value.length; i++) {
-        barAug += value[i].nett!; //menjumlahkan ke list
-      }
-      setState(() {
-        barAug = (barAug / targetByMonth).round();
-      });
-    });
-    //sept
-    DbAlltransaksi.db.getAlltransaksiNominalByMonth('9', year).then((value) {
-      for (var i = 0; i < value.length; i++) {
-        barSep += value[i].nett!; //menjumlahkan ke list
-      }
-      setState(() {
-        barSep = (barSep / targetByMonth).round();
-      });
-    });
-    //okt
-    DbAlltransaksi.db.getAlltransaksiNominalByMonth('10', year).then((value) {
-      for (var i = 0; i < value.length; i++) {
-        barOct += value[i].nett!; //menjumlahkan ke list
-      }
-      setState(() {
-        barOct = (barOct / targetByMonth).round();
-      });
-    });
-    //nov
-    DbAlltransaksi.db.getAlltransaksiNominalByMonth('11', year).then((value) {
-      for (var i = 0; i < value.length; i++) {
-        barNov += value[i].nett!; //menjumlahkan ke list
-      }
-      setState(() {
-        barNov = (barNov / targetByMonth).round();
-      });
-    });
-    //desc
-    DbAlltransaksi.db.getAlltransaksiNominalByMonth('12', year).then((value) {
-      for (var i = 0; i < value.length; i++) {
-        barDec += value[i].nett!; //menjumlahkan ke list
-      }
-      setState(() {
-        barDec = (barDec / targetByMonth).round();
-      });
-    });
-
-    DbAlltransaksi.db.getAlltransaksiNominal(year).then((value) {
-      for (var i = 0; i < value.length; i++) {
-        list += value[i].nett!; //menjumlahkan ke list
-        listNominal.add(value[i].nett); //memasukan ke list
-      }
-      percentYear = (list / targetByYear);
-      setState(() {
-        (percentYear > 1.0)
-            ? percentYear = 1.0
-            : percentYear = list / targetByYear;
-      });
-    });
-    // percentYear = 0.7;
-    percentMonth = 0.3;
-    percentWeek = 0.1;
-    //star notifi
-    PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
-    pushNotificationsSystem.whenNotificationReceived(context);
-    // pushNotificationsSystem.notificationPopUp(context);
-    //end notif
   }
 
   //get data toko
@@ -1920,13 +1922,13 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (c) {
       Fluttertoast.showToast(msg: "Failed To Load Data all customer");
     }
-    try {
-      await apiProvider.getUsers();
-    } catch (c) {
-      sharedPreferences!.setString('name', 'Failed To Load Data');
+    // try {
+    //   await apiProvider.getUsers();
+    // } catch (c) {
+    //   sharedPreferences!.setString('name', 'Failed To Load Data');
 
-      Fluttertoast.showToast(msg: "Failed To Load Data User");
-    }
+    //   Fluttertoast.showToast(msg: "Failed To Load Data User");
+    // }
     try {
       await apiProvider.getAllTCRM();
     } catch (c) {
@@ -1948,7 +1950,154 @@ class _HomeScreenState extends State<HomeScreen> {
     //     qtyProductSales = value.length;
     //   });
     // });
+    DbAlltransaksi.db.getAllHistory().then((value) {
+      setState(() {
+        qtyProductHistory = value.length;
+      });
+    });
+    //initial customer
+    DbAllCustomer.db.getAllcustomer().then((value) {
+      setState(() {
+        qtyProductCustomer = value.length;
+      });
+    });
+    //initial customer
+    DbCRM.db.getAllcrm().then((value) {
+      setState(() {
+        qtyProductCRM = value.length;
+      });
+    });
 
+    year = DateFormat('y').format(DateTime.now());
+    //jan
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('1', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barJan += value[i].nett!; //menjumlahkan ke list
+      }
+      setState(() {
+        barJan = (barJan / targetByMonth).round();
+      });
+    });
+    //feb
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('2', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barFeb += value[i].nett!; //menjumlahkan ke list
+      }
+      setState(() {
+        barFeb = (barFeb / targetByMonth).round();
+      });
+    });
+    //mar
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('3', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barMar += value[i].nett!; //menjumlahkan ke list
+      }
+      setState(() {
+        barMar = (barMar / targetByMonth).round();
+      });
+    });
+    //apr
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('4', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barApr += value[i].nett!; //menjumlahkan ke list
+      }
+      setState(() {
+        barApr = (barApr / targetByMonth).round();
+      });
+    });
+    //may
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('5', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barMay += value[i].nett!; //menjumlahkan ke list
+      }
+      setState(() {
+        barMay = (barMay / targetByMonth).round();
+      });
+    });
+    //jun
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('6', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barJun += value[i].nett!; //menjumlahkan ke list
+      }
+      setState(() {
+        barJun = (barJun / targetByMonth).round();
+      });
+    });
+    //jul
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('7', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barJul += value[i].nett!; //menjumlahkan ke list
+      }
+      setState(() {
+        barJul = (barJul / targetByMonth).round();
+      });
+    });
+    //agus
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('8', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barAug += value[i].nett!; //menjumlahkan ke list
+      }
+      setState(() {
+        barAug = (barAug / targetByMonth).round();
+      });
+    });
+    //sept
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('9', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barSep += value[i].nett!; //menjumlahkan ke list
+      }
+      setState(() {
+        barSep = (barSep / targetByMonth).round();
+      });
+    });
+    //okt
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('10', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barOct += value[i].nett!; //menjumlahkan ke list
+      }
+      setState(() {
+        barOct = (barOct / targetByMonth).round();
+      });
+    });
+    //nov
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('11', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barNov += value[i].nett!; //menjumlahkan ke list
+      }
+      setState(() {
+        barNov = (barNov / targetByMonth).round();
+      });
+    });
+    //desc
+    DbAlltransaksi.db.getAlltransaksiNominalByMonth('12', year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        barDec += value[i].nett!; //menjumlahkan ke list
+      }
+      setState(() {
+        barDec = (barDec / targetByMonth).round();
+      });
+    });
+
+    DbAlltransaksi.db.getAlltransaksiNominal(year).then((value) {
+      for (var i = 0; i < value.length; i++) {
+        list += value[i].nett!; //menjumlahkan ke list
+        listNominal.add(value[i].nett); //memasukan ke list
+      }
+      percentYear = (list / targetByYear);
+      setState(() {
+        (percentYear > 1.0)
+            ? percentYear = 1.0
+            : percentYear = list / targetByYear;
+      });
+    });
+    // percentYear = 0.7;
+    percentMonth = 0.3;
+    percentWeek = 0.1;
+    //star notifi
+    PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
+    pushNotificationsSystem.whenNotificationReceived(context);
+    // pushNotificationsSystem.notificationPopUp(context);
+    //end notif
     setState(() {
       sharedPreferences!.setString('newOpenHome', 'false');
       isLoading = true;

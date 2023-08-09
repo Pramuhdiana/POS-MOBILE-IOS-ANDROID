@@ -57,9 +57,9 @@ class _CrmScreenState extends State<CrmScreen> {
               ]),
           actions: [
             // ignore: unrelated_type_equality_checks
-            sharedPreferences!.getString('id') != '21'
-                ? const SizedBox()
-                : IconButton(
+            sharedPreferences!.getString('id') == '21' ||
+                    sharedPreferences!.getString('role_sales_brand') == '15'
+                ? IconButton(
                     onPressed: () {
                       Navigator.push(
                           context,
@@ -70,7 +70,8 @@ class _CrmScreenState extends State<CrmScreen> {
                       Icons.security_rounded,
                       color: Colors.black,
                     ),
-                  ),
+                  )
+                : const SizedBox(),
           ],
         ),
         body: const TabBarView(children: [
