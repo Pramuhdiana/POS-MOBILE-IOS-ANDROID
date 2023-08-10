@@ -77,9 +77,18 @@ class _SearchScreenState extends State<ApprovePricingScreen> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          leading: IconButton(
+            icon: Image.asset(
+              "assets/arrow.png",
+              width: 35,
+              height: 35,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           elevation: 0,
           backgroundColor: Colors.white,
-          automaticallyImplyLeading: false,
           title: CupertinoSearchTextField(
             borderRadius: const BorderRadius.all(Radius.circular(25)),
             itemColor: Colors.black,
