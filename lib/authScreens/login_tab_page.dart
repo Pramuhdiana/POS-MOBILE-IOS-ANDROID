@@ -129,7 +129,7 @@ class _LoginTabPageState extends State<LoginTabPage> {
                 const Padding(
                   padding: EdgeInsets.only(top: 112),
                   child: SizedBox(
-                      height: 95,
+                      height: 120,
                       child: Column(
                         children: [
                           Text(

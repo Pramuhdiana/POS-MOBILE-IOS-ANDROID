@@ -76,55 +76,59 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                             topLeft: Radius.circular(15),
                             topRight: Radius.circular(15),
                           ),
-                          // child: Image.network(
-                          //   'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
-                          //   height: 100,
-                          //   fit: BoxFit.fill,
-                          //   //cache
-                          //   cacheHeight: 150,
-                          //   cacheWidth: 200,
-                          //   //error builder
-                          //   errorBuilder: (BuildContext context,
-                          //       Object exception, StackTrace? stackTrace) {
-                          //     return const Icon(
-                          //       Icons.error,
-                          //       color: Colors.black,
-                          //       size: 100,
-                          //     );
-                          //   },
-                          //   //loading builder
-                          //   loadingBuilder: (BuildContext context, Widget child,
-                          //       ImageChunkEvent? loadingProgress) {
-                          //     if (loadingProgress == null) return child;
-                          //     return Center(
-                          //       child: CircularProgressIndicator(
-                          //         value: loadingProgress.expectedTotalBytes !=
-                          //                 null
-                          //             ? loadingProgress.cumulativeBytesLoaded /
-                          //                 loadingProgress.expectedTotalBytes!
-                          //             : null,
-                          //       ),
-                          //     );
-                          //   },
-                          // ),
-                          child: CachedNetworkImage(
-                            // cacheManager: customCacheManager,
-                            memCacheWidth: 300, //default 45
-                            memCacheHeight: 300, //default 60
-                            maxHeightDiskCache: 300, //default 60
-                            maxWidthDiskCache: 300, //default 45
-                            imageUrl:
-                                'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) => const Icon(
-                              Icons.error,
-                              color: Colors.black,
-                              size: 50,
-                            ),
+                          child: Image.network(
+                            'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
                             // height: 100,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
+                            //cache
+                            cacheHeight: 150,
+                            cacheWidth: 200,
+                            //error builder
+                            errorBuilder: (BuildContext context,
+                                Object exception, StackTrace? stackTrace) {
+                              return const Icon(
+                                Icons.error,
+                                color: Colors.black,
+                                size: 100,
+                              );
+                            },
+                            //loading builder
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
                           ),
+                          // child: CachedNetworkImage(
+                          //   // cacheManager: CacheManager(Config(
+                          //   //   "image",
+                          //   //   stalePeriod: const Duration(seconds: 5),
+                          //   //   //one week cache period
+                          //   // )),
+                          //   memCacheWidth: 300, //default 45
+                          //   memCacheHeight: 300, //default 60
+                          //   maxHeightDiskCache: 300, //default 60
+                          //   maxWidthDiskCache: 300, //default 45
+                          //   imageUrl:
+                          //       'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+                          //   placeholder: (context, url) =>
+                          //       const CircularProgressIndicator(),
+                          //   errorWidget: (context, url, error) => const Icon(
+                          //     Icons.error,
+                          //     color: Colors.black,
+                          //     size: 50,
+                          //   ),
+                          //   // height: 100,
+                          //   fit: BoxFit.cover,
+                          // ),
                         ),
                         Text(
                           widget.model!.name.toString(),

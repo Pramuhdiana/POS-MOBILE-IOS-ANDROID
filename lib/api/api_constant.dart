@@ -2,6 +2,12 @@
 
 class ApiConstants {
   static String baseUrl = 'http://54.179.58.215:8080/api';
+  static String baseUrlPricing = 'http://110.5.102.154:4000/approvals';
+  static String baseUrlImage =
+      'https://110.5.102.154:50001/Files/Images/Product/';
+
+  static String GETapprovelPricing = '/GetAll';
+
   static String POSTloginendpoint = '/login';
   static String GETprofileendpoint = '/profile';
   static String GETposSalesendpoint = '/indexpossales';

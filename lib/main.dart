@@ -1,4 +1,6 @@
 // import 'package:firebase_core/firebase_core.dart';
+import 'dart:io';
+
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/provider/provider_cart.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
@@ -13,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
+  HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -54,5 +57,14 @@ class MyApp extends StatelessWidget {
         home: const MySplashScreen(),
       ),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

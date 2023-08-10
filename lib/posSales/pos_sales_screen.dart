@@ -56,7 +56,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
   bool isLoading = false;
   int? qtyProduct = 0;
   int page = 0;
-  int limit = 8;
+  int limit = 10;
   ScrollController scrollController = ScrollController();
   String newOpen = sharedPreferences!.getString("newOpenPosSales").toString();
 
@@ -76,7 +76,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
         if (page != qtyProduct) {
           // on bottom scroll API Call until last page
 
-          page += 1;
+          limit += 5;
           DbAllitems.db.getAllitemsBtPage(page, limit);
         }
       }
@@ -318,3 +318,15 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
     );
   }
 }
+
+// var items_number = 10 ;
+
+//     return NotificationListener<ScrollNotification>(
+//          onNotification: (scrollNotification){
+//               if(scrollNotification.metrics.pixels == scrollNotification.metrics.maxScrollExtent){
+//                  setState(() {
+//                     items_number += 10 ;
+//                  });    
+//               }
+//          },
+//          child: GridView.builder(
