@@ -6,6 +6,8 @@ import 'package:e_shop/provider/provider_cart.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
 import 'package:e_shop/provider/provider_notification.dart';
+import 'package:e_shop/provider/provider_waiting_brj.dart';
+import 'package:e_shop/provider/provider_waiting_eticketing.dart';
 import 'package:e_shop/splashScreen/my_splas_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +41,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PCartToko()),
         ChangeNotifierProvider(create: (_) => PCartRetur()),
         ChangeNotifierProvider(create: (_) => PNewNotif()),
+        ChangeNotifierProvider(create: (_) => PApprovalBrj()),
+        ChangeNotifierProvider(create: (_) => PApprovalEticketing()),
       ],
       child: MaterialApp(
         theme: ThemeData(

@@ -108,8 +108,6 @@ class _MainScreenState extends State<MainScreen> {
                   gap: 12,
                   leading: badges.Badge(
                     showBadge: true,
-                    // showBadge:
-                    //     context.read<PCart>().getItems.isEmpty ? false : true,
                     badgeStyle: const badges.BadgeStyle(
                       badgeColor: AppColors.contentColorBlack,
                     ),

@@ -1,12 +1,14 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:e_shop/provider/provider_waiting_brj.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-// import 'package:badges/badges.dart' as badges;
+import 'package:badges/badges.dart' as badges;
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 
+import '../provider/provider_waiting_eticketing.dart';
 import 'approval_pricing_eticketing.dart';
 import 'approval_pricing_brj_screen.dart';
 import 'approved_pricing_brj_screen.dart';
@@ -53,42 +55,98 @@ class _MainScreenApprovePricingState extends State<MainScreenApprovePricing> {
               color: Colors.black,
               activeColor: Colors.black,
               tabBackgroundColor: const Color(0xFBEEEEEE),
-              gap: 8,
+              gap: 1,
               onTabChange: (index) {
                 setState(() {
                   _selectedIndex = index;
                 });
               },
-              padding: const EdgeInsets.all(5),
-              tabs: const [
+              padding: const EdgeInsets.only(top: 5, bottom: 5, left: 5),
+              tabs: [
                 GButton(
+                  gap: 20,
                   iconActiveColor: Colors.white,
                   backgroundColor: Colors.black,
-                  icon: Iconsax.home_25,
+                  leading: badges.Badge(
+                    showBadge: true,
+                    badgeStyle: badges.BadgeStyle(
+                      badgeColor:
+                          _selectedIndex != 0 ? Colors.black : Colors.white,
+                    ),
+                    badgeContent: Text(
+                      context.watch<PApprovalBrj>().getItems.length.toString(),
+                      style: TextStyle(
+                        color:
+                            _selectedIndex != 0 ? Colors.white : Colors.black,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    child: _selectedIndex != 0
+                        ? const Icon(
+                            Icons.list,
+                            color: Colors.black,
+                          )
+                        : const Icon(
+                            Icons.list,
+                            color: Colors.white,
+                          ),
+                  ),
+                  icon: Icons.list_sharp,
                   text: 'Waiting Approval BRJ',
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),
-                GButton(
+                const GButton(
                   iconActiveColor: Colors.white,
                   backgroundColor: Colors.black,
-                  icon: Iconsax.home_25,
+                  icon: Icons.verified,
                   text: 'Approved BRJ',
                   textStyle: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 GButton(
+                  gap: 20,
                   iconActiveColor: Colors.white,
                   backgroundColor: Colors.black,
-                  icon: Icons.person,
-                  text: 'Waiting Approval E-Ticketing',
-                  textStyle: TextStyle(
+                  leading: badges.Badge(
+                    showBadge: true,
+                    badgeStyle: badges.BadgeStyle(
+                      badgeColor:
+                          _selectedIndex != 2 ? Colors.black : Colors.white,
+                    ),
+                    badgeContent: Text(
+                      context
+                          .watch<PApprovalEticketing>()
+                          .getItems
+                          .length
+                          .toString(),
+                      style: TextStyle(
+                        color:
+                            _selectedIndex != 2 ? Colors.white : Colors.black,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    child: _selectedIndex != 2
+                        ? const Icon(
+                            Icons.list,
+                            color: Colors.black,
+                          )
+                        : const Icon(
+                            Icons.list,
+                            color: Colors.white,
+                          ),
+                  ),
+                  icon: Icons.list_sharp,
+                  text: 'Waiting Approval Iket',
+                  textStyle: const TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),
-                GButton(
+                const GButton(
                   iconActiveColor: Colors.white,
                   backgroundColor: Colors.black,
-                  icon: Icons.approval,
+                  icon: Icons.verified,
                   text: 'Approved E-Ticketing',
                   textStyle: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),

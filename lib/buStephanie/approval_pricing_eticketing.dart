@@ -4,8 +4,8 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
+import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
-import 'package:e_shop/buStephanie/approve_pricing_model.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +17,10 @@ import '../global/currency_format.dart';
 import '../provider/provider_cart.dart';
 import 'package:http/http.dart' as http;
 
-import '../widgets/alert_dialog.dart';
+import '../provider/provider_waiting_eticketing.dart';
 import '../widgets/custom_loading.dart';
-import 'item_photo_pricing.dart';
+import 'approval_pricing_model_eticketing.dart';
+import 'item_photo_pricing_eticketing.dart';
 
 class ApprovalPricingEticketingScreen extends StatefulWidget {
   @override
@@ -31,40 +32,27 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
   bool isLoading = false;
   FocusNode numberFocusNode = FocusNode();
   TextEditingController price = TextEditingController();
-  double awalPrice = 0;
+  TextEditingController notes = TextEditingController();
+
+  int awalPrice = 0;
   @override
   void initState() {
     super.initState();
-    fetchData();
-  }
-
-  Future<List<ApprovePricingModel>> fetchData() async {
-    // var url = Uri.parse('https://fakestoreapi.com/products');
-    var url = Uri.parse(
-        ApiConstants.baseUrlPricing + ApiConstants.GETapprovelPricingWaiting);
-
-    final response = await http.get(url);
-    print(response.body);
-    if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse
-          .map((data) => ApprovePricingModel.fromJson(data))
-          .toList();
-    } else {
-      throw Exception('Unexpected error occured!');
-    }
+    _getData();
+    context.read<PApprovalEticketing>().clearNotif(); //clear cart
+    loadListEticketing(); //ambil data cart
   }
 
   Future _getData() async {
     try {
-      final response = await http.get(Uri.parse(ApiConstants.baseUrlPricing +
-          ApiConstants.GETapprovelPricingWaiting));
+      final response = await http.get(Uri.parse(
+          '${ApiConstants.baseUrlsandy}${ApiConstants.GETapprovelPricingEticketing}?status_approval=1'));
       // if response successful
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(response.body);
 
         var g = jsonResponse
-            .map((data) => ApprovePricingModel.fromJson(data))
+            .map((data) => PricingEticketingModel.fromJson(data))
             .toList();
         setState(() {});
         return g;
@@ -81,9 +69,26 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
       isLoading = true;
     });
     await _getData();
+    context.read<PApprovalEticketing>().clearNotif(); //clear cart
+    await loadListEticketing(); //ambil data cart
     setState(() {
       isLoading = false;
     });
+  }
+
+  loadListEticketing() async {
+    var url =
+        '${ApiConstants.baseUrlsandy}${ApiConstants.GETapprovelPricingEticketing}?status_approval=1';
+    Response response = await Dio().get(
+      url,
+    );
+    print('bawah');
+    print(response.data);
+    return (response.data as List).map((cart) {
+      context.read<PApprovalEticketing>().addItem(
+            1,
+          );
+    }).toList();
   }
 
   @override
@@ -115,47 +120,6 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
               });
             },
           ),
-          // actions: [
-          //   Padding(
-          //     padding: const EdgeInsets.only(right: 10),
-          //     child: Stack(
-          //       children: [
-          //         IconButton(
-          //           onPressed: () {
-          //             Navigator.push(context,
-          //                 MaterialPageRoute(builder: (c) => const CartScreen()));
-          //             // }
-          //           },
-          //           icon: Padding(
-          //             padding: const EdgeInsets.all(2),
-          //             child: badges.Badge(
-          //               showBadge:
-          //                   context.read<PCart>().getItems.isEmpty ? false : true,
-          //               badgeStyle: const badges.BadgeStyle(
-          //                 badgeColor: Colors.green,
-          //               ),
-          //               badgeContent: Text(
-          //                 context.watch<PCart>().getItems.length.toString(),
-          //                 style: const TextStyle(
-          //                   fontSize: 8,
-          //                   fontWeight: FontWeight.w600,
-          //                 ),
-          //               ),
-          //               child: Transform.scale(
-          //                 scale: 1.3,
-          //                 child: Image.asset(
-          //                   "assets/cart.png",
-          //                   width: 45,
-          //                   height: 45,
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ],
         ),
         body: isLoading != false
             ? const Center(child: CircularProgressIndicator())
@@ -170,7 +134,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: 25),
+                            fontSize: 22),
                       ),
                     ),
                     Expanded(
@@ -182,32 +146,119 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   var data = snapshot.data![index];
-                                  awalPrice = data.finalPrice3USD!;
+                                  awalPrice = data.estimasiHarga!;
                                   return Padding(
                                     padding: const EdgeInsets.all(3.0),
                                     child: GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (c) =>
-                                                    ItemsPhotoPricing(
-                                                      model: ApprovePricingModel(
-                                                          lotNo: data.lotNo,
-                                                          fgImageFileName: data
-                                                              .fgImageFileName),
-                                                    )));
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (c) =>
+                                        //             ItemsPhotoPricing(
+                                        //               model: ApprovePricingModel(
+                                        //                   lotNo: data.lotNo,
+                                        //                   fgImageFileName: data
+                                        //                       .fgImageFileName),
+                                        //             )));
                                       },
                                       child: SizedBox(
                                         height: 150,
                                         child: Card(
                                           child: Row(
                                             children: [
-                                              ClipRRect(
-                                                child: CachedNetworkImage(
-                                                  imageUrl:
-                                                      'https://110.5.102.154:50001/Files/Images/Product/${data.fgImageFileName!.toString()}',
-                                                ),
+                                              SizedBox(
+                                                height: 130,
+                                                width: 130,
+                                                child: ListView(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 10),
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (c) =>
+                                                                        ItemsPhotoPricingEticketing(
+                                                                          imgUrl:
+                                                                              data.imageSales1,
+                                                                          model: PricingEticketingModel(
+                                                                              id: data.id,
+                                                                              namaCustomer: data.namaCustomer),
+                                                                        )));
+                                                          },
+                                                          child: ClipRRect(
+                                                            child:
+                                                                CachedNetworkImage(
+                                                              width: 130,
+                                                              imageUrl: data
+                                                                  .imageSales1!,
+                                                              placeholder: (context,
+                                                                      url) =>
+                                                                  const CircularProgressIndicator(),
+                                                              errorWidget: (context,
+                                                                      url,
+                                                                      error) =>
+                                                                  const Icon(
+                                                                Icons.error,
+                                                                color: Colors
+                                                                    .black,
+                                                                size: 50,
+                                                              ),
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 10),
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (c) =>
+                                                                        ItemsPhotoPricingEticketing(
+                                                                          imgUrl:
+                                                                              data.imageDesign1!,
+                                                                          model: PricingEticketingModel(
+                                                                              id: data.id,
+                                                                              namaCustomer: data.namaCustomer),
+                                                                        )));
+                                                          },
+                                                          child: ClipRRect(
+                                                            child:
+                                                                CachedNetworkImage(
+                                                              width: 130,
+                                                              imageUrl: data
+                                                                  .imageDesign1!,
+                                                              placeholder: (context,
+                                                                      url) =>
+                                                                  const CircularProgressIndicator(),
+                                                              errorWidget: (context,
+                                                                      url,
+                                                                      error) =>
+                                                                  const Icon(
+                                                                Icons.error,
+                                                                color: Colors
+                                                                    .black,
+                                                                size: 50,
+                                                              ),
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ]),
                                               ),
                                               Column(
                                                 mainAxisAlignment:
@@ -216,18 +267,18 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    data.lotNo!,
+                                                    'id :${data.id!}',
                                                   ),
-                                                  Text(data.marketingCode!),
-                                                  Text(data.productTypeDesc!),
+                                                  Text(data.namaSales!),
+                                                  Text(data.namaCustomer!),
                                                   SizedBox(
                                                     width:
                                                         MediaQuery.of(context)
                                                                 .size
                                                                 .width *
-                                                            0.59,
+                                                            0.45,
                                                     child: Text(
-                                                      data.detailProduct!,
+                                                      data.jenisPengajuan!,
                                                       maxLines: 2,
                                                     ),
                                                   ),
@@ -245,21 +296,6 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        // Container(
-                                                        //   child:
-                                                        //  TextField(
-                                                        //   enabled: false,
-                                                        //   // selectedOmzet != null ? false : true,
-                                                        //   onChanged: (price) {
-                                                        //     setState(() {});
-                                                        //   },
-                                                        //   controller: price,
-                                                        //   keyboardType: TextInputType.number,
-                                                        //   focusNode: numberFocusNode,
-                                                        //   inputFormatters: [
-                                                        //     FilteringTextInputFormatter.digitsOnly
-                                                        //   ],
-                                                        // ),
                                                         Text(
                                                           '\$ ${CurrencyFormat.convertToDollar(awalPrice, 0)}',
                                                           style:
@@ -279,37 +315,117 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                           children: [
                                                             IconButton(
                                                               onPressed: () {
-                                                                MyAlertDilaog
-                                                                    .showMyDialog(
-                                                                        context:
-                                                                            context,
-                                                                        title:
-                                                                            'Approve Pricing',
-                                                                        content:
-                                                                            'Are you sure to approve price ?',
-                                                                        tabNo:
-                                                                            () {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        },
-                                                                        tabYes:
-                                                                            () async {
-                                                                          setState(
-                                                                              () {
-                                                                            isLoading =
-                                                                                true;
-                                                                          });
-                                                                          Future.delayed(const Duration(seconds: 1))
-                                                                              .then((value) async {
-                                                                            setState(() {
-                                                                              postApi(data.lotNo!);
-                                                                              isLoading = false;
-                                                                            });
-                                                                          });
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      // ignore: no_leading_underscores_for_local_identifiers
+                                                                      final _formKey =
+                                                                          GlobalKey<
+                                                                              FormState>();
 
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        });
+                                                                      RoundedLoadingButtonController
+                                                                          btnController =
+                                                                          RoundedLoadingButtonController();
+                                                                      return AlertDialog(
+                                                                        content:
+                                                                            Stack(
+                                                                          clipBehavior:
+                                                                              Clip.none,
+                                                                          children: <Widget>[
+                                                                            Positioned(
+                                                                              right: -40.0,
+                                                                              top: -40.0,
+                                                                              child: InkResponse(
+                                                                                onTap: () {
+                                                                                  Navigator.of(context).pop();
+                                                                                },
+                                                                                child: const CircleAvatar(
+                                                                                  backgroundColor: Colors.red,
+                                                                                  child: Icon(Icons.close),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Form(
+                                                                              key: _formKey,
+                                                                              child: Column(
+                                                                                mainAxisSize: MainAxisSize.min,
+                                                                                children: <Widget>[
+                                                                                  Align(
+                                                                                    alignment: Alignment.centerLeft,
+                                                                                    child: Text(
+                                                                                      'Price : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
+                                                                                      textAlign: TextAlign.left,
+                                                                                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                    ),
+                                                                                  ),
+                                                                                  //notes
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.all(8.0),
+                                                                                    child: TextFormField(
+                                                                                      style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      // controller:
+                                                                                      //     price,
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      onChanged: (value) {
+                                                                                        notes.text = value;
+                                                                                      },
+                                                                                      decoration: InputDecoration(
+                                                                                        labelText: "Notes",
+                                                                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.all(8.0),
+                                                                                    child: SizedBox(
+                                                                                      width: 250,
+                                                                                      child: CustomLoadingButton(
+                                                                                          controller: btnController,
+                                                                                          child: const Text("Approve"),
+                                                                                          onPressed: () async {
+                                                                                            if (_formKey.currentState!.validate()) {
+                                                                                              _formKey.currentState!.save();
+                                                                                              Future.delayed(const Duration(seconds: 2)).then((value) async {
+                                                                                                setState(() {
+                                                                                                  awalPrice = int.parse(price.text);
+                                                                                                  postApi(data.id!);
+                                                                                                  context.read<PApprovalEticketing>().clearNotif(); //clear cart
+                                                                                                  loadListEticketing(); //ambil data cart
+                                                                                                });
+                                                                                                btnController.success();
+                                                                                                Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                  btnController.reset(); //reset
+                                                                                                  Navigator.of(context).pop();
+                                                                                                  showDialog<String>(
+                                                                                                      context: context,
+                                                                                                      builder: (BuildContext context) => const AlertDialog(
+                                                                                                            title: Text(
+                                                                                                              'Approve pricing success',
+                                                                                                            ),
+                                                                                                          ));
+                                                                                                });
+                                                                                              });
+                                                                                            } else {
+                                                                                              btnController.error();
+                                                                                              Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                btnController.reset(); //reset
+                                                                                              });
+                                                                                            }
+                                                                                          }),
+                                                                                    ),
+                                                                                  )
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      );
+                                                                    });
                                                               },
                                                               icon: const Icon(
                                                                 Icons
@@ -361,7 +477,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                   Align(
                                                                                     alignment: Alignment.centerLeft,
                                                                                     child: Text(
-                                                                                      'Before : \$ ${CurrencyFormat.convertToDollar(data.finalPrice3USD, 0)}',
+                                                                                      'Before : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
                                                                                       textAlign: TextAlign.left,
                                                                                       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                                                                                     ),
@@ -395,6 +511,24 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                       },
                                                                                     ),
                                                                                   ),
+                                                                                  //notes
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.all(8.0),
+                                                                                    child: TextFormField(
+                                                                                      style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      // controller:
+                                                                                      //     price,
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      onChanged: (value) {
+                                                                                        notes.text = value;
+                                                                                      },
+                                                                                      decoration: InputDecoration(
+                                                                                        labelText: "Notes",
+                                                                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
 
                                                                                   Padding(
                                                                                     padding: const EdgeInsets.all(8.0),
@@ -408,24 +542,12 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                               _formKey.currentState!.save();
                                                                                               Future.delayed(const Duration(seconds: 2)).then((value) async {
                                                                                                 setState(() {
-                                                                                                  awalPrice = double.parse(price.text);
+                                                                                                  awalPrice = int.parse(price.text);
                                                                                                   postApi(data.lotNo!);
+                                                                                                  context.read<PApprovalEticketing>().clearNotif(); //clear cart
+                                                                                                  loadListEticketing(); //ambil data cart
                                                                                                 });
                                                                                                 btnController.success();
-                                                                                                // Map<String, dynamic> body = {
-                                                                                                //   'id': id,
-                                                                                                //   'lot': lot.text,
-                                                                                                //   'size': size.text,
-                                                                                                //   'parcel': parcel.text,
-                                                                                                //   'qty': qty.text,
-                                                                                                // };
-                                                                                                // final response = await http.post(
-                                                                                                //     Uri.parse(ApiConstants
-                                                                                                //             .baseUrl +
-                                                                                                //         ApiConstants
-                                                                                                //             .postUpdateListDataBatu),
-                                                                                                //     body: body);
-                                                                                                // print(response.body);
                                                                                                 Future.delayed(const Duration(seconds: 1)).then((value) {
                                                                                                   btnController.reset(); //reset
                                                                                                   Navigator.of(context).pop();

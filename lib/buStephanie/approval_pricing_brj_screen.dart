@@ -4,9 +4,11 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
+import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/buStephanie/approve_pricing_model.dart';
 import 'package:e_shop/global/global.dart';
+import 'package:e_shop/provider/provider_waiting_brj.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +19,6 @@ import '../global/currency_format.dart';
 import '../provider/provider_cart.dart';
 import 'package:http/http.dart' as http;
 
-import '../widgets/alert_dialog.dart';
 import '../widgets/custom_loading.dart';
 import 'item_photo_pricing.dart';
 
@@ -31,29 +32,32 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   bool isLoading = false;
   FocusNode numberFocusNode = FocusNode();
   TextEditingController price = TextEditingController();
+  TextEditingController notes = TextEditingController();
+
   double awalPrice = 0;
   @override
   void initState() {
     super.initState();
-    fetchData();
+    _getData();
+    context.read<PApprovalBrj>().clearNotif(); //clear cart
+    loadListBRJ(); //ambil data cart
   }
 
-  Future<List<ApprovePricingModel>> fetchData() async {
-    // var url = Uri.parse('https://fakestoreapi.com/products');
-    var url = Uri.parse(
-        ApiConstants.baseUrlPricing + ApiConstants.GETapprovelPricingWaiting);
+  // Future<List<ApprovePricingModel>> fetchData() async {
+  //   var url = Uri.parse(
+  //       ApiConstants.baseUrlPricing + ApiConstants.GETapprovelPricingWaiting);
 
-    final response = await http.get(url);
-    print(response.body);
-    if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse
-          .map((data) => ApprovePricingModel.fromJson(data))
-          .toList();
-    } else {
-      throw Exception('Unexpected error occured!');
-    }
-  }
+  //   final response = await http.get(url);
+  //   print(response.body);
+  //   if (response.statusCode == 200) {
+  //     List jsonResponse = json.decode(response.body);
+  //     return jsonResponse
+  //         .map((data) => ApprovePricingModel.fromJson(data))
+  //         .toList();
+  //   } else {
+  //     throw Exception('Unexpected error occured!');
+  //   }
+  // }
 
   Future _getData() async {
     try {
@@ -81,9 +85,26 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
       isLoading = true;
     });
     await _getData();
+    context.read<PApprovalBrj>().clearNotif(); //clear cart
+    await loadListBRJ(); //ambil data cart
     setState(() {
       isLoading = false;
     });
+  }
+
+  loadListBRJ() async {
+    var url =
+        ApiConstants.baseUrlPricing + ApiConstants.GETapprovelPricingWaiting;
+    Response response = await Dio().get(
+      url,
+    );
+    print('bawah');
+    print(response.data);
+    return (response.data as List).map((cart) {
+      context.read<PApprovalBrj>().addItem(
+            1,
+          );
+    }).toList();
   }
 
   @override
@@ -225,7 +246,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                         MediaQuery.of(context)
                                                                 .size
                                                                 .width *
-                                                            0.59,
+                                                            0.45,
                                                     child: Text(
                                                       data.detailProduct!,
                                                       maxLines: 2,
@@ -279,37 +300,117 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                           children: [
                                                             IconButton(
                                                               onPressed: () {
-                                                                MyAlertDilaog
-                                                                    .showMyDialog(
-                                                                        context:
-                                                                            context,
-                                                                        title:
-                                                                            'Approve Pricing',
-                                                                        content:
-                                                                            'Are you sure to approve price ?',
-                                                                        tabNo:
-                                                                            () {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        },
-                                                                        tabYes:
-                                                                            () async {
-                                                                          setState(
-                                                                              () {
-                                                                            isLoading =
-                                                                                true;
-                                                                          });
-                                                                          Future.delayed(const Duration(seconds: 1))
-                                                                              .then((value) async {
-                                                                            setState(() {
-                                                                              postApi(data.lotNo!);
-                                                                              isLoading = false;
-                                                                            });
-                                                                          });
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      // ignore: no_leading_underscores_for_local_identifiers
+                                                                      final _formKey =
+                                                                          GlobalKey<
+                                                                              FormState>();
 
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        });
+                                                                      RoundedLoadingButtonController
+                                                                          btnController =
+                                                                          RoundedLoadingButtonController();
+                                                                      return AlertDialog(
+                                                                        content:
+                                                                            Stack(
+                                                                          clipBehavior:
+                                                                              Clip.none,
+                                                                          children: <Widget>[
+                                                                            Positioned(
+                                                                              right: -40.0,
+                                                                              top: -40.0,
+                                                                              child: InkResponse(
+                                                                                onTap: () {
+                                                                                  Navigator.of(context).pop();
+                                                                                },
+                                                                                child: const CircleAvatar(
+                                                                                  backgroundColor: Colors.red,
+                                                                                  child: Icon(Icons.close),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Form(
+                                                                              key: _formKey,
+                                                                              child: Column(
+                                                                                mainAxisSize: MainAxisSize.min,
+                                                                                children: <Widget>[
+                                                                                  Align(
+                                                                                    alignment: Alignment.centerLeft,
+                                                                                    child: Text(
+                                                                                      'Price : \$ ${CurrencyFormat.convertToDollar(data.finalPrice3USD, 0)}',
+                                                                                      textAlign: TextAlign.left,
+                                                                                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                    ),
+                                                                                  ),
+                                                                                  //notes
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.all(8.0),
+                                                                                    child: TextFormField(
+                                                                                      style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      // controller:
+                                                                                      //     price,
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      onChanged: (value) {
+                                                                                        notes.text = value;
+                                                                                      },
+                                                                                      decoration: InputDecoration(
+                                                                                        labelText: "Notes",
+                                                                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.all(8.0),
+                                                                                    child: SizedBox(
+                                                                                      width: 250,
+                                                                                      child: CustomLoadingButton(
+                                                                                          controller: btnController,
+                                                                                          child: const Text("Approve"),
+                                                                                          onPressed: () async {
+                                                                                            if (_formKey.currentState!.validate()) {
+                                                                                              _formKey.currentState!.save();
+                                                                                              Future.delayed(const Duration(seconds: 2)).then((value) async {
+                                                                                                setState(() {
+                                                                                                  awalPrice = double.parse(price.text);
+                                                                                                  postApi(data.lotNo!);
+                                                                                                  context.read<PApprovalBrj>().clearNotif(); //clear cart
+                                                                                                  loadListBRJ(); //ambil data cart
+                                                                                                });
+                                                                                                btnController.success();
+                                                                                                Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                  btnController.reset(); //reset
+                                                                                                  Navigator.of(context).pop();
+                                                                                                  showDialog<String>(
+                                                                                                      context: context,
+                                                                                                      builder: (BuildContext context) => const AlertDialog(
+                                                                                                            title: Text(
+                                                                                                              'Approve pricing success',
+                                                                                                            ),
+                                                                                                          ));
+                                                                                                });
+                                                                                              });
+                                                                                            } else {
+                                                                                              btnController.error();
+                                                                                              Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                btnController.reset(); //reset
+                                                                                              });
+                                                                                            }
+                                                                                          }),
+                                                                                    ),
+                                                                                  )
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      );
+                                                                    });
                                                               },
                                                               icon: const Icon(
                                                                 Icons
@@ -395,6 +496,24 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                       },
                                                                                     ),
                                                                                   ),
+                                                                                  //notes
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.all(8.0),
+                                                                                    child: TextFormField(
+                                                                                      style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      // controller:
+                                                                                      //     price,
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      onChanged: (value) {
+                                                                                        notes.text = value;
+                                                                                      },
+                                                                                      decoration: InputDecoration(
+                                                                                        labelText: "Notes",
+                                                                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
 
                                                                                   Padding(
                                                                                     padding: const EdgeInsets.all(8.0),
@@ -410,22 +529,10 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                 setState(() {
                                                                                                   awalPrice = double.parse(price.text);
                                                                                                   postApi(data.lotNo!);
+                                                                                                  context.read<PApprovalBrj>().clearNotif(); //clear cart
+                                                                                                  loadListBRJ(); //ambil data cart
                                                                                                 });
                                                                                                 btnController.success();
-                                                                                                // Map<String, dynamic> body = {
-                                                                                                //   'id': id,
-                                                                                                //   'lot': lot.text,
-                                                                                                //   'size': size.text,
-                                                                                                //   'parcel': parcel.text,
-                                                                                                //   'qty': qty.text,
-                                                                                                // };
-                                                                                                // final response = await http.post(
-                                                                                                //     Uri.parse(ApiConstants
-                                                                                                //             .baseUrl +
-                                                                                                //         ApiConstants
-                                                                                                //             .postUpdateListDataBatu),
-                                                                                                //     body: body);
-                                                                                                // print(response.body);
                                                                                                 Future.delayed(const Duration(seconds: 1)).then((value) {
                                                                                                   btnController.reset(); //reset
                                                                                                   Navigator.of(context).pop();

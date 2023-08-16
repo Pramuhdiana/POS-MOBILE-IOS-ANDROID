@@ -225,7 +225,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                         MediaQuery.of(context)
                                                                 .size
                                                                 .width *
-                                                            0.59,
+                                                            0.45,
                                                     child: Text(
                                                       data.detailProduct!,
                                                       maxLines: 2,
