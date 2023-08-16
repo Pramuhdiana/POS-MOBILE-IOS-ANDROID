@@ -7,6 +7,9 @@ class ApiConstants {
       'https://110.5.102.154:50001/Files/Images/Product/';
 
   static String GETapprovelPricing = '/GetAll';
+  static String GETapprovelPricingWaiting = '/StatusWaiting';
+  static String GETapprovelPricingApproved = '/StatusApproved';
+  static String PUTapprovelPricing = '/lot/';
 
   static String POSTloginendpoint = '/login';
   static String GETprofileendpoint = '/profile';

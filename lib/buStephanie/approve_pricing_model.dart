@@ -142,7 +142,7 @@ class ApprovePricingModel {
         imagePath: json['imagePath'],
         imageBaseUrl: json['imageBaseUrl'],
         approvalStatus: json['approvalStatus'],
-        approvalPrice: json['approvalPrice'],
+        approvalPrice: json['approvalPrice'] ?? 0.0,
         createdDate: json['createdDate'],
         editedDate: json['editedDate'],
         approvedDate: json['approvedDate'],

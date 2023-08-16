@@ -7,7 +7,7 @@ import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/authScreens/auth_screen.dart';
-import 'package:e_shop/buStephanie/approve_pricing_screen.dart';
+import 'package:e_shop/buStephanie/main_screen_approve_pricing.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
@@ -352,7 +352,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (c) => ApprovePricingScreen()));
+                              builder: (c) =>
+                                  const MainScreenApprovePricing()));
                     },
                     child: const Row(
                       children: [
