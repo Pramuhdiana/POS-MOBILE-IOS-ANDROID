@@ -223,7 +223,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                         height: 150,
                                         child: Padding(
                                           padding:
-                                              const EdgeInsets.only(left: 4),
+                                              const EdgeInsets.only(right: 2),
                                           child: Card(
                                             child: Row(
                                               children: [
