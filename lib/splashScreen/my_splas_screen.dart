@@ -17,6 +17,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../api/api_services.dart';
+import '../provider/provider_waiting_brj.dart';
+import '../provider/provider_waiting_eticketing.dart';
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({super.key});
@@ -272,8 +274,41 @@ class _MySplashScreenState extends State<MySplashScreen> {
       initState() //called automatically when user comes here to this splash screen
   {
     super.initState();
-
+    context.read<PApprovalBrj>().clearNotif(); //clear cart
+    loadListBRJ(); //ambil data cart
+    context.read<PApprovalEticketing>().clearNotif(); //clear cart
+    loadListEticketing(); //ambil data cart
     splashScreenTimer();
+  }
+
+  loadListBRJ() async {
+    var url =
+        ApiConstants.baseUrlPricing + ApiConstants.GETapprovelPricingWaiting;
+    Response response = await Dio().get(
+      url,
+    );
+    print('bawah');
+    print(response.data);
+    return (response.data as List).map((cart) {
+      context.read<PApprovalBrj>().addItem(
+            1,
+          );
+    }).toList();
+  }
+
+  loadListEticketing() async {
+    var url =
+        '${ApiConstants.baseUrlsandy}${ApiConstants.GETapprovelPricingEticketing}?status_approval=1';
+    Response response = await Dio().get(
+      url,
+    );
+    print('bawah');
+    print(response.data);
+    return (response.data as List).map((cart) {
+      context.read<PApprovalEticketing>().addItem(
+            1,
+          );
+    }).toList();
   }
 
   @override

@@ -148,7 +148,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                   var data = snapshot.data![index];
                                   awalPrice = data.estimasiHarga!;
                                   return Padding(
-                                    padding: const EdgeInsets.all(3.0),
+                                    padding: const EdgeInsets.all(0),
                                     child: GestureDetector(
                                       onTap: () {
                                         // Navigator.push(
@@ -164,467 +164,471 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                       },
                                       child: SizedBox(
                                         height: 150,
-                                        child: Card(
-                                          child: Row(
-                                            children: [
-                                              SizedBox(
-                                                height: 130,
-                                                width: 130,
-                                                child: ListView(
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                right: 10),
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (c) =>
-                                                                        ItemsPhotoPricingEticketing(
-                                                                          imgUrl:
-                                                                              data.imageSales1,
-                                                                          model: PricingEticketingModel(
-                                                                              id: data.id,
-                                                                              namaCustomer: data.namaCustomer),
-                                                                        )));
-                                                          },
-                                                          child: ClipRRect(
-                                                            child:
-                                                                CachedNetworkImage(
-                                                              width: 130,
-                                                              imageUrl: data
-                                                                  .imageSales1!,
-                                                              placeholder: (context,
-                                                                      url) =>
-                                                                  const CircularProgressIndicator(),
-                                                              errorWidget: (context,
-                                                                      url,
-                                                                      error) =>
-                                                                  const Icon(
-                                                                Icons.error,
-                                                                color: Colors
-                                                                    .black,
-                                                                size: 50,
-                                                              ),
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                right: 10),
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (c) =>
-                                                                        ItemsPhotoPricingEticketing(
-                                                                          imgUrl:
-                                                                              data.imageDesign1!,
-                                                                          model: PricingEticketingModel(
-                                                                              id: data.id,
-                                                                              namaCustomer: data.namaCustomer),
-                                                                        )));
-                                                          },
-                                                          child: ClipRRect(
-                                                            child:
-                                                                CachedNetworkImage(
-                                                              width: 130,
-                                                              imageUrl: data
-                                                                  .imageDesign1!,
-                                                              placeholder: (context,
-                                                                      url) =>
-                                                                  const CircularProgressIndicator(),
-                                                              errorWidget: (context,
-                                                                      url,
-                                                                      error) =>
-                                                                  const Icon(
-                                                                Icons.error,
-                                                                color: Colors
-                                                                    .black,
-                                                                size: 50,
-                                                              ),
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ]),
-                                              ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    'id :${data.id!}',
-                                                  ),
-                                                  Text(data.namaSales!),
-                                                  Text(data.namaCustomer!),
-                                                  SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.45,
-                                                    child: Text(
-                                                      data.jenisPengajuan!,
-                                                      maxLines: 2,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.6,
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 5),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4),
+                                          child: Card(
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  height: 130,
+                                                  width: 130,
+                                                  child: ListView(
+                                                      scrollDirection:
+                                                          Axis.horizontal,
                                                       children: [
-                                                        Text(
-                                                          '\$ ${CurrencyFormat.convertToDollar(awalPrice, 0)}',
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 22,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  color: Colors
-                                                                      .black),
-                                                        ),
-                                                        // ),
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
                                                                       .only(
                                                                   right: 10),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              IconButton(
-                                                                onPressed: () {
-                                                                  showDialog(
-                                                                      context:
-                                                                          context,
-                                                                      builder:
-                                                                          (BuildContext
-                                                                              context) {
-                                                                        // ignore: no_leading_underscores_for_local_identifiers
-                                                                        final _formKey =
-                                                                            GlobalKey<FormState>();
-
-                                                                        RoundedLoadingButtonController
-                                                                            btnController =
-                                                                            RoundedLoadingButtonController();
-                                                                        return AlertDialog(
-                                                                          content:
-                                                                              Stack(
-                                                                            clipBehavior:
-                                                                                Clip.none,
-                                                                            children: <Widget>[
-                                                                              Positioned(
-                                                                                right: -40.0,
-                                                                                top: -40.0,
-                                                                                child: InkResponse(
-                                                                                  onTap: () {
-                                                                                    Navigator.of(context).pop();
-                                                                                  },
-                                                                                  child: const CircleAvatar(
-                                                                                    backgroundColor: Colors.red,
-                                                                                    child: Icon(Icons.close),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                              Form(
-                                                                                key: _formKey,
-                                                                                child: Column(
-                                                                                  mainAxisSize: MainAxisSize.min,
-                                                                                  children: <Widget>[
-                                                                                    Align(
-                                                                                      alignment: Alignment.centerLeft,
-                                                                                      child: Text(
-                                                                                        'Price : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
-                                                                                        textAlign: TextAlign.left,
-                                                                                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                      ),
-                                                                                    ),
-                                                                                    //notes
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsets.all(8.0),
-                                                                                      child: TextFormField(
-                                                                                        style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                        textInputAction: TextInputAction.next,
-                                                                                        // controller:
-                                                                                        //     price,
-                                                                                        keyboardType: TextInputType.text,
-                                                                                        onChanged: (value) {
-                                                                                          notes.text = value;
-                                                                                        },
-                                                                                        decoration: InputDecoration(
-                                                                                          labelText: "Notes",
-                                                                                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsets.all(8.0),
-                                                                                      child: SizedBox(
-                                                                                        width: 250,
-                                                                                        child: CustomLoadingButton(
-                                                                                            controller: btnController,
-                                                                                            child: const Text("Approve"),
-                                                                                            onPressed: () async {
-                                                                                              if (_formKey.currentState!.validate()) {
-                                                                                                _formKey.currentState!.save();
-                                                                                                Future.delayed(const Duration(seconds: 2)).then((value) async {
-                                                                                                  setState(() {
-                                                                                                    awalPrice = int.parse(price.text);
-                                                                                                    postApi(data.id!);
-                                                                                                    context.read<PApprovalEticketing>().clearNotif(); //clear cart
-                                                                                                    loadListEticketing(); //ambil data cart
-                                                                                                  });
-                                                                                                  btnController.success();
-                                                                                                  Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                                    btnController.reset(); //reset
-                                                                                                    Navigator.of(context).pop();
-                                                                                                    showDialog<String>(
-                                                                                                        context: context,
-                                                                                                        builder: (BuildContext context) => const AlertDialog(
-                                                                                                              title: Text(
-                                                                                                                'Approve pricing success',
-                                                                                                              ),
-                                                                                                            ));
-                                                                                                  });
-                                                                                                });
-                                                                                              } else {
-                                                                                                btnController.error();
-                                                                                                Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                                  btnController.reset(); //reset
-                                                                                                });
-                                                                                              }
-                                                                                            }),
-                                                                                      ),
-                                                                                    )
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        );
-                                                                      });
-                                                                },
-                                                                icon:
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (c) =>
+                                                                          ItemsPhotoPricingEticketing(
+                                                                            imgUrl:
+                                                                                data.imageSales1,
+                                                                            model:
+                                                                                PricingEticketingModel(id: data.id, namaCustomer: data.namaCustomer),
+                                                                          )));
+                                                            },
+                                                            child: ClipRRect(
+                                                              child:
+                                                                  CachedNetworkImage(
+                                                                width: 130,
+                                                                imageUrl: data
+                                                                    .imageSales1!,
+                                                                placeholder: (context,
+                                                                        url) =>
+                                                                    const CircularProgressIndicator(),
+                                                                errorWidget: (context,
+                                                                        url,
+                                                                        error) =>
                                                                     const Icon(
-                                                                  Icons
-                                                                      .done_sharp,
+                                                                  Icons.error,
                                                                   color: Colors
-                                                                      .green,
+                                                                      .black,
+                                                                  size: 50,
                                                                 ),
+                                                                fit: BoxFit
+                                                                    .cover,
                                                               ),
-                                                              IconButton(
-                                                                onPressed: () {
-                                                                  showDialog(
-                                                                      context:
-                                                                          context,
-                                                                      builder:
-                                                                          (BuildContext
-                                                                              context) {
-                                                                        // ignore: no_leading_underscores_for_local_identifiers
-                                                                        final _formKey =
-                                                                            GlobalKey<FormState>();
-
-                                                                        RoundedLoadingButtonController
-                                                                            btnController =
-                                                                            RoundedLoadingButtonController();
-                                                                        return AlertDialog(
-                                                                          content:
-                                                                              Stack(
-                                                                            clipBehavior:
-                                                                                Clip.none,
-                                                                            children: <Widget>[
-                                                                              Positioned(
-                                                                                right: -40.0,
-                                                                                top: -40.0,
-                                                                                child: InkResponse(
-                                                                                  onTap: () {
-                                                                                    Navigator.of(context).pop();
-                                                                                  },
-                                                                                  child: const CircleAvatar(
-                                                                                    backgroundColor: Colors.red,
-                                                                                    child: Icon(Icons.close),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                              Form(
-                                                                                key: _formKey,
-                                                                                child: Column(
-                                                                                  mainAxisSize: MainAxisSize.min,
-                                                                                  children: <Widget>[
-                                                                                    Align(
-                                                                                      alignment: Alignment.centerLeft,
-                                                                                      child: Text(
-                                                                                        'Before : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
-                                                                                        textAlign: TextAlign.left,
-                                                                                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                      ),
-                                                                                    ),
-                                                                                    //price
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsets.all(8.0),
-                                                                                      child: TextFormField(
-                                                                                        style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                        textInputAction: TextInputAction.next,
-                                                                                        // controller:
-                                                                                        //     price,
-                                                                                        keyboardType: TextInputType.number,
-                                                                                        focusNode: numberFocusNode,
-                                                                                        inputFormatters: [
-                                                                                          FilteringTextInputFormatter.digitsOnly
-                                                                                        ],
-                                                                                        onChanged: (value) {
-                                                                                          price.text = value;
-                                                                                        },
-                                                                                        decoration: InputDecoration(
-                                                                                          // hintText: "example: Cahaya Sanivokasi",
-                                                                                          labelText: "Price",
-                                                                                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                                                        ),
-                                                                                        validator: (value) {
-                                                                                          if (value!.isEmpty) {
-                                                                                            return 'Wajib diisi *';
-                                                                                          }
-                                                                                          return null;
-                                                                                        },
-                                                                                      ),
-                                                                                    ),
-                                                                                    //notes
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsets.all(8.0),
-                                                                                      child: TextFormField(
-                                                                                        style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                        textInputAction: TextInputAction.next,
-                                                                                        // controller:
-                                                                                        //     price,
-                                                                                        keyboardType: TextInputType.text,
-                                                                                        onChanged: (value) {
-                                                                                          notes.text = value;
-                                                                                        },
-                                                                                        decoration: InputDecoration(
-                                                                                          labelText: "Notes",
-                                                                                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsets.all(8.0),
-                                                                                      child: SizedBox(
-                                                                                        width: 250,
-                                                                                        child: CustomLoadingButton(
-                                                                                            controller: btnController,
-                                                                                            child: const Text("Update"),
-                                                                                            onPressed: () async {
-                                                                                              if (_formKey.currentState!.validate()) {
-                                                                                                _formKey.currentState!.save();
-                                                                                                Future.delayed(const Duration(seconds: 2)).then((value) async {
-                                                                                                  setState(() {
-                                                                                                    awalPrice = int.parse(price.text);
-                                                                                                    postApi(data.lotNo!);
-                                                                                                    context.read<PApprovalEticketing>().clearNotif(); //clear cart
-                                                                                                    loadListEticketing(); //ambil data cart
-                                                                                                  });
-                                                                                                  btnController.success();
-                                                                                                  Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                                    btnController.reset(); //reset
-                                                                                                    Navigator.of(context).pop();
-                                                                                                    showDialog<String>(
-                                                                                                        context: context,
-                                                                                                        builder: (BuildContext context) => const AlertDialog(
-                                                                                                              title: Text(
-                                                                                                                'Update pricing success',
-                                                                                                              ),
-                                                                                                            ));
-                                                                                                  });
-                                                                                                });
-                                                                                              } else {
-                                                                                                btnController.error();
-                                                                                                Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                                  btnController.reset(); //reset
-                                                                                                });
-                                                                                              }
-                                                                                            }),
-                                                                                      ),
-                                                                                    )
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        );
-                                                                      });
-                                                                },
-                                                                icon:
-                                                                    const Icon(
-                                                                  Icons.edit,
-                                                                  color: Colors
-                                                                      .green,
-                                                                ),
-                                                              )
-                                                            ],
+                                                            ),
                                                           ),
                                                         ),
-                                                      ],
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 10),
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (c) =>
+                                                                          ItemsPhotoPricingEticketing(
+                                                                            imgUrl:
+                                                                                data.imageDesign1!,
+                                                                            model:
+                                                                                PricingEticketingModel(id: data.id, namaCustomer: data.namaCustomer),
+                                                                          )));
+                                                            },
+                                                            child: ClipRRect(
+                                                              child:
+                                                                  CachedNetworkImage(
+                                                                width: 130,
+                                                                imageUrl: data
+                                                                    .imageDesign1!,
+                                                                placeholder: (context,
+                                                                        url) =>
+                                                                    const CircularProgressIndicator(),
+                                                                errorWidget: (context,
+                                                                        url,
+                                                                        error) =>
+                                                                    const Icon(
+                                                                  Icons.error,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  size: 50,
+                                                                ),
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ]),
+                                                ),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      'id :${data.id!}',
                                                     ),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          //     child: ListTile(
-                                          //   title: Text(data.entryNo!.toString(),
-                                          //       style: const TextStyle(fontSize: 30)),
-                                          //   subtitle: Text(
-                                          //     data.marketingCode!.toString(),
-                                          //   ),
-                                          //   leading: ClipRRect(
-                                          //     child: CachedNetworkImage(
-                                          //       // memCacheWidth: 85, //default 45
-                                          //       // memCacheHeight: 100, //default 60
-                                          //       // maxHeightDiskCache: 100, //default 60
-                                          //       // maxWidthDiskCache: 85, //default 45
-                                          //       // imageUrl:
-                                          //       //     'https://110.5.102.154:50001/Files/Images/Product/${data.fgImageFileName!.toString()}',
-                                          //       imageUrl:
-                                          //           'https://110.5.102.154:50001/Files/Images/Product/20100294-03.jpeg',
+                                                    Text(data.namaSales!),
+                                                    Text(data.namaCustomer!),
+                                                    SizedBox(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.45,
+                                                      child: Text(
+                                                        data.jenisPengajuan!,
+                                                        maxLines: 2,
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.6,
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 5),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            '\$ ${CurrencyFormat.convertToDollar(awalPrice, 0)}',
+                                                            style: const TextStyle(
+                                                                fontSize: 22,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                          // ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right: 10),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          // ignore: no_leading_underscores_for_local_identifiers
+                                                                          final _formKey =
+                                                                              GlobalKey<FormState>();
 
-                                          //       placeholder: (context, url) =>
-                                          //           const CircularProgressIndicator(),
-                                          //       errorWidget: (context, url, error) => const Icon(
-                                          //         Icons.error,
-                                          //         color: Colors.black,
-                                          //       ),
-                                          //       fit: BoxFit.cover,
-                                          //     ),
-                                          //   ),
-                                          // )
+                                                                          RoundedLoadingButtonController
+                                                                              btnController =
+                                                                              RoundedLoadingButtonController();
+                                                                          return AlertDialog(
+                                                                            content:
+                                                                                Stack(
+                                                                              clipBehavior: Clip.none,
+                                                                              children: <Widget>[
+                                                                                Positioned(
+                                                                                  right: -40.0,
+                                                                                  top: -40.0,
+                                                                                  child: InkResponse(
+                                                                                    onTap: () {
+                                                                                      Navigator.of(context).pop();
+                                                                                    },
+                                                                                    child: const CircleAvatar(
+                                                                                      backgroundColor: Colors.red,
+                                                                                      child: Icon(Icons.close),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                                Form(
+                                                                                  key: _formKey,
+                                                                                  child: Column(
+                                                                                    mainAxisSize: MainAxisSize.min,
+                                                                                    children: <Widget>[
+                                                                                      Align(
+                                                                                        alignment: Alignment.centerLeft,
+                                                                                        child: Text(
+                                                                                          'Price : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
+                                                                                          textAlign: TextAlign.left,
+                                                                                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                        ),
+                                                                                      ),
+                                                                                      //notes
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: TextFormField(
+                                                                                          style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          // controller:
+                                                                                          //     price,
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          onChanged: (value) {
+                                                                                            notes.text = value;
+                                                                                          },
+                                                                                          decoration: InputDecoration(
+                                                                                            labelText: "Notes",
+                                                                                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: SizedBox(
+                                                                                          width: 250,
+                                                                                          child: CustomLoadingButton(
+                                                                                              controller: btnController,
+                                                                                              child: const Text("Approve"),
+                                                                                              onPressed: () async {
+                                                                                                if (_formKey.currentState!.validate()) {
+                                                                                                  _formKey.currentState!.save();
+                                                                                                  Future.delayed(const Duration(seconds: 2)).then((value) async {
+                                                                                                    setState(() {
+                                                                                                      awalPrice = int.parse(price.text);
+                                                                                                      postApi(data.id!);
+                                                                                                      context.read<PApprovalEticketing>().clearNotif(); //clear cart
+                                                                                                      loadListEticketing(); //ambil data cart
+                                                                                                    });
+                                                                                                    btnController.success();
+                                                                                                    Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                      btnController.reset(); //reset
+                                                                                                      Navigator.of(context).pop();
+                                                                                                      showDialog<String>(
+                                                                                                          context: context,
+                                                                                                          builder: (BuildContext context) => const AlertDialog(
+                                                                                                                title: Text(
+                                                                                                                  'Approve pricing success',
+                                                                                                                ),
+                                                                                                              ));
+                                                                                                    });
+                                                                                                  });
+                                                                                                } else {
+                                                                                                  btnController.error();
+                                                                                                  Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                    btnController.reset(); //reset
+                                                                                                  });
+                                                                                                }
+                                                                                              }),
+                                                                                        ),
+                                                                                      )
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          );
+                                                                        });
+                                                                  },
+                                                                  icon:
+                                                                      const Icon(
+                                                                    Icons
+                                                                        .done_sharp,
+                                                                    color: Colors
+                                                                        .green,
+                                                                  ),
+                                                                ),
+                                                                IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          // ignore: no_leading_underscores_for_local_identifiers
+                                                                          final _formKey =
+                                                                              GlobalKey<FormState>();
+
+                                                                          RoundedLoadingButtonController
+                                                                              btnController =
+                                                                              RoundedLoadingButtonController();
+                                                                          return AlertDialog(
+                                                                            content:
+                                                                                Stack(
+                                                                              clipBehavior: Clip.none,
+                                                                              children: <Widget>[
+                                                                                Positioned(
+                                                                                  right: -40.0,
+                                                                                  top: -40.0,
+                                                                                  child: InkResponse(
+                                                                                    onTap: () {
+                                                                                      Navigator.of(context).pop();
+                                                                                    },
+                                                                                    child: const CircleAvatar(
+                                                                                      backgroundColor: Colors.red,
+                                                                                      child: Icon(Icons.close),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                                Form(
+                                                                                  key: _formKey,
+                                                                                  child: Column(
+                                                                                    mainAxisSize: MainAxisSize.min,
+                                                                                    children: <Widget>[
+                                                                                      Align(
+                                                                                        alignment: Alignment.centerLeft,
+                                                                                        child: Text(
+                                                                                          'Before : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
+                                                                                          textAlign: TextAlign.left,
+                                                                                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                        ),
+                                                                                      ),
+                                                                                      //price
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: TextFormField(
+                                                                                          style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          // controller:
+                                                                                          //     price,
+                                                                                          keyboardType: TextInputType.number,
+                                                                                          focusNode: numberFocusNode,
+                                                                                          inputFormatters: [
+                                                                                            FilteringTextInputFormatter.digitsOnly
+                                                                                          ],
+                                                                                          onChanged: (value) {
+                                                                                            price.text = value;
+                                                                                          },
+                                                                                          decoration: InputDecoration(
+                                                                                            // hintText: "example: Cahaya Sanivokasi",
+                                                                                            labelText: "Price",
+                                                                                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                          ),
+                                                                                          validator: (value) {
+                                                                                            if (value!.isEmpty) {
+                                                                                              return 'Wajib diisi *';
+                                                                                            }
+                                                                                            return null;
+                                                                                          },
+                                                                                        ),
+                                                                                      ),
+                                                                                      //notes
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: TextFormField(
+                                                                                          style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          // controller:
+                                                                                          //     price,
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          onChanged: (value) {
+                                                                                            notes.text = value;
+                                                                                          },
+                                                                                          decoration: InputDecoration(
+                                                                                            labelText: "Notes",
+                                                                                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: SizedBox(
+                                                                                          width: 250,
+                                                                                          child: CustomLoadingButton(
+                                                                                              controller: btnController,
+                                                                                              child: const Text("Update"),
+                                                                                              onPressed: () async {
+                                                                                                if (_formKey.currentState!.validate()) {
+                                                                                                  _formKey.currentState!.save();
+                                                                                                  Future.delayed(const Duration(seconds: 2)).then((value) async {
+                                                                                                    setState(() {
+                                                                                                      awalPrice = int.parse(price.text);
+                                                                                                      postApi(data.lotNo!);
+                                                                                                      context.read<PApprovalEticketing>().clearNotif(); //clear cart
+                                                                                                      loadListEticketing(); //ambil data cart
+                                                                                                    });
+                                                                                                    btnController.success();
+                                                                                                    Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                      btnController.reset(); //reset
+                                                                                                      Navigator.of(context).pop();
+                                                                                                      showDialog<String>(
+                                                                                                          context: context,
+                                                                                                          builder: (BuildContext context) => const AlertDialog(
+                                                                                                                title: Text(
+                                                                                                                  'Update pricing success',
+                                                                                                                ),
+                                                                                                              ));
+                                                                                                    });
+                                                                                                  });
+                                                                                                } else {
+                                                                                                  btnController.error();
+                                                                                                  Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                    btnController.reset(); //reset
+                                                                                                  });
+                                                                                                }
+                                                                                              }),
+                                                                                        ),
+                                                                                      )
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          );
+                                                                        });
+                                                                  },
+                                                                  icon:
+                                                                      const Icon(
+                                                                    Icons.edit,
+                                                                    color: Colors
+                                                                        .green,
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            //     child: ListTile(
+                                            //   title: Text(data.entryNo!.toString(),
+                                            //       style: const TextStyle(fontSize: 30)),
+                                            //   subtitle: Text(
+                                            //     data.marketingCode!.toString(),
+                                            //   ),
+                                            //   leading: ClipRRect(
+                                            //     child: CachedNetworkImage(
+                                            //       // memCacheWidth: 85, //default 45
+                                            //       // memCacheHeight: 100, //default 60
+                                            //       // maxHeightDiskCache: 100, //default 60
+                                            //       // maxWidthDiskCache: 85, //default 45
+                                            //       // imageUrl:
+                                            //       //     'https://110.5.102.154:50001/Files/Images/Product/${data.fgImageFileName!.toString()}',
+                                            //       imageUrl:
+                                            //           'https://110.5.102.154:50001/Files/Images/Product/20100294-03.jpeg',
+
+                                            //       placeholder: (context, url) =>
+                                            //           const CircularProgressIndicator(),
+                                            //       errorWidget: (context, url, error) => const Icon(
+                                            //         Icons.error,
+                                            //         color: Colors.black,
+                                            //       ),
+                                            //       fit: BoxFit.cover,
+                                            //     ),
+                                            //   ),
+                                            // )
+                                          ),
                                         ),
                                       ),
                                     ),

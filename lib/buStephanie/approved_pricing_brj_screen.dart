@@ -184,7 +184,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                   var data = snapshot.data![index];
                                   awalPrice = data.finalPrice3USD!;
                                   return Padding(
-                                    padding: const EdgeInsets.all(3.0),
+                                    padding: const EdgeInsets.all(0),
                                     child: GestureDetector(
                                       onTap: () {
                                         Navigator.push(
@@ -200,305 +200,307 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                       },
                                       child: SizedBox(
                                         height: 150,
-                                        child: Card(
-                                          child: Row(
-                                            children: [
-                                              ClipRRect(
-                                                child: CachedNetworkImage(
-                                                  imageUrl:
-                                                      'https://110.5.102.154:50001/Files/Images/Product/${data.fgImageFileName!.toString()}',
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4),
+                                          child: Card(
+                                            child: Row(
+                                              children: [
+                                                ClipRRect(
+                                                  child: CachedNetworkImage(
+                                                    imageUrl:
+                                                        'https://110.5.102.154:50001/Files/Images/Product/${data.fgImageFileName!.toString()}',
+                                                  ),
                                                 ),
-                                              ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    data.lotNo!,
-                                                  ),
-                                                  Text(data.marketingCode!),
-                                                  Text(data.productTypeDesc!),
-                                                  SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.45,
-                                                    child: Text(
-                                                      data.detailProduct!,
-                                                      maxLines: 2,
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      data.lotNo!,
                                                     ),
-                                                  ),
-                                                  Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.6,
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 5),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        // Container(
-                                                        //   child:
-                                                        //  TextField(
-                                                        //   enabled: false,
-                                                        //   // selectedOmzet != null ? false : true,
-                                                        //   onChanged: (price) {
-                                                        //     setState(() {});
-                                                        //   },
-                                                        //   controller: price,
-                                                        //   keyboardType: TextInputType.number,
-                                                        //   focusNode: numberFocusNode,
-                                                        //   inputFormatters: [
-                                                        //     FilteringTextInputFormatter.digitsOnly
-                                                        //   ],
-                                                        // ),
-                                                        Text(
-                                                          '\$ ${CurrencyFormat.convertToDollar(awalPrice, 0)}',
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 22,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  color: Colors
-                                                                      .black),
-                                                        ),
-                                                        // ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  right: 10),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              IconButton(
-                                                                onPressed: () {
-                                                                  MyAlertDilaog
-                                                                      .showMyDialog(
-                                                                          context:
-                                                                              context,
-                                                                          title:
-                                                                              'Approve Pricing',
-                                                                          content:
-                                                                              'Are you sure to approve price ?',
-                                                                          tabNo:
+                                                    Text(data.marketingCode!),
+                                                    Text(data.productTypeDesc!),
+                                                    SizedBox(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.45,
+                                                      child: Text(
+                                                        data.detailProduct!,
+                                                        maxLines: 2,
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.6,
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 5),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          // Container(
+                                                          //   child:
+                                                          //  TextField(
+                                                          //   enabled: false,
+                                                          //   // selectedOmzet != null ? false : true,
+                                                          //   onChanged: (price) {
+                                                          //     setState(() {});
+                                                          //   },
+                                                          //   controller: price,
+                                                          //   keyboardType: TextInputType.number,
+                                                          //   focusNode: numberFocusNode,
+                                                          //   inputFormatters: [
+                                                          //     FilteringTextInputFormatter.digitsOnly
+                                                          //   ],
+                                                          // ),
+                                                          Text(
+                                                            '\$ ${CurrencyFormat.convertToDollar(awalPrice, 0)}',
+                                                            style: const TextStyle(
+                                                                fontSize: 22,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                          // ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right: 10),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    MyAlertDilaog.showMyDialog(
+                                                                        context: context,
+                                                                        title: 'Approve Pricing',
+                                                                        content: 'Are you sure to approve price ?',
+                                                                        tabNo: () {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                        },
+                                                                        tabYes: () async {
+                                                                          setState(
                                                                               () {
-                                                                            Navigator.pop(context);
-                                                                          },
-                                                                          tabYes:
-                                                                              () async {
-                                                                            setState(() {
-                                                                              isLoading = true;
-                                                                            });
-                                                                            Future.delayed(const Duration(seconds: 1)).then((value) async {
-                                                                              setState(() {
-                                                                                postApi(data.lotNo!);
-                                                                                isLoading = false;
-                                                                              });
-                                                                            });
-
-                                                                            Navigator.pop(context);
+                                                                            isLoading =
+                                                                                true;
                                                                           });
-                                                                },
-                                                                icon:
-                                                                    const Icon(
-                                                                  Icons
-                                                                      .done_sharp,
-                                                                  color: Colors
-                                                                      .green,
-                                                                ),
-                                                              ),
-                                                              IconButton(
-                                                                onPressed: () {
-                                                                  showDialog(
-                                                                      context:
-                                                                          context,
-                                                                      builder:
-                                                                          (BuildContext
-                                                                              context) {
-                                                                        // ignore: no_leading_underscores_for_local_identifiers
-                                                                        final _formKey =
-                                                                            GlobalKey<FormState>();
+                                                                          Future.delayed(const Duration(seconds: 1))
+                                                                              .then((value) async {
+                                                                            setState(() {
+                                                                              postApi(data.lotNo!);
+                                                                              isLoading = false;
+                                                                            });
+                                                                          });
 
-                                                                        RoundedLoadingButtonController
-                                                                            btnController =
-                                                                            RoundedLoadingButtonController();
-                                                                        return AlertDialog(
-                                                                          content:
-                                                                              Stack(
-                                                                            clipBehavior:
-                                                                                Clip.none,
-                                                                            children: <Widget>[
-                                                                              Positioned(
-                                                                                right: -40.0,
-                                                                                top: -40.0,
-                                                                                child: InkResponse(
-                                                                                  onTap: () {
-                                                                                    Navigator.of(context).pop();
-                                                                                  },
-                                                                                  child: const CircleAvatar(
-                                                                                    backgroundColor: Colors.red,
-                                                                                    child: Icon(Icons.close),
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                        });
+                                                                  },
+                                                                  icon:
+                                                                      const Icon(
+                                                                    Icons
+                                                                        .done_sharp,
+                                                                    color: Colors
+                                                                        .green,
+                                                                  ),
+                                                                ),
+                                                                IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          // ignore: no_leading_underscores_for_local_identifiers
+                                                                          final _formKey =
+                                                                              GlobalKey<FormState>();
+
+                                                                          RoundedLoadingButtonController
+                                                                              btnController =
+                                                                              RoundedLoadingButtonController();
+                                                                          return AlertDialog(
+                                                                            content:
+                                                                                Stack(
+                                                                              clipBehavior: Clip.none,
+                                                                              children: <Widget>[
+                                                                                Positioned(
+                                                                                  right: -40.0,
+                                                                                  top: -40.0,
+                                                                                  child: InkResponse(
+                                                                                    onTap: () {
+                                                                                      Navigator.of(context).pop();
+                                                                                    },
+                                                                                    child: const CircleAvatar(
+                                                                                      backgroundColor: Colors.red,
+                                                                                      child: Icon(Icons.close),
+                                                                                    ),
                                                                                   ),
                                                                                 ),
-                                                                              ),
-                                                                              Form(
-                                                                                key: _formKey,
-                                                                                child: Column(
-                                                                                  mainAxisSize: MainAxisSize.min,
-                                                                                  children: <Widget>[
-                                                                                    Align(
-                                                                                      alignment: Alignment.centerLeft,
-                                                                                      child: Text(
-                                                                                        'Before : \$ ${CurrencyFormat.convertToDollar(data.finalPrice3USD, 0)}',
-                                                                                        textAlign: TextAlign.left,
-                                                                                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                      ),
-                                                                                    ),
-                                                                                    //price
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsets.all(8.0),
-                                                                                      child: TextFormField(
-                                                                                        style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                        textInputAction: TextInputAction.next,
-                                                                                        // controller:
-                                                                                        //     price,
-                                                                                        keyboardType: TextInputType.number,
-                                                                                        focusNode: numberFocusNode,
-                                                                                        inputFormatters: [
-                                                                                          FilteringTextInputFormatter.digitsOnly
-                                                                                        ],
-                                                                                        onChanged: (value) {
-                                                                                          price.text = value;
-                                                                                        },
-                                                                                        decoration: InputDecoration(
-                                                                                          // hintText: "example: Cahaya Sanivokasi",
-                                                                                          labelText: "Price",
-                                                                                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                Form(
+                                                                                  key: _formKey,
+                                                                                  child: Column(
+                                                                                    mainAxisSize: MainAxisSize.min,
+                                                                                    children: <Widget>[
+                                                                                      Align(
+                                                                                        alignment: Alignment.centerLeft,
+                                                                                        child: Text(
+                                                                                          'Before : \$ ${CurrencyFormat.convertToDollar(data.finalPrice3USD, 0)}',
+                                                                                          textAlign: TextAlign.left,
+                                                                                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                                                                                         ),
-                                                                                        validator: (value) {
-                                                                                          if (value!.isEmpty) {
-                                                                                            return 'Wajib diisi *';
-                                                                                          }
-                                                                                          return null;
-                                                                                        },
                                                                                       ),
-                                                                                    ),
+                                                                                      //price
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: TextFormField(
+                                                                                          style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          // controller:
+                                                                                          //     price,
+                                                                                          keyboardType: TextInputType.number,
+                                                                                          focusNode: numberFocusNode,
+                                                                                          inputFormatters: [
+                                                                                            FilteringTextInputFormatter.digitsOnly
+                                                                                          ],
+                                                                                          onChanged: (value) {
+                                                                                            price.text = value;
+                                                                                          },
+                                                                                          decoration: InputDecoration(
+                                                                                            // hintText: "example: Cahaya Sanivokasi",
+                                                                                            labelText: "Price",
+                                                                                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                          ),
+                                                                                          validator: (value) {
+                                                                                            if (value!.isEmpty) {
+                                                                                              return 'Wajib diisi *';
+                                                                                            }
+                                                                                            return null;
+                                                                                          },
+                                                                                        ),
+                                                                                      ),
 
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsets.all(8.0),
-                                                                                      child: SizedBox(
-                                                                                        width: 250,
-                                                                                        child: CustomLoadingButton(
-                                                                                            controller: btnController,
-                                                                                            child: const Text("Update"),
-                                                                                            onPressed: () async {
-                                                                                              if (_formKey.currentState!.validate()) {
-                                                                                                _formKey.currentState!.save();
-                                                                                                Future.delayed(const Duration(seconds: 2)).then((value) async {
-                                                                                                  setState(() {
-                                                                                                    awalPrice = double.parse(price.text);
-                                                                                                    postApi(data.lotNo!);
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: SizedBox(
+                                                                                          width: 250,
+                                                                                          child: CustomLoadingButton(
+                                                                                              controller: btnController,
+                                                                                              child: const Text("Update"),
+                                                                                              onPressed: () async {
+                                                                                                if (_formKey.currentState!.validate()) {
+                                                                                                  _formKey.currentState!.save();
+                                                                                                  Future.delayed(const Duration(seconds: 2)).then((value) async {
+                                                                                                    setState(() {
+                                                                                                      awalPrice = double.parse(price.text);
+                                                                                                      postApi(data.lotNo!);
+                                                                                                    });
+                                                                                                    btnController.success();
+                                                                                                    // Map<String, dynamic> body = {
+                                                                                                    //   'id': id,
+                                                                                                    //   'lot': lot.text,
+                                                                                                    //   'size': size.text,
+                                                                                                    //   'parcel': parcel.text,
+                                                                                                    //   'qty': qty.text,
+                                                                                                    // };
+                                                                                                    // final response = await http.post(
+                                                                                                    //     Uri.parse(ApiConstants
+                                                                                                    //             .baseUrl +
+                                                                                                    //         ApiConstants
+                                                                                                    //             .postUpdateListDataBatu),
+                                                                                                    //     body: body);
+                                                                                                    // print(response.body);
+                                                                                                    Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                      btnController.reset(); //reset
+                                                                                                      Navigator.of(context).pop();
+                                                                                                      showDialog<String>(
+                                                                                                          context: context,
+                                                                                                          builder: (BuildContext context) => const AlertDialog(
+                                                                                                                title: Text(
+                                                                                                                  'Update pricing success',
+                                                                                                                ),
+                                                                                                              ));
+                                                                                                    });
                                                                                                   });
-                                                                                                  btnController.success();
-                                                                                                  // Map<String, dynamic> body = {
-                                                                                                  //   'id': id,
-                                                                                                  //   'lot': lot.text,
-                                                                                                  //   'size': size.text,
-                                                                                                  //   'parcel': parcel.text,
-                                                                                                  //   'qty': qty.text,
-                                                                                                  // };
-                                                                                                  // final response = await http.post(
-                                                                                                  //     Uri.parse(ApiConstants
-                                                                                                  //             .baseUrl +
-                                                                                                  //         ApiConstants
-                                                                                                  //             .postUpdateListDataBatu),
-                                                                                                  //     body: body);
-                                                                                                  // print(response.body);
+                                                                                                } else {
+                                                                                                  btnController.error();
                                                                                                   Future.delayed(const Duration(seconds: 1)).then((value) {
                                                                                                     btnController.reset(); //reset
-                                                                                                    Navigator.of(context).pop();
-                                                                                                    showDialog<String>(
-                                                                                                        context: context,
-                                                                                                        builder: (BuildContext context) => const AlertDialog(
-                                                                                                              title: Text(
-                                                                                                                'Update pricing success',
-                                                                                                              ),
-                                                                                                            ));
                                                                                                   });
-                                                                                                });
-                                                                                              } else {
-                                                                                                btnController.error();
-                                                                                                Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                                  btnController.reset(); //reset
-                                                                                                });
-                                                                                              }
-                                                                                            }),
-                                                                                      ),
-                                                                                    )
-                                                                                  ],
+                                                                                                }
+                                                                                              }),
+                                                                                        ),
+                                                                                      )
+                                                                                    ],
+                                                                                  ),
                                                                                 ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        );
-                                                                      });
-                                                                },
-                                                                icon:
-                                                                    const Icon(
-                                                                  Icons.edit,
-                                                                  color: Colors
-                                                                      .green,
-                                                                ),
-                                                              )
-                                                            ],
+                                                                              ],
+                                                                            ),
+                                                                          );
+                                                                        });
+                                                                  },
+                                                                  icon:
+                                                                      const Icon(
+                                                                    Icons.edit,
+                                                                    color: Colors
+                                                                        .green,
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ],
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          //     child: ListTile(
-                                          //   title: Text(data.entryNo!.toString(),
-                                          //       style: const TextStyle(fontSize: 30)),
-                                          //   subtitle: Text(
-                                          //     data.marketingCode!.toString(),
-                                          //   ),
-                                          //   leading: ClipRRect(
-                                          //     child: CachedNetworkImage(
-                                          //       // memCacheWidth: 85, //default 45
-                                          //       // memCacheHeight: 100, //default 60
-                                          //       // maxHeightDiskCache: 100, //default 60
-                                          //       // maxWidthDiskCache: 85, //default 45
-                                          //       // imageUrl:
-                                          //       //     'https://110.5.102.154:50001/Files/Images/Product/${data.fgImageFileName!.toString()}',
-                                          //       imageUrl:
-                                          //           'https://110.5.102.154:50001/Files/Images/Product/20100294-03.jpeg',
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            //     child: ListTile(
+                                            //   title: Text(data.entryNo!.toString(),
+                                            //       style: const TextStyle(fontSize: 30)),
+                                            //   subtitle: Text(
+                                            //     data.marketingCode!.toString(),
+                                            //   ),
+                                            //   leading: ClipRRect(
+                                            //     child: CachedNetworkImage(
+                                            //       // memCacheWidth: 85, //default 45
+                                            //       // memCacheHeight: 100, //default 60
+                                            //       // maxHeightDiskCache: 100, //default 60
+                                            //       // maxWidthDiskCache: 85, //default 45
+                                            //       // imageUrl:
+                                            //       //     'https://110.5.102.154:50001/Files/Images/Product/${data.fgImageFileName!.toString()}',
+                                            //       imageUrl:
+                                            //           'https://110.5.102.154:50001/Files/Images/Product/20100294-03.jpeg',
 
-                                          //       placeholder: (context, url) =>
-                                          //           const CircularProgressIndicator(),
-                                          //       errorWidget: (context, url, error) => const Icon(
-                                          //         Icons.error,
-                                          //         color: Colors.black,
-                                          //       ),
-                                          //       fit: BoxFit.cover,
-                                          //     ),
-                                          //   ),
-                                          // )
+                                            //       placeholder: (context, url) =>
+                                            //           const CircularProgressIndicator(),
+                                            //       errorWidget: (context, url, error) => const Icon(
+                                            //         Icons.error,
+                                            //         color: Colors.black,
+                                            //       ),
+                                            //       fit: BoxFit.cover,
+                                            //     ),
+                                            //   ),
+                                            // )
+                                          ),
                                         ),
                                       ),
                                     ),
