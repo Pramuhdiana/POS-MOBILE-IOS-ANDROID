@@ -201,7 +201,8 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                       child: SizedBox(
                                         height: 150,
                                         child: Padding(
-                                          padding: const EdgeInsets.all(4),
+                                          padding:
+                                              const EdgeInsets.only(left: 4),
                                           child: Card(
                                             child: Row(
                                               children: [
