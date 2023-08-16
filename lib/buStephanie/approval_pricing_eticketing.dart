@@ -308,282 +308,288 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                       .black),
                                                         ),
                                                         // ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            IconButton(
-                                                              onPressed: () {
-                                                                showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      // ignore: no_leading_underscores_for_local_identifiers
-                                                                      final _formKey =
-                                                                          GlobalKey<
-                                                                              FormState>();
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 10),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              IconButton(
+                                                                onPressed: () {
+                                                                  showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (BuildContext
+                                                                              context) {
+                                                                        // ignore: no_leading_underscores_for_local_identifiers
+                                                                        final _formKey =
+                                                                            GlobalKey<FormState>();
 
-                                                                      RoundedLoadingButtonController
-                                                                          btnController =
-                                                                          RoundedLoadingButtonController();
-                                                                      return AlertDialog(
-                                                                        content:
-                                                                            Stack(
-                                                                          clipBehavior:
-                                                                              Clip.none,
-                                                                          children: <Widget>[
-                                                                            Positioned(
-                                                                              right: -40.0,
-                                                                              top: -40.0,
-                                                                              child: InkResponse(
-                                                                                onTap: () {
-                                                                                  Navigator.of(context).pop();
-                                                                                },
-                                                                                child: const CircleAvatar(
-                                                                                  backgroundColor: Colors.red,
-                                                                                  child: Icon(Icons.close),
+                                                                        RoundedLoadingButtonController
+                                                                            btnController =
+                                                                            RoundedLoadingButtonController();
+                                                                        return AlertDialog(
+                                                                          content:
+                                                                              Stack(
+                                                                            clipBehavior:
+                                                                                Clip.none,
+                                                                            children: <Widget>[
+                                                                              Positioned(
+                                                                                right: -40.0,
+                                                                                top: -40.0,
+                                                                                child: InkResponse(
+                                                                                  onTap: () {
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  child: const CircleAvatar(
+                                                                                    backgroundColor: Colors.red,
+                                                                                    child: Icon(Icons.close),
+                                                                                  ),
                                                                                 ),
                                                                               ),
-                                                                            ),
-                                                                            Form(
-                                                                              key: _formKey,
-                                                                              child: Column(
-                                                                                mainAxisSize: MainAxisSize.min,
-                                                                                children: <Widget>[
-                                                                                  Align(
-                                                                                    alignment: Alignment.centerLeft,
-                                                                                    child: Text(
-                                                                                      'Price : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
-                                                                                      textAlign: TextAlign.left,
-                                                                                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                    ),
-                                                                                  ),
-                                                                                  //notes
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.all(8.0),
-                                                                                    child: TextFormField(
-                                                                                      style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                      textInputAction: TextInputAction.next,
-                                                                                      // controller:
-                                                                                      //     price,
-                                                                                      keyboardType: TextInputType.text,
-                                                                                      onChanged: (value) {
-                                                                                        notes.text = value;
-                                                                                      },
-                                                                                      decoration: InputDecoration(
-                                                                                        labelText: "Notes",
-                                                                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                              Form(
+                                                                                key: _formKey,
+                                                                                child: Column(
+                                                                                  mainAxisSize: MainAxisSize.min,
+                                                                                  children: <Widget>[
+                                                                                    Align(
+                                                                                      alignment: Alignment.centerLeft,
+                                                                                      child: Text(
+                                                                                        'Price : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
+                                                                                        textAlign: TextAlign.left,
+                                                                                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                                                                                       ),
                                                                                     ),
-                                                                                  ),
+                                                                                    //notes
+                                                                                    Padding(
+                                                                                      padding: const EdgeInsets.all(8.0),
+                                                                                      child: TextFormField(
+                                                                                        style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                        textInputAction: TextInputAction.next,
+                                                                                        // controller:
+                                                                                        //     price,
+                                                                                        keyboardType: TextInputType.text,
+                                                                                        onChanged: (value) {
+                                                                                          notes.text = value;
+                                                                                        },
+                                                                                        decoration: InputDecoration(
+                                                                                          labelText: "Notes",
+                                                                                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
 
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.all(8.0),
-                                                                                    child: SizedBox(
-                                                                                      width: 250,
-                                                                                      child: CustomLoadingButton(
-                                                                                          controller: btnController,
-                                                                                          child: const Text("Approve"),
-                                                                                          onPressed: () async {
-                                                                                            if (_formKey.currentState!.validate()) {
-                                                                                              _formKey.currentState!.save();
-                                                                                              Future.delayed(const Duration(seconds: 2)).then((value) async {
-                                                                                                setState(() {
-                                                                                                  awalPrice = int.parse(price.text);
-                                                                                                  postApi(data.id!);
-                                                                                                  context.read<PApprovalEticketing>().clearNotif(); //clear cart
-                                                                                                  loadListEticketing(); //ambil data cart
+                                                                                    Padding(
+                                                                                      padding: const EdgeInsets.all(8.0),
+                                                                                      child: SizedBox(
+                                                                                        width: 250,
+                                                                                        child: CustomLoadingButton(
+                                                                                            controller: btnController,
+                                                                                            child: const Text("Approve"),
+                                                                                            onPressed: () async {
+                                                                                              if (_formKey.currentState!.validate()) {
+                                                                                                _formKey.currentState!.save();
+                                                                                                Future.delayed(const Duration(seconds: 2)).then((value) async {
+                                                                                                  setState(() {
+                                                                                                    awalPrice = int.parse(price.text);
+                                                                                                    postApi(data.id!);
+                                                                                                    context.read<PApprovalEticketing>().clearNotif(); //clear cart
+                                                                                                    loadListEticketing(); //ambil data cart
+                                                                                                  });
+                                                                                                  btnController.success();
+                                                                                                  Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                    btnController.reset(); //reset
+                                                                                                    Navigator.of(context).pop();
+                                                                                                    showDialog<String>(
+                                                                                                        context: context,
+                                                                                                        builder: (BuildContext context) => const AlertDialog(
+                                                                                                              title: Text(
+                                                                                                                'Approve pricing success',
+                                                                                                              ),
+                                                                                                            ));
+                                                                                                  });
                                                                                                 });
-                                                                                                btnController.success();
+                                                                                              } else {
+                                                                                                btnController.error();
                                                                                                 Future.delayed(const Duration(seconds: 1)).then((value) {
                                                                                                   btnController.reset(); //reset
-                                                                                                  Navigator.of(context).pop();
-                                                                                                  showDialog<String>(
-                                                                                                      context: context,
-                                                                                                      builder: (BuildContext context) => const AlertDialog(
-                                                                                                            title: Text(
-                                                                                                              'Approve pricing success',
-                                                                                                            ),
-                                                                                                          ));
                                                                                                 });
-                                                                                              });
-                                                                                            } else {
-                                                                                              btnController.error();
-                                                                                              Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                                btnController.reset(); //reset
-                                                                                              });
-                                                                                            }
-                                                                                          }),
-                                                                                    ),
-                                                                                  )
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      );
-                                                                    });
-                                                              },
-                                                              icon: const Icon(
-                                                                Icons
-                                                                    .done_sharp,
-                                                                color: Colors
-                                                                    .green,
-                                                              ),
-                                                            ),
-                                                            IconButton(
-                                                              onPressed: () {
-                                                                showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      // ignore: no_leading_underscores_for_local_identifiers
-                                                                      final _formKey =
-                                                                          GlobalKey<
-                                                                              FormState>();
-
-                                                                      RoundedLoadingButtonController
-                                                                          btnController =
-                                                                          RoundedLoadingButtonController();
-                                                                      return AlertDialog(
-                                                                        content:
-                                                                            Stack(
-                                                                          clipBehavior:
-                                                                              Clip.none,
-                                                                          children: <Widget>[
-                                                                            Positioned(
-                                                                              right: -40.0,
-                                                                              top: -40.0,
-                                                                              child: InkResponse(
-                                                                                onTap: () {
-                                                                                  Navigator.of(context).pop();
-                                                                                },
-                                                                                child: const CircleAvatar(
-                                                                                  backgroundColor: Colors.red,
-                                                                                  child: Icon(Icons.close),
+                                                                                              }
+                                                                                            }),
+                                                                                      ),
+                                                                                    )
+                                                                                  ],
                                                                                 ),
                                                                               ),
-                                                                            ),
-                                                                            Form(
-                                                                              key: _formKey,
-                                                                              child: Column(
-                                                                                mainAxisSize: MainAxisSize.min,
-                                                                                children: <Widget>[
-                                                                                  Align(
-                                                                                    alignment: Alignment.centerLeft,
-                                                                                    child: Text(
-                                                                                      'Before : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
-                                                                                      textAlign: TextAlign.left,
-                                                                                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                    ),
-                                                                                  ),
-                                                                                  //price
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.all(8.0),
-                                                                                    child: TextFormField(
-                                                                                      style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                      textInputAction: TextInputAction.next,
-                                                                                      // controller:
-                                                                                      //     price,
-                                                                                      keyboardType: TextInputType.number,
-                                                                                      focusNode: numberFocusNode,
-                                                                                      inputFormatters: [
-                                                                                        FilteringTextInputFormatter.digitsOnly
-                                                                                      ],
-                                                                                      onChanged: (value) {
-                                                                                        price.text = value;
-                                                                                      },
-                                                                                      decoration: InputDecoration(
-                                                                                        // hintText: "example: Cahaya Sanivokasi",
-                                                                                        labelText: "Price",
-                                                                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                                                      ),
-                                                                                      validator: (value) {
-                                                                                        if (value!.isEmpty) {
-                                                                                          return 'Wajib diisi *';
-                                                                                        }
-                                                                                        return null;
-                                                                                      },
-                                                                                    ),
-                                                                                  ),
-                                                                                  //notes
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.all(8.0),
-                                                                                    child: TextFormField(
-                                                                                      style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                      textInputAction: TextInputAction.next,
-                                                                                      // controller:
-                                                                                      //     price,
-                                                                                      keyboardType: TextInputType.text,
-                                                                                      onChanged: (value) {
-                                                                                        notes.text = value;
-                                                                                      },
-                                                                                      decoration: InputDecoration(
-                                                                                        labelText: "Notes",
-                                                                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ),
+                                                                            ],
+                                                                          ),
+                                                                        );
+                                                                      });
+                                                                },
+                                                                icon:
+                                                                    const Icon(
+                                                                  Icons
+                                                                      .done_sharp,
+                                                                  color: Colors
+                                                                      .green,
+                                                                ),
+                                                              ),
+                                                              IconButton(
+                                                                onPressed: () {
+                                                                  showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (BuildContext
+                                                                              context) {
+                                                                        // ignore: no_leading_underscores_for_local_identifiers
+                                                                        final _formKey =
+                                                                            GlobalKey<FormState>();
 
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.all(8.0),
-                                                                                    child: SizedBox(
-                                                                                      width: 250,
-                                                                                      child: CustomLoadingButton(
-                                                                                          controller: btnController,
-                                                                                          child: const Text("Update"),
-                                                                                          onPressed: () async {
-                                                                                            if (_formKey.currentState!.validate()) {
-                                                                                              _formKey.currentState!.save();
-                                                                                              Future.delayed(const Duration(seconds: 2)).then((value) async {
-                                                                                                setState(() {
-                                                                                                  awalPrice = int.parse(price.text);
-                                                                                                  postApi(data.lotNo!);
-                                                                                                  context.read<PApprovalEticketing>().clearNotif(); //clear cart
-                                                                                                  loadListEticketing(); //ambil data cart
+                                                                        RoundedLoadingButtonController
+                                                                            btnController =
+                                                                            RoundedLoadingButtonController();
+                                                                        return AlertDialog(
+                                                                          content:
+                                                                              Stack(
+                                                                            clipBehavior:
+                                                                                Clip.none,
+                                                                            children: <Widget>[
+                                                                              Positioned(
+                                                                                right: -40.0,
+                                                                                top: -40.0,
+                                                                                child: InkResponse(
+                                                                                  onTap: () {
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  child: const CircleAvatar(
+                                                                                    backgroundColor: Colors.red,
+                                                                                    child: Icon(Icons.close),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Form(
+                                                                                key: _formKey,
+                                                                                child: Column(
+                                                                                  mainAxisSize: MainAxisSize.min,
+                                                                                  children: <Widget>[
+                                                                                    Align(
+                                                                                      alignment: Alignment.centerLeft,
+                                                                                      child: Text(
+                                                                                        'Before : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
+                                                                                        textAlign: TextAlign.left,
+                                                                                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                      ),
+                                                                                    ),
+                                                                                    //price
+                                                                                    Padding(
+                                                                                      padding: const EdgeInsets.all(8.0),
+                                                                                      child: TextFormField(
+                                                                                        style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                        textInputAction: TextInputAction.next,
+                                                                                        // controller:
+                                                                                        //     price,
+                                                                                        keyboardType: TextInputType.number,
+                                                                                        focusNode: numberFocusNode,
+                                                                                        inputFormatters: [
+                                                                                          FilteringTextInputFormatter.digitsOnly
+                                                                                        ],
+                                                                                        onChanged: (value) {
+                                                                                          price.text = value;
+                                                                                        },
+                                                                                        decoration: InputDecoration(
+                                                                                          // hintText: "example: Cahaya Sanivokasi",
+                                                                                          labelText: "Price",
+                                                                                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                        ),
+                                                                                        validator: (value) {
+                                                                                          if (value!.isEmpty) {
+                                                                                            return 'Wajib diisi *';
+                                                                                          }
+                                                                                          return null;
+                                                                                        },
+                                                                                      ),
+                                                                                    ),
+                                                                                    //notes
+                                                                                    Padding(
+                                                                                      padding: const EdgeInsets.all(8.0),
+                                                                                      child: TextFormField(
+                                                                                        style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                        textInputAction: TextInputAction.next,
+                                                                                        // controller:
+                                                                                        //     price,
+                                                                                        keyboardType: TextInputType.text,
+                                                                                        onChanged: (value) {
+                                                                                          notes.text = value;
+                                                                                        },
+                                                                                        decoration: InputDecoration(
+                                                                                          labelText: "Notes",
+                                                                                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+
+                                                                                    Padding(
+                                                                                      padding: const EdgeInsets.all(8.0),
+                                                                                      child: SizedBox(
+                                                                                        width: 250,
+                                                                                        child: CustomLoadingButton(
+                                                                                            controller: btnController,
+                                                                                            child: const Text("Update"),
+                                                                                            onPressed: () async {
+                                                                                              if (_formKey.currentState!.validate()) {
+                                                                                                _formKey.currentState!.save();
+                                                                                                Future.delayed(const Duration(seconds: 2)).then((value) async {
+                                                                                                  setState(() {
+                                                                                                    awalPrice = int.parse(price.text);
+                                                                                                    postApi(data.lotNo!);
+                                                                                                    context.read<PApprovalEticketing>().clearNotif(); //clear cart
+                                                                                                    loadListEticketing(); //ambil data cart
+                                                                                                  });
+                                                                                                  btnController.success();
+                                                                                                  Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                    btnController.reset(); //reset
+                                                                                                    Navigator.of(context).pop();
+                                                                                                    showDialog<String>(
+                                                                                                        context: context,
+                                                                                                        builder: (BuildContext context) => const AlertDialog(
+                                                                                                              title: Text(
+                                                                                                                'Update pricing success',
+                                                                                                              ),
+                                                                                                            ));
+                                                                                                  });
                                                                                                 });
-                                                                                                btnController.success();
+                                                                                              } else {
+                                                                                                btnController.error();
                                                                                                 Future.delayed(const Duration(seconds: 1)).then((value) {
                                                                                                   btnController.reset(); //reset
-                                                                                                  Navigator.of(context).pop();
-                                                                                                  showDialog<String>(
-                                                                                                      context: context,
-                                                                                                      builder: (BuildContext context) => const AlertDialog(
-                                                                                                            title: Text(
-                                                                                                              'Update pricing success',
-                                                                                                            ),
-                                                                                                          ));
                                                                                                 });
-                                                                                              });
-                                                                                            } else {
-                                                                                              btnController.error();
-                                                                                              Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                                btnController.reset(); //reset
-                                                                                              });
-                                                                                            }
-                                                                                          }),
-                                                                                    ),
-                                                                                  )
-                                                                                ],
+                                                                                              }
+                                                                                            }),
+                                                                                      ),
+                                                                                    )
+                                                                                  ],
+                                                                                ),
                                                                               ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      );
-                                                                    });
-                                                              },
-                                                              icon: const Icon(
-                                                                Icons.edit,
-                                                                color: Colors
-                                                                    .green,
-                                                              ),
-                                                            )
-                                                          ],
+                                                                            ],
+                                                                          ),
+                                                                        );
+                                                                      });
+                                                                },
+                                                                icon:
+                                                                    const Icon(
+                                                                  Icons.edit,
+                                                                  color: Colors
+                                                                      .green,
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
