@@ -99,7 +99,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
       url,
     );
     print('bawah');
-    print(response.data);
     return (response.data as List).map((cart) {
       context.read<PApprovalBrj>().addItem(
             1,
@@ -136,47 +135,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
               });
             },
           ),
-          // actions: [
-          //   Padding(
-          //     padding: const EdgeInsets.only(right: 10),
-          //     child: Stack(
-          //       children: [
-          //         IconButton(
-          //           onPressed: () {
-          //             Navigator.push(context,
-          //                 MaterialPageRoute(builder: (c) => const CartScreen()));
-          //             // }
-          //           },
-          //           icon: Padding(
-          //             padding: const EdgeInsets.all(2),
-          //             child: badges.Badge(
-          //               showBadge:
-          //                   context.read<PCart>().getItems.isEmpty ? false : true,
-          //               badgeStyle: const badges.BadgeStyle(
-          //                 badgeColor: Colors.green,
-          //               ),
-          //               badgeContent: Text(
-          //                 context.watch<PCart>().getItems.length.toString(),
-          //                 style: const TextStyle(
-          //                   fontSize: 8,
-          //                   fontWeight: FontWeight.w600,
-          //                 ),
-          //               ),
-          //               child: Transform.scale(
-          //                 scale: 1.3,
-          //                 child: Image.asset(
-          //                   "assets/cart.png",
-          //                   width: 45,
-          //                   height: 45,
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ],
         ),
         body: isLoading != false
             ? const Center(child: CircularProgressIndicator())
@@ -198,12 +156,35 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                       child: FutureBuilder(
                         future: _getData(),
                         builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return const Center(
+                              child: Text(
+                                'You Have not \n\n Waiting List Pricing BRJ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 26,
+                                    color: Colors.blueGrey,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Acne',
+                                    letterSpacing: 1.5),
+                              ),
+                            );
+                          }
+
+                          // if (snapshot.connectionState ==
+                          //     ConnectionState.waiting) {
+                          //   return const Center(
+                          //     child: CircularProgressIndicator(),
+                          //   );
+                          // }
+
                           if (snapshot.hasData) {
                             return ListView.builder(
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   var data = snapshot.data![index];
-                                  awalPrice = data.finalPrice3USD!;
+                                  awalPrice = double.parse(
+                                      data.finalPrice3USD!.toString());
                                   return Padding(
                                     padding: const EdgeInsets.all(0.0),
                                     child: GestureDetector(
@@ -383,10 +364,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                   _formKey.currentState!.save();
                                                                                                   Future.delayed(const Duration(seconds: 2)).then((value) async {
                                                                                                     setState(() {
-                                                                                                      awalPrice = double.parse(price.text);
                                                                                                       postApi(data.lotNo!);
-                                                                                                      context.read<PApprovalBrj>().clearNotif(); //clear cart
-                                                                                                      loadListBRJ(); //ambil data cart
                                                                                                     });
                                                                                                     btnController.success();
                                                                                                     Future.delayed(const Duration(seconds: 1)).then((value) {
@@ -399,6 +377,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                                   'Approve pricing success',
                                                                                                                 ),
                                                                                                               ));
+                                                                                                      context.read<PApprovalBrj>().removesItem();
                                                                                                     });
                                                                                                   });
                                                                                                 } else {
@@ -535,8 +514,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                     setState(() {
                                                                                                       awalPrice = double.parse(price.text);
                                                                                                       postApi(data.lotNo!);
-                                                                                                      context.read<PApprovalBrj>().clearNotif(); //clear cart
-                                                                                                      loadListBRJ(); //ambil data cart
                                                                                                     });
                                                                                                     btnController.success();
                                                                                                     Future.delayed(const Duration(seconds: 1)).then((value) {
@@ -549,6 +526,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                                   'Update pricing success',
                                                                                                                 ),
                                                                                                               ));
+                                                                                                      context.read<PApprovalBrj>().removesItem();
                                                                                                     });
                                                                                                   });
                                                                                                 } else {
@@ -634,6 +612,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
 
 //method approve pricing
   postApi(lot) async {
+    print(awalPrice);
     Map<String, String> headersAPI = {
       'Content-Type': 'application/json',
     };
@@ -647,7 +626,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
         headers: headersAPI,
         body: jsonEncode(bodyApi));
     print(response.statusCode);
-    print(response.body);
   }
 }
 
@@ -766,8 +744,7 @@ class SearchModel extends StatelessWidget {
                             'Authorization': 'Bearer $token',
                           },
                           body: body);
-                      print(response.body);
-
+                      print(response.statusCode);
                       Fluttertoast.showToast(
                           msg: "Barang Berhasil Di Tambahkan");
                       context.read<PCart>().addItem(

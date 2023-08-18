@@ -274,7 +274,7 @@ class PricingEticketingModel {
     statusApproval = json['status_approval'] ?? 0;
     statusGet = json['status_get'];
     imageSales1 = json['image_sales1'] ?? '';
-    approvalHarga = json['approval_harga'];
+    approvalHarga = json['approval_harga'] ?? 0;
     imageSales2 = json['image_sales2'] ?? '';
     imageDesign1 = json['image_design1'] ?? '';
     imageDesign2 = json['image_design2'] ?? '';

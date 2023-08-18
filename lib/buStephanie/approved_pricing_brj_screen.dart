@@ -9,16 +9,12 @@ import 'package:e_shop/buStephanie/approve_pricing_model.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:rounded_loading_button/rounded_loading_button.dart';
 import '../global/currency_format.dart';
 import '../provider/provider_cart.dart';
 import 'package:http/http.dart' as http;
 
-import '../widgets/alert_dialog.dart';
-import '../widgets/custom_loading.dart';
 import 'item_photo_pricing.dart';
 
 class ApprovedPricingBrjScreen extends StatefulWidget {
@@ -44,7 +40,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
         ApiConstants.baseUrlPricing + ApiConstants.GETapprovelPricingApproved);
 
     final response = await http.get(url);
-    print(response.body);
+    print(response.statusCode);
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       return jsonResponse
@@ -66,7 +62,6 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
         var g = jsonResponse
             .map((data) => ApprovePricingModel.fromJson(data))
             .toList();
-        setState(() {});
         return g;
       } else {
         throw Exception('Unexpected error occured!');
@@ -110,52 +105,11 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
             backgroundColor: Colors.black12,
             keyboardType: TextInputType.text,
             onChanged: (value) {
-              setState(() {
-                searchInput = value;
-              });
+              // setState(() {
+              //   searchInput = value;
+              // });
             },
           ),
-          // actions: [
-          //   Padding(
-          //     padding: const EdgeInsets.only(right: 10),
-          //     child: Stack(
-          //       children: [
-          //         IconButton(
-          //           onPressed: () {
-          //             Navigator.push(context,
-          //                 MaterialPageRoute(builder: (c) => const CartScreen()));
-          //             // }
-          //           },
-          //           icon: Padding(
-          //             padding: const EdgeInsets.all(2),
-          //             child: badges.Badge(
-          //               showBadge:
-          //                   context.read<PCart>().getItems.isEmpty ? false : true,
-          //               badgeStyle: const badges.BadgeStyle(
-          //                 badgeColor: Colors.green,
-          //               ),
-          //               badgeContent: Text(
-          //                 context.watch<PCart>().getItems.length.toString(),
-          //                 style: const TextStyle(
-          //                   fontSize: 8,
-          //                   fontWeight: FontWeight.w600,
-          //                 ),
-          //               ),
-          //               child: Transform.scale(
-          //                 scale: 1.3,
-          //                 child: Image.asset(
-          //                   "assets/cart.png",
-          //                   width: 45,
-          //                   height: 45,
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ],
         ),
         body: isLoading != false
             ? const Center(child: CircularProgressIndicator())
@@ -166,7 +120,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                     const SizedBox(
                       height: 35,
                       child: Text(
-                        'Approvad BRJ',
+                        'Approved BRJ',
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -248,21 +202,6 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                             MainAxisAlignment
                                                                 .spaceBetween,
                                                         children: [
-                                                          // Container(
-                                                          //   child:
-                                                          //  TextField(
-                                                          //   enabled: false,
-                                                          //   // selectedOmzet != null ? false : true,
-                                                          //   onChanged: (price) {
-                                                          //     setState(() {});
-                                                          //   },
-                                                          //   controller: price,
-                                                          //   keyboardType: TextInputType.number,
-                                                          //   focusNode: numberFocusNode,
-                                                          //   inputFormatters: [
-                                                          //     FilteringTextInputFormatter.digitsOnly
-                                                          //   ],
-                                                          // ),
                                                           Text(
                                                             '\$ ${CurrencyFormat.convertToDollar(awalPrice, 0)}',
                                                             style: const TextStyle(
@@ -274,199 +213,199 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                                     .black),
                                                           ),
                                                           // ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right: 10),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                IconButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    MyAlertDilaog.showMyDialog(
-                                                                        context: context,
-                                                                        title: 'Approve Pricing',
-                                                                        content: 'Are you sure to approve price ?',
-                                                                        tabNo: () {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        },
-                                                                        tabYes: () async {
-                                                                          setState(
-                                                                              () {
-                                                                            isLoading =
-                                                                                true;
-                                                                          });
-                                                                          Future.delayed(const Duration(seconds: 1))
-                                                                              .then((value) async {
-                                                                            setState(() {
-                                                                              postApi(data.lotNo!);
-                                                                              isLoading = false;
-                                                                            });
-                                                                          });
+                                                          // Padding(
+                                                          //   padding:
+                                                          //       const EdgeInsets
+                                                          //               .only(
+                                                          //           right: 10),
+                                                          //   child: Row(
+                                                          //     mainAxisAlignment:
+                                                          //         MainAxisAlignment
+                                                          //             .start,
+                                                          //     children: [
+                                                          //       IconButton(
+                                                          //         onPressed:
+                                                          //             () {
+                                                          //           MyAlertDilaog.showMyDialog(
+                                                          //               context: context,
+                                                          //               title: 'Approve Pricing',
+                                                          //               content: 'Are you sure to approve price ?',
+                                                          //               tabNo: () {
+                                                          //                 Navigator.pop(
+                                                          //                     context);
+                                                          //               },
+                                                          //               tabYes: () async {
+                                                          //                 setState(
+                                                          //                     () {
+                                                          //                   isLoading =
+                                                          //                       true;
+                                                          //                 });
+                                                          //                 Future.delayed(const Duration(seconds: 1))
+                                                          //                     .then((value) async {
+                                                          //                   setState(() {
+                                                          //                     postApi(data.lotNo!);
+                                                          //                     isLoading = false;
+                                                          //                   });
+                                                          //                 });
 
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        });
-                                                                  },
-                                                                  icon:
-                                                                      const Icon(
-                                                                    Icons
-                                                                        .done_sharp,
-                                                                    color: Colors
-                                                                        .green,
-                                                                  ),
-                                                                ),
-                                                                IconButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    showDialog(
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                          // ignore: no_leading_underscores_for_local_identifiers
-                                                                          final _formKey =
-                                                                              GlobalKey<FormState>();
+                                                          //                 Navigator.pop(
+                                                          //                     context);
+                                                          //               });
+                                                          //         },
+                                                          //         icon:
+                                                          //             const Icon(
+                                                          //           Icons
+                                                          //               .done_sharp,
+                                                          //           color: Colors
+                                                          //               .green,
+                                                          //         ),
+                                                          //       ),
+                                                          //       IconButton(
+                                                          //         onPressed:
+                                                          //             () {
+                                                          //           showDialog(
+                                                          //               context:
+                                                          //                   context,
+                                                          //               builder:
+                                                          //                   (BuildContext
+                                                          //                       context) {
+                                                          //                 // ignore: no_leading_underscores_for_local_identifiers
+                                                          //                 final _formKey =
+                                                          //                     GlobalKey<FormState>();
 
-                                                                          RoundedLoadingButtonController
-                                                                              btnController =
-                                                                              RoundedLoadingButtonController();
-                                                                          return AlertDialog(
-                                                                            content:
-                                                                                Stack(
-                                                                              clipBehavior: Clip.none,
-                                                                              children: <Widget>[
-                                                                                Positioned(
-                                                                                  right: -40.0,
-                                                                                  top: -40.0,
-                                                                                  child: InkResponse(
-                                                                                    onTap: () {
-                                                                                      Navigator.of(context).pop();
-                                                                                    },
-                                                                                    child: const CircleAvatar(
-                                                                                      backgroundColor: Colors.red,
-                                                                                      child: Icon(Icons.close),
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                                Form(
-                                                                                  key: _formKey,
-                                                                                  child: Column(
-                                                                                    mainAxisSize: MainAxisSize.min,
-                                                                                    children: <Widget>[
-                                                                                      Align(
-                                                                                        alignment: Alignment.centerLeft,
-                                                                                        child: Text(
-                                                                                          'Before : \$ ${CurrencyFormat.convertToDollar(data.finalPrice3USD, 0)}',
-                                                                                          textAlign: TextAlign.left,
-                                                                                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                        ),
-                                                                                      ),
-                                                                                      //price
-                                                                                      Padding(
-                                                                                        padding: const EdgeInsets.all(8.0),
-                                                                                        child: TextFormField(
-                                                                                          style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          // controller:
-                                                                                          //     price,
-                                                                                          keyboardType: TextInputType.number,
-                                                                                          focusNode: numberFocusNode,
-                                                                                          inputFormatters: [
-                                                                                            FilteringTextInputFormatter.digitsOnly
-                                                                                          ],
-                                                                                          onChanged: (value) {
-                                                                                            price.text = value;
-                                                                                          },
-                                                                                          decoration: InputDecoration(
-                                                                                            // hintText: "example: Cahaya Sanivokasi",
-                                                                                            labelText: "Price",
-                                                                                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                                                          ),
-                                                                                          validator: (value) {
-                                                                                            if (value!.isEmpty) {
-                                                                                              return 'Wajib diisi *';
-                                                                                            }
-                                                                                            return null;
-                                                                                          },
-                                                                                        ),
-                                                                                      ),
+                                                          //                 RoundedLoadingButtonController
+                                                          //                     btnController =
+                                                          //                     RoundedLoadingButtonController();
+                                                          //                 return AlertDialog(
+                                                          //                   content:
+                                                          //                       Stack(
+                                                          //                     clipBehavior: Clip.none,
+                                                          //                     children: <Widget>[
+                                                          //                       Positioned(
+                                                          //                         right: -40.0,
+                                                          //                         top: -40.0,
+                                                          //                         child: InkResponse(
+                                                          //                           onTap: () {
+                                                          //                             Navigator.of(context).pop();
+                                                          //                           },
+                                                          //                           child: const CircleAvatar(
+                                                          //                             backgroundColor: Colors.red,
+                                                          //                             child: Icon(Icons.close),
+                                                          //                           ),
+                                                          //                         ),
+                                                          //                       ),
+                                                          //                       Form(
+                                                          //                         key: _formKey,
+                                                          //                         child: Column(
+                                                          //                           mainAxisSize: MainAxisSize.min,
+                                                          //                           children: <Widget>[
+                                                          //                             Align(
+                                                          //                               alignment: Alignment.centerLeft,
+                                                          //                               child: Text(
+                                                          //                                 'Before : \$ ${CurrencyFormat.convertToDollar(data.finalPrice3USD, 0)}',
+                                                          //                                 textAlign: TextAlign.left,
+                                                          //                                 style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                          //                               ),
+                                                          //                             ),
+                                                          //                             //price
+                                                          //                             Padding(
+                                                          //                               padding: const EdgeInsets.all(8.0),
+                                                          //                               child: TextFormField(
+                                                          //                                 style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                          //                                 textInputAction: TextInputAction.next,
+                                                          //                                 // controller:
+                                                          //                                 //     price,
+                                                          //                                 keyboardType: TextInputType.number,
+                                                          //                                 focusNode: numberFocusNode,
+                                                          //                                 inputFormatters: [
+                                                          //                                   FilteringTextInputFormatter.digitsOnly
+                                                          //                                 ],
+                                                          //                                 onChanged: (value) {
+                                                          //                                   price.text = value;
+                                                          //                                 },
+                                                          //                                 decoration: InputDecoration(
+                                                          //                                   // hintText: "example: Cahaya Sanivokasi",
+                                                          //                                   labelText: "Price",
+                                                          //                                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                          //                                 ),
+                                                          //                                 validator: (value) {
+                                                          //                                   if (value!.isEmpty) {
+                                                          //                                     return 'Wajib diisi *';
+                                                          //                                   }
+                                                          //                                   return null;
+                                                          //                                 },
+                                                          //                               ),
+                                                          //                             ),
 
-                                                                                      Padding(
-                                                                                        padding: const EdgeInsets.all(8.0),
-                                                                                        child: SizedBox(
-                                                                                          width: 250,
-                                                                                          child: CustomLoadingButton(
-                                                                                              controller: btnController,
-                                                                                              child: const Text("Update"),
-                                                                                              onPressed: () async {
-                                                                                                if (_formKey.currentState!.validate()) {
-                                                                                                  _formKey.currentState!.save();
-                                                                                                  Future.delayed(const Duration(seconds: 2)).then((value) async {
-                                                                                                    setState(() {
-                                                                                                      awalPrice = double.parse(price.text);
-                                                                                                      postApi(data.lotNo!);
-                                                                                                    });
-                                                                                                    btnController.success();
-                                                                                                    // Map<String, dynamic> body = {
-                                                                                                    //   'id': id,
-                                                                                                    //   'lot': lot.text,
-                                                                                                    //   'size': size.text,
-                                                                                                    //   'parcel': parcel.text,
-                                                                                                    //   'qty': qty.text,
-                                                                                                    // };
-                                                                                                    // final response = await http.post(
-                                                                                                    //     Uri.parse(ApiConstants
-                                                                                                    //             .baseUrl +
-                                                                                                    //         ApiConstants
-                                                                                                    //             .postUpdateListDataBatu),
-                                                                                                    //     body: body);
-                                                                                                    // print(response.body);
-                                                                                                    Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                                      btnController.reset(); //reset
-                                                                                                      Navigator.of(context).pop();
-                                                                                                      showDialog<String>(
-                                                                                                          context: context,
-                                                                                                          builder: (BuildContext context) => const AlertDialog(
-                                                                                                                title: Text(
-                                                                                                                  'Update pricing success',
-                                                                                                                ),
-                                                                                                              ));
-                                                                                                    });
-                                                                                                  });
-                                                                                                } else {
-                                                                                                  btnController.error();
-                                                                                                  Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                                    btnController.reset(); //reset
-                                                                                                  });
-                                                                                                }
-                                                                                              }),
-                                                                                        ),
-                                                                                      )
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          );
-                                                                        });
-                                                                  },
-                                                                  icon:
-                                                                      const Icon(
-                                                                    Icons.edit,
-                                                                    color: Colors
-                                                                        .green,
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
+                                                          //                             Padding(
+                                                          //                               padding: const EdgeInsets.all(8.0),
+                                                          //                               child: SizedBox(
+                                                          //                                 width: 250,
+                                                          //                                 child: CustomLoadingButton(
+                                                          //                                     controller: btnController,
+                                                          //                                     child: const Text("Update"),
+                                                          //                                     onPressed: () async {
+                                                          //                                       if (_formKey.currentState!.validate()) {
+                                                          //                                         _formKey.currentState!.save();
+                                                          //                                         Future.delayed(const Duration(seconds: 2)).then((value) async {
+                                                          //                                           setState(() {
+                                                          //                                             awalPrice = double.parse(price.text);
+                                                          //                                             postApi(data.lotNo!);
+                                                          //                                           });
+                                                          //                                           btnController.success();
+                                                          //                                           // Map<String, dynamic> body = {
+                                                          //                                           //   'id': id,
+                                                          //                                           //   'lot': lot.text,
+                                                          //                                           //   'size': size.text,
+                                                          //                                           //   'parcel': parcel.text,
+                                                          //                                           //   'qty': qty.text,
+                                                          //                                           // };
+                                                          //                                           // final response = await http.post(
+                                                          //                                           //     Uri.parse(ApiConstants
+                                                          //                                           //             .baseUrl +
+                                                          //                                           //         ApiConstants
+                                                          //                                           //             .postUpdateListDataBatu),
+                                                          //                                           //     body: body);
+                                                          //                                           // print(response.body);
+                                                          //                                           Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                          //                                             btnController.reset(); //reset
+                                                          //                                             Navigator.of(context).pop();
+                                                          //                                             showDialog<String>(
+                                                          //                                                 context: context,
+                                                          //                                                 builder: (BuildContext context) => const AlertDialog(
+                                                          //                                                       title: Text(
+                                                          //                                                         'Update pricing success',
+                                                          //                                                       ),
+                                                          //                                                     ));
+                                                          //                                           });
+                                                          //                                         });
+                                                          //                                       } else {
+                                                          //                                         btnController.error();
+                                                          //                                         Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                          //                                           btnController.reset(); //reset
+                                                          //                                         });
+                                                          //                                       }
+                                                          //                                     }),
+                                                          //                               ),
+                                                          //                             )
+                                                          //                           ],
+                                                          //                         ),
+                                                          //                       ),
+                                                          //                     ],
+                                                          //                   ),
+                                                          //                 );
+                                                          //               });
+                                                          //         },
+                                                          //         icon:
+                                                          //             const Icon(
+                                                          //           Icons.edit,
+                                                          //           color: Colors
+                                                          //               .green,
+                                                          //         ),
+                                                          //       )
+                                                          //     ],
+                                                          //   ),
+                                                          // ),
                                                         ],
                                                       ),
                                                     ),
@@ -536,7 +475,6 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
         headers: headersAPI,
         body: jsonEncode(bodyApi));
     print(response.statusCode);
-    print(response.body);
   }
 }
 
@@ -633,7 +571,6 @@ class SearchModel extends StatelessWidget {
                         .firstWhereOrNull(
                             (element) => element.name == e['name'].toString());
                     //cart API
-                    print(existingitemcart);
                     // existingitemcart == null
                     if (existingitemcart == null) {
                       String token =

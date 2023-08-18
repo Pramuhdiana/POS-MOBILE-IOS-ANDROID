@@ -8,7 +8,7 @@ CartMethods cartMethods = CartMethods();
 Notification notif = Notification();
 // SearchScreens searchScreens = SearchScreens();
 // if (sharedPreferences!.getString("role")! != "SALES")
-String fcmTokenJonathan = "spxOYelPKaZ33WKvoFvWuL3k7uB2";
+String fcmTokenSales = "";
 String fcmTokensandy = "";
 String fcmServerToken =
     "AAAAu6dblLA:APA91bEanz7VkI6wyJSxAGE8L1lVDFcv5VWg_9qlVsuRUwXUtoXmK5apL0fYMSOdDqt_OEL8uQhfBDJvFMJmwHYm3n0aav4z4Dg56tfsnkyZobqCwtGLO6PM0WBb2vsA_XtakPNIKJQT";

@@ -5,9 +5,14 @@ class ApiConstants {
   static String baseUrlPricing = 'http://110.5.102.154:4000/approvals';
   static String baseUrlImage =
       'https://110.5.102.154:50001/Files/Images/Product/';
+
   static String baseUrlsandy = 'http://110.5.102.154:1212/Api_Flutter/spk';
   static String GETapprovelPricingEticketing =
       '/get_estimasi_pricing_by_status.php';
+  static String GETapprovelPricingEticketingBySearch =
+      '/get_estimasi_pricing_by_search.php';
+  static String UPDATEapprovalPricingEticketing =
+      '/update_estimasi_harga_by_phone.php';
 
   static String GETapprovelPricing = '/GetAll';
   static String GETapprovelPricingWaiting = '/StatusWaiting';
