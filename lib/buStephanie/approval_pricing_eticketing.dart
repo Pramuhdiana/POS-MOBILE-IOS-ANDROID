@@ -899,8 +899,9 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                                         print(c);
                                                                                                       }
                                                                                                       setState(() {
+                                                                                                        awalPrice = data.estimasiHarga!;
                                                                                                         try {
-                                                                                                          postApi(data.id!);
+                                                                                                          postApi(data.id!, awalPrice);
                                                                                                         } catch (c) {
                                                                                                           Fluttertoast.showToast(msg: "Failed to send database,Database off");
                                                                                                         }
@@ -1069,7 +1070,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                                       setState(() {
                                                                                                         awalPrice = int.parse(price.text);
                                                                                                         try {
-                                                                                                          postApi(data.id!);
+                                                                                                          postApi(data.id!, awalPrice);
                                                                                                         } catch (c) {
                                                                                                           Fluttertoast.showToast(msg: "Failed to send database,Database off");
                                                                                                         }
@@ -1181,10 +1182,10 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
   }
 
 //method approve pricing
-  postApi(lot) async {
+  postApi(lot, fixPrice) async {
     Map<String, String> body = {
       'id': lot.toString(),
-      'approval_harga': awalPrice.toString(),
+      'approval_harga': fixPrice.toString(),
       'note_approve': notes.text,
     };
     final response = await http.post(
