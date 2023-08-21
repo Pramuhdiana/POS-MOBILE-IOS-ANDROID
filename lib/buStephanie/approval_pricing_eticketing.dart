@@ -1203,11 +1203,11 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
       'approval_harga': awalPrice.toString(),
       'note_approve': notes.text,
     };
-    if (jenisPengajuan == 'Baru') {
+    if (jenisPengajuan.toString().toLowerCase() == 'baru') {
       var url = '${ApiConstants.baseUrlPricingWeb}/updatepricing';
       final response = await http.post(Uri.parse(url), body: body);
       print(response.body);
-    } else if (jenisPengajuan == 'REVISI 1') {
+    } else if (jenisPengajuan.toString().toLowerCase() == 'revisi 1') {
       var url = '${ApiConstants.baseUrlPricingWeb}/updatepricingrevisisatu';
       final response = await http.post(Uri.parse(url), body: body);
       print(response.body);
