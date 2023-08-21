@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, avoid_print, use_build_context_synchronously
+// ignore_for_file: use_key_in_widget_constructors, avoid_print, use_build_context_synchronously, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
 
@@ -19,6 +19,7 @@ import '../global/currency_format.dart';
 import '../provider/provider_cart.dart';
 import 'package:http/http.dart' as http;
 
+import '../push_notifications/push_notifications_system.dart';
 import '../widgets/custom_loading.dart';
 import 'item_photo_pricing.dart';
 
@@ -41,6 +42,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
     _getData();
     context.read<PApprovalBrj>().clearNotif(); //clear cart
     loadListBRJ(); //ambil data cart
+    PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
+    pushNotificationsSystem.whenNotificationReceivedInPricing(context);
   }
 
   // Future<List<ApprovePricingModel>> fetchData() async {
@@ -189,29 +192,150 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                     padding: const EdgeInsets.all(0.0),
                                     child: GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (c) =>
-                                                    ItemsPhotoPricing(
-                                                      model: ApprovePricingModel(
-                                                          lotNo: data.lotNo,
-                                                          fgImageFileName: data
-                                                              .fgImageFileName),
-                                                    )));
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                content: Stack(
+                                                  clipBehavior: Clip.none,
+                                                  children: <Widget>[
+                                                    Positioned(
+                                                      right: -40.0,
+                                                      top: -40.0,
+                                                      child: InkResponse(
+                                                        onTap: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child:
+                                                            const CircleAvatar(
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          child:
+                                                              Icon(Icons.close),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              const Text(
+                                                                'Price Per Carat',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .black),
+                                                              ),
+                                                              const Text(':'),
+                                                              Text(
+                                                                '${data.pricePerCarat}',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .black),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              const Text(
+                                                                'Price After Discount',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .black),
+                                                              ),
+                                                              const Text(':'),
+                                                              Text(
+                                                                '${data.priceAfterDiscount}',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .black),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            });
                                       },
                                       child: SizedBox(
-                                        height: 150,
+                                        height: 170,
                                         child: Padding(
                                           padding:
                                               const EdgeInsets.only(right: 2),
                                           child: Card(
                                             child: Row(
                                               children: [
-                                                ClipRRect(
-                                                  child: CachedNetworkImage(
-                                                    imageUrl:
-                                                        'https://110.5.102.154:50001/Files/Images/Product/${data.fgImageFileName!.toString()}',
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (c) =>
+                                                                ItemsPhotoPricing(
+                                                                  model: ApprovePricingModel(
+                                                                      lotNo: data
+                                                                          .lotNo,
+                                                                      fgImageFileName:
+                                                                          data.fgImageFileName),
+                                                                )));
+                                                  },
+                                                  child: ClipRRect(
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: ApiConstants
+                                                              .baseUrlImageMdbc +
+                                                          data.fgImageFileName!
+                                                              .toString(),
+                                                    ),
                                                   ),
                                                 ),
                                                 Column(
@@ -223,8 +347,34 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                     Text(
                                                       data.lotNo!,
                                                     ),
-                                                    Text(data.marketingCode!),
-                                                    Text(data.productTypeDesc!),
+                                                    Text(
+                                                      'Emas :' +
+                                                          data.goldWeight!
+                                                              .toString(),
+                                                      style: TextStyle(
+                                                          color: Colors
+                                                              .yellow.shade200),
+                                                    ),
+                                                    Text(
+                                                      'Diamond :' +
+                                                          data.diamondWeight!
+                                                              .toString(),
+                                                      style: TextStyle(
+                                                          color: Colors
+                                                              .blue.shade200),
+                                                    ),
+                                                    Text(
+                                                      'Price After Discount :' +
+                                                          data.priceAfterDiscount!
+                                                              .toString(),
+                                                      style: const TextStyle(),
+                                                    ),
+                                                    Text(
+                                                      'Price Per Carat :' +
+                                                          data.pricePerCarat!
+                                                              .toString(),
+                                                      style: const TextStyle(),
+                                                    ),
                                                     SizedBox(
                                                       width:
                                                           MediaQuery.of(context)
@@ -244,27 +394,12 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                               0.6,
                                                       padding:
                                                           const EdgeInsets.only(
-                                                              top: 5),
+                                                              top: 2),
                                                       child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .spaceBetween,
                                                         children: [
-                                                          // Container(
-                                                          //   child:
-                                                          //  TextField(
-                                                          //   enabled: false,
-                                                          //   // selectedOmzet != null ? false : true,
-                                                          //   onChanged: (price) {
-                                                          //     setState(() {});
-                                                          //   },
-                                                          //   controller: price,
-                                                          //   keyboardType: TextInputType.number,
-                                                          //   focusNode: numberFocusNode,
-                                                          //   inputFormatters: [
-                                                          //     FilteringTextInputFormatter.digitsOnly
-                                                          //   ],
-                                                          // ),
                                                           Text(
                                                             '\$ ${CurrencyFormat.convertToDollar(awalPrice, 0)}',
                                                             style: const TextStyle(

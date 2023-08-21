@@ -172,7 +172,7 @@ class _ItemsDetailsScreenState extends State<ItemsDetailsScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0, top: 8.0),
                   child: Text(
-                    widget.model!.description.toString(),
+                    widget.model!.name.toString(),
                     textAlign: TextAlign.justify,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,

@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously, depend_on_referenced_packages
 
+import 'dart:async';
+
 import 'package:e_shop/database/db_notification_dummy.dart';
 import 'package:e_shop/database/model_notification_dummy.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -101,32 +103,50 @@ class PushNotificationsSystem {
         }
       } else {}
     });
+  }
 
-    // try {
-    //   FirebaseMessaging.onBackgroundMessage(
-    //       (RemoteMessage? remoteMessage4) async {
-    //     if (remoteMessage4 != null) {
-    //       print("message recieved no 4");
-    //       // add to notif
-    //       print("add notif");
-    //       context.read<PNewNotif>().addItem(
-    //             1,
-    //           );
-    //       //add to database
-    //       DbNotifDummy.db.saveNotifDummy(ModelNotificationDummy(
-    //           title: remoteMessage4.notification!.title,
-    //           body: remoteMessage4.notification!.body,
-    //           created_at: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
-    //           status: 1));
-    //       //open the app - show notification data
-    //       showNotificationWhenOpenApp(
-    //         context,
-    //       );
-    //     } else {}
-    //   });
-    // } catch (c) {
-    //   print(c);
-    // }
+  Future whenNotificationReceivedInPricing(BuildContext context) async {
+    //1. Terminated
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage? remoteMessage) {
+      if (remoteMessage != null) {
+        var cek = sharedPreferences!.getString("msg");
+        print(cek);
+        if (cek == '3 done') {
+          print("message recieved no 1 stop");
+        } else {
+          print("message recieved no 1");
+        }
+      } else {}
+    });
+
+    //2. Foreground
+    FirebaseMessaging.onMessage.listen((RemoteMessage? remoteMessage) async {
+      if (remoteMessage != null) {
+        print("message recieved no 2");
+        showNotificationWhenOpenApp(
+          context,
+        );
+      } else {}
+    });
+
+    // 3. Background
+    FirebaseMessaging.onMessageOpenedApp
+        .listen((RemoteMessage? remoteMessage3) async {
+      if (remoteMessage3 != null) {
+        var cek = sharedPreferences!.getString("msg");
+        print(cek);
+        if (cek == '1 done') {
+          print("message recieved no 1 stop");
+        } else {
+          print("message recieved no 3");
+          showNotificationWhenOpenApp(
+            context,
+          );
+        }
+      } else {}
+    });
   }
 
   // //device recognition token
@@ -152,7 +172,7 @@ class PushNotificationsSystem {
   showReusableSnackBar(BuildContext context, String title) {
     SnackBar snackBar = SnackBar(
       backgroundColor: Colors.green,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 3),
       content: Text(
         title.toString(),
         style: const TextStyle(

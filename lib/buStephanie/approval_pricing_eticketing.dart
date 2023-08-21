@@ -889,15 +889,30 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                                   if (_formKey.currentState!.validate()) {
                                                                                                     _formKey.currentState!.save();
                                                                                                     Future.delayed(const Duration(seconds: 2)).then((value) async {
-                                                                                                      FirebaseFirestore.instance.collection("UserTokens").doc(data.namaSales!).snapshots().listen((event) {
-                                                                                                        setState(() {
-                                                                                                          fcmTokenSales = event.get("token");
+                                                                                                      try {
+                                                                                                        FirebaseFirestore.instance.collection("UserTokens").doc(data.namaSales!).snapshots().listen((event) {
+                                                                                                          setState(() {
+                                                                                                            fcmTokenSales = event.get("token");
+                                                                                                          });
                                                                                                         });
-                                                                                                      });
+                                                                                                      } catch (c) {
+                                                                                                        print(c);
+                                                                                                      }
                                                                                                       setState(() {
-                                                                                                        postApi(data.id!);
+                                                                                                        try {
+                                                                                                          postApi(data.id!);
+                                                                                                        } catch (c) {
+                                                                                                          Fluttertoast.showToast(msg: "Failed to send database,Database off");
+                                                                                                        }
+                                                                                                        try {
+                                                                                                          postApiWeb(data.jenisPengajuan!, data.diambilId!, data.statusApproval!, data.statusGet!);
+                                                                                                        } catch (c) {
+                                                                                                          Fluttertoast.showToast(msg: "Failed to send database web,Database off");
+                                                                                                        }
                                                                                                         notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Your price submission has been approved\nPrice approved : $awalPrice\nNotes : ${notes.text}');
                                                                                                         notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved', 'Your price submission has been approved\nPrice approved : $awalPrice\nNotes : ${notes.text}');
+                                                                                                        _getData();
+                                                                                                        context.read<PApprovalEticketing>().removesItem();
                                                                                                       });
 
                                                                                                       btnController.success();
@@ -1042,20 +1057,36 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                                   if (_formKey.currentState!.validate()) {
                                                                                                     _formKey.currentState!.save();
                                                                                                     Future.delayed(const Duration(seconds: 2)).then((value) async {
-                                                                                                      FirebaseFirestore.instance.collection("UserTokens").doc(data.namaSales!).snapshots().listen((event) {
-                                                                                                        setState(() {
-                                                                                                          fcmTokenSales = event.get("token");
+                                                                                                      try {
+                                                                                                        FirebaseFirestore.instance.collection("UserTokens").doc(data.namaSales!).snapshots().listen((event) {
+                                                                                                          setState(() {
+                                                                                                            fcmTokenSales = event.get("token");
+                                                                                                          });
                                                                                                         });
-                                                                                                      });
+                                                                                                      } catch (c) {
+                                                                                                        print(c);
+                                                                                                      }
                                                                                                       setState(() {
                                                                                                         awalPrice = int.parse(price.text);
-                                                                                                        postApi(data.id!);
+                                                                                                        try {
+                                                                                                          postApi(data.id!);
+                                                                                                        } catch (c) {
+                                                                                                          Fluttertoast.showToast(msg: "Failed to send database,Database off");
+                                                                                                        }
+                                                                                                        try {
+                                                                                                          postApiWeb(data.jenisPengajuan!, data.diambilId!, data.statusApproval!, data.statusGet!);
+                                                                                                        } catch (c) {
+                                                                                                          Fluttertoast.showToast(msg: "Failed to send database web,Database off");
+                                                                                                        }
                                                                                                         notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Your price submission has been approved\nPrice approved : $awalPrice\nNotes : ${notes.text}');
                                                                                                         notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved', 'Your price submission has been approved\nPrice approved : $awalPrice\nNotes : ${notes.text}');
+                                                                                                        _getData();
+                                                                                                        context.read<PApprovalEticketing>().removesItem();
                                                                                                       });
                                                                                                       btnController.success();
                                                                                                       Future.delayed(const Duration(seconds: 1)).then((value) {
                                                                                                         btnController.reset(); //reset
+
                                                                                                         Navigator.of(context).pop();
                                                                                                         showDialog<String>(
                                                                                                             context: context,
@@ -1064,7 +1095,6 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                                                     'Update pricing success',
                                                                                                                   ),
                                                                                                                 ));
-                                                                                                        context.read<PApprovalEticketing>().removesItem();
                                                                                                       });
                                                                                                     });
                                                                                                   } else {
@@ -1162,6 +1192,30 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
             '${ApiConstants.baseUrlsandy}${ApiConstants.UPDATEapprovalPricingEticketing}'),
         body: body);
     print(response.body);
+  }
+
+  //method approve pricing
+  postApiWeb(jenisPengajuan, diambilId, statusApproval, statusGet) async {
+    Map<String, String> body = {
+      'diambil_id': diambilId,
+      'status_approval': statusApproval,
+      'status_get': statusGet,
+      'approval_harga': awalPrice.toString(),
+      'note_approve': notes.text,
+    };
+    if (jenisPengajuan == 'Baru') {
+      var url = '${ApiConstants.baseUrlPricingWeb}/updatepricing';
+      final response = await http.post(Uri.parse(url), body: body);
+      print(response.body);
+    } else if (jenisPengajuan == 'REVISI 1') {
+      var url = '${ApiConstants.baseUrlPricingWeb}/updatepricingrevisisatu';
+      final response = await http.post(Uri.parse(url), body: body);
+      print(response.body);
+    } else {
+      var url = '${ApiConstants.baseUrlPricingWeb}/updatepricingrevisidua';
+      final response = await http.post(Uri.parse(url), body: body);
+      print(response.body);
+    }
   }
 }
 

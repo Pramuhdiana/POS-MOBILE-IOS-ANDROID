@@ -40,7 +40,12 @@ class _ItemsPhotoRetur extends State<ItemsPhotoRetur> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('${widget.model!.name} / ${widget.model!.description}'),
+        title: Center(
+            child: Text(
+          '${widget.model!.name}',
+          style:
+              const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        )),
         backgroundColor: Colors.white,
         flexibleSpace: Container(
           decoration: const BoxDecoration(

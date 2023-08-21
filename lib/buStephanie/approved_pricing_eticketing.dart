@@ -174,6 +174,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                               ),
                             );
                           }
+
                           // if (snapshot.connectionState ==
                           //     ConnectionState.waiting) {
                           //   return const Center(
@@ -185,7 +186,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   var data = snapshot.data![index];
-                                  awalPrice = data.estimasiHarga!;
+                                  awalPrice = data.approvalHarga!;
                                   return Padding(
                                     padding: const EdgeInsets.all(0),
                                     child: GestureDetector(

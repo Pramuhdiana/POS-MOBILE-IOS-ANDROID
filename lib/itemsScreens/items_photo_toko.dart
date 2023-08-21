@@ -40,9 +40,11 @@ class _ItemsPhotoToko extends State<ItemsPhotoToko> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          '${widget.model!.name} / ${widget.model!.description}',
-          style: const TextStyle(color: Colors.black),
+        title: Center(
+          child: Text(
+            '${widget.model!.name}',
+            style: const TextStyle(color: Colors.black),
+          ),
         ),
         backgroundColor: Colors.white,
         flexibleSpace: Container(

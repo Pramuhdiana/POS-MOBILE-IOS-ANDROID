@@ -64,10 +64,10 @@ class _PosReturUi extends State<PosReturUi> {
                           ),
                           child: CachedNetworkImage(
                             // cacheManager: customCacheManager,
-                            // memCacheWidth: 85, //default 45
-                            // memCacheHeight: 100, //default 60
-                            // maxHeightDiskCache: 100, //default 60
-                            // maxWidthDiskCache: 85, //default 45
+                            memCacheWidth: 155, //default 45
+                            memCacheHeight: 170, //default 60
+                            maxHeightDiskCache: 170, //default 60
+                            maxWidthDiskCache: 155, //default 45
                             imageUrl:
                                 'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
                             placeholder: (context, url) =>
@@ -81,6 +81,12 @@ class _PosReturUi extends State<PosReturUi> {
                             fit: BoxFit.cover,
                           ),
                         ),
+//  setState(() async {
+//                                   http.Response r = await http.head(Uri.parse(
+//                                       'https://parvabisnis.id/uploads/products/${dataSnapshot.data[index].image_name.toString()}'));
+//                                   print(r.headers[
+//                                       "content-length"]); //545621 means 546 KB
+//                                 });
                         Text(
                           widget.model!.name.toString(),
                           style: const TextStyle(

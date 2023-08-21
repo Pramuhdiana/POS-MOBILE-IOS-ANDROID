@@ -51,7 +51,8 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
     // var dpin = int.parse(dp);
     var total = ((context.read<PCartToko>().totalPrice2) * rate) *
             (1 - (diskon / 100)) -
-        dpp;
+        dpp -
+        addesdiskon;
     return total;
   }
 
@@ -59,7 +60,8 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
     // var dpin = int.parse(dp);
     var total = ((context.read<PCartToko>().totalPrice2) * rate) *
             (1 - (diskon / 100)) -
-        dpp;
+        dpp -
+        addesdiskon;
     if (rate <= 2) {
       return '\$ ${CurrencyFormat.convertToDollar(total, 0)}';
     } else {

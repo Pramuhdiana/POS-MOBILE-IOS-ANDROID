@@ -131,6 +131,20 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                       child: FutureBuilder(
                         future: _getData(),
                         builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return const Center(
+                              child: Text(
+                                'You Have not \n\n List Pricing BRJ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 26,
+                                    color: Colors.blueGrey,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Acne',
+                                    letterSpacing: 1.5),
+                              ),
+                            );
+                          }
                           if (snapshot.hasData) {
                             return ListView.builder(
                                 itemCount: snapshot.data!.length,
