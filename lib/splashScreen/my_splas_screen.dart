@@ -19,6 +19,7 @@ import 'package:provider/provider.dart';
 import '../api/api_services.dart';
 import '../provider/provider_waiting_brj.dart';
 import '../provider/provider_waiting_eticketing.dart';
+import '../push_notifications/push_notifications_system.dart';
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({super.key});
@@ -274,6 +275,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
       initState() //called automatically when user comes here to this splash screen
   {
     super.initState();
+    PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
+    pushNotificationsSystem.whenNotificationReceivedInPricing(context);
     context.read<PApprovalBrj>().clearNotif(); //clear cart
     loadListBRJ(); //ambil data cart
     context.read<PApprovalEticketing>().clearNotif(); //clear cart

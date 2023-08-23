@@ -12,6 +12,7 @@ import 'package:e_shop/splashScreen/my_splas_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -44,21 +45,23 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PApprovalBrj()),
         ChangeNotifierProvider(create: (_) => PApprovalEticketing()),
       ],
-      child: MaterialApp(
-        theme: ThemeData(
-          primarySwatch: Colors.primaryBlack,
+      child: OverlaySupport.global(
+        child: MaterialApp(
+          theme: ThemeData(
+            primarySwatch: Colors.primaryBlack,
+          ),
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'), // English
+            Locale('es'), // Spanish
+          ],
+          home: const MySplashScreen(),
         ),
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en'), // English
-          Locale('es'), // Spanish
-        ],
-        home: const MySplashScreen(),
       ),
     );
   }

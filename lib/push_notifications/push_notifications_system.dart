@@ -8,7 +8,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
+import 'package:overlay_support/overlay_support.dart';
 import '../global/global.dart';
 import '../provider/provider_notification.dart';
 
@@ -65,9 +65,15 @@ class PushNotificationsSystem {
             created_at: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
             status: 1));
         // //open app and show notification data
-        showNotificationWhenOpenApp(
-          context,
+        showSimpleNotification(
+          Text(remoteMessage.notification!.title.toString()),
+          subtitle: Text(remoteMessage.notification!.body.toString()),
+          background: Colors.orange.shade700,
+          duration: const Duration(seconds: 5),
         );
+        // showNotificationWhenOpenApp(
+        //   context,
+        // );
       } else {}
     });
 
@@ -97,9 +103,15 @@ class PushNotificationsSystem {
               status: 1));
 
           //open the app - show notification data
-          showNotificationWhenOpenApp(
-            context,
+          showSimpleNotification(
+            Text(remoteMessage3.notification!.title.toString()),
+            subtitle: Text(remoteMessage3.notification!.body.toString()),
+            background: Colors.orange.shade700,
+            duration: const Duration(seconds: 5),
           );
+          // showNotificationWhenOpenApp(
+          //   context,
+          // );
         }
       } else {}
     });
@@ -125,9 +137,15 @@ class PushNotificationsSystem {
     FirebaseMessaging.onMessage.listen((RemoteMessage? remoteMessage) async {
       if (remoteMessage != null) {
         print("message recieved no 2");
-        showNotificationWhenOpenApp(
-          context,
+        showSimpleNotification(
+          Text(remoteMessage.notification!.title.toString()),
+          subtitle: Text(remoteMessage.notification!.body.toString()),
+          background: Colors.orange.shade700,
+          duration: const Duration(seconds: 5),
         );
+        // showNotificationWhenOpenApp(
+        //   context,
+        // );
       } else {}
     });
 
@@ -141,9 +159,15 @@ class PushNotificationsSystem {
           print("message recieved no 1 stop");
         } else {
           print("message recieved no 3");
-          showNotificationWhenOpenApp(
-            context,
+          showSimpleNotification(
+            Text(remoteMessage3.notification!.title.toString()),
+            subtitle: Text(remoteMessage3.notification!.body.toString()),
+            background: Colors.orange.shade700,
+            duration: const Duration(seconds: 5),
           );
+          // showNotificationWhenOpenApp(
+          //   context,
+          // );
         }
       } else {}
     });
@@ -172,7 +196,7 @@ class PushNotificationsSystem {
   showReusableSnackBar(BuildContext context, String title) {
     SnackBar snackBar = SnackBar(
       backgroundColor: Colors.green,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 5),
       content: Text(
         title.toString(),
         style: const TextStyle(
