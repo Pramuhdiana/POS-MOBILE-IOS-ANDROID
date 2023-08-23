@@ -907,20 +907,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                               }
                                                                                               setState(() {
                                                                                                 awalPrice = data.estimasiHarga!;
-                                                                                                // try {
-                                                                                                //   postApi(data.id!, awalPrice);
-                                                                                                // } catch (c) {
-                                                                                                //   Fluttertoast.showToast(msg: "Failed to send database,Database off");
-                                                                                                // }
-                                                                                                // try {
-                                                                                                //   postApiWeb(data.jenisPengajuan!, data.diambilId!, data.statusApproval!, data.statusGet!);
-                                                                                                // } catch (c) {
-                                                                                                //   Fluttertoast.showToast(msg: "Failed to send database web,Database off");
-                                                                                                // }
+                                                                                                try {
+                                                                                                  postApi(data.id!, awalPrice);
+                                                                                                } catch (c) {
+                                                                                                  Fluttertoast.showToast(msg: "Failed to send database,Database off");
+                                                                                                }
+                                                                                                try {
+                                                                                                  postApiWeb(data.jenisPengajuan!, data.diambilId!, data.statusApproval!, data.statusGet!);
+                                                                                                } catch (c) {
+                                                                                                  Fluttertoast.showToast(msg: "Failed to send database web,Database off");
+                                                                                                }
+
                                                                                                 notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
-                                                                                                // notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved', 'Your price submission has been approved\nPrice approved : $awalPrice\nNotes : ${notes.text}');
+                                                                                                notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
                                                                                                 _getData();
-                                                                                                // context.read<PApprovalEticketing>().removesItem();
+                                                                                                context.read<PApprovalEticketing>().removesItem();
                                                                                               });
 
                                                                                               btnController.success();
@@ -1082,21 +1083,20 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                               }
                                                                                               setState(() {
                                                                                                 awalPrice = int.parse(price.text);
-                                                                                                // try {
-                                                                                                //   postApi(data.id!, awalPrice);
-                                                                                                // } catch (c) {
-                                                                                                //   Fluttertoast.showToast(msg: "Failed to send database,Database off");
-                                                                                                // }
-                                                                                                // try {
-                                                                                                //   postApiWeb(data.jenisPengajuan!, data.diambilId!, data.statusApproval!, data.statusGet!);
-                                                                                                // } catch (c) {
-                                                                                                //   Fluttertoast.showToast(msg: "Failed to send database web,Database off");
-                                                                                                // }
+                                                                                                try {
+                                                                                                  postApi(data.id!, awalPrice);
+                                                                                                } catch (c) {
+                                                                                                  Fluttertoast.showToast(msg: "Failed to send database,Database off");
+                                                                                                }
+                                                                                                try {
+                                                                                                  postApiWeb(data.jenisPengajuan!, data.diambilId!, data.statusApproval!, data.statusGet!);
+                                                                                                } catch (c) {
+                                                                                                  Fluttertoast.showToast(msg: "Failed to send database web,Database off");
+                                                                                                }
                                                                                                 notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
-                                                                                                //dengan id dan nama customer sudah di approve
-                                                                                                // notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved', 'Your price submission has been approved\nPrice approved : $awalPrice\nNotes : ${notes.text}');
+                                                                                                notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
                                                                                                 _getData();
-                                                                                                // context.read<PApprovalEticketing>().removesItem();
+                                                                                                context.read<PApprovalEticketing>().removesItem();
                                                                                               });
                                                                                               btnController.success();
                                                                                               Future.delayed(const Duration(seconds: 1)).then((value) {
