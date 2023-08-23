@@ -761,7 +761,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                             .start,
                                                     children: [
                                                       Text(
-                                                        'id :${data.id!}',
+                                                        'id :${data.diambilId!}',
                                                       ),
                                                       Text(data.namaSales!),
                                                       Text(data.namaCustomer!),

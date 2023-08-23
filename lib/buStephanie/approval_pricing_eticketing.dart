@@ -761,7 +761,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      'id :${data.id!}',
+                                                      'id :${data.diambilId!}',
                                                     ),
                                                     Text(data.namaSales!),
                                                     Text(data.namaCustomer!),
