@@ -84,15 +84,15 @@ class _MainScreenApprovePricingState extends State<MainScreenApprovePricing> {
                     ),
                     child: _selectedIndex != 0
                         ? const Icon(
-                            Icons.list,
+                            Icons.library_books_outlined,
                             color: Colors.black,
                           )
                         : const Icon(
-                            Icons.list,
+                            Icons.library_books_outlined,
                             color: Colors.white,
                           ),
                   ),
-                  icon: Icons.list_sharp,
+                  icon: Icons.library_books_outlined,
                   text: 'Waiting Approval BRJ',
                   textStyle: const TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
@@ -100,7 +100,7 @@ class _MainScreenApprovePricingState extends State<MainScreenApprovePricing> {
                 const GButton(
                   iconActiveColor: Colors.white,
                   backgroundColor: Colors.black,
-                  icon: Icons.verified,
+                  icon: Icons.library_add_check_outlined,
                   text: 'Approved BRJ',
                   textStyle: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
@@ -130,15 +130,15 @@ class _MainScreenApprovePricingState extends State<MainScreenApprovePricing> {
                     ),
                     child: _selectedIndex != 2
                         ? const Icon(
-                            Icons.list,
+                            Icons.list_alt,
                             color: Colors.black,
                           )
                         : const Icon(
-                            Icons.list,
+                            Icons.list_alt,
                             color: Colors.white,
                           ),
                   ),
-                  icon: Icons.list_sharp,
+                  icon: Icons.list_alt,
                   text: 'Waiting Approval Iket',
                   textStyle: const TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
