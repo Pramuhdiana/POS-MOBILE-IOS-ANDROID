@@ -6,7 +6,7 @@ class ApiConstants {
   static String baseUrlImageMdbc =
       'https://110.5.102.154:50001/Files/Images/Product/';
 
-  static String baseUrlPricingWeb = 'http://110.5.102.154:8000/api/';
+  static String baseUrlPricingWeb = 'http://110.5.102.154:8000/api';
 
   static String baseUrlsandy = 'http://110.5.102.154:1212/Api_Flutter/spk';
   static String GETapprovelPricingEticketing =

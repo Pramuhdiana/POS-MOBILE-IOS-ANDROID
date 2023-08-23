@@ -1220,23 +1220,32 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
 
   //method approve pricing
   postApiWeb(jenisPengajuan, diambilId, statusApproval, statusGet) async {
+    var url1 = '${ApiConstants.baseUrlPricingWeb}updatepricing';
+    var url2 = '${ApiConstants.baseUrlPricingWeb}updatepricingrevisisatu';
+    var url3 = '${ApiConstants.baseUrlPricingWeb}updatepricingrevisidua';
+    print(url1);
+    print(url2);
+    print(url3);
     Map<String, String> body = {
-      'diambil_id': diambilId,
-      'status_approval': statusApproval,
-      'status_get': statusGet,
+      'diambil_id': diambilId.toString(),
+      'status_approval': statusApproval.toString(),
+      'status_get': statusGet.toString(),
       'approval_harga': awalPrice.toString(),
-      'note_approve': notes.text,
+      'note_approve': notes.text.toString(),
     };
     if (jenisPengajuan.toString().toLowerCase() == 'baru') {
-      var url = '${ApiConstants.baseUrlPricingWeb}/updatepricing';
+      var url = '${ApiConstants.baseUrlPricingWeb}updatepricing';
+      print(url);
       final response = await http.post(Uri.parse(url), body: body);
       print(response.body);
     } else if (jenisPengajuan.toString().toLowerCase() == 'revisi 1') {
-      var url = '${ApiConstants.baseUrlPricingWeb}/updatepricingrevisisatu';
+      var url = '${ApiConstants.baseUrlPricingWeb}updatepricingrevisisatu';
+      print(url);
       final response = await http.post(Uri.parse(url), body: body);
       print(response.body);
     } else {
-      var url = '${ApiConstants.baseUrlPricingWeb}/updatepricingrevisidua';
+      var url = '${ApiConstants.baseUrlPricingWeb}updatepricingrevisidua';
+      print(url);
       final response = await http.post(Uri.parse(url), body: body);
       print(response.body);
     }
