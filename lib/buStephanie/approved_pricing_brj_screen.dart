@@ -217,7 +217,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                                 .spaceBetween,
                                                         children: [
                                                           Text(
-                                                            '\$ ${CurrencyFormat.convertToDollar(awalPrice, 0)}',
+                                                            '\$ ${CurrencyFormat.convertToDollar(data.approvalPrice, 0)}',
                                                             style: const TextStyle(
                                                                 fontSize: 22,
                                                                 fontWeight:

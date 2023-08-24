@@ -11,9 +11,12 @@ initState() {}
 class PricingEticketingModel {
   int? id;
   String? namaDesigner;
+  String? namaToko;
   String? jenisBarang;
   String? brand;
   int? beratEmas;
+  int? beratDiamond;
+  int? pricePerCarat;
   int? estimasiHarga;
   String? createdAt;
   String? batu1;
@@ -103,9 +106,12 @@ class PricingEticketingModel {
   PricingEticketingModel(
       {this.id,
       this.namaDesigner,
+      this.namaToko,
       this.jenisBarang,
       this.brand,
       this.beratEmas,
+      this.beratDiamond,
+      this.pricePerCarat,
       this.estimasiHarga,
       this.createdAt,
       this.batu1,
@@ -195,9 +201,12 @@ class PricingEticketingModel {
   PricingEticketingModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     namaDesigner = json['namaDesigner'];
+    namaToko = json['namaToko'];
     jenisBarang = json['jenisBarang'];
     brand = json['brand'];
     beratEmas = json['beratEmas'];
+    beratDiamond = json['beratDiamond'];
+    pricePerCarat = json['pricePerCarat'];
     estimasiHarga = json['estimasiHarga'] ?? 0;
     createdAt = json['created_at'];
     batu1 = json['batu1'];
@@ -289,9 +298,12 @@ class PricingEticketingModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['namaDesigner'] = namaDesigner;
+    data['namaToko'] = namaToko;
     data['jenisBarang'] = jenisBarang;
     data['brand'] = brand;
     data['beratEmas'] = beratEmas;
+    data['beratDiamond'] = beratDiamond;
+    data['pricePerCarat'] = pricePerCarat;
     data['estimasiHarga'] = estimasiHarga;
     data['created_at'] = createdAt;
     data['batu1'] = batu1;
