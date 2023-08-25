@@ -86,16 +86,18 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          leading: IconButton(
-            icon: Image.asset(
-              "assets/arrow.png",
-              width: 35,
-              height: 35,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+          automaticallyImplyLeading: false,
+
+          // leading: IconButton(
+          //   icon: Image.asset(
+          //     "assets/arrow.png",
+          //     width: 35,
+          //     height: 35,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.pop(context);
+          //   },
+          // ),
           elevation: 0,
           backgroundColor: Colors.white,
           title: CupertinoSearchTextField(
@@ -217,7 +219,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                                 .spaceBetween,
                                                         children: [
                                                           Text(
-                                                            '\$ ${CurrencyFormat.convertToDollar(awalPrice, 0)}',
+                                                            '\$ ${CurrencyFormat.convertToDollar(data.approvalPrice, 0)}',
                                                             style: const TextStyle(
                                                                 fontSize: 22,
                                                                 fontWeight:

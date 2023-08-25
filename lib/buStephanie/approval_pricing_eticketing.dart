@@ -119,16 +119,18 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          leading: IconButton(
-            icon: Image.asset(
-              "assets/arrow.png",
-              width: 35,
-              height: 35,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+          automaticallyImplyLeading: false,
+
+          // leading: IconButton(
+          //   icon: Image.asset(
+          //     "assets/arrow.png",
+          //     width: 35,
+          //     height: 35,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.pop(context);
+          //   },
+          // ),
           elevation: 0,
           backgroundColor: Colors.white,
           title: CupertinoSearchTextField(
@@ -229,43 +231,51 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                             : Align(
                                                                 alignment: Alignment
                                                                     .centerLeft,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                      data.batu1
-                                                                          .toString(),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                    const Text(
-                                                                        ':'),
-                                                                    Text(
-                                                                      '${data.qtyBatu1}',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                  ],
-                                                                ),
+                                                                child: Text(data
+                                                                    .beratDiamond!
+                                                                    .toString()),
                                                               ),
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                data.batu1
+                                                                    .toString(),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .black),
+                                                              ),
+                                                              const Text(':'),
+                                                              Text(
+                                                                '${data.qtyBatu1}',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .black),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
                                                         data.qtyBatu2 <= 0
                                                             ? const SizedBox()
                                                             : Align(
@@ -764,6 +774,12 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                       'id :${data.diambilId!}',
                                                     ),
                                                     Text(data.namaSales!),
+                                                    Text(
+                                                        'Emas :${data.beratEmas!}'),
+                                                    // Text(data.beratDiamond!
+                                                    // .toString()),
+                                                    // Text(data.pricePerCarat!
+                                                    //     .toString()),
                                                     Text(data.namaCustomer!),
                                                     SizedBox(
                                                       width:
@@ -1221,9 +1237,9 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
   //method approve pricing
   postApiWeb(jenisPengajuan, diambilId, statusApproval, statusGet) async {
     Map<String, String> body = {
-      'diambil_id': diambilId,
-      'status_approval': statusApproval,
-      'status_get': statusGet,
+      'diambil_id': diambilId.toString(),
+      'status_approval': statusApproval.toString(),
+      'status_get': statusGet.toString(),
       'approval_harga': awalPrice.toString(),
       'note_approve': notes.text,
     };

@@ -14,6 +14,8 @@ class PricingEticketingModel {
   String? jenisBarang;
   String? brand;
   int? beratEmas;
+  double? beratDiamond;
+  int? pricePerCarat;
   int? estimasiHarga;
   String? createdAt;
   String? batu1;
@@ -106,6 +108,8 @@ class PricingEticketingModel {
       this.jenisBarang,
       this.brand,
       this.beratEmas,
+      this.beratDiamond,
+      this.pricePerCarat,
       this.estimasiHarga,
       this.createdAt,
       this.batu1,
@@ -198,6 +202,8 @@ class PricingEticketingModel {
     jenisBarang = json['jenisBarang'];
     brand = json['brand'];
     beratEmas = json['beratEmas'];
+    beratDiamond = json['beratDiamond'];
+    pricePerCarat = json['pricePerCarat'];
     estimasiHarga = json['estimasiHarga'] ?? 0;
     createdAt = json['created_at'];
     batu1 = json['batu1'];
@@ -292,6 +298,8 @@ class PricingEticketingModel {
     data['jenisBarang'] = jenisBarang;
     data['brand'] = brand;
     data['beratEmas'] = beratEmas;
+    data['beratDiamond'] = beratDiamond;
+    data['pricePerCarat'] = pricePerCarat;
     data['estimasiHarga'] = estimasiHarga;
     data['created_at'] = createdAt;
     data['batu1'] = batu1;
