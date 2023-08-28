@@ -108,10 +108,10 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                           //   },
                           // ),
                           child: CachedNetworkImage(
-                            memCacheWidth: 155, //default 45
-                            memCacheHeight: 170, //default 60
-                            maxHeightDiskCache: 170, //default 60
-                            maxWidthDiskCache: 155, //default 45
+                            memCacheWidth: 105, //default 45
+                            memCacheHeight: 120, //default 60
+                            maxHeightDiskCache: 120, //default 60
+                            maxWidthDiskCache: 105, //default 45
                             imageUrl:
                                 'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
                             placeholder: (context, url) =>

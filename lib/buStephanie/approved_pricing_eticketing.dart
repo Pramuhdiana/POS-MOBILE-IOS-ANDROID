@@ -221,6 +221,46 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                       mainAxisSize:
                                                           MainAxisSize.min,
                                                       children: <Widget>[
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              const Text(
+                                                                  'Per Carat'),
+                                                              Text(
+                                                                'Rp.${CurrencyFormat.convertToDollar(data.pricePerCarat!, 0)}',
+                                                                style: const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              const Text(
+                                                                  'After Diskon'),
+                                                              Text(
+                                                                'Rp.${CurrencyFormat.convertToDollar(data.priceAfterDiskon!, 0)}',
+                                                                style: const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
                                                         data.qtyBatu1 <= 0
                                                             ? const SizedBox()
                                                             : Align(
@@ -762,9 +802,13 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
+                                                      // Text(
+                                                      //   'id :${data.diambilId!}',
+                                                      // ),
                                                       Text(
-                                                        'id :${data.diambilId!}',
-                                                      ),
+                                                          'Emas         : ${data.beratEmas!}'),
+                                                      Text(
+                                                          'Diamond   : ${data.beratDiamond!}'),
                                                       Text(data.namaSales!),
                                                       Text(data.namaCustomer!),
                                                       SizedBox(

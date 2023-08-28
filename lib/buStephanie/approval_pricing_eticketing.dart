@@ -226,15 +226,6 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                       mainAxisSize:
                                                           MainAxisSize.min,
                                                       children: <Widget>[
-                                                        data.qtyBatu1 <= 0
-                                                            ? const SizedBox()
-                                                            : Align(
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                child: Text(data
-                                                                    .beratDiamond!
-                                                                    .toString()),
-                                                              ),
                                                         Align(
                                                           alignment: Alignment
                                                               .centerLeft,
@@ -243,39 +234,80 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                 MainAxisAlignment
                                                                     .spaceBetween,
                                                             children: [
+                                                              const Text(
+                                                                  'Per Carat'),
                                                               Text(
-                                                                data.batu1
-                                                                    .toString(),
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .left,
+                                                                'Rp.${CurrencyFormat.convertToDollar(data.pricePerCarat!, 0)}',
                                                                 style: const TextStyle(
-                                                                    fontSize:
-                                                                        15,
                                                                     fontWeight:
                                                                         FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .black),
-                                                              ),
-                                                              const Text(':'),
-                                                              Text(
-                                                                '${data.qtyBatu1}',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .black),
+                                                                            .bold),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              const Text(
+                                                                  'After Diskon'),
+                                                              Text(
+                                                                'Rp.${CurrencyFormat.convertToDollar(data.priceAfterDiskon!, 0)}',
+                                                                style: const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        data.qtyBatu1 <= 0
+                                                            ? const SizedBox()
+                                                            : Align(
+                                                                alignment: Alignment
+                                                                    .centerLeft,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                      data.batu1
+                                                                          .toString(),
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .left,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              15,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    ),
+                                                                    const Text(
+                                                                        ':'),
+                                                                    Text(
+                                                                      '${data.qtyBatu1}',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .left,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              15,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
                                                         data.qtyBatu2 <= 0
                                                             ? const SizedBox()
                                                             : Align(
@@ -770,16 +802,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
+                                                    // Text(
+                                                    //   'id :${data.diambilId!}',
+                                                    // ),
                                                     Text(
-                                                      'id :${data.diambilId!}',
-                                                    ),
+                                                        'Emas         : ${data.beratEmas!}'),
+                                                    Text(
+                                                        'Diamond   : ${data.beratDiamond!}'),
                                                     Text(data.namaSales!),
-                                                    Text(
-                                                        'Emas :${data.beratEmas!}'),
-                                                    // Text(data.beratDiamond!
-                                                    // .toString()),
-                                                    // Text(data.pricePerCarat!
-                                                    //     .toString()),
                                                     Text(data.namaCustomer!),
                                                     SizedBox(
                                                       width:
@@ -1236,23 +1266,32 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
 
   //method approve pricing
   postApiWeb(jenisPengajuan, diambilId, statusApproval, statusGet) async {
+    var url1 = '${ApiConstants.baseUrlPricingWeb}updatepricing';
+    var url2 = '${ApiConstants.baseUrlPricingWeb}updatepricingrevisisatu';
+    var url3 = '${ApiConstants.baseUrlPricingWeb}updatepricingrevisidua';
+    print(url1);
+    print(url2);
+    print(url3);
     Map<String, String> body = {
       'diambil_id': diambilId.toString(),
       'status_approval': statusApproval.toString(),
       'status_get': statusGet.toString(),
       'approval_harga': awalPrice.toString(),
-      'note_approve': notes.text,
+      'note_approve': notes.text.toString(),
     };
     if (jenisPengajuan.toString().toLowerCase() == 'baru') {
       var url = '${ApiConstants.baseUrlPricingWeb}/updatepricing';
+      print(url);
       final response = await http.post(Uri.parse(url), body: body);
       print(response.body);
     } else if (jenisPengajuan.toString().toLowerCase() == 'revisi 1') {
       var url = '${ApiConstants.baseUrlPricingWeb}/updatepricingrevisisatu';
+      print(url);
       final response = await http.post(Uri.parse(url), body: body);
       print(response.body);
     } else {
       var url = '${ApiConstants.baseUrlPricingWeb}/updatepricingrevisidua';
+      print(url);
       final response = await http.post(Uri.parse(url), body: body);
       print(response.body);
     }

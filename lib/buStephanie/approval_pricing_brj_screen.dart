@@ -396,14 +396,10 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                       data.lotNo!,
                                                     ),
                                                     Text(
-                                                      'Emas :' +
-                                                          data.goldWeight!
-                                                              .toString(),
+                                                      'Emas         : ${data.goldWeight!}',
                                                     ),
                                                     Text(
-                                                      'Diamond :' +
-                                                          data.diamondWeight!
-                                                              .toString(),
+                                                      'Diamond   : ${data.diamondWeight!}',
                                                     ),
                                                     SizedBox(
                                                       width:

@@ -191,8 +191,12 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                     Text(
                                                       data.lotNo!,
                                                     ),
-                                                    Text(data.marketingCode!),
-                                                    Text(data.productTypeDesc!),
+                                                    Text(
+                                                      'Emas         : ${data.goldWeight!}',
+                                                    ),
+                                                    Text(
+                                                      'Diamond   : ${data.diamondWeight!}',
+                                                    ),
                                                     SizedBox(
                                                       width:
                                                           MediaQuery.of(context)
