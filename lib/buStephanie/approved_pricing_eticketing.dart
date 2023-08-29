@@ -689,7 +689,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                             });
                                       },
                                       child: SizedBox(
-                                        height: 150,
+                                        height: 180,
                                         child: Padding(
                                           padding:
                                               const EdgeInsets.only(right: 2),

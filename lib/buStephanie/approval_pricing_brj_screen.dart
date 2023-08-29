@@ -18,7 +18,6 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 import '../global/currency_format.dart';
 import '../provider/provider_cart.dart';
 import 'package:http/http.dart' as http;
-
 import '../push_notifications/push_notifications_system.dart';
 import '../widgets/custom_loading.dart';
 import 'item_photo_pricing.dart';
@@ -75,6 +74,40 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
             .toList();
         setState(() {});
         return g;
+      } else {
+        throw Exception('Unexpected error occured!');
+      }
+    } catch (c) {
+      return throw Exception(c);
+    }
+  }
+
+//fungsi search
+  Future _getDataSearch(search) async {
+    try {
+      final response = await http.get(Uri.parse(ApiConstants.baseUrlPricing +
+          ApiConstants.GETapprovelPricingWaiting));
+      // if response successful
+      if (response.statusCode == 200) {
+        List jsonResponse = json.decode(response.body);
+
+        var g = jsonResponse
+            .map((data) => ApprovePricingModel.fromJson(data))
+            .toList();
+        //! fungsi query untuk mencari data dari response body (kembalian dari API)
+        var modifiedUserData = g.where((element) =>
+            element.lotNo!
+                .toString()
+                .toLowerCase()
+                .contains(search.toString().toLowerCase()) ||
+            element.finalPrice3USD!
+                .toString()
+                .toLowerCase()
+                .contains(search.toString().toLowerCase()));
+
+        setState(() {});
+        //setelah di filter harus dimasukan ke list untuk ditampikan
+        return modifiedUserData.toList();
       } else {
         throw Exception('Unexpected error occured!');
       }
@@ -158,7 +191,9 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                     ),
                     Expanded(
                       child: FutureBuilder(
-                        future: _getData(),
+                        future: searchInput == ''
+                            ? _getData()
+                            : _getDataSearch(searchInput),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return const Center(
@@ -174,14 +209,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                               ),
                             );
                           }
-
-                          // if (snapshot.connectionState ==
-                          //     ConnectionState.waiting) {
-                          //   return const Center(
-                          //     child: CircularProgressIndicator(),
-                          //   );
-                          // }
-
                           if (snapshot.hasData) {
                             return ListView.builder(
                                 itemCount: snapshot.data!.length,
@@ -301,46 +328,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                             ],
                                                           ),
                                                         ),
-                                                        // Align(
-                                                        //   alignment: Alignment
-                                                        //       .centerLeft,
-                                                        //   child: Row(
-                                                        //     mainAxisAlignment:
-                                                        //         MainAxisAlignment
-                                                        //             .spaceBetween,
-                                                        //     children: [
-                                                        //       const Text(
-                                                        //         'Quality',
-                                                        //         textAlign:
-                                                        //             TextAlign
-                                                        //                 .left,
-                                                        //         style: TextStyle(
-                                                        //             fontSize:
-                                                        //                 15,
-                                                        //             fontWeight:
-                                                        //                 FontWeight
-                                                        //                     .bold,
-                                                        //             color: Colors
-                                                        //                 .black),
-                                                        //       ),
-                                                        //       const Text(':'),
-                                                        //       Text(
-                                                        //         'VVS',
-                                                        //         textAlign:
-                                                        //             TextAlign
-                                                        //                 .left,
-                                                        //         style: const TextStyle(
-                                                        //             fontSize:
-                                                        //                 15,
-                                                        //             fontWeight:
-                                                        //                 FontWeight
-                                                        //                     .bold,
-                                                        //             color: Colors
-                                                        //                 .black),
-                                                        //       ),
-                                                        //     ],
-                                                        //   ),
-                                                        // ),
                                                       ],
                                                     ),
                                                   ],

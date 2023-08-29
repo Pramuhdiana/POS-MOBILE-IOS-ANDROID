@@ -694,7 +694,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                             });
                                       },
                                       child: Container(
-                                        height: 170,
+                                        height: 180,
                                         padding:
                                             const EdgeInsets.only(right: 2),
                                         child: Card(

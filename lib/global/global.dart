@@ -16,8 +16,9 @@ String fcmServerToken =
 int revisiBesar =
     1; //UI baru, banyak fitur baru, perubahan konsep, dll  (MAJOR)
 int revisiKecil =
-    5; //perubahan kecil                                    (MINOR)
+    1; //perubahan kecil                                    (MINOR)
 int rilisPerbaikanbug =
     0; //perbaikan bug                                      (PATCH)
+int noBuild = 8; //perbaikan bug                                      (PATCH)
 
-String version = 'v$revisiBesar.$revisiKecil.$rilisPerbaikanbug';
+String version = 'v$revisiBesar.$revisiKecil.$rilisPerbaikanbug ($noBuild)';
