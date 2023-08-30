@@ -182,6 +182,28 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                               ),
                             );
                           }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          print(snapshot.connectionState ==
+                              ConnectionState.waiting);
+                          if (snapshot.data.isEmpty) {
+                            return const Center(
+                              child: Text(
+                                'You Have not \n\n List Pricing BRJ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 26,
+                                    color: Colors.blueGrey,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Acne',
+                                    letterSpacing: 1.5),
+                              ),
+                            );
+                          }
                           if (snapshot.hasData) {
                             return ListView.builder(
                                 itemCount: snapshot.data!.length,

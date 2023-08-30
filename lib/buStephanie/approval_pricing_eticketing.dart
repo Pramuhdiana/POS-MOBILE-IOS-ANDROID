@@ -169,6 +169,18 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                             : _getDataSearch(searchInput),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
+                            return const Text('Something went wrong');
+                          }
+
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          print(snapshot.connectionState ==
+                              ConnectionState.waiting);
+                          if (snapshot.data.isEmpty) {
                             return const Center(
                               child: Text(
                                 'You Have not \n\n Waiting List Pricing E-Ticketing',
@@ -222,471 +234,445 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                         ),
                                                       ),
                                                     ),
-                                                    Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: <Widget>[
-                                                        Align(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              const Text(
-                                                                  'Per Carat'),
-                                                              Text(
-                                                                'Rp.${CurrencyFormat.convertToDollar(data.pricePerCarat!, 0)}',
-                                                                style: const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                            ],
+                                                    SingleChildScrollView(
+                                                      scrollDirection:
+                                                          Axis.vertical,
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: <Widget>[
+                                                          Align(
+                                                            alignment: Alignment
+                                                                .centerLeft,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                const Text(
+                                                                    'Per Carat'),
+                                                                Text(
+                                                                  'Rp.${CurrencyFormat.convertToDollar(data.pricePerCarat!, 0)}',
+                                                                  style: const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
-                                                        ),
-                                                        Align(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              const Text(
-                                                                  'After Diskon'),
-                                                              Text(
-                                                                'Rp.${CurrencyFormat.convertToDollar(data.priceAfterDiskon!, 0)}',
-                                                                style: const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                            ],
+                                                          Align(
+                                                            alignment: Alignment
+                                                                .centerLeft,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                const Text(
+                                                                    'After Diskon'),
+                                                                Text(
+                                                                  'Rp.${CurrencyFormat.convertToDollar(data.priceAfterDiskon!, 0)}',
+                                                                  style: const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
-                                                        ),
-                                                        data.qtyBatu1 <= 0
-                                                            ? const SizedBox()
-                                                            : Align(
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                      data.batu1
-                                                                          .toString(),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                    const Text(
-                                                                        ':'),
-                                                                    Text(
-                                                                      '${data.qtyBatu1}',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                  ],
+                                                          data.qtyBatu1 <= 0
+                                                              ? const SizedBox()
+                                                              : Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        data.batu1
+                                                                            .toString(),
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        '${data.qtyBatu1}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                        data.qtyBatu2 <= 0
-                                                            ? const SizedBox()
-                                                            : Align(
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                      data.batu2
-                                                                          .toString(),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                    const Text(
-                                                                        ':'),
-                                                                    Text(
-                                                                      '${data.qtyBatu2}',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                  ],
+                                                          data.qtyBatu2 <= 0
+                                                              ? const SizedBox()
+                                                              : Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        data.batu2
+                                                                            .toString(),
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        '${data.qtyBatu2}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                        data.qtyBatu3 <= 0
-                                                            ? const SizedBox()
-                                                            : Align(
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                      data.batu3
-                                                                          .toString(),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                    const Text(
-                                                                        ':'),
-                                                                    Text(
-                                                                      '${data.qtyBatu3}',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                  ],
+                                                          data.qtyBatu3 <= 0
+                                                              ? const SizedBox()
+                                                              : Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        data.batu3
+                                                                            .toString(),
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        '${data.qtyBatu3}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                        data.qtyBatu4 <= 0
-                                                            ? const SizedBox()
-                                                            : Align(
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                      data.batu4
-                                                                          .toString(),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                    const Text(
-                                                                        ':'),
-                                                                    Text(
-                                                                      '${data.qtyBatu4}',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                  ],
+                                                          data.qtyBatu4 <= 0
+                                                              ? const SizedBox()
+                                                              : Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        data.batu4
+                                                                            .toString(),
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        '${data.qtyBatu4}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                        data.qtyBatu5 <= 0
-                                                            ? const SizedBox()
-                                                            : Align(
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                      data.batu5
-                                                                          .toString(),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                    const Text(
-                                                                        ':'),
-                                                                    Text(
-                                                                      '${data.qtyBatu5}',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                  ],
+                                                          data.qtyBatu5 <= 0
+                                                              ? const SizedBox()
+                                                              : Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        data.batu5
+                                                                            .toString(),
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        '${data.qtyBatu5}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                        data.qtyBatu6 <= 0
-                                                            ? const SizedBox()
-                                                            : Align(
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                      data.batu6
-                                                                          .toString(),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                    const Text(
-                                                                        ':'),
-                                                                    Text(
-                                                                      '${data.qtyBatu6}',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                  ],
+                                                          data.qtyBatu6 <= 0
+                                                              ? const SizedBox()
+                                                              : Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        data.batu6
+                                                                            .toString(),
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        '${data.qtyBatu6}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                        data.qtyBatu7 <= 0
-                                                            ? const SizedBox()
-                                                            : Align(
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                      data.batu7
-                                                                          .toString(),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                    const Text(
-                                                                        ':'),
-                                                                    Text(
-                                                                      '${data.qtyBatu7}',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                  ],
+                                                          data.qtyBatu7 <= 0
+                                                              ? const SizedBox()
+                                                              : Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        data.batu7
+                                                                            .toString(),
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        '${data.qtyBatu7}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                        data.qtyBatu8 <= 0
-                                                            ? const SizedBox()
-                                                            : Align(
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                      data.batu8
-                                                                          .toString(),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                    const Text(
-                                                                        ':'),
-                                                                    Text(
-                                                                      '${data.qtyBatu8}',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                  ],
+                                                          data.qtyBatu8 <= 0
+                                                              ? const SizedBox()
+                                                              : Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        data.batu8
+                                                                            .toString(),
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        '${data.qtyBatu8}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                        data.qtyBatu9 <= 0
-                                                            ? const SizedBox()
-                                                            : Align(
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                      data.batu9
-                                                                          .toString(),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                    const Text(
-                                                                        ':'),
-                                                                    Text(
-                                                                      '${data.qtyBatu9}',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                  ],
+                                                          data.qtyBatu9 <= 0
+                                                              ? const SizedBox()
+                                                              : Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        data.batu9
+                                                                            .toString(),
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        '${data.qtyBatu9}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                        data.qtyBatu10 <= 0
-                                                            ? const SizedBox()
-                                                            : Align(
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                      data.batu10
-                                                                          .toString(),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                    const Text(
-                                                                        ':'),
-                                                                    Text(
-                                                                      '${data.qtyBatu10}',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                  ],
+                                                          data.qtyBatu10 <= 0
+                                                              ? const SizedBox()
+                                                              : Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        data.batu10
+                                                                            .toString(),
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        '${data.qtyBatu10}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                      ],
+                                                        ],
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
