@@ -456,7 +456,7 @@ DataRow recentFileDataRow(var data) {
   return DataRow(
     cells: [
       DataCell(FutureBuilder(
-        // future: DbCRM.db.getCountCrmById(1, data.customer_id, 23),
+        future: DbCRM.db.getAllcrm(),
         builder: (context, snapshot) {
           return TextButton(
               onPressed: () {
