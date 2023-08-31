@@ -542,7 +542,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                             _formKey.currentState!.save();
                                                                                             Future.delayed(const Duration(seconds: 2)).then((value) async {
                                                                                               setState(() {
-                                                                                                postApi(data.lotNo!);
+                                                                                                postApi(data.lot!);
                                                                                               });
                                                                                               btnController.success();
                                                                                               Future.delayed(const Duration(seconds: 1)).then((value) {
@@ -695,7 +695,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                             Future.delayed(const Duration(seconds: 2)).then((value) async {
                                                                                               setState(() {
                                                                                                 awalPrice = double.parse(price.text);
-                                                                                                postApi(data.lotNo!);
+                                                                                                postApi(data.lot!);
                                                                                               });
                                                                                               btnController.success();
                                                                                               Future.delayed(const Duration(seconds: 1)).then((value) {
@@ -796,7 +796,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
     };
     Map bodyApi = {
       'approvedBy': sharedPreferences!.getString('name')!,
-      'approvalPrice': awalPrice
+      'approvalPrice': awalPrice,
+      'ApprovedNotes': notes.text
     };
     final response = await http.put(
         Uri.parse(

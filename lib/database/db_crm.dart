@@ -133,6 +133,32 @@ class DbCRM {
     return list;
   }
 
+  Future<List<ModelCRM>> getAllCrmBySales(aktivitasId, idSales) async {
+    final db = await database;
+    final res = await db.rawQuery(
+        'SELECT * FROM allcrm WHERE aktivitas_id=? and user_id=? ORDER BY tanggal_aktivitas DESC',
+        [aktivitasId, idSales]);
+    // final res = await db.rawQuery("SELECT * FROM allcrm");
+
+    List<ModelCRM> list =
+        res.isNotEmpty ? res.map((c) => ModelCRM.fromJson(c)).toList() : [];
+
+    return list;
+  }
+
+  Future<List<ModelCRM>> getAllDetailCrm(aktivitasId, idSales, idToko) async {
+    final db = await database;
+    final res = await db.rawQuery(
+        'SELECT * FROM allcrm WHERE aktivitas_id=? and user_id=? and customer_id=? ORDER BY tanggal_aktivitas ASC',
+        [aktivitasId, idSales, idToko]);
+    // final res = await db.rawQuery("SELECT * FROM allcrm");
+
+    List<ModelCRM> list =
+        res.isNotEmpty ? res.map((c) => ModelCRM.fromJson(c)).toList() : [];
+
+    return list;
+  }
+
   Future<List<ModelCRM>> getCountCrmById(
       aktivitasId, idcustomer, userId) async {
     final db = await database;
