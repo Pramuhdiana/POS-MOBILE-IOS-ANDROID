@@ -93,7 +93,6 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                 .contains(search.toString().toLowerCase()));
 
         // print(result);
-        setState(() {});
 // final filteredList = goals.where((goals) => goal.region == 'North America')
         return modifiedUserData.toList();
       } else {

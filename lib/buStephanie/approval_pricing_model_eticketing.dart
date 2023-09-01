@@ -14,7 +14,7 @@ class PricingEticketingModel {
   String? namaToko;
   String? jenisBarang;
   String? brand;
-  int? beratEmas;
+  double? beratEmas;
   double? beratDiamond;
   int? pricePerCarat;
   int? priceAfterDiskon;

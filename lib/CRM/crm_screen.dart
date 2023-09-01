@@ -56,6 +56,16 @@ class _CrmScreenState extends State<CrmScreen> {
                 RepeatedTab(label: 'Visit'),
               ]),
           actions: [
+            // IconButton(
+            //   onPressed: () {
+            //     Navigator.push(context,
+            //         MaterialPageRoute(builder: (c) => const DashboardErick()));
+            //   },
+            //   icon: const Icon(
+            //     Icons.security_rounded,
+            //     color: Colors.black,
+            //   ),
+            // )
             // ignore: unrelated_type_equality_checks
             sharedPreferences!.getString('id') == '21' ||
                     sharedPreferences!.getString('role_sales_brand') == '15'

@@ -9,6 +9,7 @@ import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/buStephanie/approve_pricing_model.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/provider/provider_waiting_brj.dart';
+import 'package:e_shop/provider/provider_waiting_eticketing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,6 +42,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
     _getData();
     context.read<PApprovalBrj>().clearNotif(); //clear cart
     loadListBRJ(); //ambil data cart
+    context.read<PApprovalEticketing>().clearNotif(); //clear cart
+    loadListEticketing(); //ambil data cart
     PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
     pushNotificationsSystem.whenNotificationReceivedInPricing(context);
   }
@@ -60,19 +63,28 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   //     throw Exception('Unexpected error occured!');
   //   }
   // }
+  loadListEticketing() async {
+    var url =
+        '${ApiConstants.baseUrlsandy}${ApiConstants.GETapprovelPricingEticketing}?status_approval=1';
+    Response response = await Dio().get(
+      url,
+    );
+    return (response.data as List).map((cart) {
+      context.read<PApprovalEticketing>().addItem(
+            1,
+          );
+    }).toList();
+  }
 
   Future _getData() async {
     try {
       final response = await http.get(Uri.parse(ApiConstants.baseUrlPricing +
           ApiConstants.GETapprovelPricingWaiting));
-      // if response successful
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(response.body);
-
         var g = jsonResponse
             .map((data) => ApprovePricingModel.fromJson(data))
             .toList();
-        setState(() {});
         return g;
       } else {
         throw Exception('Unexpected error occured!');
