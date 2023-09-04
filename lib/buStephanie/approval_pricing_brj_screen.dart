@@ -653,6 +653,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                 Padding(
                                                                                   padding: const EdgeInsets.all(8.0),
                                                                                   child: TextFormField(
+                                                                                    autofocus: true,
                                                                                     style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
                                                                                     textInputAction: TextInputAction.next,
                                                                                     // controller:
