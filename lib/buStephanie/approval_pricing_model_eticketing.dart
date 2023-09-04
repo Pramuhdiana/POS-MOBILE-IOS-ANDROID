@@ -103,6 +103,11 @@ class PricingEticketingModel {
   String? namaSales;
   String? namaCustomer;
   String? noteApprove;
+  String? noGIA;
+  String? jenisGIA;
+  String? caratPcsGIA;
+  String? hargaGIA;
+  String? keterangan;
 
   PricingEticketingModel(
       {this.id,
@@ -198,7 +203,12 @@ class PricingEticketingModel {
       this.tanggalApprove,
       this.namaSales,
       this.namaCustomer,
-      this.noteApprove});
+      this.noteApprove,
+      this.noGIA,
+      this.jenisGIA,
+      this.caratPcsGIA,
+      this.hargaGIA,
+      this.keterangan});
 
   PricingEticketingModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -295,6 +305,11 @@ class PricingEticketingModel {
     namaSales = json['nama_sales'] ?? '';
     namaCustomer = json['nama_customer'] ?? '';
     noteApprove = json['note_approve'];
+    noGIA = json['no_gia'];
+    jenisGIA = json['jenis_gia'];
+    caratPcsGIA = json['carat_pcs_gia'];
+    hargaGIA = json['harga_gia'];
+    keterangan = json['keterangan'];
   }
 
   Map<String, dynamic> toJson() {
@@ -393,6 +408,11 @@ class PricingEticketingModel {
     data['nama_sales'] = namaSales;
     data['nama_customer'] = namaCustomer;
     data['note_approve'] = noteApprove;
+    data['no_gia'] = noGIA;
+    data['jenis_gia'] = jenisGIA;
+    data['carat_pcs_gia'] = caratPcsGIA;
+    data['harga_gia'] = hargaGIA;
+    data['keterangan'] = keterangan;
     return data;
   }
 }

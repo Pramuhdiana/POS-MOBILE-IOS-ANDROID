@@ -793,8 +793,137 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                     // ),
                                                     Text(
                                                         'Emas         : ${data.beratEmas!}'),
-                                                    Text(
-                                                        'Diamond   : ${data.beratDiamond!}'),
+
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  right: 20),
+                                                          child: Text(
+                                                              'Diamond   : ${data.beratDiamond!}'),
+                                                        ),
+                                                        data.noGIA
+                                                                .toString()
+                                                                .isEmpty
+                                                            ? const SizedBox()
+                                                            : GestureDetector(
+                                                                onTap: () {
+                                                                  showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (BuildContext
+                                                                              context) {
+                                                                        return AlertDialog(
+                                                                          content:
+                                                                              Stack(
+                                                                            clipBehavior:
+                                                                                Clip.none,
+                                                                            children: <Widget>[
+                                                                              Positioned(
+                                                                                right: -40.0,
+                                                                                top: -40.0,
+                                                                                child: InkResponse(
+                                                                                  onTap: () {
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  child: const CircleAvatar(
+                                                                                    backgroundColor: Colors.red,
+                                                                                    child: Icon(Icons.close),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              SingleChildScrollView(
+                                                                                scrollDirection: Axis.vertical,
+                                                                                child: Column(
+                                                                                  mainAxisSize: MainAxisSize.min,
+                                                                                  children: <Widget>[
+                                                                                    Align(
+                                                                                      alignment: Alignment.centerLeft,
+                                                                                      child: Row(
+                                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                        children: [
+                                                                                          const Text('No GIA'),
+                                                                                          Text(
+                                                                                            data.noGIA!,
+                                                                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                    Align(
+                                                                                      alignment: Alignment.centerLeft,
+                                                                                      child: Row(
+                                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                        children: [
+                                                                                          const Text('Jenis GIA'),
+                                                                                          Text(
+                                                                                            data.jenisGIA!,
+                                                                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                    Align(
+                                                                                      alignment: Alignment.centerLeft,
+                                                                                      child: Row(
+                                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                        children: [
+                                                                                          const Text('Crt/Pcs GIA'),
+                                                                                          Text(
+                                                                                            data.caratPcsGIA!,
+                                                                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                    Align(
+                                                                                      alignment: Alignment.centerLeft,
+                                                                                      child: Row(
+                                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                        children: [
+                                                                                          const Text('Harga GIA'),
+                                                                                          Text(
+                                                                                            'Rp.${CurrencyFormat.convertToDollar(int.parse(data.hargaGIA!), 0)}',
+                                                                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                    Padding(
+                                                                                      padding: const EdgeInsets.only(top: 20),
+                                                                                      child: Align(
+                                                                                        alignment: Alignment.centerLeft,
+                                                                                        child: Text(
+                                                                                          data.keterangan!,
+                                                                                          style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                          maxLines: 5,
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        );
+                                                                      });
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                  'GIA',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .blue),
+                                                                ))
+                                                      ],
+                                                    ),
+
                                                     Text(data.namaSales!),
                                                     Text(data.namaCustomer!),
                                                     SizedBox(
@@ -866,9 +995,6 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                           const EdgeInsets.only(
                                                               right: 10),
                                                       child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
                                                         children: [
                                                           SizedBox(
                                                             height: 40,
@@ -1210,20 +1336,9 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                   Colors.green,
                                                             ),
                                                           ),
-                                                          // IconButton(
-                                                          //   onPressed:
-                                                          //       () async {
-                                                          //     _localNotificationService
-                                                          //         .showLocalNotification(
-                                                          //       'Yay you did it!',
-                                                          //       'Congrats on your first local notification',
-                                                          //     );
-                                                          //   },
-                                                          //   icon: const Icon(
-                                                          //     Icons.message,
-                                                          //     color:
-                                                          //         Colors.green,
-                                                          //   ),
+                                                          // TextButton(
+                                                          //   onPressed: () {},
+                                                          //   child: Text('GIA'),
                                                           // ),
                                                         ],
                                                       ),
