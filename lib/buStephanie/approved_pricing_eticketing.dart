@@ -662,7 +662,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 10),
                                                         child: GestureDetector(
                                                           onTap: () {
@@ -704,7 +704,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 10),
                                                         child: GestureDetector(
                                                           onTap: () {
@@ -788,16 +788,40 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                             MainAxisAlignment
                                                                 .spaceBetween,
                                                         children: [
-                                                          Text(
-                                                            '\$ ${CurrencyFormat.convertToDollar(data.approvalHarga, 0)}',
-                                                            style: const TextStyle(
-                                                                fontSize: 22,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .black),
-                                                          ),
+                                                          data.brand == "PARVA"
+                                                              ? Text(
+                                                                  '\$ ${CurrencyFormat.convertToDollar(data.approvalHarga, 0)}',
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          22,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .black),
+                                                                )
+                                                              : data.brand ==
+                                                                      "FINE"
+                                                                  ? Text(
+                                                                      '\$ ${CurrencyFormat.convertToDollar(data.approvalHarga, 0)}',
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              22,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    )
+                                                                  : Text(
+                                                                      'Rp. ${CurrencyFormat.convertToDollar(data.approvalHarga, 0)}',
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              22,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    )
                                                           // ),
                                                         ],
                                                       ),

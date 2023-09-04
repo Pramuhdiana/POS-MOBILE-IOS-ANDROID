@@ -470,7 +470,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                             MainAxisAlignment
                                                                 .start,
                                                         children: [
-                                                          IconButton(
+                                                          FloatingActionButton
+                                                              .extended(
                                                             onPressed: () {
                                                               showDialog(
                                                                   context:
@@ -592,6 +593,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                               color:
                                                                   Colors.green,
                                                             ),
+                                                            label: const Text(
+                                                                'Approve'),
                                                           ),
                                                           IconButton(
                                                             onPressed: () {

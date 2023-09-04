@@ -34,7 +34,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
   FocusNode numberFocusNode = FocusNode();
   TextEditingController price = TextEditingController();
   TextEditingController notes = TextEditingController();
-
+  bool updatePrice = false;
   int awalPrice = 0;
   @override
   void initState() {
@@ -696,7 +696,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 10),
                                                         child: GestureDetector(
                                                           onTap: () {
@@ -738,7 +738,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 10),
                                                         child: GestureDetector(
                                                           onTap: () {
@@ -822,16 +822,41 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                             MainAxisAlignment
                                                                 .spaceBetween,
                                                         children: [
-                                                          Text(
-                                                            '\$ ${CurrencyFormat.convertToDollar(awalPrice, 0)}',
-                                                            style: const TextStyle(
-                                                                fontSize: 22,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .black),
-                                                          ),
+                                                          data.brand == "PARVA"
+                                                              ? Text(
+                                                                  '\$ ${CurrencyFormat.convertToDollar(awalPrice, 0)}',
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          22,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .black),
+                                                                )
+                                                              : data.brand ==
+                                                                      "FINE"
+                                                                  ? Text(
+                                                                      '\$ ${CurrencyFormat.convertToDollar(awalPrice, 0)}',
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              22,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    )
+                                                                  : Text(
+                                                                      'Rp. ${CurrencyFormat.convertToDollar(awalPrice, 0)}',
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              22,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    )
+
                                                           // ),
                                                         ],
                                                       ),
@@ -845,151 +870,168 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                             MainAxisAlignment
                                                                 .start,
                                                         children: [
-                                                          IconButton(
-                                                            onPressed: () {
-                                                              showDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                                    // ignore: no_leading_underscores_for_local_identifiers
-                                                                    final _formKey =
-                                                                        GlobalKey<
-                                                                            FormState>();
+                                                          SizedBox(
+                                                            height: 40,
+                                                            child:
+                                                                FloatingActionButton
+                                                                    .extended(
+                                                              onPressed: () {
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      // ignore: no_leading_underscores_for_local_identifiers
+                                                                      final _formKey =
+                                                                          GlobalKey<
+                                                                              FormState>();
 
-                                                                    RoundedLoadingButtonController
-                                                                        btnController =
-                                                                        RoundedLoadingButtonController();
-                                                                    return AlertDialog(
-                                                                      content:
-                                                                          Stack(
-                                                                        clipBehavior:
-                                                                            Clip.none,
-                                                                        children: <Widget>[
-                                                                          Positioned(
-                                                                            right:
-                                                                                -40.0,
-                                                                            top:
-                                                                                -40.0,
-                                                                            child:
-                                                                                InkResponse(
-                                                                              onTap: () {
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              child: const CircleAvatar(
-                                                                                backgroundColor: Colors.red,
-                                                                                child: Icon(Icons.close),
+                                                                      RoundedLoadingButtonController
+                                                                          btnController =
+                                                                          RoundedLoadingButtonController();
+                                                                      return AlertDialog(
+                                                                        content:
+                                                                            Stack(
+                                                                          clipBehavior:
+                                                                              Clip.none,
+                                                                          children: <Widget>[
+                                                                            Positioned(
+                                                                              right: -40.0,
+                                                                              top: -40.0,
+                                                                              child: InkResponse(
+                                                                                onTap: () {
+                                                                                  Navigator.of(context).pop();
+                                                                                },
+                                                                                child: const CircleAvatar(
+                                                                                  backgroundColor: Colors.red,
+                                                                                  child: Icon(Icons.close),
+                                                                                ),
                                                                               ),
                                                                             ),
-                                                                          ),
-                                                                          Form(
-                                                                            key:
-                                                                                _formKey,
-                                                                            child:
-                                                                                Column(
-                                                                              mainAxisSize: MainAxisSize.min,
-                                                                              children: <Widget>[
-                                                                                Align(
-                                                                                  alignment: Alignment.centerLeft,
-                                                                                  child: Text(
-                                                                                    'Price : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
-                                                                                    textAlign: TextAlign.left,
-                                                                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                  ),
-                                                                                ),
-                                                                                //notes
-                                                                                Padding(
-                                                                                  padding: const EdgeInsets.all(8.0),
-                                                                                  child: TextFormField(
-                                                                                    style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                    textInputAction: TextInputAction.next,
-                                                                                    // controller:
-                                                                                    //     price,
-                                                                                    keyboardType: TextInputType.text,
-                                                                                    onChanged: (value) {
-                                                                                      notes.text = value;
-                                                                                    },
-                                                                                    decoration: InputDecoration(
-                                                                                      labelText: "Notes",
-                                                                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                            Form(
+                                                                              key: _formKey,
+                                                                              child: Column(
+                                                                                mainAxisSize: MainAxisSize.min,
+                                                                                children: <Widget>[
+                                                                                  Align(
+                                                                                      alignment: Alignment.centerLeft,
+                                                                                      child: data.brand == "PARVA"
+                                                                                          ? Text(
+                                                                                              'Price : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
+                                                                                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                            )
+                                                                                          : data.brand == "FINE"
+                                                                                              ? Text(
+                                                                                                  'Price : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
+                                                                                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                                )
+                                                                                              : Text(
+                                                                                                  'Price : Rp. ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
+                                                                                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                                )),
+
+                                                                                  //notes
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.all(8.0),
+                                                                                    child: TextFormField(
+                                                                                      style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      // controller:
+                                                                                      //     price,
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      onChanged: (value) {
+                                                                                        notes.text = value;
+                                                                                      },
+                                                                                      decoration: InputDecoration(
+                                                                                        labelText: "Notes",
+                                                                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                      ),
                                                                                     ),
                                                                                   ),
-                                                                                ),
 
-                                                                                Padding(
-                                                                                  padding: const EdgeInsets.all(8.0),
-                                                                                  child: SizedBox(
-                                                                                    width: 250,
-                                                                                    child: CustomLoadingButton(
-                                                                                        controller: btnController,
-                                                                                        child: const Text("Approve"),
-                                                                                        onPressed: () async {
-                                                                                          if (_formKey.currentState!.validate()) {
-                                                                                            _formKey.currentState!.save();
-                                                                                            Future.delayed(const Duration(seconds: 2)).then((value) async {
-                                                                                              try {
-                                                                                                FirebaseFirestore.instance.collection("UserTokens").doc(data.namaSales!).snapshots().listen((event) {
-                                                                                                  setState(() {
-                                                                                                    fcmTokenSales = event.get("token");
+                                                                                  Column(
+                                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                                    children: [
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: SizedBox(
+                                                                                          width: 250,
+                                                                                          child: CustomLoadingButton(
+                                                                                              controller: btnController,
+                                                                                              child: const Text("Approve"),
+                                                                                              onPressed: () async {
+                                                                                                if (_formKey.currentState!.validate()) {
+                                                                                                  _formKey.currentState!.save();
+                                                                                                  Future.delayed(const Duration(seconds: 2)).then((value) async {
+                                                                                                    try {
+                                                                                                      FirebaseFirestore.instance.collection("UserTokens").doc(data.namaSales!).snapshots().listen((event) {
+                                                                                                        setState(() {
+                                                                                                          fcmTokenSales = event.get("token");
+                                                                                                        });
+                                                                                                      });
+                                                                                                    } catch (c) {
+                                                                                                      print(c);
+                                                                                                    }
+                                                                                                    setState(() {
+                                                                                                      awalPrice = data.estimasiHarga!;
+                                                                                                      try {
+                                                                                                        postApi(data.id!, awalPrice);
+                                                                                                      } catch (c) {
+                                                                                                        Fluttertoast.showToast(msg: "Failed to send database,Database off");
+                                                                                                      }
+                                                                                                      try {
+                                                                                                        postApiWeb(data.jenisPengajuan!, data.diambilId!, data.statusApproval!, data.statusGet!);
+                                                                                                      } catch (c) {
+                                                                                                        Fluttertoast.showToast(msg: "Failed to send database web,Database off");
+                                                                                                      }
+
+                                                                                                      notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
+                                                                                                      notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
+                                                                                                      _getData();
+                                                                                                      context.read<PApprovalEticketing>().removesItem();
+                                                                                                    });
+
+                                                                                                    btnController.success();
+                                                                                                    Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                      btnController.reset(); //reset
+                                                                                                      Navigator.of(context).pop();
+                                                                                                      showDialog<String>(
+                                                                                                          context: context,
+                                                                                                          builder: (BuildContext context) => const AlertDialog(
+                                                                                                                title: Text(
+                                                                                                                  'Approve pricing success',
+                                                                                                                ),
+                                                                                                              ));
+                                                                                                    });
                                                                                                   });
-                                                                                                });
-                                                                                              } catch (c) {
-                                                                                                print(c);
-                                                                                              }
-                                                                                              setState(() {
-                                                                                                awalPrice = data.estimasiHarga!;
-                                                                                                try {
-                                                                                                  postApi(data.id!, awalPrice);
-                                                                                                } catch (c) {
-                                                                                                  Fluttertoast.showToast(msg: "Failed to send database,Database off");
+                                                                                                } else {
+                                                                                                  btnController.error();
+                                                                                                  Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                    btnController.reset(); //reset
+                                                                                                  });
                                                                                                 }
-                                                                                                try {
-                                                                                                  postApiWeb(data.jenisPengajuan!, data.diambilId!, data.statusApproval!, data.statusGet!);
-                                                                                                } catch (c) {
-                                                                                                  Fluttertoast.showToast(msg: "Failed to send database web,Database off");
-                                                                                                }
-
-                                                                                                notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
-                                                                                                notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
-                                                                                                _getData();
-                                                                                                context.read<PApprovalEticketing>().removesItem();
-                                                                                              });
-
-                                                                                              btnController.success();
-                                                                                              Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                                btnController.reset(); //reset
-                                                                                                Navigator.of(context).pop();
-                                                                                                showDialog<String>(
-                                                                                                    context: context,
-                                                                                                    builder: (BuildContext context) => const AlertDialog(
-                                                                                                          title: Text(
-                                                                                                            'Approve pricing success',
-                                                                                                          ),
-                                                                                                        ));
-                                                                                              });
-                                                                                            });
-                                                                                          } else {
-                                                                                            btnController.error();
-                                                                                            Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                              btnController.reset(); //reset
-                                                                                            });
-                                                                                          }
-                                                                                        }),
-                                                                                  ),
-                                                                                )
-                                                                              ],
+                                                                                              }),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  )
+                                                                                ],
+                                                                              ),
                                                                             ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    );
-                                                                  });
-                                                            },
-                                                            icon: const Icon(
-                                                              Icons.done_sharp,
-                                                              color:
-                                                                  Colors.green,
+                                                                          ],
+                                                                        ),
+                                                                      );
+                                                                    });
+                                                              },
+                                                              icon: const Icon(
+                                                                Icons
+                                                                    .done_sharp,
+                                                                color: Colors
+                                                                    .green,
+                                                              ),
+                                                              label: const Text(
+                                                                  'Approve'),
                                                             ),
                                                           ),
                                                           IconButton(
@@ -1049,6 +1091,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                 Padding(
                                                                                   padding: const EdgeInsets.all(8.0),
                                                                                   child: TextFormField(
+                                                                                    autofocus: true,
                                                                                     style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
                                                                                     textInputAction: TextInputAction.next,
                                                                                     // controller:

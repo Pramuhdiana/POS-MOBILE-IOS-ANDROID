@@ -14,8 +14,8 @@ class PricingEticketingModel {
   String? namaToko;
   String? jenisBarang;
   String? brand;
-  double? beratEmas;
-  double? beratDiamond;
+  String? beratEmas;
+  String? beratDiamond;
   int? pricePerCarat;
   int? priceAfterDiskon;
   int? estimasiHarga;
@@ -206,8 +206,8 @@ class PricingEticketingModel {
     namaToko = json['namaToko'];
     jenisBarang = json['jenisBarang'];
     brand = json['brand'];
-    beratEmas = json['beratEmas'];
-    beratDiamond = json['beratDiamond'] ?? 0.0;
+    beratEmas = json['beratEmas'].toString();
+    beratDiamond = json['beratDiamond'].toString();
     pricePerCarat = json['pricePerCarat'];
     priceAfterDiskon = json['priceAfterDiskon'];
     estimasiHarga = json['estimasiHarga'] ?? 0;
