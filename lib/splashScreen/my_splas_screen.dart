@@ -366,7 +366,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             title: const Text('Please choose aplikasi'),
             content: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.5,
+              height: 100,
+              // height: MediaQuery.of(context).size.height * 0.5,
               child: Column(
                 children: [
                   ElevatedButton(
