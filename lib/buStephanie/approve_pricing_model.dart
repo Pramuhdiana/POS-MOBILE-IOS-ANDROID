@@ -16,32 +16,32 @@ class ApprovePricingModel {
   String? modelItem;
   String? productTypeCode;
   String? productTypeDesc;
-  String? ringSize;
+  double? ringSize;
   String? giaCode;
   String? detailProduct;
   String? designLabourCode;
   String? salesDefinitionCode;
   String? salesDefinitionNo;
   String? sumAddition;
-  String? diamondWeight;
-  String? goldContent;
+  double? diamondWeight;
+  double? goldContent;
   String? metalCode;
-  String? fgWeight;
-  String? goldWeight;
-  String? goldUnitCost;
-  String? goldMF;
-  String? stdGoldPrice;
-  String? mfGoldPrice;
-  String? mfDiamondPrice;
-  String? mfLabourPrice;
-  String? finalMF;
-  String? otherPrice;
-  String? finalPrice3USD;
-  String? rateUSD;
-  String? discountPercentage;
-  String? goldAveragePrice;
-  String? priceAfterDiscount;
-  String? pricePerCarat;
+  double? fgWeight;
+  double? goldWeight;
+  double? goldUnitCost;
+  double? goldMF;
+  double? stdGoldPrice;
+  double? mfGoldPrice;
+  double? mfDiamondPrice;
+  double? mfLabourPrice;
+  double? finalMF;
+  double? otherPrice;
+  double? finalPrice3USD;
+  double? rateUSD;
+  double? discountPercentage;
+  double? goldAveragePrice;
+  double? priceAfterDiscount;
+  double? pricePerCarat;
   String? cadImageFileName;
   String? fgImageFileName;
   String? cadImageUrlPath;
@@ -49,7 +49,7 @@ class ApprovePricingModel {
   String? imagePath;
   String? imageBaseUrl;
   String? approvalStatus;
-  String? approvalPrice;
+  double? approvalPrice;
   String? createdDate;
   String? editedDate;
   String? approvedDate;
@@ -109,32 +109,32 @@ class ApprovePricingModel {
         modelItem: json['modelItem'],
         productTypeCode: json['productTypeCode'],
         productTypeDesc: json['productTypeDesc'],
-        ringSize: json['ringSize'].toString(),
+        ringSize: json['ringSize'],
         giaCode: json['giaCode'],
         detailProduct: json['detailProduct'],
         designLabourCode: json['designLabourCode'],
         salesDefinitionCode: json['salesDefinitionCode'],
         salesDefinitionNo: json['salesDefinitionNo'],
         sumAddition: json['sumAddition'],
-        diamondWeight: json['diamondWeight'].toString(),
-        goldContent: json['goldContent'].toString(),
+        diamondWeight: json['diamondWeight'],
+        goldContent: json['goldContent'],
         metalCode: json['metalCode'],
-        fgWeight: json['fgWeight'].toString(),
-        goldWeight: json['goldWeight'].toString(),
-        goldUnitCost: json['goldUnitCost'].toString(),
-        goldMF: json['goldMF'].toString(),
-        stdGoldPrice: json['stdGoldPrice'].toString(),
-        mfGoldPrice: json['mfGoldPrice'].toString(),
-        mfDiamondPrice: json['mfDiamondPrice'].toString(),
-        mfLabourPrice: json['mfLabourPrice'].toString(),
-        finalMF: json['finalMF'].toString(),
-        otherPrice: json['otherPrice'].toString(),
-        finalPrice3USD: json['finalPrice3USD'].toString(),
-        rateUSD: json['rateUSD'].toString(),
-        discountPercentage: json['discountPercentage'].toString(),
-        goldAveragePrice: json['goldAveragePrice'].toString(),
-        priceAfterDiscount: json['priceAfterDiscount'].toString(),
-        pricePerCarat: json['pricePerCarat'].toString(),
+        fgWeight: json['fgWeight'],
+        goldWeight: json['goldWeight'],
+        goldUnitCost: json['goldUnitCost'],
+        goldMF: json['goldMF'],
+        stdGoldPrice: json['stdGoldPrice'],
+        mfGoldPrice: json['mfGoldPrice'],
+        mfDiamondPrice: json['mfDiamondPrice'],
+        mfLabourPrice: json['mfLabourPrice'],
+        finalMF: json['finalMF'],
+        otherPrice: json['otherPrice'],
+        finalPrice3USD: json['finalPrice3USD'],
+        rateUSD: json['rateUSD'],
+        discountPercentage: json['discountPercentage'],
+        goldAveragePrice: json['goldAveragePrice'],
+        priceAfterDiscount: json['priceAfterDiscount'],
+        pricePerCarat: json['pricePerCarat'],
         cadImageFileName: json['cadImageFileName'],
         fgImageFileName: json['fgImageFileName'],
         cadImageUrlPath: json['cadImageUrlPath'],
@@ -142,7 +142,7 @@ class ApprovePricingModel {
         imagePath: json['imagePath'],
         imageBaseUrl: json['imageBaseUrl'],
         approvalStatus: json['approvalStatus'],
-        approvalPrice: json['approvalPrice'].toString(),
+        approvalPrice: json['approvalPrice'],
         createdDate: json['createdDate'],
         editedDate: json['editedDate'],
         approvedDate: json['approvedDate'],

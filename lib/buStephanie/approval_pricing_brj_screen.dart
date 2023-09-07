@@ -395,10 +395,22 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                 },
                                                 child: ClipRRect(
                                                   child: CachedNetworkImage(
+                                                    width: 130,
                                                     imageUrl: ApiConstants
                                                             .baseUrlImageMdbc +
                                                         data.fgImageFileName!
                                                             .toString(),
+                                                    placeholder: (context,
+                                                            url) =>
+                                                        const CircularProgressIndicator(),
+                                                    errorWidget:
+                                                        (context, url, error) =>
+                                                            const Icon(
+                                                      Icons.error,
+                                                      color: Colors.black,
+                                                      size: 50,
+                                                    ),
+                                                    fit: BoxFit.cover,
                                                   ),
                                                 ),
                                               ),
@@ -555,7 +567,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                             _formKey.currentState!.save();
                                                                                             Future.delayed(const Duration(seconds: 2)).then((value) async {
                                                                                               setState(() {
-                                                                                                postApi(data.lot!);
+                                                                                                postApi(data.lotNo!);
                                                                                               });
                                                                                               btnController.success();
                                                                                               Future.delayed(const Duration(seconds: 1)).then((value) {
@@ -711,7 +723,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                             Future.delayed(const Duration(seconds: 2)).then((value) async {
                                                                                               setState(() {
                                                                                                 awalPrice = double.parse(price.text);
-                                                                                                postApi(data.lot!);
+                                                                                                postApi(data.lotNo!);
                                                                                               });
                                                                                               btnController.success();
                                                                                               Future.delayed(const Duration(seconds: 1)).then((value) {
@@ -806,7 +818,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
 
 //method approve pricing
   postApi(lot) async {
-    print(awalPrice);
     Map<String, String> headersAPI = {
       'Content-Type': 'application/json',
     };

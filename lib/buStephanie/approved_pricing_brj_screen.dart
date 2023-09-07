@@ -407,16 +407,45 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                             MainAxisAlignment
                                                                 .spaceBetween,
                                                         children: [
-                                                          Text(
-                                                            '\$ ${CurrencyFormat.convertToDollar(data.approvalPrice, 0)}',
-                                                            style: const TextStyle(
-                                                                fontSize: 22,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .black),
-                                                          ),
+                                                          data.salesDefinitionCode
+                                                                      .toString()
+                                                                      .toLowerCase() ==
+                                                                  "parva"
+                                                              ? Text(
+                                                                  '\$ ${CurrencyFormat.convertToDollar(data.approvalPrice, 0)}',
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          22,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .black),
+                                                                )
+                                                              : data.salesDefinitionCode
+                                                                          .toString()
+                                                                          .toLowerCase() ==
+                                                                      "fine"
+                                                                  ? Text(
+                                                                      '\$ ${CurrencyFormat.convertToDollar(data.approvalPrice, 0)}',
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              22,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    )
+                                                                  : Text(
+                                                                      'Rp. ${CurrencyFormat.convertToDollar(data.approvalPrice, 0)}',
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              22,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    ),
                                                           // ),
                                                         ],
                                                       ),

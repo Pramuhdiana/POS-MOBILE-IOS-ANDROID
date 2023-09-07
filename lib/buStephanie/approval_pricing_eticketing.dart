@@ -281,6 +281,10 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                               ],
                                                             ),
                                                           ),
+                                                          const Divider(
+                                                            thickness: 3,
+                                                            color: Colors.black,
+                                                          ),
                                                           //? batu1
                                                           data.qtyBatu1 <= 0
                                                               ? const SizedBox()
@@ -293,17 +297,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu1
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu1}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu1}',
@@ -319,6 +327,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu1 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu2
                                                           data.qtyBatu2 <= 0
                                                               ? const SizedBox()
@@ -331,17 +346,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu2
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu2}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu2}',
@@ -357,6 +376,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu2 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu3
                                                           data.qtyBatu3 <= 0
                                                               ? const SizedBox()
@@ -370,8 +397,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                             .spaceBetween,
                                                                     children: [
                                                                       Text(
-                                                                        data.batu3
-                                                                            .toString(),
+                                                                        '${data.batu3}',
                                                                         textAlign:
                                                                             TextAlign.left,
                                                                         style: const TextStyle(
@@ -395,6 +421,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu3 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu4
                                                           data.qtyBatu4 <= 0
                                                               ? const SizedBox()
@@ -407,17 +441,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu4
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu4}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu4}',
@@ -433,6 +471,15 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+
+                                                          data.qtyBatu4 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu5
                                                           data.qtyBatu5 <= 0
                                                               ? const SizedBox()
@@ -445,17 +492,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu5
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu5}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu5}',
@@ -471,6 +522,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu5 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu6
                                                           data.qtyBatu6 <= 0
                                                               ? const SizedBox()
@@ -483,17 +542,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu6
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu6}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu6}',
@@ -509,6 +572,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu6 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu7
                                                           data.qtyBatu7 <= 0
                                                               ? const SizedBox()
@@ -521,17 +592,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu7
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu7}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu7}',
@@ -547,6 +622,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu7 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu8
                                                           data.qtyBatu8 <= 0
                                                               ? const SizedBox()
@@ -559,17 +642,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu8
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu8}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu8}',
@@ -585,6 +672,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu8 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu9
                                                           data.qtyBatu9 <= 0
                                                               ? const SizedBox()
@@ -597,17 +692,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu9
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu9}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu9}',
@@ -623,6 +722,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu9 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu10
                                                           data.qtyBatu10 <= 0
                                                               ? const SizedBox()
@@ -635,17 +742,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu10
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu10}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu10}',
@@ -661,6 +772,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu10 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu11
                                                           data.qtyBatu11 <= 0
                                                               ? const SizedBox()
@@ -673,17 +792,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu11
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu11}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu11}',
@@ -699,6 +822,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu11 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu12
                                                           data.qtyBatu12 <= 0
                                                               ? const SizedBox()
@@ -711,17 +842,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu12
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu12}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu12}',
@@ -737,7 +872,16 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu12 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu13
+
                                                           data.qtyBatu13 <= 0
                                                               ? const SizedBox()
                                                               : Align(
@@ -750,8 +894,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                             .spaceBetween,
                                                                     children: [
                                                                       Text(
-                                                                        data.batu13
-                                                                            .toString(),
+                                                                        '${data.batu13}',
                                                                         textAlign:
                                                                             TextAlign.left,
                                                                         style: const TextStyle(
@@ -775,6 +918,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu13 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu14
                                                           data.qtyBatu14 <= 0
                                                               ? const SizedBox()
@@ -787,17 +938,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu14
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu14}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu14}',
@@ -813,6 +968,15 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+
+                                                          data.qtyBatu14 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu15
                                                           data.qtyBatu15 <= 0
                                                               ? const SizedBox()
@@ -825,17 +989,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu15
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu15}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu15}',
@@ -851,6 +1019,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu15 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu16
                                                           data.qtyBatu16 <= 0
                                                               ? const SizedBox()
@@ -863,17 +1039,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu16
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu16}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu16}',
@@ -889,6 +1069,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu16 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu17
                                                           data.qtyBatu17 <= 0
                                                               ? const SizedBox()
@@ -901,17 +1089,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu17
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu17}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu17}',
@@ -927,6 +1119,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu17 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu18
                                                           data.qtyBatu18 <= 0
                                                               ? const SizedBox()
@@ -939,17 +1139,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu18
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu18}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu18}',
@@ -965,6 +1169,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu18 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu19
                                                           data.qtyBatu19 <= 0
                                                               ? const SizedBox()
@@ -977,17 +1189,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu19
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu19}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu19}',
@@ -1003,6 +1219,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu19 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu20
                                                           data.qtyBatu20 <= 0
                                                               ? const SizedBox()
@@ -1015,17 +1238,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu20
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu20}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu20}',
@@ -1041,6 +1268,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu20 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu21
                                                           data.qtyBatu21 <= 0
                                                               ? const SizedBox()
@@ -1053,17 +1287,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu21
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu21}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu21}',
@@ -1079,6 +1317,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu21 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu22
                                                           data.qtyBatu22 <= 0
                                                               ? const SizedBox()
@@ -1091,17 +1336,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu22
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu22}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu22}',
@@ -1117,6 +1366,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu22 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu23
                                                           data.qtyBatu23 <= 0
                                                               ? const SizedBox()
@@ -1130,8 +1386,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                             .spaceBetween,
                                                                     children: [
                                                                       Text(
-                                                                        data.batu23
-                                                                            .toString(),
+                                                                        '${data.batu23}',
                                                                         textAlign:
                                                                             TextAlign.left,
                                                                         style: const TextStyle(
@@ -1155,6 +1410,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu23 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu24
                                                           data.qtyBatu24 <= 0
                                                               ? const SizedBox()
@@ -1167,17 +1429,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu24
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu24}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu24}',
@@ -1193,6 +1459,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+
+                                                          data.qtyBatu24 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu25
                                                           data.qtyBatu25 <= 0
                                                               ? const SizedBox()
@@ -1205,17 +1479,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu25
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu25}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu25}',
@@ -1231,6 +1509,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu25 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu26
                                                           data.qtyBatu26 <= 0
                                                               ? const SizedBox()
@@ -1243,17 +1529,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu26
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu26}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu26}',
@@ -1269,6 +1559,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu26 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu27
                                                           data.qtyBatu27 <= 0
                                                               ? const SizedBox()
@@ -1281,17 +1578,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu27
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu27}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu27}',
@@ -1307,6 +1608,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu27 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu28
                                                           data.qtyBatu28 <= 0
                                                               ? const SizedBox()
@@ -1319,17 +1627,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu28
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu28}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu28}',
@@ -1345,6 +1657,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu28 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu29
                                                           data.qtyBatu29 <= 0
                                                               ? const SizedBox()
@@ -1357,17 +1676,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu29
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu29}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu29}',
@@ -1383,6 +1706,14 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu29 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+
                                                           //? batu30
                                                           data.qtyBatu30 <= 0
                                                               ? const SizedBox()
@@ -1395,17 +1726,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu30
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu30}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu30}',
@@ -1421,6 +1756,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu30 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu31
                                                           data.qtyBatu31 <= 0
                                                               ? const SizedBox()
@@ -1433,17 +1775,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu31
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu31}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu31}',
@@ -1459,6 +1805,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu31 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu32
                                                           data.qtyBatu32 <= 0
                                                               ? const SizedBox()
@@ -1471,17 +1824,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu32
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu32}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu32}',
@@ -1497,6 +1854,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu32 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu33
                                                           data.qtyBatu33 <= 0
                                                               ? const SizedBox()
@@ -1509,17 +1873,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu33
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu33}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu33}',
@@ -1535,6 +1903,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu33 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu34
                                                           data.qtyBatu34 <= 0
                                                               ? const SizedBox()
@@ -1547,17 +1922,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu34
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu34}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu34}',
@@ -1573,6 +1952,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                          data.qtyBatu34 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                           //? batu35
                                                           data.qtyBatu35 <= 0
                                                               ? const SizedBox()
@@ -1585,17 +1971,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                         MainAxisAlignment
                                                                             .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        data.batu35
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.left,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.black),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            200,
+                                                                        child:
+                                                                            Text(
+                                                                          '${data.batu35}',
+                                                                          maxLines:
+                                                                              2,
+                                                                          textAlign:
+                                                                              TextAlign.left,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black),
+                                                                        ),
                                                                       ),
                                                                       Text(
                                                                         '${data.qtyBatu35}',
@@ -1609,6 +1999,40 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                             color: Colors.black),
                                                                       ),
                                                                     ],
+                                                                  ),
+                                                                ),
+                                                          data.qtyBatu35 <= 0
+                                                              ? const SizedBox()
+                                                              : const Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                          data.keterangan == ''
+                                                              ? const SizedBox()
+                                                              : Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                          top:
+                                                                              10),
+                                                                  child: Text(
+                                                                    'Note \n${data.keterangan}',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .left,
+                                                                    style: TextStyle(
+                                                                        fontStyle:
+                                                                            FontStyle
+                                                                                .italic,
+                                                                        fontSize:
+                                                                            15,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: Colors
+                                                                            .yellow
+                                                                            .shade800),
                                                                   ),
                                                                 ),
                                                         ],
@@ -1646,7 +2070,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     builder: (c) =>
                                                                         ItemsPhotoPricingEticketing(
                                                                           imgUrl:
-                                                                              data.imageSales1,
+                                                                              data.imageDesign1!,
                                                                           model: PricingEticketingModel(
                                                                               id: data.id,
                                                                               namaCustomer: data.namaCustomer),
@@ -1657,7 +2081,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                 CachedNetworkImage(
                                                               width: 130,
                                                               imageUrl: data
-                                                                  .imageSales1!,
+                                                                  .imageDesign1!,
                                                               placeholder: (context,
                                                                       url) =>
                                                                   const CircularProgressIndicator(),
@@ -1688,7 +2112,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                     builder: (c) =>
                                                                         ItemsPhotoPricingEticketing(
                                                                           imgUrl:
-                                                                              data.imageDesign1!,
+                                                                              data.imageSales1!,
                                                                           model: PricingEticketingModel(
                                                                               id: data.id,
                                                                               namaCustomer: data.namaCustomer),
@@ -1699,7 +2123,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                 CachedNetworkImage(
                                                               width: 130,
                                                               imageUrl: data
-                                                                  .imageDesign1!,
+                                                                  .imageSales1!,
                                                               placeholder: (context,
                                                                       url) =>
                                                                   const CircularProgressIndicator(),
@@ -1853,9 +2277,92 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                   .size
                                                                   .width *
                                                               0.45,
-                                                      child: Text(
-                                                        data.jenisPengajuan!,
-                                                        maxLines: 2,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                              '${data.jenisPengajuan!}'),
+                                                          data.jenisPengajuan
+                                                                      .toString()
+                                                                      .toLowerCase() ==
+                                                                  "baru"
+                                                              ? const SizedBox()
+                                                              : GestureDetector(
+                                                                  onTap: () {
+                                                                    showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return AlertDialog(
+                                                                            content:
+                                                                                Stack(
+                                                                              clipBehavior: Clip.none,
+                                                                              children: <Widget>[
+                                                                                Positioned(
+                                                                                  right: -40.0,
+                                                                                  top: -40.0,
+                                                                                  child: InkResponse(
+                                                                                    onTap: () {
+                                                                                      Navigator.of(context).pop();
+                                                                                    },
+                                                                                    child: const CircleAvatar(
+                                                                                      backgroundColor: Colors.red,
+                                                                                      child: Icon(Icons.close),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                                SingleChildScrollView(
+                                                                                  scrollDirection: Axis.vertical,
+                                                                                  child: Column(
+                                                                                    mainAxisSize: MainAxisSize.min,
+                                                                                    children: <Widget>[
+                                                                                      Center(
+                                                                                        child: Text(
+                                                                                          'ID ${data.diambilId}',
+                                                                                          style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                        ),
+                                                                                      ),
+                                                                                      const Center(
+                                                                                        child: Text(
+                                                                                          'History Approve',
+                                                                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                                                                        ),
+                                                                                      ),
+                                                                                      Align(
+                                                                                        alignment: Alignment.bottomLeft,
+                                                                                        child: Text(
+                                                                                          'Pengajuan  \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga!, 0)}',
+                                                                                          style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                        ),
+                                                                                      ),
+                                                                                      Align(
+                                                                                        alignment: Alignment.bottomLeft,
+                                                                                        child: Text(
+                                                                                          'Di Approve \$ ${CurrencyFormat.convertToDollar(data.approvalHarga!, 0)}',
+                                                                                          style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          );
+                                                                        });
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                    'Read More...',
+                                                                    maxLines: 1,
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .blue),
+                                                                  ))
+                                                        ],
                                                       ),
                                                     ),
                                                     Container(
