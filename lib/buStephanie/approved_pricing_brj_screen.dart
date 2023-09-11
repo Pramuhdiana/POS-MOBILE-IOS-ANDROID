@@ -32,7 +32,6 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
   int totalHistori = 0;
   int limitHistori = 0;
 
-  double awalPrice = 0;
   @override
   void initState() {
     super.initState();
@@ -123,8 +122,6 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                 .toLowerCase()
                 .contains(search.toString().toLowerCase()));
 
-        // print(result);
-// final filteredList = goals.where((goals) => goal.region == 'North America')
         return modifiedUserData.toList();
       } else {
         throw Exception('Unexpected error occured!');
@@ -239,8 +236,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   var data = snapshot.data![index];
-                                  awalPrice = double.parse(
-                                      data.finalPrice3USD!.toString());
+
                                   return Padding(
                                     padding: const EdgeInsets.all(4.0),
                                     child: GestureDetector(
@@ -981,7 +977,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                                 .spaceBetween,
                                                         children: [
                                                           Text(
-                                                            '\$ ${CurrencyFormat.convertToDollar(awalPrice, 0)}',
+                                                            '\$ ${CurrencyFormat.convertToDollar(data.approvalPrice, 0)}',
                                                             style: const TextStyle(
                                                                 fontSize: 22,
                                                                 fontWeight:
@@ -1016,23 +1012,6 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                   ],
                 ),
               ));
-  }
-
-//method approve pricing
-  postApi(lot) async {
-    Map<String, String> headersAPI = {
-      'Content-Type': 'application/json',
-    };
-    Map bodyApi = {
-      'approvedBy': sharedPreferences!.getString('name')!,
-      'approvalPrice': awalPrice
-    };
-    final response = await http.put(
-        Uri.parse(
-            '${ApiConstants.baseUrlPricing}${ApiConstants.PUTapprovelPricing}$lot'),
-        headers: headersAPI,
-        body: jsonEncode(bodyApi));
-    print(response.statusCode);
   }
 }
 

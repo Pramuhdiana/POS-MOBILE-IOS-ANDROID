@@ -145,9 +145,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                 .toString()
                 .toLowerCase()
                 .contains(search.toString().toLowerCase()));
-
-        setState(() {});
-        //setelah di filter harus dimasukan ke list untuk ditampikan
+        print(modifiedUserData.toList());
         return modifiedUserData.toList();
       } else {
         throw Exception('Unexpected error occured!');
@@ -1149,6 +1147,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                             Future.delayed(const Duration(seconds: 2)).then((value) async {
                                                                                               setState(() {
                                                                                                 postApi(data.lotNo!);
+                                                                                                notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Lot ${data.lotNo} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
                                                                                               });
                                                                                               btnController.success();
                                                                                               Future.delayed(const Duration(seconds: 1)).then((value) {
@@ -1326,6 +1325,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                               setState(() {
                                                                                                 awalPrice = double.parse(price.text);
                                                                                                 postApi(data.lotNo!);
+                                                                                                notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Lot ${data.lotNo} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
                                                                                               });
                                                                                               btnController.success();
                                                                                               Future.delayed(const Duration(seconds: 1)).then((value) {
