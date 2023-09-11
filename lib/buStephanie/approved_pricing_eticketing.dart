@@ -2217,7 +2217,13 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                                                     children: <Widget>[
                                                                                       Center(
                                                                                         child: Text(
-                                                                                          'GIA ${data.jenisGIA!}',
+                                                                                          '${data.noGIA!}',
+                                                                                          style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                        ),
+                                                                                      ),
+                                                                                      Center(
+                                                                                        child: Text(
+                                                                                          'Jenis ${data.jenisGIA!}',
                                                                                           style: const TextStyle(fontWeight: FontWeight.bold),
                                                                                         ),
                                                                                       ),
