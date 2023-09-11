@@ -53,6 +53,7 @@ class ApprovePricingModel {
   String? createdDate;
   String? editedDate;
   String? approvedDate;
+  String? budgetCustomer;
 
   ApprovePricingModel(
       {this.entryNo,
@@ -98,7 +99,8 @@ class ApprovePricingModel {
       this.approvalPrice,
       this.createdDate,
       this.editedDate,
-      this.approvedDate});
+      this.approvedDate,
+      this.budgetCustomer});
 
   factory ApprovePricingModel.fromJson(Map<String, dynamic> json) =>
       ApprovePricingModel(
@@ -146,6 +148,7 @@ class ApprovePricingModel {
         createdDate: json['createdDate'],
         editedDate: json['editedDate'],
         approvedDate: json['approvedDate'],
+        budgetCustomer: json['customerBudget'] ?? '0',
       );
 
   Map<String, dynamic> toJson() => {
@@ -193,5 +196,6 @@ class ApprovePricingModel {
         "createdDate": createdDate,
         "editedDate": editedDate,
         "approvedDate": approvedDate,
+        "budgetCustomer": budgetCustomer,
       };
 }

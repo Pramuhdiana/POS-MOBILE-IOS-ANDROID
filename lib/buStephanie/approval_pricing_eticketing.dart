@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import '../global/currency_format.dart';
@@ -34,6 +35,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
   FocusNode numberFocusNode = FocusNode();
   TextEditingController price = TextEditingController();
   TextEditingController notes = TextEditingController();
+  final TextEditingController notes1 = TextEditingController();
+  final TextEditingController notes2 = TextEditingController();
+  final TextEditingController notes3 = TextEditingController();
+  int hargaBaru = 0;
+  int approveHargaBaru = 0;
+  int hargaRevisi1 = 0;
+  int approveHargaRevisi1 = 0;
   bool updatePrice = false;
   int awalPrice = 0;
   @override
@@ -58,6 +66,37 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
         var g = jsonResponse
             .map((data) => PricingEticketingModel.fromJson(data))
             .toList();
+        return g;
+      } else {
+        throw Exception('Unexpected error occured!');
+      }
+    } catch (c) {
+      return throw Exception(c);
+    }
+  }
+
+  Future _getDataByPengajuan(idGet, jenis) async {
+    try {
+      final response = await http.get(Uri.parse(
+          '${ApiConstants.baseUrlsandy}${ApiConstants.GETPricingEticketing}'));
+      // if response successful
+      if (response.statusCode == 200) {
+        List jsonResponse = json.decode(response.body);
+        var g = jsonResponse
+            .map((data) => PricingEticketingModel.fromJson(data))
+            .toList();
+
+        var filterByDiambilId = g.where((element) =>
+            element.diambilId.toString().toLowerCase() ==
+            idGet.toString().toLowerCase());
+        var filterByJenisPengajuan = filterByDiambilId.where((element) =>
+            element.jenisPengajuan.toString().toLowerCase() ==
+            jenis.toString().toLowerCase());
+        // print(filterByJenisPengajuan);
+        g = filterByJenisPengajuan.toList();
+
+        isLoading = false;
+
         return g;
       } else {
         throw Exception('Unexpected error occured!');
@@ -117,6 +156,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -169,7 +209,8 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                             : _getDataSearch(searchInput),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
-                            return const Text('Something went wrong');
+                            return Center(
+                                child: Lottie.asset("json/loadingdata.json"));
                           }
 
                           if (snapshot.connectionState ==
@@ -2088,11 +2129,8 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                               errorWidget: (context,
                                                                       url,
                                                                       error) =>
-                                                                  const Icon(
-                                                                Icons.error,
-                                                                color: Colors
-                                                                    .black,
-                                                                size: 50,
+                                                                  Image.asset(
+                                                                "images/default.jpg",
                                                               ),
                                                               fit: BoxFit.cover,
                                                             ),
@@ -2130,11 +2168,8 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                               errorWidget: (context,
                                                                       url,
                                                                       error) =>
-                                                                  const Icon(
-                                                                Icons.error,
-                                                                color: Colors
-                                                                    .black,
-                                                                size: 50,
+                                                                  Image.asset(
+                                                                "images/default.jpg",
                                                               ),
                                                               fit: BoxFit.cover,
                                                             ),
@@ -2291,35 +2326,93 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                               ? const SizedBox()
                                                               : GestureDetector(
                                                                   onTap: () {
-                                                                    showDialog(
+                                                                    showDialog<
+                                                                            String>(
                                                                         context:
                                                                             context,
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                          return AlertDialog(
-                                                                            content:
-                                                                                Stack(
-                                                                              clipBehavior: Clip.none,
-                                                                              children: <Widget>[
-                                                                                Positioned(
-                                                                                  right: -40.0,
-                                                                                  top: -40.0,
-                                                                                  child: InkResponse(
-                                                                                    onTap: () {
-                                                                                      Navigator.of(context).pop();
-                                                                                    },
-                                                                                    child: const CircleAvatar(
-                                                                                      backgroundColor: Colors.red,
-                                                                                      child: Icon(Icons.close),
+                                                                        builder: (BuildContext
+                                                                                context) =>
+                                                                            const AlertDialog(
+                                                                              title: Center(child: CircularProgressIndicator()),
+                                                                            ));
+                                                                    _getDataByPengajuan(
+                                                                            data.diambilId,
+                                                                            "baru")
+                                                                        .then(
+                                                                      (value) {
+                                                                        hargaBaru =
+                                                                            value[0].estimasiHarga;
+                                                                        approveHargaBaru =
+                                                                            value[0].approvalHarga;
+                                                                      },
+                                                                    );
+                                                                    _getDataByPengajuan(
+                                                                            data.diambilId,
+                                                                            "revisi 1")
+                                                                        .then(
+                                                                      (value) {
+                                                                        hargaRevisi1 =
+                                                                            value[0].estimasiHarga;
+                                                                        approveHargaRevisi1 =
+                                                                            value[0].approvalHarga;
+                                                                      },
+                                                                    );
+                                                                    Future.delayed(const Duration(
+                                                                            seconds:
+                                                                                1))
+                                                                        .then(
+                                                                            (value) {
+                                                                      Navigator
+                                                                          .pop(
+                                                                        context,
+                                                                      );
+
+                                                                      showDialog(
+                                                                          context:
+                                                                              context,
+                                                                          builder:
+                                                                              (BuildContext context) {
+                                                                            return AlertDialog(
+                                                                              content: Stack(
+                                                                                clipBehavior: Clip.none,
+                                                                                children: <Widget>[
+                                                                                  Positioned(
+                                                                                    right: -40.0,
+                                                                                    top: -40.0,
+                                                                                    child: InkResponse(
+                                                                                      onTap: () {
+                                                                                        Navigator.of(context).pop();
+                                                                                      },
+                                                                                      child: const CircleAvatar(
+                                                                                        backgroundColor: Colors.red,
+                                                                                        child: Icon(Icons.close),
+                                                                                      ),
                                                                                     ),
                                                                                   ),
-                                                                                ),
-                                                                                SingleChildScrollView(
-                                                                                  scrollDirection: Axis.vertical,
-                                                                                  child: Column(
-                                                                                    mainAxisSize: MainAxisSize.min,
-                                                                                    children: <Widget>[
+                                                                                  SingleChildScrollView(
+                                                                                    scrollDirection: Axis.vertical,
+                                                                                    child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                                                                                      Container(
+                                                                                        alignment: Alignment.bottomLeft,
+                                                                                        padding: const EdgeInsets.only(top: 10),
+                                                                                        child: Row(
+                                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                          children: [
+                                                                                            const Text(
+                                                                                              'Budget Customer',
+                                                                                              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                            ),
+                                                                                            Text(
+                                                                                              '${data.budgetCustomer}',
+                                                                                              style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
+                                                                                      ),
+                                                                                      const Divider(
+                                                                                        thickness: 1,
+                                                                                        color: Colors.black,
+                                                                                      ),
                                                                                       Center(
                                                                                         child: Text(
                                                                                           'ID ${data.diambilId}',
@@ -2332,31 +2425,64 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                           style: TextStyle(fontWeight: FontWeight.bold),
                                                                                         ),
                                                                                       ),
-                                                                                      Align(
-                                                                                        alignment: Alignment.bottomLeft,
-                                                                                        child: Text(
-                                                                                          'Pengajuan  \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga!, 0)}',
-                                                                                          style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                      // hargaBaru == 0
+                                                                                      //     ? const SizedBox()
+                                                                                      //     :
+
+                                                                                      Container(
+                                                                                        alignment: Alignment.topLeft,
+                                                                                        margin: const EdgeInsets.all(5.0),
+                                                                                        padding: const EdgeInsets.all(3.0),
+                                                                                        decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+                                                                                        child: Column(
+                                                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                          children: [
+                                                                                            Text(
+                                                                                              'Approval price 1 : ${CurrencyFormat.convertToDollar(hargaBaru, 0)}',
+                                                                                              style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                            ),
+                                                                                            Text(
+                                                                                              'Approved price 1 : ${CurrencyFormat.convertToDollar(approveHargaBaru, 0)}',
+                                                                                              style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                                                                                            ),
+                                                                                          ],
                                                                                         ),
                                                                                       ),
-                                                                                      Align(
-                                                                                        alignment: Alignment.bottomLeft,
-                                                                                        child: Text(
-                                                                                          'Di Approve \$ ${CurrencyFormat.convertToDollar(data.approvalHarga!, 0)}',
-                                                                                          style: const TextStyle(fontWeight: FontWeight.bold),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ],
+                                                                                      //harga revisi 2
+                                                                                      approveHargaRevisi1 == 0
+                                                                                          ? const SizedBox()
+                                                                                          : Container(
+                                                                                              alignment: Alignment.topLeft,
+                                                                                              margin: const EdgeInsets.all(5.0),
+                                                                                              padding: const EdgeInsets.all(3.0),
+                                                                                              decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+                                                                                              child: Column(
+                                                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                children: [
+                                                                                                  Text(
+                                                                                                    'Approval price 2 : ${CurrencyFormat.convertToDollar(hargaRevisi1, 0)}',
+                                                                                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                                  ),
+                                                                                                  Text(
+                                                                                                    'Approved price 2 : ${CurrencyFormat.convertToDollar(approveHargaRevisi1, 0)}',
+                                                                                                    style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                                                                                                  ),
+                                                                                                ],
+                                                                                              ),
+                                                                                            )
+                                                                                    ]),
                                                                                   ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          );
-                                                                        });
+                                                                                ],
+                                                                              ),
+                                                                            );
+                                                                          });
+                                                                    });
                                                                   },
                                                                   child:
                                                                       const Text(
-                                                                    'Read More...',
+                                                                    'History Price',
                                                                     maxLines: 1,
                                                                     style: TextStyle(
                                                                         color: Colors
@@ -2365,6 +2491,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                         ],
                                                       ),
                                                     ),
+
                                                     Container(
                                                       width:
                                                           MediaQuery.of(context)
@@ -2430,6 +2557,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                 FloatingActionButton
                                                                     .extended(
                                                               onPressed: () {
+                                                                notes1.text = data
+                                                                    .notesCustomer;
+                                                                notes2.text = data
+                                                                    .notesCustomer2;
+                                                                notes3.text = data
+                                                                    .notesCustomer3;
+
                                                                 showDialog(
                                                                     context:
                                                                         context,
@@ -2463,114 +2597,199 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                 ),
                                                                               ),
                                                                             ),
-                                                                            Form(
-                                                                              key: _formKey,
-                                                                              child: Column(
-                                                                                mainAxisSize: MainAxisSize.min,
-                                                                                children: <Widget>[
-                                                                                  Align(
-                                                                                      alignment: Alignment.centerLeft,
-                                                                                      child: data.brand == "PARVA"
-                                                                                          ? Text(
-                                                                                              'Price : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
-                                                                                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                            )
-                                                                                          : data.brand == "FINE"
-                                                                                              ? Text(
-                                                                                                  'Price : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
-                                                                                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                                )
-                                                                                              : Text(
-                                                                                                  'Price : Rp. ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
-                                                                                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                                )),
+                                                                            SingleChildScrollView(
+                                                                              scrollDirection: Axis.vertical,
+                                                                              child: Form(
+                                                                                key: _formKey,
+                                                                                child: Column(
+                                                                                  mainAxisSize: MainAxisSize.min,
+                                                                                  children: <Widget>[
+                                                                                    Align(
+                                                                                        alignment: Alignment.centerLeft,
+                                                                                        child: data.brand == "PARVA"
+                                                                                            ? Text(
+                                                                                                'Price : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
+                                                                                                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                              )
+                                                                                            : data.brand == "FINE"
+                                                                                                ? Text(
+                                                                                                    'Price : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
+                                                                                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                                  )
+                                                                                                : Text(
+                                                                                                    'Price : Rp. ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
+                                                                                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                                  )),
 
-                                                                                  //notes
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.all(8.0),
-                                                                                    child: TextFormField(
-                                                                                      style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                      textInputAction: TextInputAction.next,
-                                                                                      // controller:
-                                                                                      //     price,
-                                                                                      keyboardType: TextInputType.text,
-                                                                                      onChanged: (value) {
-                                                                                        notes.text = value;
-                                                                                      },
-                                                                                      decoration: InputDecoration(
-                                                                                        labelText: "Notes",
-                                                                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                    Container(
+                                                                                      alignment: Alignment.bottomLeft,
+                                                                                      padding: const EdgeInsets.only(top: 10),
+                                                                                      child: Row(
+                                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                        children: [
+                                                                                          const Text(
+                                                                                            'Budget Customer',
+                                                                                            style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                          ),
+                                                                                          Text(
+                                                                                            '${data.budgetCustomer}',
+                                                                                            style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                          ),
+                                                                                        ],
                                                                                       ),
                                                                                     ),
-                                                                                  ),
+                                                                                    const Divider(
+                                                                                      thickness: 1,
+                                                                                      color: Colors.black,
+                                                                                    ),
+                                                                                    data.notesCustomer == ''
+                                                                                        ? const SizedBox()
+                                                                                        : Card(
+                                                                                            color: Colors.white,
+                                                                                            child: Padding(
+                                                                                              padding: const EdgeInsets.all(0),
+                                                                                              child: TextField(
+                                                                                                readOnly: true,
+                                                                                                keyboardType: TextInputType.multiline,
+                                                                                                focusNode: numberFocusNode,
+                                                                                                maxLines: 2, //or null
+                                                                                                decoration: InputDecoration(
+                                                                                                  border: OutlineInputBorder(
+                                                                                                    borderRadius: BorderRadius.circular(10.0),
+                                                                                                  ),
+                                                                                                  labelText: 'Note Customer',
+                                                                                                  labelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                                ),
+                                                                                                controller: notes1,
+                                                                                              ),
+                                                                                            )),
+                                                                                    //! notes 2
+                                                                                    data.notesCustomer2 == ''
+                                                                                        ? const SizedBox()
+                                                                                        : Card(
+                                                                                            color: Colors.white,
+                                                                                            child: Padding(
+                                                                                              padding: const EdgeInsets.only(top: 5),
+                                                                                              child: TextField(
+                                                                                                readOnly: true,
+                                                                                                keyboardType: TextInputType.multiline,
+                                                                                                focusNode: numberFocusNode,
+                                                                                                maxLines: 2, //or null
+                                                                                                decoration: InputDecoration(
+                                                                                                  border: OutlineInputBorder(
+                                                                                                    borderRadius: BorderRadius.circular(10.0),
+                                                                                                  ),
+                                                                                                  labelText: 'Note Customer revisi 1',
+                                                                                                  labelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                                ),
+                                                                                                controller: notes2,
+                                                                                              ),
+                                                                                            )),
+                                                                                    //! notes 3
+                                                                                    data.notesCustomer3 == ''
+                                                                                        ? const SizedBox()
+                                                                                        : Card(
+                                                                                            color: Colors.white,
+                                                                                            child: Padding(
+                                                                                              padding: const EdgeInsets.only(top: 5),
+                                                                                              child: TextField(
+                                                                                                readOnly: true,
+                                                                                                keyboardType: TextInputType.multiline,
+                                                                                                focusNode: numberFocusNode,
+                                                                                                maxLines: 2, //or null
+                                                                                                decoration: InputDecoration(
+                                                                                                  border: OutlineInputBorder(
+                                                                                                    borderRadius: BorderRadius.circular(10.0),
+                                                                                                  ),
+                                                                                                  labelText: 'Note Customer revisi 2',
+                                                                                                  labelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                                ),
+                                                                                                controller: notes3,
+                                                                                              ),
+                                                                                            )),
 
-                                                                                  Column(
-                                                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                                                    children: [
-                                                                                      Padding(
-                                                                                        padding: const EdgeInsets.all(8.0),
-                                                                                        child: SizedBox(
-                                                                                          width: 250,
-                                                                                          child: CustomLoadingButton(
-                                                                                              controller: btnController,
-                                                                                              child: const Text("Approve"),
-                                                                                              onPressed: () async {
-                                                                                                if (_formKey.currentState!.validate()) {
-                                                                                                  _formKey.currentState!.save();
-                                                                                                  Future.delayed(const Duration(seconds: 2)).then((value) async {
-                                                                                                    try {
-                                                                                                      FirebaseFirestore.instance.collection("UserTokens").doc(data.namaSales!).snapshots().listen((event) {
-                                                                                                        setState(() {
-                                                                                                          fcmTokenSales = event.get("token");
-                                                                                                        });
-                                                                                                      });
-                                                                                                    } catch (c) {
-                                                                                                      print(c);
-                                                                                                    }
-                                                                                                    setState(() {
-                                                                                                      awalPrice = data.estimasiHarga!;
-                                                                                                      try {
-                                                                                                        postApi(data.id!, awalPrice);
-                                                                                                      } catch (c) {
-                                                                                                        Fluttertoast.showToast(msg: "Failed to send database,Database off");
-                                                                                                      }
-                                                                                                      try {
-                                                                                                        postApiWeb(data.jenisPengajuan!, data.diambilId!, data.statusApproval!, data.statusGet!);
-                                                                                                      } catch (c) {
-                                                                                                        Fluttertoast.showToast(msg: "Failed to send database web,Database off");
-                                                                                                      }
-
-                                                                                                      notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
-                                                                                                      notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
-                                                                                                      _getData();
-                                                                                                      context.read<PApprovalEticketing>().removesItem();
-                                                                                                    });
-
-                                                                                                    btnController.success();
-                                                                                                    Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                                      btnController.reset(); //reset
-                                                                                                      Navigator.of(context).pop();
-                                                                                                      showDialog<String>(
-                                                                                                          context: context,
-                                                                                                          builder: (BuildContext context) => const AlertDialog(
-                                                                                                                title: Text(
-                                                                                                                  'Approve pricing success',
-                                                                                                                ),
-                                                                                                              ));
-                                                                                                    });
-                                                                                                  });
-                                                                                                } else {
-                                                                                                  btnController.error();
-                                                                                                  Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                                    btnController.reset(); //reset
-                                                                                                  });
-                                                                                                }
-                                                                                              }),
+                                                                                    //notes approve
+                                                                                    Padding(
+                                                                                      padding: const EdgeInsets.all(8.0),
+                                                                                      child: TextFormField(
+                                                                                        autofocus: true,
+                                                                                        style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                        textInputAction: TextInputAction.next,
+                                                                                        keyboardType: TextInputType.text,
+                                                                                        onChanged: (value) {
+                                                                                          notes.text = value;
+                                                                                        },
+                                                                                        decoration: InputDecoration(
+                                                                                          labelText: "Notes",
+                                                                                          labelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
                                                                                         ),
                                                                                       ),
-                                                                                    ],
-                                                                                  )
-                                                                                ],
+                                                                                    ),
+                                                                                    //button approve
+                                                                                    Padding(
+                                                                                      padding: const EdgeInsets.all(8.0),
+                                                                                      child: SizedBox(
+                                                                                        width: 250,
+                                                                                        child: CustomLoadingButton(
+                                                                                            controller: btnController,
+                                                                                            child: const Text("Approve"),
+                                                                                            onPressed: () async {
+                                                                                              if (_formKey.currentState!.validate()) {
+                                                                                                _formKey.currentState!.save();
+                                                                                                Future.delayed(const Duration(seconds: 2)).then((value) async {
+                                                                                                  try {
+                                                                                                    FirebaseFirestore.instance.collection("UserTokens").doc(data.namaSales!).snapshots().listen((event) {
+                                                                                                      setState(() {
+                                                                                                        fcmTokenSales = event.get("token");
+                                                                                                      });
+                                                                                                    });
+                                                                                                  } catch (c) {
+                                                                                                    print(c);
+                                                                                                  }
+                                                                                                  setState(() {
+                                                                                                    awalPrice = data.estimasiHarga!;
+                                                                                                    try {
+                                                                                                      postApi(data.id!, awalPrice);
+                                                                                                    } catch (c) {
+                                                                                                      Fluttertoast.showToast(msg: "Failed to send database,Database off");
+                                                                                                    }
+                                                                                                    try {
+                                                                                                      postApiWeb(data.jenisPengajuan!, data.diambilId!, data.statusApproval!, data.statusGet!);
+                                                                                                    } catch (c) {
+                                                                                                      Fluttertoast.showToast(msg: "Failed to send database web,Database off");
+                                                                                                    }
+
+                                                                                                    notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
+                                                                                                    notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
+                                                                                                    _getData();
+                                                                                                    context.read<PApprovalEticketing>().removesItem();
+                                                                                                  });
+
+                                                                                                  btnController.success();
+                                                                                                  Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                    btnController.reset(); //reset
+                                                                                                    Navigator.of(context).pop();
+                                                                                                    showDialog<String>(
+                                                                                                        context: context,
+                                                                                                        builder: (BuildContext context) => const AlertDialog(
+                                                                                                              title: Text(
+                                                                                                                'Approve pricing success',
+                                                                                                              ),
+                                                                                                            ));
+                                                                                                  });
+                                                                                                });
+                                                                                              } else {
+                                                                                                btnController.error();
+                                                                                                Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                  btnController.reset(); //reset
+                                                                                                });
+                                                                                              }
+                                                                                            }),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
                                                                               ),
                                                                             ),
                                                                           ],
@@ -2641,6 +2860,98 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                                                                                   ),
                                                                                 ),
+                                                                                Container(
+                                                                                  alignment: Alignment.bottomLeft,
+                                                                                  padding: const EdgeInsets.only(top: 10),
+                                                                                  child: Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                    children: [
+                                                                                      const Text(
+                                                                                        'Budget Customer',
+                                                                                        style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                      ),
+                                                                                      data.budgetCustomer == ''
+                                                                                          ? const Text(
+                                                                                              '${0}',
+                                                                                              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                            )
+                                                                                          : Text(
+                                                                                              '${data.budgetCustomer}',
+                                                                                              style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                            ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                                const Divider(
+                                                                                  thickness: 1,
+                                                                                  color: Colors.black,
+                                                                                ),
+                                                                                data.notesCustomer == ''
+                                                                                    ? const SizedBox()
+                                                                                    : Card(
+                                                                                        color: Colors.white,
+                                                                                        child: Padding(
+                                                                                          padding: const EdgeInsets.all(0),
+                                                                                          child: TextField(
+                                                                                            readOnly: true,
+                                                                                            keyboardType: TextInputType.multiline,
+                                                                                            focusNode: numberFocusNode,
+                                                                                            maxLines: 2, //or null
+                                                                                            decoration: InputDecoration(
+                                                                                              border: OutlineInputBorder(
+                                                                                                borderRadius: BorderRadius.circular(10.0),
+                                                                                              ),
+                                                                                              labelText: 'Note Customer',
+                                                                                              labelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                            ),
+                                                                                            controller: notes1,
+                                                                                          ),
+                                                                                        )),
+                                                                                //! notes 2
+                                                                                data.notesCustomer2 == ''
+                                                                                    ? const SizedBox()
+                                                                                    : Card(
+                                                                                        color: Colors.white,
+                                                                                        child: Padding(
+                                                                                          padding: const EdgeInsets.only(top: 5),
+                                                                                          child: TextField(
+                                                                                            readOnly: true,
+                                                                                            keyboardType: TextInputType.multiline,
+                                                                                            focusNode: numberFocusNode,
+                                                                                            maxLines: 2, //or null
+                                                                                            decoration: InputDecoration(
+                                                                                              border: OutlineInputBorder(
+                                                                                                borderRadius: BorderRadius.circular(10.0),
+                                                                                              ),
+                                                                                              labelText: 'Note Customer revisi 1',
+                                                                                              labelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                            ),
+                                                                                            controller: notes2,
+                                                                                          ),
+                                                                                        )),
+                                                                                //! notes 3
+                                                                                data.notesCustomer3 == ''
+                                                                                    ? const SizedBox()
+                                                                                    : Card(
+                                                                                        color: Colors.white,
+                                                                                        child: Padding(
+                                                                                          padding: const EdgeInsets.only(top: 5),
+                                                                                          child: TextField(
+                                                                                            readOnly: true,
+                                                                                            keyboardType: TextInputType.multiline,
+                                                                                            focusNode: numberFocusNode,
+                                                                                            maxLines: 2, //or null
+                                                                                            decoration: InputDecoration(
+                                                                                              border: OutlineInputBorder(
+                                                                                                borderRadius: BorderRadius.circular(10.0),
+                                                                                              ),
+                                                                                              labelText: 'Note Customer revisi 2',
+                                                                                              labelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                            ),
+                                                                                            controller: notes3,
+                                                                                          ),
+                                                                                        )),
+
                                                                                 //price
                                                                                 Padding(
                                                                                   padding: const EdgeInsets.all(8.0),

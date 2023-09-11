@@ -14,6 +14,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import '../global/currency_format.dart';
@@ -34,7 +36,9 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   FocusNode numberFocusNode = FocusNode();
   TextEditingController price = TextEditingController();
   TextEditingController notes = TextEditingController();
-
+  int totalHistori = 0;
+  int limitHistori = 0;
+  String date = '';
   double awalPrice = 0;
   @override
   void initState() {
@@ -85,6 +89,31 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
         var g = jsonResponse
             .map((data) => ApprovePricingModel.fromJson(data))
             .toList();
+        return g;
+      } else {
+        throw Exception('Unexpected error occured!');
+      }
+    } catch (c) {
+      return throw Exception(c);
+    }
+  }
+
+  Future _getDataByModel(model) async {
+    try {
+      final response = await http.get(Uri.parse(ApiConstants.baseUrlPricing +
+          ApiConstants.GETapprovelPricingApproved));
+      if (response.statusCode == 200) {
+        List jsonResponse = json.decode(response.body);
+        var g = jsonResponse
+            .map((data) => ApprovePricingModel.fromJson(data))
+            .toList();
+        var filterByModel = g.where((element) =>
+            element.modelItem.toString().toLowerCase() ==
+            model.toString().toLowerCase());
+
+        g = filterByModel.toList();
+        totalHistori = g.length;
+        totalHistori <= 10 ? limitHistori = totalHistori : limitHistori = 10;
         return g;
       } else {
         throw Exception('Unexpected error occured!');
@@ -278,91 +307,625 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                         ),
                                                       ),
                                                     ),
-                                                    Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: <Widget>[
-                                                        Align(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
+                                                    FutureBuilder(
+                                                      future: _getDataByModel(
+                                                          data.modelItem),
+                                                      builder:
+                                                          (context, snapshot2) {
+                                                        if (snapshot2
+                                                            .hasError) {
+                                                          return Center(
+                                                              child: Lottie.asset(
+                                                                  "json/loadingdata.json"));
+                                                        }
+                                                        if (snapshot2
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .waiting) {
+                                                          return SizedBox(
+                                                            height: 350,
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      const Text(
+                                                                        'Price Per Carat',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        'Rp.${CurrencyFormat.convertToDollar(data.pricePerCarat!, 0)}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      const Text(
+                                                                        'After Discount',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        'Rp.${CurrencyFormat.convertToDollar(data.priceAfterDiscount!, 0)}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                const Divider(
+                                                                  thickness: 3,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                                const Center(
+                                                                  child: Text(
+                                                                    'History Approve',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  child:
+                                                                      SizedBox(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        1,
+                                                                    child: const Center(
+                                                                        child:
+                                                                            CircularProgressIndicator()),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          );
+                                                        }
+                                                        if (snapshot2
+                                                            .data.isEmpty) {
+                                                          return SizedBox(
+                                                            height: 350,
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      const Text(
+                                                                        'Price Per Carat',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        'Rp.${CurrencyFormat.convertToDollar(data.pricePerCarat!, 0)}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      const Text(
+                                                                        'After Discount',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        'Rp.${CurrencyFormat.convertToDollar(data.priceAfterDiscount!, 0)}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                const Divider(
+                                                                  thickness: 3,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                                const Center(
+                                                                  child: Text(
+                                                                    'History Approve',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  child:
+                                                                      SizedBox(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        1,
+                                                                    child: const Center(
+                                                                        child: Text(
+                                                                            'No Data')),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          );
+                                                        }
+                                                        if (snapshot.hasData) {
+                                                          return SizedBox(
+                                                            height: 350,
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      const Text(
+                                                                        'Price Per Carat',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        'Rp.${CurrencyFormat.convertToDollar(data.pricePerCarat!, 0)}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      const Text(
+                                                                        'After Discount',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        'Rp.${CurrencyFormat.convertToDollar(data.priceAfterDiscount!, 0)}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                const Divider(
+                                                                  thickness: 3,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                                const Center(
+                                                                  child: Text(
+                                                                    'History Approve',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  child:
+                                                                      SizedBox(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        1,
+                                                                    child: SingleChildScrollView(
+                                                                        scrollDirection: Axis.vertical,
+                                                                        child: Column(
+                                                                          children: [
+                                                                            for (var i = 0;
+                                                                                i < limitHistori;
+                                                                                i++)
+                                                                              Column(
+                                                                                children: [
+                                                                                  Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                    children: [
+                                                                                      snapshot2.data[i].salesDefinitionCode.toString().toLowerCase() == "parva"
+                                                                                          ? Text(
+                                                                                              '\$ ${CurrencyFormat.convertToDollar(snapshot2.data[i].approvalPrice!, 0)}',
+                                                                                              style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                            )
+                                                                                          : snapshot2.data[i].salesDefinitionCode.toString().toLowerCase() == "fine"
+                                                                                              ? Text(
+                                                                                                  '\$ ${CurrencyFormat.convertToDollar(snapshot2.data[i].approvalPrice!, 0)}',
+                                                                                                  style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                                )
+                                                                                              : Text(
+                                                                                                  'Rp. ${CurrencyFormat.convertToDollar(snapshot2.data[i].approvalPrice!, 0)}',
+                                                                                                  style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                                ),
+                                                                                      Text(
+                                                                                        // DateFormat('dd-MM-yyyy | HH:mm').format(DateTime.now()),
+                                                                                        DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot2.data[i].approvedDate)),
+                                                                                        // snapshot2.data[i].approvedDate,
+                                                                                        style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                  const Divider(
+                                                                                    thickness: 1,
+                                                                                    color: Colors.black,
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                          ],
+                                                                        )),
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .bottomLeft,
+                                                                  child: Text(
+                                                                    'Total Repeat ' +
+                                                                        totalHistori
+                                                                            .toString(),
+                                                                    style: const TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        } else if (snapshot2
+                                                            .hasError) {
+                                                          return SizedBox(
+                                                            height: 350,
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      const Text(
+                                                                        'Price Per Carat',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        'Rp.${CurrencyFormat.convertToDollar(data.pricePerCarat!, 0)}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      const Text(
+                                                                        'After Discount',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                      const Text(
+                                                                          ':'),
+                                                                      Text(
+                                                                        'Rp.${CurrencyFormat.convertToDollar(data.priceAfterDiscount!, 0)}',
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                15,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                const Divider(
+                                                                  thickness: 3,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                                const Center(
+                                                                  child: Text(
+                                                                    'History Approve',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  child:
+                                                                      SizedBox(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        1,
+                                                                    child: const Center(
+                                                                        child:
+                                                                            CircularProgressIndicator()),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          );
+                                                        }
+
+                                                        return SizedBox(
+                                                          height: 350,
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
                                                             children: [
-                                                              const Text(
-                                                                'Price Per Carat',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .black),
+                                                              Align(
+                                                                alignment: Alignment
+                                                                    .centerLeft,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    const Text(
+                                                                      'Price Per Carat',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .left,
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              15,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    ),
+                                                                    const Text(
+                                                                        ':'),
+                                                                    Text(
+                                                                      'Rp.${CurrencyFormat.convertToDollar(data.pricePerCarat!, 0)}',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .left,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              15,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    ),
+                                                                  ],
+                                                                ),
                                                               ),
-                                                              const Text(':'),
-                                                              Text(
-                                                                'Rp.${CurrencyFormat.convertToDollar(data.pricePerCarat!, 0)}',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .black),
+                                                              Align(
+                                                                alignment: Alignment
+                                                                    .centerLeft,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    const Text(
+                                                                      'After Discount',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .left,
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              15,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    ),
+                                                                    const Text(
+                                                                        ':'),
+                                                                    Text(
+                                                                      'Rp.${CurrencyFormat.convertToDollar(data.priceAfterDiscount!, 0)}',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .left,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              15,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    ),
+                                                                  ],
+                                                                ),
                                                               ),
+                                                              const Divider(
+                                                                thickness: 3,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              const Center(
+                                                                child: Text(
+                                                                  'History Approve',
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                child: SizedBox(
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width *
+                                                                      1,
+                                                                  child: const Center(
+                                                                      child:
+                                                                          CircularProgressIndicator()),
+                                                                ),
+                                                              )
                                                             ],
                                                           ),
-                                                        ),
-                                                        Align(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              const Text(
-                                                                'After Discount',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .black),
-                                                              ),
-                                                              const Text(':'),
-                                                              Text(
-                                                                'Rp.${CurrencyFormat.convertToDollar(data.priceAfterDiscount!, 0)}',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .black),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
+                                                        );
+                                                      },
                                                     ),
                                                   ],
                                                 ),
@@ -405,10 +968,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                         const CircularProgressIndicator(),
                                                     errorWidget:
                                                         (context, url, error) =>
-                                                            const Icon(
-                                                      Icons.error,
-                                                      color: Colors.black,
-                                                      size: 50,
+                                                            Image.asset(
+                                                      "images/default.jpg",
                                                     ),
                                                     fit: BoxFit.cover,
                                                   ),
@@ -536,14 +1097,34 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                                                                                   ),
                                                                                 ),
+                                                                                Container(
+                                                                                  alignment: Alignment.bottomLeft,
+                                                                                  padding: const EdgeInsets.only(top: 10),
+                                                                                  child: Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                    children: [
+                                                                                      const Text(
+                                                                                        'Budget Customer',
+                                                                                        style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                      ),
+                                                                                      Text(
+                                                                                        '${data.budgetCustomer}',
+                                                                                        style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                                const Divider(
+                                                                                  thickness: 1,
+                                                                                  color: Colors.black,
+                                                                                ),
                                                                                 //notes
                                                                                 Padding(
                                                                                   padding: const EdgeInsets.all(8.0),
                                                                                   child: TextFormField(
                                                                                     style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
                                                                                     textInputAction: TextInputAction.next,
-                                                                                    // controller:
-                                                                                    //     price,
+                                                                                    autofocus: true,
                                                                                     keyboardType: TextInputType.text,
                                                                                     onChanged: (value) {
                                                                                       notes.text = value;
@@ -661,6 +1242,27 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                                                                                   ),
                                                                                 ),
+                                                                                Container(
+                                                                                  alignment: Alignment.bottomLeft,
+                                                                                  padding: const EdgeInsets.only(top: 10),
+                                                                                  child: Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                    children: [
+                                                                                      const Text(
+                                                                                        'Budget Customer',
+                                                                                        style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                      ),
+                                                                                      Text(
+                                                                                        '${data.budgetCustomer}',
+                                                                                        style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                                const Divider(
+                                                                                  thickness: 1,
+                                                                                  color: Colors.black,
+                                                                                ),
                                                                                 //price
                                                                                 Padding(
                                                                                   padding: const EdgeInsets.all(8.0),
@@ -770,33 +1372,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                               )
                                             ],
                                           ),
-                                          //     child: ListTile(
-                                          //   title: Text(data.entryNo!.toString(),
-                                          //       style: const TextStyle(fontSize: 30)),
-                                          //   subtitle: Text(
-                                          //     data.marketingCode!.toString(),
-                                          //   ),
-                                          //   leading: ClipRRect(
-                                          //     child: CachedNetworkImage(
-                                          //       // memCacheWidth: 85, //default 45
-                                          //       // memCacheHeight: 100, //default 60
-                                          //       // maxHeightDiskCache: 100, //default 60
-                                          //       // maxWidthDiskCache: 85, //default 45
-                                          //       // imageUrl:
-                                          //       //     'https://110.5.102.154:50001/Files/Images/Product/${data.fgImageFileName!.toString()}',
-                                          //       imageUrl:
-                                          //           'https://110.5.102.154:50001/Files/Images/Product/20100294-03.jpeg',
-
-                                          //       placeholder: (context, url) =>
-                                          //           const CircularProgressIndicator(),
-                                          //       errorWidget: (context, url, error) => const Icon(
-                                          //         Icons.error,
-                                          //         color: Colors.black,
-                                          //       ),
-                                          //       fit: BoxFit.cover,
-                                          //     ),
-                                          //   ),
-                                          // )
                                         ),
                                       ),
                                     ),

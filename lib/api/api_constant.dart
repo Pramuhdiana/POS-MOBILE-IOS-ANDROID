@@ -9,6 +9,7 @@ class ApiConstants {
   static String baseUrlPricingWeb = 'http://110.5.102.154:8000/api';
 
   static String baseUrlsandy = 'http://110.5.102.154:1212/Api_Flutter/spk';
+  static String GETPricingEticketing = '/get_estimasi_pricing.php';
   static String GETapprovelPricingEticketing =
       '/get_estimasi_pricing_by_status.php';
   static String GETapprovelPricingEticketingBySearch =

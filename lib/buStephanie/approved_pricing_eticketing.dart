@@ -9,6 +9,7 @@ import 'package:e_shop/global/global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../global/currency_format.dart';
 import '../provider/provider_cart.dart';
@@ -28,7 +29,14 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
   FocusNode numberFocusNode = FocusNode();
   TextEditingController price = TextEditingController();
   TextEditingController notes = TextEditingController();
-
+  final TextEditingController notes1 = TextEditingController();
+  final TextEditingController notes2 = TextEditingController();
+  final TextEditingController notes3 = TextEditingController();
+  int hargaBaru = 0;
+  int approveHargaBaru = 0;
+  int hargaRevisi1 = 0;
+  int approveHargaRevisi1 = 0;
+  bool updatePrice = false;
   int awalPrice = 0;
   @override
   void initState() {
@@ -50,6 +58,37 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
         var g = jsonResponse
             .map((data) => PricingEticketingModel.fromJson(data))
             .toList();
+        return g;
+      } else {
+        throw Exception('Unexpected error occured!');
+      }
+    } catch (c) {
+      return throw Exception(c);
+    }
+  }
+
+  Future _getDataByPengajuan(idGet, jenis) async {
+    try {
+      final response = await http.get(Uri.parse(
+          '${ApiConstants.baseUrlsandy}${ApiConstants.GETPricingEticketing}'));
+      // if response successful
+      if (response.statusCode == 200) {
+        List jsonResponse = json.decode(response.body);
+        var g = jsonResponse
+            .map((data) => PricingEticketingModel.fromJson(data))
+            .toList();
+
+        var filterByDiambilId = g.where((element) =>
+            element.diambilId.toString().toLowerCase() ==
+            idGet.toString().toLowerCase());
+        var filterByJenisPengajuan = filterByDiambilId.where((element) =>
+            element.jenisPengajuan.toString().toLowerCase() ==
+            jenis.toString().toLowerCase());
+        // print(filterByJenisPengajuan);
+        g = filterByJenisPengajuan.toList();
+
+        isLoading = false;
+
         return g;
       } else {
         throw Exception('Unexpected error occured!');
@@ -133,7 +172,8 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                             : _getDataSearch(searchInput),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
-                            return const Text('Something went wrong');
+                            return Center(
+                                child: Lottie.asset("json/loadingdata.json"));
                           }
 
                           if (snapshot.connectionState ==
@@ -2052,12 +2092,15 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                               errorWidget: (context,
                                                                       url,
                                                                       error) =>
-                                                                  const Icon(
-                                                                Icons.error,
-                                                                color: Colors
-                                                                    .black,
-                                                                size: 50,
+                                                                  Image.asset(
+                                                                "images/default.jpg",
                                                               ),
+                                                              //     const Icon(
+                                                              //   Icons.error,
+                                                              //   color: Colors
+                                                              //       .black,
+                                                              //   size: 50,
+                                                              // ),
                                                               fit: BoxFit.cover,
                                                             ),
                                                           ),
@@ -2094,12 +2137,15 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                               errorWidget: (context,
                                                                       url,
                                                                       error) =>
-                                                                  const Icon(
-                                                                Icons.error,
-                                                                color: Colors
-                                                                    .black,
-                                                                size: 50,
+                                                                  Image.asset(
+                                                                "images/default.jpg",
                                                               ),
+                                                              //     const Icon(
+                                                              //   Icons.error,
+                                                              //   color: Colors
+                                                              //       .black,
+                                                              //   size: 50,
+                                                              // ),
                                                               fit: BoxFit.cover,
                                                             ),
                                                           ),
@@ -2239,11 +2285,191 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                                   .size
                                                                   .width *
                                                               0.45,
-                                                      child: Text(
-                                                        data.jenisPengajuan!,
-                                                        maxLines: 2,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                              '${data.jenisPengajuan!}'),
+                                                          data.jenisPengajuan
+                                                                      .toString()
+                                                                      .toLowerCase() ==
+                                                                  "baru"
+                                                              ? const SizedBox()
+                                                              : GestureDetector(
+                                                                  onTap: () {
+                                                                    showDialog<
+                                                                            String>(
+                                                                        context:
+                                                                            context,
+                                                                        builder: (BuildContext
+                                                                                context) =>
+                                                                            const AlertDialog(
+                                                                              title: Center(child: CircularProgressIndicator()),
+                                                                            ));
+                                                                    _getDataByPengajuan(
+                                                                            data.diambilId,
+                                                                            "baru")
+                                                                        .then(
+                                                                      (value) {
+                                                                        hargaBaru =
+                                                                            value[0].estimasiHarga;
+                                                                        approveHargaBaru =
+                                                                            value[0].approvalHarga;
+                                                                      },
+                                                                    );
+                                                                    _getDataByPengajuan(
+                                                                            data.diambilId,
+                                                                            "revisi 1")
+                                                                        .then(
+                                                                      (value) {
+                                                                        hargaRevisi1 =
+                                                                            value[0].estimasiHarga;
+                                                                        approveHargaRevisi1 =
+                                                                            value[0].approvalHarga;
+                                                                      },
+                                                                    );
+                                                                    Future.delayed(const Duration(
+                                                                            seconds:
+                                                                                1))
+                                                                        .then(
+                                                                            (value) {
+                                                                      Navigator
+                                                                          .pop(
+                                                                        context,
+                                                                      );
+
+                                                                      showDialog(
+                                                                          context:
+                                                                              context,
+                                                                          builder:
+                                                                              (BuildContext context) {
+                                                                            return AlertDialog(
+                                                                              content: Stack(
+                                                                                clipBehavior: Clip.none,
+                                                                                children: <Widget>[
+                                                                                  Positioned(
+                                                                                    right: -40.0,
+                                                                                    top: -40.0,
+                                                                                    child: InkResponse(
+                                                                                      onTap: () {
+                                                                                        Navigator.of(context).pop();
+                                                                                      },
+                                                                                      child: const CircleAvatar(
+                                                                                        backgroundColor: Colors.red,
+                                                                                        child: Icon(Icons.close),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                  SingleChildScrollView(
+                                                                                    scrollDirection: Axis.vertical,
+                                                                                    child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                                                                                      Container(
+                                                                                        alignment: Alignment.bottomLeft,
+                                                                                        padding: const EdgeInsets.only(top: 10),
+                                                                                        child: Row(
+                                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                          children: [
+                                                                                            const Text(
+                                                                                              'Budget Customer',
+                                                                                              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                            ),
+                                                                                            data.budgetCustomer == ''
+                                                                                                ? const Text(
+                                                                                                    '${0}',
+                                                                                                    style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                                  )
+                                                                                                : Text(
+                                                                                                    '${data.budgetCustomer}',
+                                                                                                    style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                                  ),
+                                                                                          ],
+                                                                                        ),
+                                                                                      ),
+                                                                                      const Divider(
+                                                                                        thickness: 1,
+                                                                                        color: Colors.black,
+                                                                                      ),
+                                                                                      Center(
+                                                                                        child: Text(
+                                                                                          'ID ${data.diambilId}',
+                                                                                          style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                        ),
+                                                                                      ),
+                                                                                      const Center(
+                                                                                        child: Text(
+                                                                                          'History Approve',
+                                                                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                                                                        ),
+                                                                                      ),
+                                                                                      // hargaBaru == 0
+                                                                                      //     ? const SizedBox()
+                                                                                      //     :
+
+                                                                                      Container(
+                                                                                        alignment: Alignment.topLeft,
+                                                                                        margin: const EdgeInsets.all(5.0),
+                                                                                        padding: const EdgeInsets.all(3.0),
+                                                                                        decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+                                                                                        child: Column(
+                                                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                          children: [
+                                                                                            Text(
+                                                                                              'Approval price 1 : ${CurrencyFormat.convertToDollar(hargaBaru, 0)}',
+                                                                                              style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                            ),
+                                                                                            Text(
+                                                                                              'Approved price 1 : ${CurrencyFormat.convertToDollar(approveHargaBaru, 0)}',
+                                                                                              style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
+                                                                                      ),
+                                                                                      //harga revisi 2
+                                                                                      approveHargaRevisi1 == 0
+                                                                                          ? const SizedBox()
+                                                                                          : Container(
+                                                                                              alignment: Alignment.topLeft,
+                                                                                              margin: const EdgeInsets.all(5.0),
+                                                                                              padding: const EdgeInsets.all(3.0),
+                                                                                              decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+                                                                                              child: Column(
+                                                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                children: [
+                                                                                                  Text(
+                                                                                                    'Approval price 2 : ${CurrencyFormat.convertToDollar(hargaRevisi1, 0)}',
+                                                                                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                                                                                  ),
+                                                                                                  Text(
+                                                                                                    'Approved price 2 : ${CurrencyFormat.convertToDollar(approveHargaRevisi1, 0)}',
+                                                                                                    style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                                                                                                  ),
+                                                                                                ],
+                                                                                              ),
+                                                                                            )
+                                                                                    ]),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            );
+                                                                          });
+                                                                    });
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                    'History Price',
+                                                                    maxLines: 1,
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .blue),
+                                                                  ))
+                                                        ],
                                                       ),
                                                     ),
+
                                                     Container(
                                                       width:
                                                           MediaQuery.of(context)

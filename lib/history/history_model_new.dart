@@ -130,6 +130,13 @@ class HistoryModelNew extends StatelessWidget {
                                     );
                                   });
                               _createPdf();
+                              await Future.delayed(const Duration(seconds: 4))
+                                  .then((value) {
+                                Navigator.pop(
+                                  context,
+                                );
+                              });
+                              // ignore: use_build_context_synchronously
                             },
                             icon: const Icon(
                               Icons.print,
@@ -146,6 +153,12 @@ class HistoryModelNew extends StatelessWidget {
                                     );
                                   });
                               _sharePdf();
+                              await Future.delayed(const Duration(seconds: 4))
+                                  .then((value) {
+                                Navigator.pop(
+                                  context,
+                                );
+                              });
                             },
                             icon: const Icon(
                               Icons.share,
