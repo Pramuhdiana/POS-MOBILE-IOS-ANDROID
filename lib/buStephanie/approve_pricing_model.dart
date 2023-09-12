@@ -148,7 +148,7 @@ class ApprovePricingModel {
         createdDate: json['createdDate'],
         editedDate: json['editedDate'],
         approvedDate: json['approvedDate'],
-        budgetCustomer: json['customerBudget'] ?? '0',
+        budgetCustomer: (json['customerBudget'] ?? '0').toString(),
       );
 
   Map<String, dynamic> toJson() => {
