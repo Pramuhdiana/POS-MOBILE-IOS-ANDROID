@@ -9,6 +9,7 @@ import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gif/flutter_gif.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 
 import '../database/db_alldetailtransaksi.dart';
 import '../database/db_allitems.dart';
@@ -164,9 +165,7 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              GifImage(
-                  image: const AssetImage("images/sukses.gif"),
-                  controller: controller1),
+              Lottie.asset("json/success.json"),
               const SizedBox(
                 height: 10,
               ),
