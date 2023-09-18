@@ -2815,6 +2815,12 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                           ),
                                                           IconButton(
                                                             onPressed: () {
+                                                              notes1.text = data
+                                                                  .notesCustomer;
+                                                              notes2.text = data
+                                                                  .notesCustomer2;
+                                                              notes3.text = data
+                                                                  .notesCustomer3;
                                                               showDialog(
                                                                   context:
                                                                       context,
@@ -2851,223 +2857,234 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                               ),
                                                                             ),
                                                                           ),
-                                                                          Form(
-                                                                            key:
-                                                                                _formKey,
+                                                                          SingleChildScrollView(
+                                                                            scrollDirection:
+                                                                                Axis.vertical,
                                                                             child:
-                                                                                Column(
-                                                                              mainAxisSize: MainAxisSize.min,
-                                                                              children: <Widget>[
-                                                                                Align(
-                                                                                  alignment: Alignment.centerLeft,
-                                                                                  child: Text(
-                                                                                    'Before : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
-                                                                                    textAlign: TextAlign.left,
-                                                                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                  ),
-                                                                                ),
-                                                                                Container(
-                                                                                  alignment: Alignment.bottomLeft,
-                                                                                  padding: const EdgeInsets.only(top: 10),
-                                                                                  child: Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                    children: [
-                                                                                      const Text(
-                                                                                        'Budget Customer',
-                                                                                        style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                      ),
-                                                                                      data.budgetCustomer == ''
-                                                                                          ? const Text(
-                                                                                              '${0}',
-                                                                                              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                Form(
+                                                                              key: _formKey,
+                                                                              child: Column(
+                                                                                mainAxisSize: MainAxisSize.min,
+                                                                                children: <Widget>[
+                                                                                  Align(
+                                                                                      alignment: Alignment.centerLeft,
+                                                                                      child: data.brand == "PARVA"
+                                                                                          ? Text(
+                                                                                              'Before : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
+                                                                                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                                                                                             )
-                                                                                          : Text(
-                                                                                              '${data.budgetCustomer}',
-                                                                                              style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                            ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                                const Divider(
-                                                                                  thickness: 1,
-                                                                                  color: Colors.black,
-                                                                                ),
-                                                                                data.notesCustomer == ''
-                                                                                    ? const SizedBox()
-                                                                                    : Card(
-                                                                                        color: Colors.white,
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.all(0),
-                                                                                          child: TextField(
-                                                                                            readOnly: true,
-                                                                                            keyboardType: TextInputType.multiline,
-                                                                                            focusNode: numberFocusNode,
-                                                                                            maxLines: 2, //or null
-                                                                                            decoration: InputDecoration(
-                                                                                              border: OutlineInputBorder(
-                                                                                                borderRadius: BorderRadius.circular(10.0),
+                                                                                          : data.brand == "FINE"
+                                                                                              ? Text(
+                                                                                                  'Before : \$ ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
+                                                                                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                                )
+                                                                                              : Text(
+                                                                                                  'Before : Rp. ${CurrencyFormat.convertToDollar(data.estimasiHarga, 0)}',
+                                                                                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                                )),
+                                                                                  Container(
+                                                                                    alignment: Alignment.bottomLeft,
+                                                                                    padding: const EdgeInsets.only(top: 10),
+                                                                                    child: Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                      children: [
+                                                                                        const Text(
+                                                                                          'Budget Customer',
+                                                                                          style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                        ),
+                                                                                        data.budgetCustomer == ''
+                                                                                            ? const Text(
+                                                                                                '${0}',
+                                                                                                style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                              )
+                                                                                            : Text(
+                                                                                                '${data.budgetCustomer}',
+                                                                                                style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
                                                                                               ),
-                                                                                              labelText: 'Note Customer',
-                                                                                              labelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                            ),
-                                                                                            controller: notes1,
-                                                                                          ),
-                                                                                        )),
-                                                                                //! notes 2
-                                                                                data.notesCustomer2 == ''
-                                                                                    ? const SizedBox()
-                                                                                    : Card(
-                                                                                        color: Colors.white,
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.only(top: 5),
-                                                                                          child: TextField(
-                                                                                            readOnly: true,
-                                                                                            keyboardType: TextInputType.multiline,
-                                                                                            focusNode: numberFocusNode,
-                                                                                            maxLines: 2, //or null
-                                                                                            decoration: InputDecoration(
-                                                                                              border: OutlineInputBorder(
-                                                                                                borderRadius: BorderRadius.circular(10.0),
-                                                                                              ),
-                                                                                              labelText: 'Note Customer revisi 1',
-                                                                                              labelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                            ),
-                                                                                            controller: notes2,
-                                                                                          ),
-                                                                                        )),
-                                                                                //! notes 3
-                                                                                data.notesCustomer3 == ''
-                                                                                    ? const SizedBox()
-                                                                                    : Card(
-                                                                                        color: Colors.white,
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.only(top: 5),
-                                                                                          child: TextField(
-                                                                                            readOnly: true,
-                                                                                            keyboardType: TextInputType.multiline,
-                                                                                            focusNode: numberFocusNode,
-                                                                                            maxLines: 2, //or null
-                                                                                            decoration: InputDecoration(
-                                                                                              border: OutlineInputBorder(
-                                                                                                borderRadius: BorderRadius.circular(10.0),
-                                                                                              ),
-                                                                                              labelText: 'Note Customer revisi 2',
-                                                                                              labelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                            ),
-                                                                                            controller: notes3,
-                                                                                          ),
-                                                                                        )),
-
-                                                                                //price
-                                                                                Padding(
-                                                                                  padding: const EdgeInsets.all(8.0),
-                                                                                  child: TextFormField(
-                                                                                    autofocus: true,
-                                                                                    style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                    textInputAction: TextInputAction.next,
-                                                                                    // controller:
-                                                                                    //     price,
-                                                                                    keyboardType: TextInputType.number,
-                                                                                    focusNode: numberFocusNode,
-                                                                                    inputFormatters: [
-                                                                                      FilteringTextInputFormatter.digitsOnly
-                                                                                    ],
-                                                                                    onChanged: (value) {
-                                                                                      price.text = value;
-                                                                                    },
-                                                                                    decoration: InputDecoration(
-                                                                                      // hintText: "example: Cahaya Sanivokasi",
-                                                                                      labelText: "Price",
-                                                                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-                                                                                    ),
-                                                                                    validator: (value) {
-                                                                                      if (value!.isEmpty) {
-                                                                                        return 'Wajib diisi *';
-                                                                                      }
-                                                                                      return null;
-                                                                                    },
-                                                                                  ),
-                                                                                ),
-                                                                                //notes
-                                                                                Padding(
-                                                                                  padding: const EdgeInsets.all(8.0),
-                                                                                  child: TextFormField(
-                                                                                    style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                                                                    textInputAction: TextInputAction.next,
-                                                                                    // controller:
-                                                                                    //     price,
-                                                                                    keyboardType: TextInputType.text,
-                                                                                    onChanged: (value) {
-                                                                                      notes.text = value;
-                                                                                    },
-                                                                                    decoration: InputDecoration(
-                                                                                      labelText: "Notes",
-                                                                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                      ],
                                                                                     ),
                                                                                   ),
-                                                                                ),
+                                                                                  const Divider(
+                                                                                    thickness: 1,
+                                                                                    color: Colors.black,
+                                                                                  ),
+                                                                                  data.notesCustomer == ''
+                                                                                      ? const SizedBox()
+                                                                                      : Card(
+                                                                                          color: Colors.white,
+                                                                                          child: Padding(
+                                                                                            padding: const EdgeInsets.all(0),
+                                                                                            child: TextField(
+                                                                                              readOnly: true,
+                                                                                              keyboardType: TextInputType.multiline,
+                                                                                              focusNode: numberFocusNode,
+                                                                                              maxLines: 2, //or null
+                                                                                              decoration: InputDecoration(
+                                                                                                border: OutlineInputBorder(
+                                                                                                  borderRadius: BorderRadius.circular(10.0),
+                                                                                                ),
+                                                                                                labelText: 'Note Customer',
+                                                                                                labelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                              ),
+                                                                                              controller: notes1,
+                                                                                            ),
+                                                                                          )),
+                                                                                  //! notes 2
+                                                                                  data.notesCustomer2 == ''
+                                                                                      ? const SizedBox()
+                                                                                      : Card(
+                                                                                          color: Colors.white,
+                                                                                          child: Padding(
+                                                                                            padding: const EdgeInsets.only(top: 5),
+                                                                                            child: TextField(
+                                                                                              readOnly: true,
+                                                                                              keyboardType: TextInputType.multiline,
+                                                                                              focusNode: numberFocusNode,
+                                                                                              maxLines: 2, //or null
+                                                                                              decoration: InputDecoration(
+                                                                                                border: OutlineInputBorder(
+                                                                                                  borderRadius: BorderRadius.circular(10.0),
+                                                                                                ),
+                                                                                                labelText: 'Note Customer revisi 1',
+                                                                                                labelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                              ),
+                                                                                              controller: notes2,
+                                                                                            ),
+                                                                                          )),
+                                                                                  //! notes 3
+                                                                                  data.notesCustomer3 == ''
+                                                                                      ? const SizedBox()
+                                                                                      : Card(
+                                                                                          color: Colors.white,
+                                                                                          child: Padding(
+                                                                                            padding: const EdgeInsets.only(top: 5),
+                                                                                            child: TextField(
+                                                                                              readOnly: true,
+                                                                                              keyboardType: TextInputType.multiline,
+                                                                                              focusNode: numberFocusNode,
+                                                                                              maxLines: 2, //or null
+                                                                                              decoration: InputDecoration(
+                                                                                                border: OutlineInputBorder(
+                                                                                                  borderRadius: BorderRadius.circular(10.0),
+                                                                                                ),
+                                                                                                labelText: 'Note Customer revisi 2',
+                                                                                                labelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                              ),
+                                                                                              controller: notes3,
+                                                                                            ),
+                                                                                          )),
 
-                                                                                Padding(
-                                                                                  padding: const EdgeInsets.all(8.0),
-                                                                                  child: SizedBox(
-                                                                                    width: 250,
-                                                                                    child: CustomLoadingButton(
-                                                                                        controller: btnController,
-                                                                                        child: const Text("Update"),
-                                                                                        onPressed: () async {
-                                                                                          if (_formKey.currentState!.validate()) {
-                                                                                            _formKey.currentState!.save();
-                                                                                            Future.delayed(const Duration(seconds: 2)).then((value) async {
-                                                                                              try {
-                                                                                                FirebaseFirestore.instance.collection("UserTokens").doc(data.namaSales!).snapshots().listen((event) {
-                                                                                                  setState(() {
-                                                                                                    fcmTokenSales = event.get("token");
+                                                                                  //price
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.all(8.0),
+                                                                                    child: TextFormField(
+                                                                                      autofocus: true,
+                                                                                      style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      // controller:
+                                                                                      //     price,
+                                                                                      keyboardType: TextInputType.number,
+                                                                                      focusNode: numberFocusNode,
+                                                                                      inputFormatters: [
+                                                                                        FilteringTextInputFormatter.digitsOnly
+                                                                                      ],
+                                                                                      onChanged: (value) {
+                                                                                        price.text = value;
+                                                                                      },
+                                                                                      decoration: InputDecoration(
+                                                                                        // hintText: "example: Cahaya Sanivokasi",
+                                                                                        labelText: "Price",
+                                                                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                      ),
+                                                                                      validator: (value) {
+                                                                                        if (value!.isEmpty) {
+                                                                                          return 'Wajib diisi *';
+                                                                                        }
+                                                                                        return null;
+                                                                                      },
+                                                                                    ),
+                                                                                  ),
+                                                                                  //notes
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.all(8.0),
+                                                                                    child: TextFormField(
+                                                                                      style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      // controller:
+                                                                                      //     price,
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      onChanged: (value) {
+                                                                                        notes.text = value;
+                                                                                      },
+                                                                                      decoration: InputDecoration(
+                                                                                        labelText: "Notes",
+                                                                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.all(8.0),
+                                                                                    child: SizedBox(
+                                                                                      width: 250,
+                                                                                      child: CustomLoadingButton(
+                                                                                          controller: btnController,
+                                                                                          child: const Text("Update"),
+                                                                                          onPressed: () async {
+                                                                                            if (_formKey.currentState!.validate()) {
+                                                                                              _formKey.currentState!.save();
+                                                                                              Future.delayed(const Duration(seconds: 2)).then((value) async {
+                                                                                                try {
+                                                                                                  FirebaseFirestore.instance.collection("UserTokens").doc(data.namaSales!).snapshots().listen((event) {
+                                                                                                    setState(() {
+                                                                                                      fcmTokenSales = event.get("token");
+                                                                                                    });
                                                                                                   });
+                                                                                                } catch (c) {
+                                                                                                  print(c);
+                                                                                                }
+                                                                                                setState(() {
+                                                                                                  awalPrice = int.parse(price.text);
+                                                                                                  try {
+                                                                                                    postApi(data.id!, awalPrice);
+                                                                                                  } catch (c) {
+                                                                                                    Fluttertoast.showToast(msg: "Failed to send database,Database off");
+                                                                                                  }
+                                                                                                  try {
+                                                                                                    postApiWeb(data.jenisPengajuan!, data.diambilId!, data.statusApproval!, data.statusGet!);
+                                                                                                  } catch (c) {
+                                                                                                    Fluttertoast.showToast(msg: "Failed to send database web,Database off");
+                                                                                                  }
+                                                                                                  notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
+                                                                                                  notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
+                                                                                                  _getData();
+                                                                                                  context.read<PApprovalEticketing>().removesItem();
                                                                                                 });
-                                                                                              } catch (c) {
-                                                                                                print(c);
-                                                                                              }
-                                                                                              setState(() {
-                                                                                                awalPrice = int.parse(price.text);
-                                                                                                try {
-                                                                                                  postApi(data.id!, awalPrice);
-                                                                                                } catch (c) {
-                                                                                                  Fluttertoast.showToast(msg: "Failed to send database,Database off");
-                                                                                                }
-                                                                                                try {
-                                                                                                  postApiWeb(data.jenisPengajuan!, data.diambilId!, data.statusApproval!, data.statusGet!);
-                                                                                                } catch (c) {
-                                                                                                  Fluttertoast.showToast(msg: "Failed to send database web,Database off");
-                                                                                                }
-                                                                                                notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
-                                                                                                notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
-                                                                                                _getData();
-                                                                                                context.read<PApprovalEticketing>().removesItem();
+                                                                                                btnController.success();
+                                                                                                Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                                                                  btnController.reset(); //reset
+
+                                                                                                  Navigator.of(context).pop();
+                                                                                                  showDialog<String>(
+                                                                                                      context: context,
+                                                                                                      builder: (BuildContext context) => const AlertDialog(
+                                                                                                            title: Text(
+                                                                                                              'Update pricing success',
+                                                                                                            ),
+                                                                                                          ));
+                                                                                                });
                                                                                               });
-                                                                                              btnController.success();
+                                                                                            } else {
+                                                                                              btnController.error();
                                                                                               Future.delayed(const Duration(seconds: 1)).then((value) {
                                                                                                 btnController.reset(); //reset
-
-                                                                                                Navigator.of(context).pop();
-                                                                                                showDialog<String>(
-                                                                                                    context: context,
-                                                                                                    builder: (BuildContext context) => const AlertDialog(
-                                                                                                          title: Text(
-                                                                                                            'Update pricing success',
-                                                                                                          ),
-                                                                                                        ));
                                                                                               });
-                                                                                            });
-                                                                                          } else {
-                                                                                            btnController.error();
-                                                                                            Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                              btnController.reset(); //reset
-                                                                                            });
-                                                                                          }
-                                                                                        }),
+                                                                                            }
+                                                                                          }),
+                                                                                    ),
                                                                                   ),
-                                                                                ),
-                                                                              ],
+                                                                                ],
+                                                                              ),
                                                                             ),
                                                                           ),
                                                                         ],
