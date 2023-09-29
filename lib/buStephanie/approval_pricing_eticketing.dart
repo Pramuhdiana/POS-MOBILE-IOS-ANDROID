@@ -60,6 +60,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
       final response = await http.get(Uri.parse(
           '${ApiConstants.baseUrlsandy}${ApiConstants.GETapprovelPricingEticketing}?status_approval=1'));
       // if response successful
+      print(response.statusCode);
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(response.body);
 
