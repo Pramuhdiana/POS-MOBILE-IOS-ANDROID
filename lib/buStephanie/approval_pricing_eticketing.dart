@@ -3051,7 +3051,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                     ),
 
                                                     Text(data.namaSales!),
-                                                    Text(data.namaCustomer!),
+                                                    SizedBox(
+                                                      width: 200,
+                                                      child: Text(
+                                                        data.namaCustomer!,
+                                                        maxLines: 2,
+                                                      ),
+                                                    ),
                                                     SizedBox(
                                                       width:
                                                           MediaQuery.of(context)
