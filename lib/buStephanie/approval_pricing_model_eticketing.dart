@@ -112,6 +112,44 @@ class PricingEticketingModel {
   String? notesCustomer;
   String? notesCustomer2;
   String? notesCustomer3;
+  String? labour;
+  String? emas;
+  String? diamond;
+  String? caratPcsBatu1;
+  String? caratPcsBatu2;
+  String? caratPcsBatu3;
+  String? caratPcsBatu4;
+  String? caratPcsBatu5;
+  String? caratPcsBatu6;
+  String? caratPcsBatu7;
+  String? caratPcsBatu8;
+  String? caratPcsBatu9;
+  String? caratPcsBatu10;
+  String? caratPcsBatu11;
+  String? caratPcsBatu12;
+  String? caratPcsBatu13;
+  String? caratPcsBatu14;
+  String? caratPcsBatu15;
+  String? caratPcsBatu16;
+  String? caratPcsBatu17;
+  String? caratPcsBatu18;
+  String? caratPcsBatu19;
+  String? caratPcsBatu20;
+  String? caratPcsBatu21;
+  String? caratPcsBatu22;
+  String? caratPcsBatu23;
+  String? caratPcsBatu24;
+  String? caratPcsBatu25;
+  String? caratPcsBatu26;
+  String? caratPcsBatu27;
+  String? caratPcsBatu28;
+  String? caratPcsBatu29;
+  String? caratPcsBatu30;
+  String? caratPcsBatu31;
+  String? caratPcsBatu32;
+  String? caratPcsBatu33;
+  String? caratPcsBatu34;
+  String? caratPcsBatu35;
 
   PricingEticketingModel(
       {this.id,
@@ -216,7 +254,45 @@ class PricingEticketingModel {
       this.budgetCustomer,
       this.notesCustomer,
       this.notesCustomer2,
-      this.notesCustomer3});
+      this.notesCustomer3,
+      this.labour,
+      this.emas,
+      this.diamond,
+      this.caratPcsBatu1,
+      this.caratPcsBatu2,
+      this.caratPcsBatu3,
+      this.caratPcsBatu4,
+      this.caratPcsBatu5,
+      this.caratPcsBatu6,
+      this.caratPcsBatu7,
+      this.caratPcsBatu8,
+      this.caratPcsBatu9,
+      this.caratPcsBatu10,
+      this.caratPcsBatu11,
+      this.caratPcsBatu12,
+      this.caratPcsBatu13,
+      this.caratPcsBatu14,
+      this.caratPcsBatu15,
+      this.caratPcsBatu16,
+      this.caratPcsBatu17,
+      this.caratPcsBatu18,
+      this.caratPcsBatu19,
+      this.caratPcsBatu20,
+      this.caratPcsBatu21,
+      this.caratPcsBatu22,
+      this.caratPcsBatu23,
+      this.caratPcsBatu24,
+      this.caratPcsBatu25,
+      this.caratPcsBatu26,
+      this.caratPcsBatu27,
+      this.caratPcsBatu28,
+      this.caratPcsBatu29,
+      this.caratPcsBatu30,
+      this.caratPcsBatu31,
+      this.caratPcsBatu32,
+      this.caratPcsBatu33,
+      this.caratPcsBatu34,
+      this.caratPcsBatu35});
 
   PricingEticketingModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -322,6 +398,44 @@ class PricingEticketingModel {
     notesCustomer = json['notes_customer'] ?? '';
     notesCustomer2 = json['notes_customer2'] ?? '';
     notesCustomer3 = json['notes_customer3'] ?? '';
+    labour = json['labour'].toString();
+    emas = json['emas'].toString();
+    diamond = json['diamond'].toString();
+    caratPcsBatu1 = (json['caratPcsBatu1'] ?? '0').toString();
+    caratPcsBatu2 = (json['caratPcsBatu2'] ?? '0').toString();
+    caratPcsBatu3 = (json['caratPcsBatu3'] ?? '0').toString();
+    caratPcsBatu4 = (json['caratPcsBatu4'] ?? '0').toString();
+    caratPcsBatu5 = (json['caratPcsBatu5'] ?? '0').toString();
+    caratPcsBatu6 = (json['caratPcsBatu6'] ?? '0').toString();
+    caratPcsBatu7 = (json['caratPcsBatu7'] ?? '0').toString();
+    caratPcsBatu8 = (json['caratPcsBatu8'] ?? '0').toString();
+    caratPcsBatu9 = (json['caratPcsBatu9'] ?? '0').toString();
+    caratPcsBatu10 = (json['caratPcsBatu10'] ?? '0').toString();
+    caratPcsBatu11 = (json['caratPcsBatu11'] ?? '0').toString();
+    caratPcsBatu12 = (json['caratPcsBatu12'] ?? '0').toString();
+    caratPcsBatu13 = (json['caratPcsBatu13'] ?? '0').toString();
+    caratPcsBatu14 = (json['caratPcsBatu14'] ?? '0').toString();
+    caratPcsBatu15 = (json['caratPcsBatu15'] ?? '0').toString();
+    caratPcsBatu16 = (json['caratPcsBatu16'] ?? '0').toString();
+    caratPcsBatu17 = (json['caratPcsBatu17'] ?? '0').toString();
+    caratPcsBatu18 = (json['caratPcsBatu18'] ?? '0').toString();
+    caratPcsBatu19 = (json['caratPcsBatu19'] ?? '0').toString();
+    caratPcsBatu20 = (json['caratPcsBatu20'] ?? '0').toString();
+    caratPcsBatu21 = (json['caratPcsBatu21'] ?? '0').toString();
+    caratPcsBatu22 = (json['caratPcsBatu22'] ?? '0').toString();
+    caratPcsBatu23 = (json['caratPcsBatu23'] ?? '0').toString();
+    caratPcsBatu24 = (json['caratPcsBatu24'] ?? '0').toString();
+    caratPcsBatu25 = (json['caratPcsBatu25'] ?? '0').toString();
+    caratPcsBatu26 = (json['caratPcsBatu26'] ?? '0').toString();
+    caratPcsBatu27 = (json['caratPcsBatu27'] ?? '0').toString();
+    caratPcsBatu28 = (json['caratPcsBatu28'] ?? '0').toString();
+    caratPcsBatu29 = (json['caratPcsBatu29'] ?? '0').toString();
+    caratPcsBatu30 = (json['caratPcsBatu30'] ?? '0').toString();
+    caratPcsBatu31 = (json['caratPcsBatu31'] ?? '0').toString();
+    caratPcsBatu32 = (json['caratPcsBatu32'] ?? '0').toString();
+    caratPcsBatu33 = (json['caratPcsBatu33'] ?? '0').toString();
+    caratPcsBatu34 = (json['caratPcsBatu34'] ?? '0').toString();
+    caratPcsBatu35 = (json['caratPcsBatu35'] ?? '0').toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -429,6 +543,45 @@ class PricingEticketingModel {
     data['notes_customer'] = notesCustomer;
     data['notes_customer2'] = notesCustomer2;
     data['notes_customer3'] = notesCustomer3;
+    data['labour'] = labour;
+    data['emas'] = emas;
+    data['diamond'] = diamond;
+    data['caratPcsBatu1'] = caratPcsBatu1;
+    data['caratPcsBatu2'] = caratPcsBatu2;
+    data['caratPcsBatu3'] = caratPcsBatu3;
+    data['caratPcsBatu4'] = caratPcsBatu4;
+    data['caratPcsBatu5'] = caratPcsBatu5;
+    data['caratPcsBatu6'] = caratPcsBatu6;
+    data['caratPcsBatu7'] = caratPcsBatu7;
+    data['caratPcsBatu8'] = caratPcsBatu8;
+    data['caratPcsBatu9'] = caratPcsBatu9;
+    data['caratPcsBatu10'] = caratPcsBatu10;
+    data['caratPcsBatu11'] = caratPcsBatu11;
+    data['caratPcsBatu12'] = caratPcsBatu12;
+    data['caratPcsBatu13'] = caratPcsBatu13;
+    data['caratPcsBatu14'] = caratPcsBatu14;
+    data['caratPcsBatu15'] = caratPcsBatu15;
+    data['caratPcsBatu16'] = caratPcsBatu16;
+    data['caratPcsBatu17'] = caratPcsBatu17;
+    data['caratPcsBatu18'] = caratPcsBatu18;
+    data['caratPcsBatu19'] = caratPcsBatu19;
+    data['caratPcsBatu20'] = caratPcsBatu20;
+    data['caratPcsBatu21'] = caratPcsBatu21;
+    data['caratPcsBatu22'] = caratPcsBatu22;
+    data['caratPcsBatu23'] = caratPcsBatu23;
+    data['caratPcsBatu24'] = caratPcsBatu24;
+    data['caratPcsBatu25'] = caratPcsBatu25;
+    data['caratPcsBatu26'] = caratPcsBatu26;
+    data['caratPcsBatu27'] = caratPcsBatu27;
+    data['caratPcsBatu28'] = caratPcsBatu28;
+    data['caratPcsBatu29'] = caratPcsBatu29;
+    data['caratPcsBatu30'] = caratPcsBatu30;
+    data['caratPcsBatu31'] = caratPcsBatu31;
+    data['caratPcsBatu32'] = caratPcsBatu32;
+    data['caratPcsBatu33'] = caratPcsBatu33;
+    data['caratPcsBatu34'] = caratPcsBatu34;
+    data['caratPcsBatu35'] = caratPcsBatu35;
+
     return data;
   }
 }
