@@ -297,11 +297,22 @@ class _HomeScreenState extends State<HomeScreen> {
       List jsonResponse = response.data;
       var g =
           jsonResponse.map((data) => ModelAllitemsToko.fromJson(data)).toList();
-      setState(() {
-        sharedPreferences!.setInt('qtyProductToko', g.length);
-        qtyProductToko = g.length;
-        print(qtyProductToko);
-      });
+      if (sharedPreferences!.getString('role_sales_brand')! == '3') {
+        setState(() {
+          var filterByMetier = g.where((element) =>
+              element.sales_id.toString() ==
+              sharedPreferences!.getString('id'));
+          g = filterByMetier.toList();
+          qtyProductToko = g.length;
+          sharedPreferences!.setInt('qtyProductToko', g.length);
+        });
+      } else {
+        setState(() {
+          sharedPreferences!.setInt('qtyProductToko', g.length);
+          qtyProductToko = g.length;
+        });
+      }
+
       return g;
     } else {
       throw Exception('Unexpected error occured!');
@@ -1534,12 +1545,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                   height: 25,
                                 ),
                               ),
-                              const Expanded(
-                                child: Text(
-                                  'Pos Toko',
-                                  style: TextStyle(fontSize: 16),
-                                  maxLines: 1,
-                                ),
+                              Expanded(
+                                child: sharedPreferences!
+                                            .getString('role_sales_brand')! ==
+                                        '3'
+                                    ? const Text(
+                                        'Pos Toko Metier',
+                                        style: TextStyle(fontSize: 16),
+                                        maxLines: 1,
+                                      )
+                                    : const Text(
+                                        'Pos Toko',
+                                        style: TextStyle(fontSize: 16),
+                                        maxLines: 1,
+                                      ),
                               ),
                               Expanded(
                                 child: Text(
