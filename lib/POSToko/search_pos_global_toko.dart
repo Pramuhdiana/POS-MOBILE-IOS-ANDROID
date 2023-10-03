@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_beep/flutter_beep.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../cartScreens/db_helper.dart';
 import '../database/db_allcustomer.dart';
@@ -55,9 +56,12 @@ class _SearchPosGlobalToko extends State<SearchPosGlobalToko> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? Center(
+            child: Container(
+                padding: const EdgeInsets.all(0),
+                width: 90,
+                height: 90,
+                child: Lottie.asset("json/loading_black.json")))
         :
         // GestureDetector(
         //     onTap: () {
@@ -88,8 +92,13 @@ class _SearchPosGlobalToko extends State<SearchPosGlobalToko> {
                           child: CachedNetworkImage(
                             imageUrl:
                                 'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
+                            placeholder: (context, url) => Center(
+                                child: Container(
+                                    padding: const EdgeInsets.all(0),
+                                    width: 90,
+                                    height: 90,
+                                    child: Lottie.asset(
+                                        "json/loading_black.json"))),
                             errorWidget: (context, url, error) => Image.asset(
                               "images/noimage.png",
                             ),

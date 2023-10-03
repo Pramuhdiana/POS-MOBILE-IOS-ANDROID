@@ -3,6 +3,7 @@
 import 'package:e_shop/database/db_notification_dummy.dart';
 import 'package:e_shop/push_notifications/list_notif_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class ListNewNotif extends StatelessWidget {
   const ListNewNotif({Key? key}) : super(key: key);
@@ -17,9 +18,12 @@ class ListNewNotif extends StatelessWidget {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return Center(
+                child: Container(
+                    padding: const EdgeInsets.all(0),
+                    width: 90,
+                    height: 90,
+                    child: Lottie.asset("json/loading_black.json")));
           }
 
           if (snapshot.data.isEmpty) {

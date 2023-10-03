@@ -11,6 +11,7 @@ import 'package:e_shop/provider/provider_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../cartScreens/db_helper.dart';
 import '../itemsScreens/items_details_screen.dart';
@@ -48,9 +49,12 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? Center(
+            child: Container(
+                padding: const EdgeInsets.all(0),
+                width: 90,
+                height: 90,
+                child: Lottie.asset("json/loading_black.json")))
         : GestureDetector(
             onTap: () {
               Navigator.push(
@@ -114,8 +118,13 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                             maxWidthDiskCache: 105, //default 45
                             imageUrl:
                                 'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
+                            placeholder: (context, url) => Center(
+                                child: Container(
+                                    padding: const EdgeInsets.all(0),
+                                    width: 90,
+                                    height: 90,
+                                    child: Lottie.asset(
+                                        "json/loading_black.json"))),
                             errorWidget: (context, url, error) => const Icon(
                               Icons.error,
                               color: Colors.black,

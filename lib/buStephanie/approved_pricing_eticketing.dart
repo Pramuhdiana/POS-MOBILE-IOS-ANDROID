@@ -150,7 +150,12 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
           ),
         ),
         body: isLoading != false
-            ? const Center(child: CircularProgressIndicator())
+            ? Center(
+                child: Container(
+                    padding: const EdgeInsets.all(0),
+                    width: 90,
+                    height: 90,
+                    child: Lottie.asset("json/loading_black.json")))
             : RefreshIndicator(
                 onRefresh: refresh,
                 child: Column(
@@ -178,9 +183,13 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
 
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
+                            return Center(
+                                child: Container(
+                                    padding: const EdgeInsets.all(0),
+                                    width: 90,
+                                    height: 90,
+                                    child: Lottie.asset(
+                                        "json/loading_black.json")));
                           }
                           print(snapshot.connectionState ==
                               ConnectionState.waiting);
@@ -2825,9 +2834,17 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                               width: 130,
                                                               imageUrl: data
                                                                   .imageDesign1!,
-                                                              placeholder: (context,
-                                                                      url) =>
-                                                                  const CircularProgressIndicator(),
+                                                              placeholder: (context, url) => Center(
+                                                                  child: Container(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              0),
+                                                                      width: 90,
+                                                                      height:
+                                                                          90,
+                                                                      child: Lottie
+                                                                          .asset(
+                                                                              "json/loading_black.json"))),
                                                               errorWidget: (context,
                                                                       url,
                                                                       error) =>
@@ -2870,9 +2887,17 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                               width: 130,
                                                               imageUrl: data
                                                                   .imageSales1!,
-                                                              placeholder: (context,
-                                                                      url) =>
-                                                                  const CircularProgressIndicator(),
+                                                              placeholder: (context, url) => Center(
+                                                                  child: Container(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              0),
+                                                                      width: 90,
+                                                                      height:
+                                                                          90,
+                                                                      child: Lottie
+                                                                          .asset(
+                                                                              "json/loading_black.json"))),
                                                               errorWidget: (context,
                                                                       url,
                                                                       error) =>
@@ -3056,8 +3081,8 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                                             context,
                                                                         builder: (BuildContext
                                                                                 context) =>
-                                                                            const AlertDialog(
-                                                                              title: Center(child: CircularProgressIndicator()),
+                                                                            AlertDialog(
+                                                                              title: Center(child: Container(padding: const EdgeInsets.all(0), width: 90, height: 90, child: Lottie.asset("json/loading_black.json"))),
                                                                             ));
                                                                     _getDataByPengajuan(
                                                                             data.diambilId,
@@ -3314,8 +3339,13 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                             return Text(snapshot.error.toString());
                           }
                           // By default show a loading spinner.
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Center(
+                              child: Container(
+                                  padding: const EdgeInsets.all(0),
+                                  width: 90,
+                                  height: 90,
+                                  child:
+                                      Lottie.asset("json/loading_black.json")));
                         },
                       ),
                     ),
@@ -3411,8 +3441,12 @@ class SearchModel extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl:
                           'https://parvabisnis.id/uploads/products/${e['image_name'].toString()}',
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
+                      placeholder: (context, url) => Center(
+                          child: Container(
+                              padding: const EdgeInsets.all(0),
+                              width: 90,
+                              height: 90,
+                              child: Lottie.asset("json/loading_black.json"))),
                       errorWidget: (context, url, error) => Image.asset(
                         "images/noimage.png",
                       ),

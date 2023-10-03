@@ -11,6 +11,7 @@ import 'package:e_shop/posSales/pos_sales_screen_ui.dart';
 import 'package:e_shop/widgets/appbar_cart_pos_sales.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
@@ -183,8 +184,12 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
           ),
           Expanded(
               child: isLoading == true
-                  ? const Center(
-                      child: CircularProgressIndicator(color: Colors.black))
+                  ? Center(
+                      child: Container(
+                          padding: const EdgeInsets.all(0),
+                          width: 90,
+                          height: 90,
+                          child: Lottie.asset("json/loading_black.json")))
                   : RefreshIndicator(
                       onRefresh: refresh,
                       child: FutureBuilder(
@@ -250,9 +255,21 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                               ),
                             );
                           } else if (dataSnapshot.hasError) {
-                            return const CircularProgressIndicator();
+                            return Center(
+                                child: Container(
+                                    padding: const EdgeInsets.all(0),
+                                    width: 90,
+                                    height: 90,
+                                    child: Lottie.asset(
+                                        "json/loading_black.json")));
                           } //if data NOT exists
-                          return const CircularProgressIndicator();
+                          return Center(
+                              child: Container(
+                                  padding: const EdgeInsets.all(0),
+                                  width: 90,
+                                  height: 90,
+                                  child:
+                                      Lottie.asset("json/loading_black.json")));
                         },
                       ),
                     ))

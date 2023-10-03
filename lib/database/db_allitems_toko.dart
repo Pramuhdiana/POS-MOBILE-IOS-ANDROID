@@ -7,6 +7,8 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../global/global.dart';
+
 class DbAllitemsToko {
   static Database? _database;
   static final DbAllitemsToko db = DbAllitemsToko._();
@@ -104,6 +106,21 @@ class DbAllitemsToko {
     final res = await db.rawQuery(
         'SELECT * FROM allitemstoko WHERE customer_id=? and qty=?',
         [idtoko, 1]);
+    // final res = await db.rawQuery("SELECT * FROM allitemstoko");
+
+    List<ModelAllitemsToko> list = res.isNotEmpty
+        ? res.map((c) => ModelAllitemsToko.fromJson(c)).toList()
+        : [];
+
+    return list;
+  }
+
+  //gett all items toko untuk metier
+  Future<List<ModelAllitemsToko>> getAllitemsTokoMetier(idtoko) async {
+    final db = await database;
+    final res = await db.rawQuery(
+        'SELECT * FROM allitemstoko WHERE customer_id=? and qty=? and sales_id=?',
+        [idtoko, 1, int.parse(sharedPreferences!.getString('id')!)]);
     // final res = await db.rawQuery("SELECT * FROM allitemstoko");
 
     List<ModelAllitemsToko> list = res.isNotEmpty

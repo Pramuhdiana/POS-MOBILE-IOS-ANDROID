@@ -19,6 +19,7 @@ import 'package:e_shop/widgets/fake_search_toko.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
@@ -216,7 +217,7 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                         sharedPreferences!.setString('customer_name', 'METIER');
                         sharedPreferences!.setString('customer_id', '19');
                         loadCartFromApiPOSTOKO();
-                        DbAllitemsToko.db.getAllitemsToko(idtoko);
+                        DbAllitemsToko.db.getAllitemsTokoMetier(idtoko);
                       }
 
                       jenisform = jenisform;
@@ -242,8 +243,12 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
           ),
           Expanded(
             child: isLoading == true
-                ? const Center(
-                    child: CircularProgressIndicator(color: Colors.black))
+                ? Center(
+                    child: Container(
+                        padding: const EdgeInsets.all(0),
+                        width: 90,
+                        height: 90,
+                        child: Lottie.asset("json/loading_black.json")))
                 : RefreshIndicator(
                     onRefresh: refresh,
                     child: FutureBuilder(
@@ -252,13 +257,26 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                       builder: (context, AsyncSnapshot dataSnapshot) {
                         if (dataSnapshot.hasData) //if brands exists
                         {
-                          DbAllitemsToko.db
-                              .getAllitemsToko(idtoko)
-                              .then((value) {
-                            setState(() {
-                              qtyProduct = value.length;
+                          if (sharedPreferences!
+                                  .getString('role_sales_brand') ==
+                              '3') {
+                            DbAllitemsToko.db
+                                .getAllitemsTokoMetier(idtoko)
+                                .then((value) {
+                              setState(() {
+                                qtyProduct = value.length;
+                              });
                             });
-                          });
+                          } else {
+                            DbAllitemsToko.db
+                                .getAllitemsToko(idtoko)
+                                .then((value) {
+                              setState(() {
+                                qtyProduct = value.length;
+                              });
+                            });
+                          }
+
                           return SingleChildScrollView(
                             controller: scrollController,
                             child: StaggeredGridView.countBuilder(
@@ -295,14 +313,21 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                             ),
                           );
                         } else if (dataSnapshot.hasError) {
-                          return const Center(
-                            child:
-                                CircularProgressIndicator(color: Colors.black),
-                          );
+                          return Center(
+                              child: Container(
+                                  padding: const EdgeInsets.all(0),
+                                  width: 90,
+                                  height: 90,
+                                  child:
+                                      Lottie.asset("json/loading_black.json")));
                         } //if data NOT exists
-                        return const Center(
-                          child: CircularProgressIndicator(color: Colors.black),
-                        );
+                        return Center(
+                            child: Container(
+                                padding: const EdgeInsets.all(0),
+                                width: 90,
+                                height: 90,
+                                child:
+                                    Lottie.asset("json/loading_black.json")));
                       },
                     ),
                   ),

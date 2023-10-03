@@ -6,6 +6,7 @@ import 'package:e_shop/history/history_model_new.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:lottie/lottie.dart';
 
 class HistoryTitipanScreen extends StatelessWidget {
   const HistoryTitipanScreen({Key? key}) : super(key: key);
@@ -23,9 +24,12 @@ class HistoryTitipanScreen extends StatelessWidget {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return Center(
+                child: Container(
+                    padding: const EdgeInsets.all(0),
+                    width: 90,
+                    height: 90,
+                    child: Lottie.asset("json/loading_black.json")));
           }
 
           if (snapshot.data.isEmpty) {
@@ -53,9 +57,13 @@ class HistoryTitipanScreen extends StatelessWidget {
                         }
                         if (snapshot2.connectionState ==
                             ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
+                          return Center(
+                              child: Container(
+                                  padding: const EdgeInsets.all(0),
+                                  width: 90,
+                                  height: 90,
+                                  child:
+                                      Lottie.asset("json/loading_black.json")));
                         } else {
                           return HistoryModelNew(
                             order2: snapshot2.data,

@@ -12,6 +12,7 @@ import 'package:e_shop/posSales/search_pos_sales.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../provider/provider_cart.dart';
 import 'package:http/http.dart' as http;
@@ -146,9 +147,19 @@ class _SearchScreenState extends State<NewSearchScreen> {
                     itemCount: dataSnapshot.data.length,
                   );
                 } else if (dataSnapshot.hasError) {
-                  return const CircularProgressIndicator();
+                  return Center(
+                      child: Container(
+                          padding: const EdgeInsets.all(0),
+                          width: 90,
+                          height: 90,
+                          child: Lottie.asset("json/loading_black.json")));
                 } //if data NOT exists
-                return const CircularProgressIndicator();
+                return Center(
+                    child: Container(
+                        padding: const EdgeInsets.all(0),
+                        width: 90,
+                        height: 90,
+                        child: Lottie.asset("json/loading_black.json")));
               },
             ),
     );
@@ -194,8 +205,12 @@ class SearchModel extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl:
                           'https://parvabisnis.id/uploads/products/${e['image_name'].toString()}',
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
+                      placeholder: (context, url) => Center(
+                          child: Container(
+                              padding: const EdgeInsets.all(0),
+                              width: 90,
+                              height: 90,
+                              child: Lottie.asset("json/loading_black.json"))),
                       errorWidget: (context, url, error) => Image.asset(
                         "images/noimage.png",
                       ),

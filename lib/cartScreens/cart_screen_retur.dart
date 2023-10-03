@@ -12,6 +12,7 @@ import 'package:e_shop/widgets/alert_dialog.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
@@ -338,8 +339,13 @@ class CartItems extends StatelessWidget {
                                   // maxWidthDiskCache: 85, //default 45
                                   imageUrl:
                                       'https://parvabisnis.id/uploads/products/${product.imageUrl.toString()}',
-                                  placeholder: (context, url) =>
-                                      const CircularProgressIndicator(),
+                                  placeholder: (context, url) => Center(
+                                      child: Container(
+                                          padding: const EdgeInsets.all(0),
+                                          width: 90,
+                                          height: 90,
+                                          child: Lottie.asset(
+                                              "json/loading_black.json"))),
                                   errorWidget: (context, url, error) =>
                                       const Icon(
                                     Icons.error,

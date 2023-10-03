@@ -63,7 +63,9 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
         dpp -
         addesdiskon;
     if (rate <= 2) {
-      return '\$ ${CurrencyFormat.convertToDollar(total, 0)}';
+      return sharedPreferences!.getString('role_sales_brand') == '3'
+          ? 'Rp.${CurrencyFormat.convertToDollar(total, 0)}'
+          : '\$${CurrencyFormat.convertToDollar(total, 0)}';
     } else {
       return CurrencyFormat.convertToIdr(total, 0);
     }
@@ -210,13 +212,19 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                 ),
 
                 //Rate
-                if (idform != 4)
+                if (idform != 4 &&
+                    sharedPreferences!.getString('role_sales_brand') != '3')
                   const SizedBox(
                     height: 10,
                   ),
-                if (idform != 4) const Text("Rate"),
-                if (idform != 4) const Divider(),
-                if (idform != 4)
+                if (idform != 4 &&
+                    sharedPreferences!.getString('role_sales_brand') != '3')
+                  const Text("Rate"),
+                if (idform != 4 &&
+                    sharedPreferences!.getString('role_sales_brand') != '3')
+                  const Divider(),
+                if (idform != 4 &&
+                    sharedPreferences!.getString('role_sales_brand') != '3')
                   Row(
                     children: [
                       const Padding(padding: EdgeInsets.all(4)),
@@ -243,13 +251,19 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                   ),
 
                 //Basic Diskon
-                if (idform != 4)
+                if (idform != 4 &&
+                    sharedPreferences!.getString('role_sales_brand') != '3')
                   const SizedBox(
                     height: 10,
                   ),
-                if (idform != 4) const Text("Basic Diskon"),
-                if (idform != 4) const Divider(),
-                if (idform != 4)
+                if (idform != 4 &&
+                    sharedPreferences!.getString('role_sales_brand') != '3')
+                  const Text("Basic Diskon"),
+                if (idform != 4 &&
+                    sharedPreferences!.getString('role_sales_brand') != '3')
+                  const Divider(),
+                if (idform != 4 &&
+                    sharedPreferences!.getString('role_sales_brand') != '3')
                   Row(
                     children: [
                       const Padding(padding: EdgeInsets.all(4)),
@@ -302,13 +316,19 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                   ),
 
                 //DP
-                if (idform != 4)
+                if (idform != 4 &&
+                    sharedPreferences!.getString('role_sales_brand') != '3')
                   const SizedBox(
                     height: 10,
                   ),
-                if (idform != 4) const Text("DP"),
-                if (idform != 4) const Divider(),
-                if (idform != 4)
+                if (idform != 4 &&
+                    sharedPreferences!.getString('role_sales_brand') != '3')
+                  const Text("DP"),
+                if (idform != 4 &&
+                    sharedPreferences!.getString('role_sales_brand') != '3')
+                  const Divider(),
+                if (idform != 4 &&
+                    sharedPreferences!.getString('role_sales_brand') != '3')
                   SizedBox(
                     width: 250,
                     child: TextField(
@@ -423,7 +443,6 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
     print(response.body);
   }
 }
-
 
 //elevated firebase
 //  ElevatedButton(

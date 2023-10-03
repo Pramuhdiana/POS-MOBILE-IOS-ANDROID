@@ -3,6 +3,7 @@
 import 'package:e_shop/database/db_crm.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
+import 'package:lottie/lottie.dart';
 
 // ignore: use_key_in_widget_constructors, must_be_immutable
 class DetailActivitySalesScreen extends StatefulWidget {
@@ -87,9 +88,13 @@ class _DetailActivitySalesScreenState extends State<DetailActivitySalesScreen> {
                       }
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return Center(
+                            child: Container(
+                                padding: const EdgeInsets.all(0),
+                                width: 90,
+                                height: 90,
+                                child:
+                                    Lottie.asset("json/loading_black.json")));
                       }
                       return ListView.builder(
                           itemCount: snapshot.data!.length,

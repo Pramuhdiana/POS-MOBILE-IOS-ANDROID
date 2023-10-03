@@ -291,7 +291,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       url,
     );
     print('bawah');
-    print(response.data);
+    print(response.statusCode);
     return (response.data as List).map((cart) {
       context.read<PApprovalBrj>().addItem(
             1,
@@ -306,7 +306,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       url,
     );
     print('bawah');
-    print(response.data);
+    print(response.statusCode);
     return (response.data as List).map((cart) {
       context.read<PApprovalEticketing>().addItem(
             1,

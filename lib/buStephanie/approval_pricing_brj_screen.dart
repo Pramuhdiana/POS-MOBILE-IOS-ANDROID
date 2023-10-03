@@ -213,7 +213,12 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
           ),
         ),
         body: isLoading != false
-            ? const Center(child: CircularProgressIndicator())
+            ? Center(
+                child: Container(
+                    padding: const EdgeInsets.all(0),
+                    width: 90,
+                    height: 90,
+                    child: Lottie.asset("json/loading_black.json")))
             : RefreshIndicator(
                 onRefresh: refresh,
                 child: Column(
@@ -250,9 +255,13 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                           }
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
+                            return Center(
+                                child: Container(
+                                    padding: const EdgeInsets.all(0),
+                                    width: 90,
+                                    height: 90,
+                                    child: Lottie.asset(
+                                        "json/loading_black.json")));
                           }
                           print(snapshot.connectionState ==
                               ConnectionState.waiting);
@@ -428,9 +437,16 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                             .size
                                                                             .width *
                                                                         1,
-                                                                    child: const Center(
-                                                                        child:
-                                                                            CircularProgressIndicator()),
+                                                                    child: Center(
+                                                                        child: Container(
+                                                                            padding: const EdgeInsets.all(
+                                                                                0),
+                                                                            width:
+                                                                                90,
+                                                                            height:
+                                                                                90,
+                                                                            child:
+                                                                                Lottie.asset("json/loading_black.json"))),
                                                                   ),
                                                                 )
                                                               ],
@@ -1042,9 +1058,16 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                             .size
                                                                             .width *
                                                                         1,
-                                                                    child: const Center(
-                                                                        child:
-                                                                            CircularProgressIndicator()),
+                                                                    child: Center(
+                                                                        child: Container(
+                                                                            padding: const EdgeInsets.all(
+                                                                                0),
+                                                                            width:
+                                                                                90,
+                                                                            height:
+                                                                                90,
+                                                                            child:
+                                                                                Lottie.asset("json/loading_black.json"))),
                                                                   ),
                                                                 )
                                                               ],
@@ -1158,9 +1181,16 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                           .size
                                                                           .width *
                                                                       1,
-                                                                  child: const Center(
-                                                                      child:
-                                                                          CircularProgressIndicator()),
+                                                                  child: Center(
+                                                                      child: Container(
+                                                                          padding: const EdgeInsets.all(
+                                                                              0),
+                                                                          width:
+                                                                              90,
+                                                                          height:
+                                                                              90,
+                                                                          child:
+                                                                              Lottie.asset("json/loading_black.json"))),
                                                                 ),
                                                               )
                                                             ],
@@ -1204,9 +1234,15 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                             .baseUrlImageMdbc +
                                                         data.fgImageFileName!
                                                             .toString(),
-                                                    placeholder: (context,
-                                                            url) =>
-                                                        const CircularProgressIndicator(),
+                                                    placeholder: (context, url) => Center(
+                                                        child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(0),
+                                                            width: 90,
+                                                            height: 90,
+                                                            child: Lottie.asset(
+                                                                "json/loading_black.json"))),
                                                     errorWidget:
                                                         (context, url, error) =>
                                                             Image.asset(
@@ -1624,8 +1660,13 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                             return Text(snapshot.error.toString());
                           }
                           // By default show a loading spinner.
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Center(
+                              child: Container(
+                                  padding: const EdgeInsets.all(0),
+                                  width: 90,
+                                  height: 90,
+                                  child:
+                                      Lottie.asset("json/loading_black.json")));
                         },
                       ),
                     ),
@@ -1692,8 +1733,12 @@ class SearchModel extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl:
                           'https://parvabisnis.id/uploads/products/${e['image_name'].toString()}',
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
+                      placeholder: (context, url) => Center(
+                          child: Container(
+                              padding: const EdgeInsets.all(0),
+                              width: 90,
+                              height: 90,
+                              child: Lottie.asset("json/loading_black.json"))),
                       errorWidget: (context, url, error) => Image.asset(
                         "images/noimage.png",
                       ),

@@ -4,6 +4,7 @@ import 'package:e_shop/database/db_alldetailtransaksi.dart';
 import 'package:e_shop/database/db_alltransaksi.dart';
 import 'package:e_shop/history/history_model_new.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class HistoryKembalibarangScreen extends StatelessWidget {
   const HistoryKembalibarangScreen({Key? key}) : super(key: key);
@@ -20,9 +21,12 @@ class HistoryKembalibarangScreen extends StatelessWidget {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return Center(
+                child: Container(
+                    padding: const EdgeInsets.all(0),
+                    width: 90,
+                    height: 90,
+                    child: Lottie.asset("json/loading_black.json")));
           }
 
           if (snapshot.data.isEmpty) {
@@ -52,9 +56,13 @@ class HistoryKembalibarangScreen extends StatelessWidget {
                         }
                         if (snapshot2.connectionState ==
                             ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
+                          return Center(
+                              child: Container(
+                                  padding: const EdgeInsets.all(0),
+                                  width: 90,
+                                  height: 90,
+                                  child:
+                                      Lottie.asset("json/loading_black.json")));
                         } else {
                           return HistoryModelNew(
                             order2: snapshot2.data,

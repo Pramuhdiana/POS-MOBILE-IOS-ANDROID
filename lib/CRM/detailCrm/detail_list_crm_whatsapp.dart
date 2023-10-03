@@ -2,6 +2,7 @@ import 'package:e_shop/CRM/detailCrm/detail_list_crm_screen.dart';
 import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class DetailListCrmWhatsapp extends StatelessWidget {
   const DetailListCrmWhatsapp({Key? key}) : super(key: key);
@@ -17,9 +18,12 @@ class DetailListCrmWhatsapp extends StatelessWidget {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return Center(
+                child: Container(
+                    padding: const EdgeInsets.all(0),
+                    width: 90,
+                    height: 90,
+                    child: Lottie.asset("json/loading_black.json")));
           }
 
           if (snapshot.data.isEmpty) {

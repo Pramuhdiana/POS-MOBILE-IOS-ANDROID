@@ -12,6 +12,7 @@ import 'package:e_shop/widgets/alert_dialog.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -117,7 +118,10 @@ class _CartScreenHomeState extends State<CartScreenHome> {
                               const TextStyle(fontSize: 18, color: Colors.grey),
                         ),
                         Text(
-                          '\$ ${CurrencyFormat.convertToDollar(context.watch<PCart>().totalPrice, 0)}',
+                          sharedPreferences!.getString('role_sales_brand') ==
+                                  '3'
+                              ? 'Rp.${CurrencyFormat.convertToDollar(context.watch<PCart>().totalPrice, 0)}'
+                              : '\$${CurrencyFormat.convertToDollar(context.watch<PCart>().totalPrice, 0)}',
                           style: const TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -290,8 +294,13 @@ class CartItems extends StatelessWidget {
                                   // maxWidthDiskCache: 85, //default 45
                                   imageUrl:
                                       'https://parvabisnis.id/uploads/products/${product.imageUrl.toString()}',
-                                  placeholder: (context, url) =>
-                                      const CircularProgressIndicator(),
+                                  placeholder: (context, url) => Center(
+                                      child: Container(
+                                          padding: const EdgeInsets.all(0),
+                                          width: 90,
+                                          height: 90,
+                                          child: Lottie.asset(
+                                              "json/loading_black.json"))),
                                   errorWidget: (context, url, error) =>
                                       const Icon(
                                     Icons.error,
@@ -335,7 +344,11 @@ class CartItems extends StatelessWidget {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          '\$ ${CurrencyFormat.convertToTitik(product.price, 0)}',
+                                          sharedPreferences!.getString(
+                                                      'role_sales_brand') ==
+                                                  '3'
+                                              ? 'Rp.${CurrencyFormat.convertToTitik(product.price, 0)}'
+                                              : '\$${CurrencyFormat.convertToTitik(product.price, 0)}',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(

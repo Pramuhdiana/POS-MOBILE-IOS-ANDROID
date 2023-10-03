@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 // import 'package:e_shop/testing/APITOSQLITE/src/models/model_allitems_toko.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../global/currency_format.dart';
@@ -36,9 +37,12 @@ class _PosTokoUi extends State<PosTokoUi> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? Center(
+            child: Container(
+                padding: const EdgeInsets.all(0),
+                width: 90,
+                height: 90,
+                child: Lottie.asset("json/loading_black.json")))
         : GestureDetector(
             onTap: () {
               Navigator.push(
@@ -103,8 +107,13 @@ class _PosTokoUi extends State<PosTokoUi> {
                             maxWidthDiskCache: 105, //default 45
                             imageUrl:
                                 'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
+                            placeholder: (context, url) => Center(
+                                child: Container(
+                                    padding: const EdgeInsets.all(0),
+                                    width: 90,
+                                    height: 90,
+                                    child: Lottie.asset(
+                                        "json/loading_black.json"))),
                             errorWidget: (context, url, error) => const Icon(
                               Icons.error,
                               color: Colors.black,
@@ -137,7 +146,10 @@ class _PosTokoUi extends State<PosTokoUi> {
                         //   ),
                         // ),
                         Text(
-                          "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
+                          sharedPreferences!.getString('role_sales_brand') ==
+                                  '3'
+                              ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
+                              : "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -201,12 +213,11 @@ class _PosTokoUi extends State<PosTokoUi> {
 
     Map<String, String> body = {
       // 'user_id': id.toString(),
-      'product_id': widget.model!.id.toString(), //70507
-      'price': widget.model!.price.toString(), //5000
-      'jenisform_id': '2', //2
-      'qty': '1', //1
-      'customer_id':
-          sharedPreferences!.getString('customer_id').toString(), //764
+      'product_id': widget.model!.id.toString(),
+      'price': widget.model!.price.toString(),
+      'jenisform_id': '2',
+      'qty': '1',
+      'customer_id': sharedPreferences!.getString('customer_id').toString(),
       'update_by': '1'
     };
     final response = await http.post(

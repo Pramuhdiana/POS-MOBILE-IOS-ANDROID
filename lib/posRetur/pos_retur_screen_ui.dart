@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../global/currency_format.dart';
@@ -34,9 +35,12 @@ class _PosReturUi extends State<PosReturUi> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? Center(
+            child: Container(
+                padding: const EdgeInsets.all(0),
+                width: 90,
+                height: 90,
+                child: Lottie.asset("json/loading_black.json")))
         : GestureDetector(
             onTap: () {
               Navigator.push(
@@ -70,8 +74,13 @@ class _PosReturUi extends State<PosReturUi> {
                             maxWidthDiskCache: 105, //default 45
                             imageUrl:
                                 'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
+                            placeholder: (context, url) => Center(
+                                child: Container(
+                                    padding: const EdgeInsets.all(0),
+                                    width: 90,
+                                    height: 90,
+                                    child: Lottie.asset(
+                                        "json/loading_black.json"))),
                             errorWidget: (context, url, error) => const Icon(
                               Icons.error,
                               color: Colors.black,

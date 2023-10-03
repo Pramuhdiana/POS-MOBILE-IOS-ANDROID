@@ -9,6 +9,7 @@ import 'package:e_shop/splashScreen/my_splas_screen.dart';
 import 'package:e_shop/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -104,7 +105,12 @@ class _LoginTabPageState extends State<LoginTabPage> {
             return const Text('datanya error');
             // return Text('${snapshot.error}');
           }
-          return const CircularProgressIndicator();
+          return Center(
+              child: Container(
+                  padding: const EdgeInsets.all(0),
+                  width: 90,
+                  height: 90,
+                  child: Lottie.asset("json/loading_black.json")));
         });
   }
 

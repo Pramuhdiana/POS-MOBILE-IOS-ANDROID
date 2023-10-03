@@ -9,6 +9,7 @@ import 'package:e_shop/global/global.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 import 'detailCrm/detail_crm_sales.dart';
 
@@ -275,9 +276,12 @@ class _DashboardErickState extends State<DashboardErick> {
                       : DbCRM.db.getAllcrm(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return Center(
+                          child: Container(
+                              padding: const EdgeInsets.all(0),
+                              width: 90,
+                              height: 90,
+                              child: Lottie.asset("json/loading_black.json")));
                     }
                     // WHEN THE CALL IS DONE BUT HAPPENS TO HAVE AN ERROR
                     if (snapshot.hasError) {

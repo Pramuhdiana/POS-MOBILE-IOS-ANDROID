@@ -10,6 +10,7 @@ import 'package:e_shop/history/search_history.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 import '../models/products.dart';
 
 class NewSearchScreenHistory extends StatefulWidget {
@@ -134,9 +135,19 @@ class _NewSearchScreenHistoryState extends State<NewSearchScreenHistory> {
                     itemCount: dataSnapshot.data.length,
                   );
                 } else if (dataSnapshot.hasError) {
-                  return const CircularProgressIndicator();
+                  return Center(
+                      child: Container(
+                          padding: const EdgeInsets.all(0),
+                          width: 90,
+                          height: 90,
+                          child: Lottie.asset("json/loading_black.json")));
                 } //if data NOT exists
-                return const CircularProgressIndicator();
+                return Center(
+                    child: Container(
+                        padding: const EdgeInsets.all(0),
+                        width: 90,
+                        height: 90,
+                        child: Lottie.asset("json/loading_black.json")));
               },
             ),
     );

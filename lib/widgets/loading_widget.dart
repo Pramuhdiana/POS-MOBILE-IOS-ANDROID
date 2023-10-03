@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class LoadingDialogWidget extends StatelessWidget {
   final String? message;
@@ -16,13 +17,12 @@ class LoadingDialogWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           //circulan progress bar
-          Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.only(top: 14),
-            child: const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Colors.pinkAccent),
-            ),
-          ),
+          Center(
+              child: Container(
+                  padding: const EdgeInsets.all(0),
+                  width: 90,
+                  height: 90,
+                  child: Lottie.asset("json/loading_black.json"))),
 
           const SizedBox(
             height: 16,
