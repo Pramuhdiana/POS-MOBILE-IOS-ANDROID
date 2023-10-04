@@ -146,7 +146,10 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                           height: 10,
                         ),
                         Text(
-                          "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
+                          sharedPreferences!.getString('role_sales_brand') ==
+                                  '3'
+                              ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
+                              : "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,

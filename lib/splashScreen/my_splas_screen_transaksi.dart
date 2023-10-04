@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_allitems_retur.dart';
-import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gif/flutter_gif.dart';
@@ -71,18 +70,18 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
     } catch (c) {
       Fluttertoast.showToast(msg: "Failed To Load Data all code refrence");
     }
-    try {
-      await apiProvider.getAllCustomer();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all customer");
-    }
-    try {
-      await apiProvider.getUsers();
-    } catch (c) {
-      sharedPreferences!.setString('name', 'Failed To Load Data');
+    // try {
+    //   await apiProvider.getAllCustomer();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all customer");
+    // }
+    // try {
+    //   await apiProvider.getUsers();
+    // } catch (c) {
+    //   sharedPreferences!.setString('name', 'Failed To Load Data');
 
-      Fluttertoast.showToast(msg: "Failed To Load Data User");
-    }
+    //   Fluttertoast.showToast(msg: "Failed To Load Data User");
+    // }
     try {
       await apiProvider.getAllTCRM();
     } catch (c) {

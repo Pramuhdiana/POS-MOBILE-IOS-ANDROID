@@ -27,7 +27,7 @@ class ListCrmTelephone extends StatelessWidget {
           if (snapshot.data.isEmpty) {
             return const Center(
                 child: Text(
-              'You Have not \n\n report Telephone',
+              'You Have Not \n\n Report Telephone',
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 26,

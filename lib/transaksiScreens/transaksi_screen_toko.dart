@@ -1,9 +1,11 @@
 // ignore_for_file: library_private_types_in_public_api, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, use_build_context_synchronously, non_constant_identifier_names
 
+import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
+import 'package:e_shop/models/customer_metier.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:e_shop/widgets/keyboard_overlay.dart';
@@ -42,6 +44,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
   int dpp = 0;
   int addesdiskon = 0;
   TextEditingController dp = TextEditingController();
+  TextEditingController customerMetier = TextEditingController();
   TextEditingController addDiskon = TextEditingController();
   // int DPP = int.parse(dp);
 
@@ -95,7 +98,24 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
   String get totalRp {
     // var dpin = int.parse(dp);
     var total = ((context.read<PCartToko>().totalPrice2) * rate);
-    return total.toString();
+    return 'Rp.${CurrencyFormat.convertToDollar(int.parse(total.round().toString()), 0)}';
+  }
+
+  String get tax {
+    // var dpin = int.parse(dp);
+    var total = ((context.read<PCartToko>().totalPrice2) * rate) * (2 / 100);
+    return 'Rp.${CurrencyFormat.convertToDollar(int.parse(total.round().toString()), 0)}';
+  }
+
+  String get totalPayment {
+    var totalPrice = ((context.read<PCartToko>().totalPrice2) * rate) *
+            (1 - (diskon / 100)) -
+        dpp -
+        addesdiskon;
+    var totalTax = ((context.read<PCartToko>().totalPrice2) * rate) * (2 / 100);
+
+    var total = totalPrice - totalTax;
+    return 'Rp.${CurrencyFormat.convertToDollar(int.parse(total.round().toString()), 0)}';
   }
 
   void showProgress() {
@@ -163,225 +183,373 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
               padding: const EdgeInsets.all(4),
               children: <Widget>[
                 //jenis form
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text("Select type of form"),
-                const Divider(),
-                Row(
-                  children: [
-                    const Padding(padding: EdgeInsets.all(4)),
-                    Expanded(
-                      child: DropdownSearch<String>(
-                        items: const ["INVOICE", "KEMBALI BARANG"],
-                        onChanged: (text) {
-                          setState(() {
-                            form = text;
-                            if (form == "INVOICE") {
-                              idform = 1;
-                              idformAPI = 1;
-                              print(idform);
-                            } else if (form == "KEMBALI BARANG") {
-                              idform = 4;
-                              idformAPI = 4;
-                              print(idform);
-                            } else {
-                              idform = 0;
-                              print(idform);
-                            }
-                            qty = context
-                                .read<PCartToko>()
-                                .getItems
-                                .length
-                                .toString();
-                            print(sharedPreferences!.getString("toko"));
-                          });
-                        },
-                        dropdownDecoratorProps: DropDownDecoratorProps(
-                          dropdownSearchDecoration: InputDecoration(
-                            labelText: 'Jenis Form',
-                            filled: true,
-                            fillColor: Theme.of(context)
-                                .inputDecorationTheme
-                                .fillColor,
-                          ),
-                        ),
+                Container(
+                  padding: const EdgeInsets.only(top: 10),
+                  height: 80,
+                  child: DropdownSearch<String>(
+                    items: const ["INVOICE", "KEMBALI BARANG"],
+                    onChanged: (text) {
+                      setState(() {
+                        form = text;
+                        if (form == "INVOICE") {
+                          idform = 1;
+                          idformAPI = 1;
+                        } else if (form == "KEMBALI BARANG") {
+                          idform = 4;
+                          idformAPI = 4;
+                          print(idform);
+                        } else {
+                          idform = 0;
+                        }
+                        qty = context
+                            .read<PCartToko>()
+                            .getItems
+                            .length
+                            .toString();
+                        print(sharedPreferences!.getString("toko"));
+                      });
+                    },
+                    dropdownDecoratorProps: DropDownDecoratorProps(
+                      dropdownSearchDecoration: InputDecoration(
+                        labelText: "Select type of form",
+                        filled: true,
+                        fillColor:
+                            Theme.of(context).inputDecorationTheme.fillColor,
                       ),
                     ),
-                  ],
+                  ),
                 ),
 
                 //Rate
-                if (idform != 4 &&
-                    sharedPreferences!.getString('role_sales_brand') != '3')
-                  const SizedBox(
-                    height: 10,
-                  ),
-                if (idform != 4 &&
-                    sharedPreferences!.getString('role_sales_brand') != '3')
-                  const Text("Rate"),
-                if (idform != 4 &&
-                    sharedPreferences!.getString('role_sales_brand') != '3')
-                  const Divider(),
-                if (idform != 4 &&
-                    sharedPreferences!.getString('role_sales_brand') != '3')
-                  Row(
-                    children: [
-                      const Padding(padding: EdgeInsets.all(4)),
-                      Expanded(
-                        child: DropdownSearch<int>(
-                          items: const [11500, 11900, 13000],
-                          onChanged: (value) {
-                            setState(() {
-                              rate = value!;
-                            });
-                          },
-                          dropdownDecoratorProps: DropDownDecoratorProps(
-                            dropdownSearchDecoration: InputDecoration(
-                              labelText: 'Rate',
-                              filled: true,
-                              fillColor: Theme.of(context)
-                                  .inputDecorationTheme
-                                  .fillColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                idform == 0
+                    ? const SizedBox()
+                    : idform == 4
+                        ? const SizedBox()
+                        : sharedPreferences!.getString('role_sales_brand') ==
+                                '3'
+                            ? Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 1),
+                                height: 65,
+                                width: 230,
+                                child: DropdownSearch<CustomerMetierModel>(
+                                  asyncItems: (String? filter) =>
+                                      getCustomerMetier(filter),
+                                  popupProps: const PopupPropsMultiSelection
+                                      .modalBottomSheet(
+                                    searchFieldProps: TextFieldProps(
+                                        decoration: InputDecoration(
+                                      labelText: "Search..",
+                                      prefixIcon: Icon(Icons.search),
+                                    )),
+                                    showSelectedItems: true,
+                                    itemBuilder: _listCustomerMetier,
+                                    showSearchBox: true,
+                                  ),
+                                  compareFn: (item, sItem) =>
+                                      item.id == sItem.id,
+                                  onChanged: (item) {
+                                    setState(() {
+                                      customerMetier.text = item!.name;
+                                    });
+                                  },
+                                  dropdownDecoratorProps:
+                                      DropDownDecoratorProps(
+                                    dropdownSearchDecoration: InputDecoration(
+                                      labelText: "Choose customer",
+                                      filled: true,
+                                      fillColor: Theme.of(context)
+                                          .inputDecorationTheme
+                                          .fillColor,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                padding: const EdgeInsets.only(top: 10),
+                                height: 80,
+                                child: DropdownSearch<int>(
+                                  items: const [11500, 11900, 13000],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      rate = value!;
+                                    });
+                                  },
+                                  dropdownDecoratorProps:
+                                      DropDownDecoratorProps(
+                                    dropdownSearchDecoration: InputDecoration(
+                                      labelText: "Rate",
+                                      filled: true,
+                                      fillColor: Theme.of(context)
+                                          .inputDecorationTheme
+                                          .fillColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
 
                 //Basic Diskon
-                if (idform != 4 &&
-                    sharedPreferences!.getString('role_sales_brand') != '3')
-                  const SizedBox(
-                    height: 10,
-                  ),
-                if (idform != 4 &&
-                    sharedPreferences!.getString('role_sales_brand') != '3')
-                  const Text("Basic Diskon"),
-                if (idform != 4 &&
-                    sharedPreferences!.getString('role_sales_brand') != '3')
-                  const Divider(),
-                if (idform != 4 &&
-                    sharedPreferences!.getString('role_sales_brand') != '3')
-                  Row(
-                    children: [
-                      const Padding(padding: EdgeInsets.all(4)),
-                      Expanded(
-                        child: DropdownSearch<int>(
-                          items: const [60, 63],
-                          onChanged: (value) {
-                            setState(() {
-                              diskon = value!;
-                            });
-                          },
-                          dropdownDecoratorProps: DropDownDecoratorProps(
-                            dropdownSearchDecoration: InputDecoration(
-                              labelText: 'Basic Diskon',
-                              filled: true,
-                              fillColor: Theme.of(context)
-                                  .inputDecorationTheme
-                                  .fillColor,
+                idform == 0
+                    ? const SizedBox()
+                    : idform == 4
+                        ? const SizedBox()
+                        : sharedPreferences!.getString('role_sales_brand') ==
+                                '3'
+                            ? const SizedBox()
+                            : Container(
+                                padding: const EdgeInsets.only(top: 10),
+                                height: 80,
+                                child: DropdownSearch<int>(
+                                  items: const [60, 63],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      diskon = value!;
+                                    });
+                                  },
+                                  dropdownDecoratorProps:
+                                      DropDownDecoratorProps(
+                                    dropdownSearchDecoration: InputDecoration(
+                                      labelText: "Basic discount",
+                                      filled: true,
+                                      fillColor: Theme.of(context)
+                                          .inputDecorationTheme
+                                          .fillColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+//addesdiskon
+
+                idform == 0
+                    ? const SizedBox()
+                    : idform == 4
+                        ? const SizedBox()
+                        : Container(
+                            padding: const EdgeInsets.only(top: 10),
+                            height: 80,
+                            child: TextFormField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                              textInputAction: TextInputAction.next,
+                              controller: addDiskon,
+                              focusNode: numberFocusNode,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              onChanged: (addDiskon) {
+                                addDiskon.isEmpty
+                                    ? setState(() {
+                                        addesdiskon = 0;
+                                      })
+                                    : setState(() {
+                                        addesdiskon = int.parse(addDiskon);
+                                      });
+                              },
+                              decoration: InputDecoration(
+                                labelText: "Add discount",
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0)),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-//addesdiskon
-                if (idform != 4)
-                  const SizedBox(
-                    height: 10,
-                  ),
-                if (idform != 4) const Text("ADD DISKON"),
-                if (idform != 4) const Divider(),
-                if (idform != 4)
-                  SizedBox(
-                    width: 250,
-                    child: TextField(
-                      onChanged: (addDiskon) {
-                        setState(() {
-                          addesdiskon = int.parse(addDiskon);
-                        });
-                      },
-                      decoration:
-                          const InputDecoration(labelText: "ADD DISKON"),
-                      controller: addDiskon,
-                      focusNode: numberFocusNode,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
-                    ),
-                  ),
 
                 //DP
-                if (idform != 4 &&
-                    sharedPreferences!.getString('role_sales_brand') != '3')
-                  const SizedBox(
-                    height: 10,
-                  ),
-                if (idform != 4 &&
-                    sharedPreferences!.getString('role_sales_brand') != '3')
-                  const Text("DP"),
-                if (idform != 4 &&
-                    sharedPreferences!.getString('role_sales_brand') != '3')
-                  const Divider(),
-                if (idform != 4 &&
-                    sharedPreferences!.getString('role_sales_brand') != '3')
-                  SizedBox(
-                    width: 250,
-                    child: TextField(
-                      onChanged: (dp) {
-                        setState(() {
-                          dpp = int.parse(dp);
-                        });
-                      },
-                      decoration: const InputDecoration(labelText: "DP"),
-                      controller: dp,
-                      focusNode: numberFocusNode2,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
-                    ),
-                  ),
+                idform == 0
+                    ? const SizedBox()
+                    : idform == 4
+                        ? const SizedBox()
+                        : sharedPreferences!.getString('role_sales_brand') ==
+                                '3'
+                            ? const SizedBox()
+                            : Container(
+                                padding: const EdgeInsets.only(top: 10),
+                                height: 80,
+                                child: TextFormField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                  textInputAction: TextInputAction.next,
+                                  controller: dp,
+                                  focusNode: numberFocusNode2,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  onChanged: (dp) {
+                                    dp.isEmpty
+                                        ? setState(() {
+                                            dpp = 0;
+                                          })
+                                        : setState(() {
+                                            dpp = int.parse(dp);
+                                          });
+                                  },
+                                  decoration: InputDecoration(
+                                    labelText: "DP",
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0)),
+                                  ),
+                                ),
+                              ),
 
-                const SizedBox(height: 30),
-                const Divider(
-                  color: Colors.black,
-                  thickness: 5,
-                ),
-
-                const Text("Total"),
-                // Text(
-                //   "$total",
-                //   style: TextStyle(fontSize: 40),
-                // ),
-                Text(
-                  "$totalPrice3",
-                  style: const TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red),
-                ),
+                idform == 4 ? const SizedBox() : const SizedBox(height: 30),
+                idform == 4
+                    ? const SizedBox()
+                    : const Divider(
+                        color: Colors.black,
+                        thickness: 5,
+                      ),
+                idform == 4
+                    ? const SizedBox()
+                    : sharedPreferences!.getString('role_sales_brand') == '3'
+                        ? Container(
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 2.5, color: Colors.grey)),
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'Total',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    Text(
+                                      "$totalRp",
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red),
+                                    ),
+                                  ],
+                                ),
+                                const Divider(
+                                  color: Colors.black,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'Discount',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    Text(
+                                      'Rp.${CurrencyFormat.convertToDollar(addesdiskon, 0)}',
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red),
+                                    ),
+                                  ],
+                                ),
+                                const Divider(
+                                  color: Colors.black,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'After Disc',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    Text(
+                                      "$totalPrice3",
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red),
+                                    ),
+                                  ],
+                                ),
+                                const Divider(
+                                  color: Colors.black,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'Tax',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    Text(
+                                      "$tax",
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red),
+                                    ),
+                                  ],
+                                ),
+                                const Divider(
+                                  color: Colors.black,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'Total Payment',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    Text(
+                                      "$totalPayment",
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              const Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Text("Total")),
+                              Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  "$totalPrice3",
+                                  style: const TextStyle(
+                                      fontSize: 35,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
               ],
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 40),
-          child: CustomLoadingButton(
-            controller: btnController,
-            onPressed: () {
-              formValidation();
-            },
-            child: const Text(
-              "Save Transaction",
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ));
+        bottomNavigationBar: idform == 0
+            ? const SizedBox()
+            : Padding(
+                padding: const EdgeInsets.only(bottom: 40),
+                child: CustomLoadingButton(
+                  controller: btnController,
+                  onPressed: () {
+                    formValidation();
+                  },
+                  child: const Text(
+                    "Save Transaction",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ));
   }
 
   formValidation() async {
@@ -397,6 +565,22 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
       Navigator.push(context,
           MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
     }
+  }
+
+  Future<List<CustomerMetierModel>> getCustomerMetier(filter) async {
+    String token = sharedPreferences!.getString("token").toString();
+    var response = await Dio().get(
+      ApiConstants.baseUrl + ApiConstants.GETcustomerMetier,
+      options: Options(headers: {"Authorization": 'Bearer $token'}),
+      queryParameters: {"filter": filter},
+    );
+
+    final data = response.data;
+    if (data != null) {
+      return CustomerMetierModel.fromJsonList(data);
+    }
+
+    return [];
   }
 
   postAPItoko() async {
@@ -444,6 +628,25 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
   }
 }
 
+Widget _listCustomerMetier(
+  BuildContext context,
+  CustomerMetierModel? item,
+  bool isSelected,
+) {
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 8),
+    decoration: !isSelected
+        ? null
+        : BoxDecoration(
+            border: Border.all(color: Colors.black, width: 5),
+            borderRadius: BorderRadius.circular(50),
+          ),
+    child: ListTile(
+      selected: isSelected,
+      title: Text(item?.name ?? ''),
+    ),
+  );
+}
 //elevated firebase
 //  ElevatedButton(
 //                               onPressed: () async {

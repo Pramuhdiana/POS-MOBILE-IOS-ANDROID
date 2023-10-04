@@ -119,7 +119,10 @@ class _CartScreenState extends State<CartScreen> {
                               const TextStyle(fontSize: 18, color: Colors.grey),
                         ),
                         Text(
-                          '\$ ${CurrencyFormat.convertToDollar(context.watch<PCart>().totalPrice, 0)}',
+                          sharedPreferences!.getString('role_sales_brand') ==
+                                  '3'
+                              ? 'Rp.${CurrencyFormat.convertToDollar(context.watch<PCart>().totalPrice, 0)}'
+                              : '\$${CurrencyFormat.convertToDollar(context.watch<PCart>().totalPrice, 0)}',
                           style: const TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -344,7 +347,11 @@ class CartItems extends StatelessWidget {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          '\$ ${CurrencyFormat.convertToTitik(product.price, 0)}',
+                                          sharedPreferences!.getString(
+                                                      'role_sales_brand') ==
+                                                  '3'
+                                              ? 'Rp. ${CurrencyFormat.convertToTitik(product.price, 0)}'
+                                              : '\$${CurrencyFormat.convertToTitik(product.price, 0)}',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(

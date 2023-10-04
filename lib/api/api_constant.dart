@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // http://110.5.102.154:1212/Api_Flutter/spk/get_estimasi_pricing_by_status.php?status_approval=1
 class ApiConstants {
-  // static String baseUrl = 'http://54.179.58.215:8080/api';
+  // static String baseUrl = 'http://54.179.58.215:8000/api';
   static String baseUrl = 'http://54.179.58.215:7000/api'; //! Dummy
   static String baseUrlPricing = 'http://110.5.102.154:4000/approvals';
   static String baseUrlImageMdbc =
@@ -13,6 +13,7 @@ class ApiConstants {
   static String GETPricingEticketing = '/get_estimasi_pricing.php';
   static String GETapprovelPricingEticketing =
       '/get_estimasi_pricing_by_status.php';
+  static String GETcustomerMetier = '/indexcustomermetier';
   static String GETapprovelPricingEticketingBySearch =
       '/get_estimasi_pricing_by_search.php';
   static String UPDATEapprovalPricingEticketing =
@@ -42,6 +43,9 @@ class ApiConstants {
   static String POSTtokocheckoutendpoint = '/postokocheckout';
   static String POSTreturcheckoutendpoint = '/posreturcheckout';
   static String POSTcreateCRMendpoint = '/createcrmsales';
+  static String POSTcreateCustomerMetier = '/createcustomer';
+  static String POSTmetiercheckout = '/possalesmetiercheckout';
+
   static String DELETEkeranjangtokoendpoint = '/deletecartpostoko';
   static String DELETEkeranjangsalesendpoint = '/deletecartpossales';
   static String DELETEallkeranjangsalesendpoint = '/clearcartpossales';

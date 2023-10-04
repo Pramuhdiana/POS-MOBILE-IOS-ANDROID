@@ -29,7 +29,7 @@ class ListNewNotif extends StatelessWidget {
           if (snapshot.data.isEmpty) {
             return const Center(
                 child: Text(
-              'You Have not \n\n new Notification',
+              'You Have Not \n\n new Notification',
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 26,

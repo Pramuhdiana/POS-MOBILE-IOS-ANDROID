@@ -41,10 +41,11 @@ class _MainScreenState extends State<MainScreen> {
         body: _tabs[_selectedIndex],
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25.5),
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(25), topRight: Radius.circular(25)),
             color: Colors.white,
-            boxShadow: const [
-              BoxShadow(color: Colors.black, spreadRadius: 0.2),
+            boxShadow: [
+              BoxShadow(color: Colors.grey.shade400, spreadRadius: 0.5),
             ],
           ),
           child: Padding(

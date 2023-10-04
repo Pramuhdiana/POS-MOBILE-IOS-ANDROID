@@ -240,18 +240,23 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                             : _getDataSearch(searchInput),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
-                            return const Center(
-                              child: Text(
-                                'You Have not \n\n Waiting List Pricing BRJ',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 26,
-                                    color: Colors.blueGrey,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Acne',
-                                    letterSpacing: 1.5),
-                              ),
-                            );
+                            return Center(
+                                child: Column(
+                              children: [
+                                const SizedBox(height: 250),
+                                Lottie.asset("json/loadingdata.json"),
+                                const Text(
+                                  'Database OFF',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 26,
+                                      color: Colors.blueGrey,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Acne',
+                                      letterSpacing: 1.5),
+                                )
+                              ],
+                            ));
                           }
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -268,7 +273,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                           if (snapshot.data.isEmpty) {
                             return const Center(
                               child: Text(
-                                'You Have not \n\n Waiting List Pricing BRJ',
+                                'You Have Not \n\n Waiting List Pricing BRJ',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 26,
@@ -331,8 +336,32 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                         if (snapshot2
                                                             .hasError) {
                                                           return Center(
-                                                              child: Lottie.asset(
-                                                                  "json/loadingdata.json"));
+                                                              child: Column(
+                                                            children: [
+                                                              const SizedBox(
+                                                                  height: 250),
+                                                              Lottie.asset(
+                                                                  "json/loadingdata.json"),
+                                                              const Text(
+                                                                'Database OFF',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        26,
+                                                                    color: Colors
+                                                                        .blueGrey,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontFamily:
+                                                                        'Acne',
+                                                                    letterSpacing:
+                                                                        1.5),
+                                                              )
+                                                            ],
+                                                          ));
                                                         }
                                                         if (snapshot2
                                                                 .connectionState ==
@@ -456,7 +485,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                         if (snapshot2
                                                             .data.isEmpty) {
                                                           return SizedBox(
-                                                            height: 350,
+                                                            height: 550,
                                                             child: Column(
                                                               mainAxisSize:
                                                                   MainAxisSize
@@ -566,9 +595,10 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                               2.5,
                                                                           color:
                                                                               Colors.black)),
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5),
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(
+                                                                          5),
                                                                   child: Column(
                                                                     children: [
                                                                       Row(
@@ -682,7 +712,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                         }
                                                         if (snapshot.hasData) {
                                                           return SizedBox(
-                                                            height: 350,
+                                                            height: 550,
                                                             child: Column(
                                                               mainAxisSize:
                                                                   MainAxisSize
@@ -844,9 +874,10 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                               2.5,
                                                                           color:
                                                                               Colors.black)),
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5),
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(
+                                                                          5),
                                                                   child: Column(
                                                                     children: [
                                                                       Row(
@@ -1183,7 +1214,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                       1,
                                                                   child: Center(
                                                                       child: Container(
-                                                                          padding: const EdgeInsets.all(
+                                                                          padding: const EdgeInsets
+                                                                              .all(
                                                                               0),
                                                                           width:
                                                                               90,

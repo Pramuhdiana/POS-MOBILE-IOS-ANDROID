@@ -27,7 +27,7 @@ class ListCrmWhatsapp extends StatelessWidget {
           if (snapshot.data.isEmpty) {
             return const Center(
                 child: Text(
-              'You Have not \n\n report Whatsapp',
+              'You Have Not \n\n Report Whatsapp',
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 26,

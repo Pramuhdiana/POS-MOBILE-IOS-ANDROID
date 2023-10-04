@@ -7,8 +7,10 @@ import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/database/db_notification_dummy.dart';
 import 'package:e_shop/database/model_allitems_retur.dart';
 import 'package:e_shop/database/model_alltransaksi.dart';
+import 'package:e_shop/models/customer_metier.dart';
 import 'package:e_shop/provider/provider_notification.dart';
 import 'package:e_shop/search/new_search.dart';
+import 'package:e_shop/toko/add_customer_metier.dart';
 import 'package:e_shop/widgets/shimmer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
@@ -35,7 +37,6 @@ import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
 import 'package:e_shop/push_notifications/push_notifications_system.dart';
 import 'package:e_shop/qr/qr_scanner.dart';
-import 'package:e_shop/toko/upload_toko_screen.dart';
 import 'package:e_shop/widgets/alert_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -130,23 +131,33 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    context.read<PCart>().clearCart(); //clear cart
+    loadCartFromApiPOSSALES(); //ambil data cart
     isLoading = true;
     newOpen = sharedPreferences!.getString("newOpenHome").toString();
     controller?.stopCamera();
     if (newOpen == 'true') {
+      print('masuk awal');
       _loadFromApi();
     } else {
+      print('masuk second');
       DbAlltransaksi.db.getAllHistory().then((value) {
         setState(() {
           qtyProductHistory = value.length;
         });
       });
-      //initial customer
-      DbAllCustomer.db.getAllcustomer().then((value) {
-        setState(() {
-          qtyProductCustomer = value.length;
-        });
-      });
+      //initial customer name
+      sharedPreferences!.getString('role_sales_brand')! == '3'
+          ? getCustomerMetier().then((value) {
+              setState(() {
+                qtyProductCustomer = value.length;
+              });
+            })
+          : DbAllCustomer.db.getAllcustomer().then((value) {
+              setState(() {
+                qtyProductCustomer = value.length;
+              });
+            });
       //initial customer
       DbCRM.db.getAllcrm().then((value) {
         setState(() {
@@ -1737,7 +1748,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
 
-                    //add toko
+                    //add toko baru
                     Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: SizedBox(
@@ -1749,13 +1760,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50.0),
-                            // side: BorderSide(color: Colors.grey.shade200)
                           ))),
                           onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (c) => const UploadTokoScreen()));
+                                    builder: (c) => AddCustomerMetierScreen()));
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1771,9 +1781,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               const Expanded(
                                 child: Text(
-                                  'Add toko',
+                                  'Add Customer',
                                   style: TextStyle(fontSize: 16),
-                                  maxLines: 1,
+                                  maxLines: 2,
                                 ),
                               ),
                               Expanded(
@@ -1789,6 +1799,59 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
+                    // //! add toko sebelumnya yang dengan gambar
+                    // Padding(
+                    //     padding: const EdgeInsets.only(top: 15),
+                    //     child: SizedBox(
+                    //       width: MediaQuery.of(context).size.width * 1,
+                    //       height: 50,
+                    //       child: ElevatedButton(
+                    //         style: ButtonStyle(
+                    //             shape: MaterialStateProperty.all<
+                    //                     RoundedRectangleBorder>(
+                    //                 RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.circular(50.0),
+                    //         ))),
+                    //         onPressed: () {
+                    //           Navigator.push(
+                    //               context,
+                    //               MaterialPageRoute(
+                    //                   builder: (c) =>
+                    //                       const UploadTokoScreen()));
+                    //         },
+                    //         child: Row(
+                    //           mainAxisAlignment:
+                    //               MainAxisAlignment.spaceBetween,
+                    //           children: [
+                    //             Padding(
+                    //               padding: const EdgeInsets.only(right: 5),
+                    //               child: Image.asset(
+                    //                 "images/store (2).png",
+                    //                 color: Colors.white,
+                    //                 width: 25,
+                    //                 height: 25,
+                    //               ),
+                    //             ),
+                    //             const Expanded(
+                    //               child: Text(
+                    //                 'Add toko',
+                    //                 style: TextStyle(fontSize: 16),
+                    //                 maxLines: 1,
+                    //               ),
+                    //             ),
+                    //             Expanded(
+                    //               child: Text(
+                    //                 '${CurrencyFormat.convertToTitik(qtyProductCustomer, 0)} Customers',
+                    //                 textAlign: TextAlign.right,
+                    //                 style: const TextStyle(fontSize: 11),
+                    //                 maxLines: 2,
+                    //               ),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
 
                     //CRM
                     Padding(
@@ -1907,9 +1970,9 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     sharedPreferences!.setString('msg', 'refresh');
     var apiProvider = ApiServices();
-    context.read<PCart>().clearCart();
-    context.read<PCartToko>().clearCart();
-    context.read<PCartRetur>().clearCart();
+    // context.read<PCart>().clearCart();
+    // context.read<PCartToko>().clearCart();
+    // context.read<PCartRetur>().clearCart();
     await DbAllitems.db.deleteAllitems();
     await DbAllitemsToko.db.deleteAllitemsToko();
     await DbAlltransaksi.db.deleteAlltransaksi();
@@ -1921,6 +1984,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await _getDataToko(token);
     await _getDataRetur(token);
     await _getDataSales(token);
+    await _getDataHistory(token);
     try {
       await apiProvider.getAllTransaksi();
     } catch (c) {
@@ -1936,18 +2000,12 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (c) {
       Fluttertoast.showToast(msg: "Failed To Load Data all code refrence");
     }
-    try {
-      await apiProvider.getAllCustomer();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all customer");
-    }
     // try {
-    //   await apiProvider.getUsers();
+    //   await apiProvider.getAllCustomer();
     // } catch (c) {
-    //   sharedPreferences!.setString('name', 'Failed To Load Data');
-
-    //   Fluttertoast.showToast(msg: "Failed To Load Data User");
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all customer");
     // }
+
     try {
       await apiProvider.getAllTCRM();
     } catch (c) {
@@ -1963,24 +2021,24 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
 
-    //initial sales
-    // DbAllitems.db.getAllitems().then((value) {
-    //   setState(() {
-    //     qtyProductSales = value.length;
-    //   });
-    // });
     DbAlltransaksi.db.getAllHistory().then((value) {
       setState(() {
         qtyProductHistory = value.length;
       });
     });
-    //initial customer
-    DbAllCustomer.db.getAllcustomer().then((value) {
-      setState(() {
-        qtyProductCustomer = value.length;
-      });
-    });
-    //initial customer
+    //initial customer name
+    sharedPreferences!.getString('role_sales_brand')! == '3'
+        ? getCustomerMetier().then((value) {
+            setState(() {
+              qtyProductCustomer = value.length;
+            });
+          })
+        : DbAllCustomer.db.getAllcustomer().then((value) {
+            setState(() {
+              qtyProductCustomer = value.length;
+            });
+          });
+    //initial crm
     DbCRM.db.getAllcrm().then((value) {
       setState(() {
         qtyProductCRM = value.length;
@@ -2121,5 +2179,20 @@ class _HomeScreenState extends State<HomeScreen> {
       sharedPreferences!.setString('newOpenHome', 'false');
       isLoading = true;
     });
+  }
+
+  Future<List<CustomerMetierModel>> getCustomerMetier() async {
+    String token = sharedPreferences!.getString("token").toString();
+    var response = await Dio().get(
+      ApiConstants.baseUrl + ApiConstants.GETcustomerMetier,
+      options: Options(headers: {"Authorization": 'Bearer $token'}),
+    );
+
+    final data = response.data;
+    if (data != null) {
+      return CustomerMetierModel.fromJsonList(data);
+    }
+
+    return [];
   }
 }

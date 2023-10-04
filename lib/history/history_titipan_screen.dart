@@ -35,7 +35,7 @@ class HistoryTitipanScreen extends StatelessWidget {
           if (snapshot.data.isEmpty) {
             return const Center(
                 child: Text(
-              'You Have not \n\n History Invoice',
+              'You Have Not \n\n History Invoice',
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 26,

@@ -178,7 +178,22 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return Center(
-                                child: Lottie.asset("json/loadingdata.json"));
+                                child: Column(
+                              children: [
+                                const SizedBox(height: 250),
+                                Lottie.asset("json/loadingdata.json"),
+                                const Text(
+                                  'Database OFF',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 26,
+                                      color: Colors.blueGrey,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Acne',
+                                      letterSpacing: 1.5),
+                                )
+                              ],
+                            ));
                           }
 
                           if (snapshot.connectionState ==
@@ -196,7 +211,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                           if (snapshot.data.isEmpty) {
                             return const Center(
                               child: Text(
-                                'You Have not \n\n List Pricing E-Ticketing',
+                                'You Have Not \n\n List Pricing E-Ticketing',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 26,
@@ -2632,7 +2647,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                                           .black)),
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .only(
+                                                                      .only(
                                                                       top: 10),
                                                               child: Column(
                                                                 children: [
@@ -2766,7 +2781,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                                 ? const SizedBox()
                                                                 : Padding(
                                                                     padding: const EdgeInsets
-                                                                            .only(
+                                                                        .only(
                                                                         top:
                                                                             10),
                                                                     child: Text(
@@ -2812,7 +2827,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 10),
                                                         child: GestureDetector(
                                                           onTap: () {
@@ -2837,7 +2852,8 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                               placeholder: (context, url) => Center(
                                                                   child: Container(
                                                                       padding:
-                                                                          const EdgeInsets.all(
+                                                                          const EdgeInsets
+                                                                              .all(
                                                                               0),
                                                                       width: 90,
                                                                       height:
@@ -2865,7 +2881,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 10),
                                                         child: GestureDetector(
                                                           onTap: () {
@@ -2890,7 +2906,8 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                               placeholder: (context, url) => Center(
                                                                   child: Container(
                                                                       padding:
-                                                                          const EdgeInsets.all(
+                                                                          const EdgeInsets
+                                                                              .all(
                                                                               0),
                                                                       width: 90,
                                                                       height:

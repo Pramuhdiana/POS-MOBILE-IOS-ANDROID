@@ -28,6 +28,7 @@ class TransaksiScreen extends StatefulWidget {
 class _TransaksiScreenState extends State<TransaksiScreen> {
   FocusNode numberFocusNode = FocusNode();
   FocusNode numberFocusNode2 = FocusNode();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   RoundedLoadingButtonController btnController =
       RoundedLoadingButtonController();
@@ -66,7 +67,9 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
             dpp -
             addesdiskon;
     if (rate <= 2) {
-      return '\$ ${CurrencyFormat.convertToDollar(total, 0)}';
+      return sharedPreferences!.getString('role_sales_brand') == '3'
+          ? 'Rp.${CurrencyFormat.convertToDollar(total, 0)}'
+          : '\$${CurrencyFormat.convertToDollar(total, 0)}';
     } else {
       return CurrencyFormat.convertToIdr(total, 0);
     }
@@ -107,6 +110,9 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
   @override
   void initState() {
     super.initState();
+    sharedPreferences!.getString('role_sales_brand') == '3'
+        ? idform = 2
+        : idform = 0;
     numberFocusNode.addListener(() {
       bool hasFocus = numberFocusNode.hasFocus;
       if (hasFocus) {
@@ -164,207 +170,237 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
             child: ListView(
               padding: const EdgeInsets.all(4),
               children: <Widget>[
-                ///************************[dropdownBuilder examples]********************************///
-                // const Text("Pilih Toko"),
-                // const Divider(),
-                Row(
-                  children: [
-                    Padding(padding: EdgeInsets.all(4)),
-                    Expanded(
-                      child: DropdownSearch<UserModel>(
-                        asyncItems: (String? filter) => getData(filter),
-                        popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                          searchFieldProps: const TextFieldProps(
-                              decoration: InputDecoration(
-                            labelText: "Search..",
-                            prefixIcon: Icon(Icons.search),
-                          )),
-                          showSelectedItems: true,
-                          itemBuilder: _customPopupItemBuilderExample2,
-                          showSearchBox: true,
-                        ),
-                        compareFn: (item, sItem) => item.id == sItem.id,
-                        onChanged: (item) {
-                          setState(() {
-                            // print(text);
-                            print('toko : ${item?.name}');
-                            print('id  : ${item?.id}');
-                            print('diskonnya  : ${item?.diskon_customer}');
-                            idtoko = item?.id; // menyimpan id toko
-                            toko = item?.name; // menyimpan nama toko
-                          });
-                        },
-                        dropdownDecoratorProps: DropDownDecoratorProps(
-                          dropdownSearchDecoration: InputDecoration(
-                            labelText: 'Choose customer',
-                            filled: true,
-                            fillColor: Theme.of(context)
-                                .inputDecorationTheme
-                                .fillColor,
+                //choose customer
+                sharedPreferences!.getString('role_sales_brand') == '3'
+                    ? SizedBox()
+                    : Container(
+                        padding: const EdgeInsets.only(top: 10),
+                        height: 80,
+                        child: DropdownSearch<UserModel>(
+                          asyncItems: (String? filter) => getData(filter),
+                          popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                            searchFieldProps: const TextFieldProps(
+                                decoration: InputDecoration(
+                              labelText: "Search..",
+                              prefixIcon: Icon(Icons.search),
+                            )),
+                            showSelectedItems: true,
+                            itemBuilder: _customPopupItemBuilderExample2,
+                            showSearchBox: true,
+                          ),
+                          compareFn: (item, sItem) => item.id == sItem.id,
+                          onChanged: (item) {
+                            setState(() {
+                              // print(text);
+                              print('toko : ${item?.name}');
+                              print('id  : ${item?.id}');
+                              print('diskonnya  : ${item?.diskon_customer}');
+                              idtoko = item?.id; // menyimpan id toko
+                              toko = item?.name; // menyimpan nama toko
+                            });
+                          },
+                          dropdownDecoratorProps: DropDownDecoratorProps(
+                            dropdownSearchDecoration: InputDecoration(
+                              labelText: 'Choose customer',
+                              filled: true,
+                              fillColor: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .fillColor,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+
                 //jenis form
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text("Select type of form"),
-                const Divider(),
-                Row(
-                  children: [
-                    const Padding(padding: EdgeInsets.all(4)),
-                    Expanded(
-                      child: DropdownSearch<String>(
-                        items: const ["INVOICE", "TITIPAN", "PAMERAN"],
-                        onChanged: (text) {
-                          setState(() {
-                            form = text;
-                            if (form == "INVOICE") {
-                              idform = 1;
-                              idformAPI = 1;
-                              print(idform);
-                            } else if (form == "TITIPAN") {
-                              idform = 2;
-                              idformAPI = 2;
+                sharedPreferences!.getString('role_sales_brand') == '3'
+                    ? SizedBox()
+                    : Container(
+                        padding: const EdgeInsets.only(top: 10),
+                        height: 80,
+                        child: DropdownSearch<String>(
+                          items: const ["INVOICE", "TITIPAN", "PAMERAN"],
+                          onChanged: (text) {
+                            setState(() {
+                              form = text;
+                              if (form == "INVOICE") {
+                                idform = 1;
+                                idformAPI = 1;
+                                print(idform);
+                              } else if (form == "TITIPAN") {
+                                idform = 2;
+                                idformAPI = 2;
 
-                              print(idform);
-                            } else if (form == "PAMERAN") {
-                              idform = 3;
-                              idformAPI = 2;
+                                print(idform);
+                              } else if (form == "PAMERAN") {
+                                idform = 3;
+                                idformAPI = 2;
 
-                              print(idform);
-                            } else {
-                              idform = 0;
-                              idformAPI = 0;
+                                print(idform);
+                              } else {
+                                idform = 0;
+                                idformAPI = 0;
 
-                              print(idform);
-                            }
-                          });
-                        },
-                        dropdownDecoratorProps: DropDownDecoratorProps(
-                          dropdownSearchDecoration: InputDecoration(
-                            labelText: 'Jenis Form',
-                            filled: true,
-                            fillColor: Theme.of(context)
-                                .inputDecorationTheme
-                                .fillColor,
+                                print(idform);
+                              }
+                            });
+                          },
+                          dropdownDecoratorProps: DropDownDecoratorProps(
+                            dropdownSearchDecoration: InputDecoration(
+                              labelText: "Select type of form",
+                              filled: true,
+                              fillColor: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .fillColor,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
 
-                //rate
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text("Rate"),
-                const Divider(),
-                Row(
-                  children: [
-                    const Padding(padding: EdgeInsets.all(4)),
-                    Expanded(
-                      child: DropdownSearch<int>(
-                        items: const [11500, 11900, 13000],
-                        onChanged: (value) {
-                          setState(() {
-                            rate = value!;
-                          });
-                        },
-                        dropdownDecoratorProps: DropDownDecoratorProps(
-                          dropdownSearchDecoration: InputDecoration(
-                            labelText: 'Rate',
-                            filled: true,
-                            fillColor: Theme.of(context)
-                                .inputDecorationTheme
-                                .fillColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                //Rate
+                idform == 0
+                    ? const SizedBox()
+                    : idform == 4
+                        ? const SizedBox()
+                        : sharedPreferences!.getString('role_sales_brand') ==
+                                '3'
+                            ? const SizedBox()
+                            : Container(
+                                padding: const EdgeInsets.only(top: 10),
+                                height: 80,
+                                child: DropdownSearch<int>(
+                                  items: const [11500, 11900, 13000],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      rate = value!;
+                                    });
+                                  },
+                                  dropdownDecoratorProps:
+                                      DropDownDecoratorProps(
+                                    dropdownSearchDecoration: InputDecoration(
+                                      labelText: "Rate",
+                                      filled: true,
+                                      fillColor: Theme.of(context)
+                                          .inputDecorationTheme
+                                          .fillColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
 
                 //Basic Diskon
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text("Basic Diskon"),
-                const Divider(),
-                Row(
-                  children: [
-                    const Padding(padding: EdgeInsets.all(4)),
-                    Expanded(
-                      child: DropdownSearch<int>(
-                        items: const [60, 63],
-                        onChanged: (value) {
-                          setState(() {
-                            diskon = value!;
-                          });
-                        },
-                        dropdownDecoratorProps: DropDownDecoratorProps(
-                          dropdownSearchDecoration: InputDecoration(
-                            labelText: 'Basic Diskon',
-                            filled: true,
-                            fillColor: Theme.of(context)
-                                .inputDecorationTheme
-                                .fillColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                // if (idform != 4 &&
+                //     sharedPreferences!.getString('role_sales_brand') != '3')
+                idform == 0
+                    ? const SizedBox()
+                    : idform == 4
+                        ? const SizedBox()
+                        : sharedPreferences!.getString('role_sales_brand') ==
+                                '3'
+                            ? const SizedBox()
+                            : Container(
+                                padding: const EdgeInsets.only(top: 10),
+                                height: 80,
+                                child: DropdownSearch<int>(
+                                  items: const [60, 63],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      diskon = value!;
+                                    });
+                                  },
+                                  dropdownDecoratorProps:
+                                      DropDownDecoratorProps(
+                                    dropdownSearchDecoration: InputDecoration(
+                                      labelText: "Basic discount",
+                                      filled: true,
+                                      fillColor: Theme.of(context)
+                                          .inputDecorationTheme
+                                          .fillColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+//addesdiskon
 
-                // addesdiskon
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text("ADD DISKON"),
-                const Divider(),
-                SizedBox(
-                  width: 250,
-                  child: TextField(
-                    onChanged: (addDiskon) {
-                      setState(() {
-                        addesdiskon = int.parse(addDiskon);
-                      });
-                    },
-                    decoration: const InputDecoration(labelText: "ADD DISKON"),
-                    controller: addDiskon,
-                    keyboardType: TextInputType.number,
-                    focusNode: numberFocusNode,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  ),
-                ),
+                idform == 0
+                    ? const SizedBox()
+                    : idform == 4
+                        ? const SizedBox()
+                        : sharedPreferences!.getString('role_sales_brand') ==
+                                '3'
+                            ? const SizedBox()
+                            : Container(
+                                padding: const EdgeInsets.only(top: 10),
+                                height: 80,
+                                child: TextFormField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                  textInputAction: TextInputAction.next,
+                                  controller: addDiskon,
+                                  focusNode: numberFocusNode,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  onChanged: (addDiskon) {
+                                    addDiskon.isEmpty
+                                        ? setState(() {
+                                            addesdiskon = 0;
+                                          })
+                                        : setState(() {
+                                            addesdiskon = int.parse(addDiskon);
+                                          });
+                                  },
+                                  decoration: InputDecoration(
+                                    labelText: "Add discount",
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0)),
+                                  ),
+                                ),
+                              ),
 
                 //DP
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text("DP"),
-                const Divider(),
-                SizedBox(
-                  width: 250,
-                  child: TextField(
-                    onChanged: (dp) {
-                      setState(() {
-                        dpp = int.parse(dp);
-                      });
-                    },
-                    decoration: const InputDecoration(labelText: "DP"),
-                    controller: dp,
-                    focusNode: numberFocusNode2,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                  ),
-                ),
+                idform == 0
+                    ? const SizedBox()
+                    : idform == 4
+                        ? const SizedBox()
+                        : sharedPreferences!.getString('role_sales_brand') ==
+                                '3'
+                            ? const SizedBox()
+                            : Container(
+                                padding: const EdgeInsets.only(top: 10),
+                                height: 80,
+                                child: TextFormField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                  textInputAction: TextInputAction.next,
+                                  controller: dp,
+                                  focusNode: numberFocusNode2,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  onChanged: (dp) {
+                                    dp.isEmpty
+                                        ? setState(() {
+                                            dpp = 0;
+                                          })
+                                        : setState(() {
+                                            dpp = int.parse(dp);
+                                          });
+                                  },
+                                  decoration: InputDecoration(
+                                    labelText: "DP",
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0)),
+                                  ),
+                                ),
+                              ),
                 const SizedBox(height: 30),
                 const Divider(
                   color: Colors.black,
@@ -382,19 +418,23 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 40),
-          child: CustomLoadingButton(
-            controller: btnController,
-            onPressed: () {
-              formValidation();
-            },
-            child: const Text(
-              "Save Transaction",
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ));
+        bottomNavigationBar: idform == 0
+            ? const SizedBox()
+            : Padding(
+                padding: const EdgeInsets.only(bottom: 40),
+                child: CustomLoadingButton(
+                  controller: btnController,
+                  onPressed: () {
+                    sharedPreferences!.getString('role_sales_brand') == '3'
+                        ? formValidationMetier()
+                        : formValidation();
+                  },
+                  child: const Text(
+                    "Save Transaction",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ));
   }
 
   formValidation() async {
@@ -407,6 +447,11 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
       Navigator.push(context,
           MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
     }
+  }
+
+  //validasi metier
+  formValidationMetier() async {
+    await postAPImetier();
   }
 
   Widget _customPopupItemBuilderExample2(
@@ -487,6 +532,38 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
         },
         body: body);
     print(response.body);
+  }
+
+  postAPImetier() async {
+    String token = sharedPreferences!.getString("token").toString();
+    String customer_id = '19';
+    String jenisform_id = '2';
+    String total = totalRp;
+    print(total);
+    Map<String, String> body = {
+      'customer_id': customer_id,
+      'jenisform_id': jenisform_id,
+      'total': total
+    };
+    final response = await http.post(
+        Uri.parse(ApiConstants.baseUrl + ApiConstants.POSTmetiercheckout),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+        },
+        body: body);
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      btnController.success(); //sucses
+      context.read<PCart>().clearCart(); //clear cart
+      Navigator.push(context,
+          MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
+    } else {
+      btnController.error();
+      Future.delayed(const Duration(seconds: 1)).then((value) {
+        btnController.reset(); //reset
+      });
+    }
   }
 }
 

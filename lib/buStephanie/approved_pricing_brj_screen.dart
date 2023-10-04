@@ -203,7 +203,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                           if (snapshot.hasError) {
                             return const Center(
                               child: Text(
-                                'You Have not \n\n List Pricing BRJ',
+                                'You Have Not \n\n List Pricing BRJ',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 26,
@@ -229,7 +229,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                           if (snapshot.data.isEmpty) {
                             return const Center(
                               child: Text(
-                                'You Have not \n\n List Pricing BRJ',
+                                'You Have Not \n\n List Pricing BRJ',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 26,

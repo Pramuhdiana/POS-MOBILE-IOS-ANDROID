@@ -135,6 +135,22 @@ class ApiServices {
     }).toList();
   }
 
+  Future<List<Null>> getAllItemsTokoMetier() async {
+    var url = ApiConstants.baseUrl + ApiConstants.GETposTokoendpoint;
+    Response response = await Dio().get(url,
+        options: Options(headers: {"Authorization": "Bearer $token"}));
+    // List jsonResponse = json.decode(response.body);
+
+    //     var allData =
+    //         jsonResponse.map((data) => FormDesignerModel.fromJson(data)).toList();
+
+    return (response.data as List).map((itemstoko) {
+      DbAllitemsToko.db
+          .createAllitemsToko(ModelAllitemsToko.fromJson(itemstoko));
+      print('insert to database allitems toko');
+    }).toList();
+  }
+
   Future<List<Null>> getAllItemsRetur() async {
     var url = ApiConstants.baseUrl + ApiConstants.GETposReturendpoint;
     Response response = await Dio().get(url,

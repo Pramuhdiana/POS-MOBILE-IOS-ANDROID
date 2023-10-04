@@ -29,7 +29,7 @@ class ListAllNotif extends StatelessWidget {
           if (snapshot.data.isEmpty) {
             return const Center(
                 child: Text(
-              'You Have not \n\nNotification',
+              'You Have Not \n\nNotification',
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 26,

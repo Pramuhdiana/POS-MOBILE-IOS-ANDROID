@@ -27,7 +27,7 @@ class ListCrmVisist extends StatelessWidget {
           if (snapshot.data.isEmpty) {
             return const Center(
                 child: Text(
-              'You Have not \n\n report Visit',
+              'You Have Not \n\n Report Visit',
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 26,
