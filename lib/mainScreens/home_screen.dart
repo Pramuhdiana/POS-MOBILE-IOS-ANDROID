@@ -427,6 +427,10 @@ class _HomeScreenState extends State<HomeScreen> {
             );
       }
     }); //ambil data notif
+    sharedPreferences!.setString('newOpen', 'true');
+    sharedPreferences!.setString('newOpenPosSales', 'true');
+    sharedPreferences!.setString('newOpenPosToko', 'true');
+    sharedPreferences!.setString('newOpenPosRetur', 'true');
     await DbAlltransaksi.db.getAlltransaksi(1); //ambil data ntransaksi
     await DbAlltransaksi.db.getAllHistory().then((value) {
       setState(() {
@@ -438,6 +442,21 @@ class _HomeScreenState extends State<HomeScreen> {
         qtyProductCRM = value.length;
       });
     });
+    //? refresh pos sales
+    await DbAllitems.db.deleteAllitems();
+    try {
+      _getDataSales(token);
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items");
+    }
+
+    //? refresh pos toko
+    await DbAllitemsToko.db.deleteAllitemsToko();
+    try {
+      _getDataToko(token);
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items toko");
+    }
   }
 
   @override

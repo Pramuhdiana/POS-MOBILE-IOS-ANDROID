@@ -539,11 +539,13 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
     String customer_id = '19';
     String jenisform_id = '2';
     String total = totalRp;
+    String cart_totalquantity = context.read<PCart>().count.toString();
     print(total);
     Map<String, String> body = {
       'customer_id': customer_id,
       'jenisform_id': jenisform_id,
-      'total': total
+      'total': total,
+      'cart_totalquantity': cart_totalquantity, //total item di cart
     };
     final response = await http.post(
         Uri.parse(ApiConstants.baseUrl + ApiConstants.POSTmetiercheckout),
