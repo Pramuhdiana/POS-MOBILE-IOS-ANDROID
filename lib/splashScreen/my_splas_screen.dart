@@ -48,6 +48,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
             sharedPreferences!.setString('newOpenPosSales', 'true');
             sharedPreferences!.setString('newOpenPosToko', 'true');
             sharedPreferences!.setString('newOpenPosRetur', 'true');
+            sharedPreferences?.setBool('loading', true);
             // sharedPreferences!.setString('newOpenHistory', 'true');
             sharedPreferences!.setString('total_product_sales', '0');
             await getToken();
@@ -57,6 +58,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
                     MaterialPageRoute(builder: (c) => const MainScreen()));
           } catch (c) {
             sharedPreferences!.setString('newOpen', 'true');
+            sharedPreferences?.setBool('loading', true);
             sharedPreferences!.setString('newOpenHome', 'true');
             sharedPreferences!.setString('newOpenPosSales', 'true');
             sharedPreferences!.setString('newOpenPosToko', 'true');

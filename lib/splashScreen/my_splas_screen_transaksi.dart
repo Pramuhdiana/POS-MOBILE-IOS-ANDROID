@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/api/api_services.dart';
-import 'package:e_shop/database/db_allitems_retur.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gif/flutter_gif.dart';
@@ -37,7 +36,7 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
     await DbAllitems.db.deleteAllitems();
     await DbAllitemsToko.db.deleteAllitemsToko();
     await DbAlltransaksi.db.deleteAlltransaksi();
-    await DbAllitemsRetur.db.deleteAllitemsRetur();
+    // await DbAllitemsRetur.db.deleteAllitemsRetur();
     await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
     await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
     try {
@@ -55,11 +54,11 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
     } catch (c) {
       Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
     }
-    try {
-      await apiProvider.getAllItemsRetur();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
-    }
+    // try {
+    //   await apiProvider.getAllItemsRetur();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
+    // }
     try {
       await apiProvider.getAllDetailTransaksi();
     } catch (c) {
@@ -82,38 +81,38 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
 
     //   Fluttertoast.showToast(msg: "Failed To Load Data User");
     // }
-    try {
-      await apiProvider.getAllTCRM();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data CRM");
-    }
+    // try {
+    //   await apiProvider.getAllTCRM();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data CRM");
+    // }
 
     // wait for 2 seconds to simulate loading of data
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
 
     setState(() {
       isLoading = false;
     });
   }
 
-  _loadAllDataApi() async {
-    setState(() {
-      isLoading = true;
-    });
+  // _loadAllDataApi() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
 
-    var apiProvider = ApiServicesFirebase();
-    await apiProvider.getAllItems();
-    await apiProvider.getAllItemsToko();
-    await apiProvider.getAllDetailTransaksi();
-    // await apiProvider.getAllTransaksi();
+  //   var apiProvider = ApiServicesFirebase();
+  //   await apiProvider.getAllItems();
+  //   await apiProvider.getAllItemsToko();
+  //   await apiProvider.getAllDetailTransaksi();
+  //   // await apiProvider.getAllTransaksi();
 
-    // wait for 2 seconds to simulate loading of data
-    await Future.delayed(const Duration(seconds: 2));
+  //   // wait for 2 seconds to simulate loading of data
+  //   await Future.delayed(const Duration(seconds: 2));
 
-    setState(() {
-      isLoading = false;
-    });
-  }
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  // }
 
   splashScreenTimer() {
     Timer(const Duration(seconds: 1), () async {

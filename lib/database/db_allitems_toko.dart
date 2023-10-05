@@ -115,6 +115,20 @@ class DbAllitemsToko {
     return list;
   }
 
+  //gett all items toko
+  Future<List<ModelAllitemsToko>> getAllToko() async {
+    final db = await database;
+    final res =
+        await db.rawQuery('SELECT * FROM allitemstoko WHERE qty=?', [1]);
+    // final res = await db.rawQuery("SELECT * FROM allitemstoko");
+
+    List<ModelAllitemsToko> list = res.isNotEmpty
+        ? res.map((c) => ModelAllitemsToko.fromJson(c)).toList()
+        : [];
+
+    return list;
+  }
+
   //gett all items toko untuk metier
   Future<List<ModelAllitemsToko>> getAllitemsTokoMetier(idtoko) async {
     final db = await database;

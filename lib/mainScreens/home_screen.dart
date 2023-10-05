@@ -106,9 +106,9 @@ class _HomeScreenState extends State<HomeScreen> {
   QRViewController? controller;
   XFile? imgXFile;
   final ImagePicker imagePicker = ImagePicker();
-  int? qtyProductSales = sharedPreferences!.getInt('qtyProductSales');
-  int? qtyProductToko = sharedPreferences!.getInt('qtyProductToko');
-  int? qtyProductRetur = sharedPreferences!.getInt('qtyProductRetur');
+  int? qtyProductSales = 0;
+  int? qtyProductToko = 0;
+  int? qtyProductRetur = 0;
   int? qtyProductHistory = 0;
   int? qtyProductCustomer = 0;
   int? qtyProductCRM = 0;
@@ -141,6 +141,25 @@ class _HomeScreenState extends State<HomeScreen> {
       _loadFromApi();
     } else {
       print('masuk second');
+      _getDataToko(token);
+      _getDataRetur(token);
+      _getDataSales(token);
+      // DbAllitems.db.getAllitems().then((value) {
+      //   setState(() {
+      //     qtyProductSales = value.length;
+      //   });
+      // });
+      // DbAllitemsToko.db.getAllToko().then((value) {
+      //   setState(() {
+      //     qtyProductToko = value.length;
+      //   });
+      // });
+      // DbAllitemsRetur.db.getAllRetur().then((value) {
+      //   setState(() {
+      //     qtyProductRetur = value.length;
+      //   });
+      // });
+
       DbAlltransaksi.db.getAllHistory().then((value) {
         setState(() {
           qtyProductHistory = value.length;
@@ -315,11 +334,11 @@ class _HomeScreenState extends State<HomeScreen> {
               sharedPreferences!.getString('id'));
           g = filterByMetier.toList();
           qtyProductToko = g.length;
-          sharedPreferences!.setInt('qtyProductToko', g.length);
+          // sharedPreferences!.setInt('qtyProductToko', g.length);
         });
       } else {
         setState(() {
-          sharedPreferences!.setInt('qtyProductToko', g.length);
+          // sharedPreferences!.setInt('qtyProductToko', g.length);
           qtyProductToko = g.length;
         });
       }
@@ -343,7 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
             .map((data) => ModelAllitemsRetur.fromJson(data))
             .toList();
         setState(() {
-          sharedPreferences!.setInt('qtyProductRetur', g.length);
+          // sharedPreferences!.setInt('qtyProductRetur', g.length);
           qtyProductRetur = g.length;
           print(qtyProductRetur);
         });
@@ -370,7 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
             .map((data) => ModelAllitemsRetur.fromJson(data))
             .toList();
         setState(() {
-          sharedPreferences!.setInt('qtyProductSales', g.length);
+          // sharedPreferences!.setInt('qtyProductSales', g.length);
           qtyProductSales = g.length;
           print(qtyProductSales);
         });
@@ -398,7 +417,7 @@ class _HomeScreenState extends State<HomeScreen> {
             .map((data) => ModelAlltransaksi.fromJson(data))
             .toList();
         setState(() {
-          sharedPreferences!.setInt('qtyProductHistory', g.length);
+          // sharedPreferences!.setInt('qtyProductHistory', g.length);
           qtyProductHistory = g.length;
           print(qtyProductHistory);
         });
@@ -2005,6 +2024,21 @@ class _HomeScreenState extends State<HomeScreen> {
     await _getDataSales(token);
     await _getDataHistory(token);
     try {
+      apiProvider.getAllItems();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items");
+    }
+    try {
+      apiProvider.getAllItemsToko();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items");
+    }
+    try {
+      apiProvider.getAllItemsRetur();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items");
+    }
+    try {
       await apiProvider.getAllTransaksi();
     } catch (c) {
       Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
@@ -2019,11 +2053,11 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (c) {
       Fluttertoast.showToast(msg: "Failed To Load Data all code refrence");
     }
-    // try {
-    //   await apiProvider.getAllCustomer();
-    // } catch (c) {
-    //   Fluttertoast.showToast(msg: "Failed To Load Data all customer");
-    // }
+    try {
+      await apiProvider.getAllCustomer();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all customer");
+    }
 
     try {
       await apiProvider.getAllTCRM();
@@ -2031,15 +2065,32 @@ class _HomeScreenState extends State<HomeScreen> {
       Fluttertoast.showToast(msg: "Failed To Load Data CRM");
     }
 
-    context.read<PNewNotif>().clearNotif();
+    context.read<PNewNotif>().clearNotif(); //? clear notif
     await DbNotifDummy.db.getAllNotif(1).then((value) {
       for (var i = 0; i < value.length; i++) {
+        //* add notif
         context.read<PNewNotif>().addItem(
               1,
             );
       }
     });
+    // DbAllitems.db.getAllitems().then((value) {
+    //   setState(() {
+    //     qtyProductSales = value.length;
+    //   });
+    // });
+    // DbAllitemsToko.db.getAllToko().then((value) {
+    //   setState(() {
+    //     qtyProductToko = value.length;
+    //   });
+    // });
+    // DbAllitemsRetur.db.getAllRetur().then((value) {
+    //   setState(() {
+    //     qtyProductRetur = value.length;
+    //   });
+    // });
 
+    //initial qty history
     DbAlltransaksi.db.getAllHistory().then((value) {
       setState(() {
         qtyProductHistory = value.length;
