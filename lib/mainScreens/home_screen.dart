@@ -2019,10 +2019,27 @@ class _HomeScreenState extends State<HomeScreen> {
     await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
     await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
     await DbCRM.db.deleteAllcrm();
-    await _getDataToko(token);
-    await _getDataRetur(token);
-    await _getDataSales(token);
-    await _getDataHistory(token);
+    try {
+      await _getDataToko(token);
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items toko");
+    }
+    try {
+      await _getDataHistory(token);
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all history");
+    }
+    try {
+      await _getDataRetur(token);
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all retur");
+    }
+    try {
+      await _getDataSales(token);
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all items");
+    }
+
     try {
       apiProvider.getAllItems();
     } catch (c) {

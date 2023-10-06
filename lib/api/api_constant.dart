@@ -41,6 +41,7 @@ class ApiConstants {
   static String POSTkeranjangreturendpoint = '/createcartposretur';
   static String POSTsalescheckoutendpoint = '/possalescheckout';
   static String POSTtokocheckoutendpoint = '/postokocheckout';
+  static String POSTtokometiercheckoutendpoint = '/postokometiercheckout';
   static String POSTreturcheckoutendpoint = '/posreturcheckout';
   static String POSTcreateCRMendpoint = '/createcrmsales';
   static String POSTcreateCustomerMetier = '/createcustomer';

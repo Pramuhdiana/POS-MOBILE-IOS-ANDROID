@@ -72,7 +72,7 @@ class HistoryModelNew extends StatelessWidget {
                         .format(DateTime.parse(order.created_at)) +
                     (int.parse(DateFormat('hh')
                                 .format(DateTime.parse(order.created_at))) +
-                            8)
+                            7)
                         .toString() +
                     DateFormat(':mm').format(DateTime.parse(order.created_at))),
 

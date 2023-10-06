@@ -42,6 +42,9 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
   int result = 0;
   int diskon = 0;
   int dpp = 0;
+  String? taxApi = '0';
+  String? totalPaymentApi = '0';
+  int customerMetierId = 0;
   int addesdiskon = 0;
   TextEditingController dp = TextEditingController();
   TextEditingController customerMetier = TextEditingController();
@@ -101,10 +104,26 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
     return 'Rp.${CurrencyFormat.convertToDollar(int.parse(total.round().toString()), 0)}';
   }
 
-  String get tax {
+  String get totalRpApi {
     // var dpin = int.parse(dp);
-    var total = ((context.read<PCartToko>().totalPrice2) * rate) * (2 / 100);
-    return 'Rp.${CurrencyFormat.convertToDollar(int.parse(total.round().toString()), 0)}';
+    var total = ((context.read<PCartToko>().totalPrice2) * rate);
+    return total.toString();
+  }
+
+  String get tax {
+    var total = (((context.read<PCartToko>().totalPrice2) * rate) *
+                (1 - (diskon / 100)) -
+            dpp -
+            addesdiskon) *
+        0.022;
+    taxApi = total.toString();
+    if (rate <= 2) {
+      return sharedPreferences!.getString('role_sales_brand') == '3'
+          ? 'Rp.${CurrencyFormat.convertToDollar(total, 0)}'
+          : '\$${CurrencyFormat.convertToDollar(total, 0)}';
+    } else {
+      return CurrencyFormat.convertToIdr(total, 0);
+    }
   }
 
   String get totalPayment {
@@ -115,6 +134,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
     var totalTax = ((context.read<PCartToko>().totalPrice2) * rate) * (2 / 100);
 
     var total = totalPrice - totalTax;
+    totalPaymentApi = total.toString();
     return 'Rp.${CurrencyFormat.convertToDollar(int.parse(total.round().toString()), 0)}';
   }
 
@@ -251,6 +271,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                                   onChanged: (item) {
                                     setState(() {
                                       customerMetier.text = item!.name;
+                                      customerMetierId = item.id;
                                     });
                                   },
                                   dropdownDecoratorProps:
@@ -503,7 +524,8 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                                       style: TextStyle(fontSize: 20),
                                     ),
                                     Text(
-                                      "$totalPayment",
+                                      // "$totalPayment",
+                                      "$totalPrice3",
                                       style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
@@ -559,7 +581,9 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
       btnController.reset(); //error
       Fluttertoast.showToast(msg: 'Jenis form required');
     } else {
-      await postAPItoko();
+      sharedPreferences!.getString('role_sales_brand') == '3'
+          ? await postAPItokoMetier()
+          : await postAPItoko();
       btnController.success(); //sucses
       context.read<PCartToko>().clearCart(); //clear cart
       Navigator.push(context,
@@ -594,7 +618,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
     String addesdiskon = '0';
     String basicrate = rate.toString();
     String nett = totalPriceAPI;
-    String total = totalRp;
+    String total = totalRpApi;
     String diskon_rupiah = totalDiskonRp;
     String addesdiskon_rupiah = addesdiskon;
     String total_potongan = totalDiskonRp;
@@ -620,6 +644,45 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
     print(body);
     final response = await http.post(
         Uri.parse(ApiConstants.baseUrl + ApiConstants.POSTtokocheckoutendpoint),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+        },
+        body: body);
+    print(response.body);
+  }
+
+  postAPItokoMetier() async {
+    String cart_total = context.read<PCartToko>().totalPrice2.toString();
+    String cart_totalquantity = context.read<PCartToko>().count.toString();
+    String customer_idAPI =
+        sharedPreferences!.getString('customer_id').toString();
+    String jenisform_id = idformAPI.toString();
+    String customermetier = customerMetierId.toString();
+    String pajak = taxApi!;
+    String total_potongan = totalDiskonRp;
+    String totalKurangDiskon = totalPrice.toString();
+    String totalKurangPajak = totalPrice.toString();
+    String token = sharedPreferences!.getString("token").toString();
+
+    Map<String, String> body = {
+      'cart_total': cart_total,
+      'cart_totalquantity': cart_totalquantity, //total item di cart
+      'customer_id': customer_idAPI,
+      'jenisform_id': jenisform_id,
+      'diskon': total_potongan,
+      'customermetier': customermetier,
+      'pajak': pajak,
+      'total': cart_total,
+      'diskon_rupiah': total_potongan,
+      'total_potongan': total_potongan,
+      'totalkurangdiskon': totalKurangDiskon,
+      'totalkurangpajak': totalKurangPajak,
+      'totalpembayaran': totalKurangDiskon
+    };
+    print(body);
+    final response = await http.post(
+        Uri.parse(
+            ApiConstants.baseUrl + ApiConstants.POSTtokometiercheckoutendpoint),
         headers: <String, String>{
           'Authorization': 'Bearer $token',
         },
