@@ -1567,6 +1567,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                           Future.delayed(const Duration(seconds: 1)).then((value) {
                                                                                             btnController.reset(); //reset
                                                                                             Navigator.of(context).pop();
+                                                                                            setState(() {});
+
                                                                                             showDialog<String>(
                                                                                                 context: context,
                                                                                                 builder: (BuildContext context) => const AlertDialog(
