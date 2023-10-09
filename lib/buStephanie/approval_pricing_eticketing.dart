@@ -45,6 +45,8 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
   int approveHargaRevisi1 = 0;
   bool updatePrice = false;
   int awalPrice = 0;
+    int apiPrice = 0;
+  String apiNotes = '';
   @override
   void initState() {
     super.initState();
@@ -3558,7 +3560,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                     FilteringTextInputFormatter.digitsOnly
                                                                                   ],
                                                                                   onChanged: (value) {
-                                                                                    price.text = value;
+                                                                                    apiPrice = int.parse(value);
                                                                                   },
                                                                                   decoration: InputDecoration(
                                                                                     hintText: "Update Price (optional)",
@@ -3577,7 +3579,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                   keyboardType: TextInputType.multiline,
                                                                                   maxLines: null,
                                                                                   onChanged: (value) {
-                                                                                    notes.text = value;
+                                                                                    apiNotes = value;
                                                                                   },
                                                                                   decoration: InputDecoration(
                                                                                     labelText: "Notes",

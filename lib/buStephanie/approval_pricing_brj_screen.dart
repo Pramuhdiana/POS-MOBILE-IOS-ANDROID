@@ -40,6 +40,9 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   int limitHistori = 0;
   String date = '';
   double awalPrice = 0;
+  int apiPrice = 0;
+  String apiNotes = '';
+
   @override
   void initState() {
     super.initState();
@@ -1516,7 +1519,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                     FilteringTextInputFormatter.digitsOnly
                                                                                   ],
                                                                                   onChanged: (value) {
-                                                                                    price.text = value;
+                                                                                    apiPrice = int.parse(value);
                                                                                   },
                                                                                   decoration: InputDecoration(
                                                                                     hintText: "Update Price (optional)",
@@ -1535,7 +1538,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                   keyboardType: TextInputType.multiline,
                                                                                   maxLines: null,
                                                                                   onChanged: (value) {
-                                                                                    notes.text = value;
+                                                                                    apiNotes = value;
                                                                                   },
                                                                                   decoration: InputDecoration(
                                                                                     labelText: "Notes",
