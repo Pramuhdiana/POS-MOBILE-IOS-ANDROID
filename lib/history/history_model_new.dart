@@ -212,9 +212,9 @@ class HistoryModelNew extends StatelessWidget {
 
   _launchURLInBrowser() async {
     var url = sharedPreferences!.getString('role_sales_brand') == '3'
-        ? 'http://54.179.58.215:8000/metier/laporan/${order.invoices_number}' //? khusus metier
+        ? 'http://54.179.58.215:8080/metier/laporan/${order.invoices_number}' //? khusus metier
 
-        : 'http://54.179.58.215:8000/transcation/laporan/${order.invoices_number}';
+        : 'http://54.179.58.215:8080/transcation/laporan/${order.invoices_number}';
 
     // 'http://54.179.58.215:8080/transcation/laporan/${order.invoices_number}';
     if (await canLaunch(url)) {

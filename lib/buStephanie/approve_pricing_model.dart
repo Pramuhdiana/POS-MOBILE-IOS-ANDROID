@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 
 List<ApprovePricingModel> allpricing(String str) =>
@@ -56,6 +58,12 @@ class ApprovePricingModel {
   String? budgetCustomer;
   double? grandSTDLabourPrice;
   double? grandSTDDiamondPrice;
+  String? eticketingId;
+  double? customerBudget;
+  double? eticketingEstimatedPrice;
+  double? eticketingApprovalPrice;
+  double? eticketingTargetWeight;
+  double? eticketingTargetDiamond;
 
   ApprovePricingModel({
     this.entryNo,
@@ -105,6 +113,12 @@ class ApprovePricingModel {
     this.budgetCustomer,
     this.grandSTDLabourPrice,
     this.grandSTDDiamondPrice,
+    this.eticketingId,
+    this.customerBudget,
+    this.eticketingEstimatedPrice,
+    this.eticketingApprovalPrice,
+    this.eticketingTargetWeight,
+    this.eticketingTargetDiamond,
   });
 
   factory ApprovePricingModel.fromJson(Map<String, dynamic> json) =>
@@ -156,6 +170,12 @@ class ApprovePricingModel {
         budgetCustomer: (json['customerBudget'] ?? '0').toString(),
         grandSTDLabourPrice: json['grandSTDLabourPrice'],
         grandSTDDiamondPrice: json['grandSTDDiamondPrice'],
+        eticketingId: (json['eticketingId'] ?? '-1').toString(),
+        customerBudget: json['customerBudget'] ?? 0,
+        eticketingEstimatedPrice: json['eticketingEstimatedPrice'] ?? 0,
+        eticketingApprovalPrice: json['eticketingApprovalPrice'] ?? 0,
+        eticketingTargetWeight: json['eticketingApprovalPrice'] ?? 0,
+        eticketingTargetDiamond: json['eticketingTargetDiamond'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -206,5 +226,11 @@ class ApprovePricingModel {
         "budgetCustomer": budgetCustomer,
         "grandSTDLabourPrice": grandSTDLabourPrice,
         "grandSTDDiamondPrice": grandSTDDiamondPrice,
+        "eticketingId": eticketingId,
+        "customerBudget": customerBudget,
+        "eticketingEstimatedPrice": eticketingEstimatedPrice,
+        "eticketingApprovalPrice": eticketingApprovalPrice,
+        "eticketingTargetWeight": eticketingTargetWeight,
+        "eticketingTargetDiamond": eticketingTargetDiamond,
       };
 }

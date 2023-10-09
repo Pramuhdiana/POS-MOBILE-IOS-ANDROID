@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, avoid_print, use_build_context_synchronously
+// ignore_for_file: use_key_in_widget_constructors, avoid_print, use_build_context_synchronously, no_leading_underscores_for_local_identifiers
 
 import 'dart:convert';
 
@@ -29,7 +29,9 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
   bool isLoading = false;
   FocusNode numberFocusNode = FocusNode();
   TextEditingController price = TextEditingController();
+  TextEditingController notes = TextEditingController();
   int totalHistori = 0;
+  double awalPrice = 0;
   int limitHistori = 0;
 
   @override
@@ -289,9 +291,25 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                           (context, snapshot2) {
                                                         if (snapshot2
                                                             .hasError) {
-                                                          return Center(
-                                                              child: Lottie.asset(
-                                                                  "json/loadingdata.json"));
+                                                          return const Center(
+                                                            child: Text(
+                                                              'You Have Not \n\n Approved List Pricing BRJ',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                  fontSize: 26,
+                                                                  color: Colors
+                                                                      .blueGrey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontFamily:
+                                                                      'Acne',
+                                                                  letterSpacing:
+                                                                      1.5),
+                                                            ),
+                                                          );
                                                         }
                                                         if (snapshot2
                                                                 .connectionState ==
@@ -525,9 +543,11 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                                               2.5,
                                                                           color:
                                                                               Colors.black)),
-                                                                  padding: const EdgeInsets
+                                                                  padding:
+                                                                      const EdgeInsets
                                                                           .only(
-                                                                      top: 5),
+                                                                          top:
+                                                                              5),
                                                                   child: Column(
                                                                     children: [
                                                                       Row(
@@ -801,9 +821,11 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                                               2.5,
                                                                           color:
                                                                               Colors.black)),
-                                                                  padding: const EdgeInsets
+                                                                  padding:
+                                                                      const EdgeInsets
                                                                           .only(
-                                                                      top: 5),
+                                                                          top:
+                                                                              5),
                                                                   child: Column(
                                                                     children: [
                                                                       Row(
@@ -1140,7 +1162,8 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                                       1,
                                                                   child: Center(
                                                                       child: Container(
-                                                                          padding: const EdgeInsets.all(
+                                                                          padding: const EdgeInsets
+                                                                              .all(
                                                                               0),
                                                                           width:
                                                                               90,
@@ -1184,29 +1207,39 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                                         data.fgImageFileName),
                                                               )));
                                                 },
-                                                child: ClipRRect(
-                                                  child: CachedNetworkImage(
-                                                    width: 130,
-                                                    imageUrl: ApiConstants
-                                                            .baseUrlImageMdbc +
-                                                        data.fgImageFileName!
-                                                            .toString(),
-                                                    placeholder: (context, url) => Center(
-                                                        child: Container(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(0),
-                                                            width: 90,
-                                                            height: 90,
-                                                            child: Lottie.asset(
-                                                                "json/loading_black.json"))),
-                                                    errorWidget:
-                                                        (context, url, error) =>
+                                                child: Column(
+                                                  children: [
+                                                    ClipRRect(
+                                                      child: CachedNetworkImage(
+                                                        width: 130,
+                                                        imageUrl: ApiConstants
+                                                                .baseUrlImageMdbc +
+                                                            data.fgImageFileName!
+                                                                .toString(),
+                                                        placeholder: (context,
+                                                                url) =>
+                                                            Center(
+                                                                child: Container(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .all(
+                                                                            0),
+                                                                    width: 90,
+                                                                    height: 90,
+                                                                    child: Lottie
+                                                                        .asset(
+                                                                            "json/loading_black.json"))),
+                                                        errorWidget: (context,
+                                                                url, error) =>
                                                             Image.asset(
-                                                      "images/default.jpg",
+                                                          "images/default.jpg",
+                                                        ),
+                                                        fit: BoxFit.cover,
+                                                      ),
                                                     ),
-                                                    fit: BoxFit.cover,
-                                                  ),
+                                                    Text(
+                                                        '${data.productTypeDesc!}')
+                                                  ],
                                                 ),
                                               ),
                                               SizedBox(
@@ -1221,7 +1254,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      data.lotNo!,
+                                                      '${data.lotNo!}  (${data.salesDefinitionCode})',
                                                     ),
                                                     Text(
                                                       'Emas         : ${data.goldWeight!}',
@@ -1268,6 +1301,246 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                         ],
                                                       ),
                                                     ),
+                                                    //? bawah nanti hapus
+                                                    // Container(
+                                                    //   height: 47,
+                                                    //   width:
+                                                    //       MediaQuery.of(context)
+                                                    //               .size
+                                                    //               .width *
+                                                    //           0.5,
+                                                    //   padding:
+                                                    //       const EdgeInsets.only(
+                                                    //           top: 5),
+                                                    //   child:
+                                                    //       FloatingActionButton
+                                                    //           .extended(
+                                                    //     onPressed: () {
+                                                    //       //approve
+                                                    //       showDialog(
+                                                    //           context: context,
+                                                    //           builder:
+                                                    //               (BuildContext
+                                                    //                   context) {
+                                                    //             final _formKey =
+                                                    //                 GlobalKey<
+                                                    //                     FormState>();
+                                                    //             awalPrice = double
+                                                    //                 .parse(data
+                                                    //                     .finalPrice3USD!
+                                                    //                     .toString());
+                                                    //             price.text = '';
+                                                    //             notes.text = '';
+
+                                                    //             RoundedLoadingButtonController
+                                                    //                 btnController =
+                                                    //                 RoundedLoadingButtonController();
+                                                    //             return AlertDialog(
+                                                    //               content:
+                                                    //                   Stack(
+                                                    //                 clipBehavior:
+                                                    //                     Clip.none,
+                                                    //                 children: <Widget>[
+                                                    //                   Positioned(
+                                                    //                     right:
+                                                    //                         -50.0,
+                                                    //                     top:
+                                                    //                         -50.0,
+                                                    //                     child:
+                                                    //                         InkResponse(
+                                                    //                       onTap:
+                                                    //                           () {
+                                                    //                         Navigator.of(context).pop();
+                                                    //                       },
+                                                    //                       child:
+                                                    //                           const CircleAvatar(
+                                                    //                         backgroundColor:
+                                                    //                             Colors.red,
+                                                    //                         child:
+                                                    //                             Icon(Icons.close),
+                                                    //                       ),
+                                                    //                     ),
+                                                    //                   ),
+                                                    //                   Form(
+                                                    //                     key:
+                                                    //                         _formKey,
+                                                    //                     child:
+                                                    //                         SingleChildScrollView(
+                                                    //                       scrollDirection:
+                                                    //                           Axis.vertical,
+                                                    //                       child:
+                                                    //                           Column(
+                                                    //                         mainAxisSize:
+                                                    //                             MainAxisSize.min,
+                                                    //                         children: <Widget>[
+                                                    //                           Row(
+                                                    //                             children: [
+                                                    //                               //? history iket
+                                                    //                               Container(
+                                                    //                                 decoration: BoxDecoration(borderRadius: const BorderRadius.only(topRight: Radius.circular(36), bottomLeft: Radius.circular(36)), color: Colors.grey.shade900, border: Border.all(width: 0.1, color: Colors.white)),
+                                                    //                                 // decoration: BoxDecoration(borderRadius: const BorderRadius.only(topRight: Radius.circular(36), bottomRight: Radius.circular(36)), border: Border.all(width: 2.5, color: Colors.green)), //! warna border saja
+                                                    //                                 height: 120,
+                                                    //                                 width: 125,
+                                                    //                                 child: Column(
+                                                    //                                   mainAxisAlignment: MainAxisAlignment.start,
+                                                    //                                   // crossAxisAlignment: CrossAxisAlignment.start,
+                                                    //                                   children: [
+                                                    //                                     const Center(
+                                                    //                                         child: Text(
+                                                    //                                       'E-Ticketing',
+                                                    //                                       style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                                    //                                     )),
+                                                    //                                     const Divider(
+                                                    //                                       color: Colors.white,
+                                                    //                                       thickness: 1,
+                                                    //                                     ),
+                                                    //                                     Text('${data.diamondWeight!} Crt', style: const TextStyle(color: Colors.white)),
+                                                    //                                     Text('${data.goldWeight!} Gr', style: const TextStyle(color: Colors.white)),
+                                                    //                                     Align(
+                                                    //                                       alignment: Alignment.bottomLeft,
+                                                    //                                       child: Text(
+                                                    //                                         '\$ ${CurrencyFormat.convertToDollar(data.finalPrice3USD, 0)}',
+                                                    //                                         textAlign: TextAlign.left,
+                                                    //                                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                                                    //                                       ),
+                                                    //                                     ),
+                                                    //                                   ],
+                                                    //                                 ),
+                                                    //                               ),
+                                                    //                               const Padding(padding: EdgeInsetsDirectional.symmetric(horizontal: 3)),
+                                                    //                               //? history BRJ
+                                                    //                               Container(
+                                                    //                                 decoration: BoxDecoration(borderRadius: const BorderRadius.only(topLeft: Radius.circular(36), bottomRight: Radius.circular(36)), color: Colors.grey.shade300, border: Border.all(width: 0.1, color: Colors.grey.shade500)),
+                                                    //                                 // decoration: BoxDecoration(borderRadius: const BorderRadius.only(topLeft: Radius.circular(36), bottomLeft: Radius.circular(36)), border: Border.all(width: 2.5, color: Colors.blue)), //! warna border saja
+                                                    //                                 height: 120,
+                                                    //                                 width: 125,
+                                                    //                                 child: Column(
+                                                    //                                   mainAxisAlignment: MainAxisAlignment.start,
+                                                    //                                   children: [
+                                                    //                                     const Center(
+                                                    //                                         child: Text(
+                                                    //                                       'BRJ',
+                                                    //                                       style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                                    //                                     )),
+                                                    //                                     const Divider(
+                                                    //                                       color: Colors.black,
+                                                    //                                       thickness: 1,
+                                                    //                                     ),
+                                                    //                                     Text('${data.diamondWeight!} Crt'),
+                                                    //                                     Text('${data.goldWeight!} Gr'),
+                                                    //                                     Align(
+                                                    //                                       alignment: Alignment.bottomLeft,
+                                                    //                                       child: Text(
+                                                    //                                         '\$ ${CurrencyFormat.convertToDollar(data.finalPrice3USD, 0)}',
+                                                    //                                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+                                                    //                                       ),
+                                                    //                                     ),
+                                                    //                                   ],
+                                                    //                                 ),
+                                                    //                               ),
+                                                    //                             ],
+                                                    //                           ),
+
+                                                    //                           Align(
+                                                    //                             alignment: Alignment.centerLeft,
+                                                    //                             child: Text(
+                                                    //                               'Price : \$ ${CurrencyFormat.convertToDollar(data.finalPrice3USD, 0)}',
+                                                    //                               textAlign: TextAlign.left,
+                                                    //                               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                                    //                             ),
+                                                    //                           ),
+
+                                                    //                           const Divider(
+                                                    //                             thickness: 1,
+                                                    //                             color: Colors.black,
+                                                    //                           ),
+                                                    //                           //price
+                                                    //                           Padding(
+                                                    //                             padding: const EdgeInsets.all(8.0),
+                                                    //                             child: TextFormField(
+                                                    //                               style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                    //                               textInputAction: TextInputAction.next,
+                                                    //                               controller: price,
+                                                    //                               keyboardType: TextInputType.number,
+                                                    //                               focusNode: numberFocusNode,
+                                                    //                               inputFormatters: [
+                                                    //                                 FilteringTextInputFormatter.digitsOnly
+                                                    //                               ],
+                                                    //                               onChanged: (value) {
+                                                    //                                 price.text = value;
+                                                    //                               },
+                                                    //                               decoration: InputDecoration(
+                                                    //                                 hintText: "Update Price (optional)",
+                                                    //                                 // labelText: "Price",
+                                                    //                                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                    //                               ),
+                                                    //                             ),
+                                                    //                           ),
+                                                    //                           //notes
+                                                    //                           Padding(
+                                                    //                             padding: const EdgeInsets.all(8.0),
+                                                    //                             child: TextFormField(
+                                                    //                               style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                                    //                               textInputAction: TextInputAction.newline,
+                                                    //                               controller: notes,
+                                                    //                               keyboardType: TextInputType.multiline,
+                                                    //                               maxLines: null,
+                                                    //                               onChanged: (value) {
+                                                    //                                 notes.text = value;
+                                                    //                               },
+                                                    //                               decoration: InputDecoration(
+                                                    //                                 labelText: "Notes",
+                                                    //                                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                                    //                               ),
+                                                    //                             ),
+                                                    //                           ),
+
+                                                    //                           Padding(
+                                                    //                             padding: const EdgeInsets.all(8.0),
+                                                    //                             child: SizedBox(
+                                                    //                               width: 250,
+                                                    //                               child: CustomLoadingButton(
+                                                    //                                   controller: btnController,
+                                                    //                                   child: const Text("Approve"),
+                                                    //                                   onPressed: () async {
+                                                    //                                     Future.delayed(const Duration(seconds: 2)).then((value) async {
+                                                    //                                       setState(() {
+                                                    //                                         postApi(data.lotNo!);
+                                                    //                                         // notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Lot ${data.lotNo} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
+                                                    //                                       });
+                                                    //                                       btnController.success();
+                                                    //                                       Future.delayed(const Duration(seconds: 1)).then((value) {
+                                                    //                                         btnController.reset(); //reset
+                                                    //                                         Navigator.of(context).pop();
+                                                    //                                         showDialog<String>(
+                                                    //                                             context: context,
+                                                    //                                             builder: (BuildContext context) => const AlertDialog(
+                                                    //                                                   title: Text(
+                                                    //                                                     'Approve pricing success',
+                                                    //                                                   ),
+                                                    //                                                 ));
+                                                    //                                       });
+                                                    //                                     });
+                                                    //                                   }),
+                                                    //                             ),
+                                                    //                           )
+                                                    //                         ],
+                                                    //                       ),
+                                                    //                     ),
+                                                    //                   ),
+                                                    //                 ],
+                                                    //               ),
+                                                    //             );
+                                                    //           });
+                                                    //     },
+                                                    //     icon: const Icon(
+                                                    //       Icons.done_sharp,
+                                                    //       color: Colors.green,
+                                                    //     ),
+                                                    //     label: const Text(
+                                                    //         'Approve'),
+                                                    //   ),
+                                                    // ),
                                                   ],
                                                 ),
                                               )
@@ -1295,6 +1568,14 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                   ],
                 ),
               ));
+  }
+
+  postApi(lot) async {
+    price.text.isEmpty
+        ? awalPrice = awalPrice
+        : awalPrice = double.parse(price.text);
+
+    print(awalPrice);
   }
 }
 

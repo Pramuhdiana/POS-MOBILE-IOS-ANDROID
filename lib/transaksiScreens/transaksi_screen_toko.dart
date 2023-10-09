@@ -615,12 +615,12 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
         sharedPreferences!.getString('customer_id').toString();
     String jenisform_id = idformAPI.toString();
     String basicdiskon = diskon.toString();
-    String addesdiskon = '0';
+    String addesdiskonApi = addesdiskon.toString();
     String basicrate = rate.toString();
     String nett = totalPriceAPI;
     String total = totalRpApi;
     String diskon_rupiah = totalDiskonRp;
-    String addesdiskon_rupiah = addesdiskon;
+    String addesdiskon_rupiah = addesdiskon.toString();
     String total_potongan = totalDiskonRp;
     String keterangan_bayar = 'null';
     String token = sharedPreferences!.getString("token").toString();
@@ -632,7 +632,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
       'customer_id': customer_idAPI,
       'jenisform_id': jenisform_id,
       'diskon': basicdiskon,
-      'addesdiskon': addesdiskon,
+      'addesdiskon': addesdiskonApi,
       'rate': basicrate,
       'nett': nett,
       'total': total,
@@ -659,6 +659,8 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
     String jenisform_id = idformAPI.toString();
     String customermetier = customerMetierId.toString();
     String pajak = taxApi!;
+    String addesdiskonApi = addesdiskon.toString();
+
     String total_potongan = totalDiskonRp;
     String totalKurangDiskon = totalPrice.toString();
     String totalKurangPajak = totalPrice.toString();
@@ -670,6 +672,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
       'customer_id': customer_idAPI,
       'jenisform_id': jenisform_id,
       'diskon': total_potongan,
+      'addesdiskon': addesdiskonApi,
       'customermetier': customermetier,
       'pajak': pajak,
       'total': cart_total,
