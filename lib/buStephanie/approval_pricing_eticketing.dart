@@ -45,7 +45,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
   int approveHargaRevisi1 = 0;
   bool updatePrice = false;
   int awalPrice = 0;
-    int apiPrice = 0;
+  int apiPrice = 0;
   String apiNotes = '';
   @override
   void initState() {
@@ -3559,9 +3559,9 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                   inputFormatters: [
                                                                                     FilteringTextInputFormatter.digitsOnly
                                                                                   ],
-                                                                                  onChanged: (value) {
-                                                                                    apiPrice = int.parse(value);
-                                                                                  },
+                                                                                  // onChanged: (value) {
+                                                                                  //   apiPrice = int.parse(value);
+                                                                                  // },
                                                                                   decoration: InputDecoration(
                                                                                     hintText: "Update Price (optional)",
                                                                                     // labelText: "Price",
@@ -3578,9 +3578,9 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                   controller: notes,
                                                                                   keyboardType: TextInputType.multiline,
                                                                                   maxLines: null,
-                                                                                  onChanged: (value) {
-                                                                                    apiNotes = value;
-                                                                                  },
+                                                                                  // onChanged: (value) {
+                                                                                  //   apiNotes = value;
+                                                                                  // },
                                                                                   decoration: InputDecoration(
                                                                                     labelText: "Notes",
                                                                                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
@@ -3693,6 +3693,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
         : awalPrice = int.parse(price.text);
 
     print(awalPrice);
+    print(notes.text);
     Map<String, String> body = {
       'id': lot.toString(),
       'approval_harga': awalPrice.toString(),
@@ -3711,6 +3712,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
         ? awalPrice = awalPrice
         : awalPrice = int.parse(price.text);
     print(awalPrice);
+    print(notes.text);
 
     Map<String, String> body = {
       'diambil_id': diambilId.toString(),

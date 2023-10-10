@@ -1518,9 +1518,9 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                   inputFormatters: [
                                                                                     FilteringTextInputFormatter.digitsOnly
                                                                                   ],
-                                                                                  onChanged: (value) {
-                                                                                    apiPrice = int.parse(value);
-                                                                                  },
+                                                                                  // onChanged: (value) {
+                                                                                  //   apiPrice = int.parse(value);
+                                                                                  // },
                                                                                   decoration: InputDecoration(
                                                                                     hintText: "Update Price (optional)",
                                                                                     // labelText: "Price",
@@ -1537,9 +1537,9 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                   controller: notes,
                                                                                   keyboardType: TextInputType.multiline,
                                                                                   maxLines: null,
-                                                                                  onChanged: (value) {
-                                                                                    apiNotes = value;
-                                                                                  },
+                                                                                  // onChanged: (value) {
+                                                                                  //   apiNotes = value;
+                                                                                  // },
                                                                                   decoration: InputDecoration(
                                                                                     labelText: "Notes",
                                                                                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
