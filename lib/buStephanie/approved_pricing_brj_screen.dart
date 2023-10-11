@@ -744,6 +744,15 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                                   color: Colors
                                                                       .black,
                                                                 ),
+                                                                Text(
+                                                                  'Estimasi Pricing : ${data.finalPrice3USD}',
+                                                                  style: const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .green),
+                                                                ),
                                                                 const Center(
                                                                   child: Text(
                                                                     'History Approve',
