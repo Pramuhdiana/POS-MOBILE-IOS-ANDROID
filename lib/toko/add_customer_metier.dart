@@ -220,7 +220,7 @@ class _AddCustomerMetierScreenState extends State<AddCustomerMetierScreen> {
               formValidasi();
             },
             child: const Text(
-              "Save Report",
+              "Save Customer",
               style: TextStyle(color: Colors.white),
             ),
           ),
