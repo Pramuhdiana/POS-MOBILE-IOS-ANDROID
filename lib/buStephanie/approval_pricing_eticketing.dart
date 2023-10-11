@@ -3422,86 +3422,60 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                             mainAxisSize:
                                                                                 MainAxisSize.min,
                                                                             children: <Widget>[
-                                                                              SingleChildScrollView(
-                                                                                scrollDirection: Axis.horizontal,
-                                                                                child: Row(
-                                                                                  children: [
-                                                                                    data.notesCustomer.isEmpty
-                                                                                        ? const SizedBox()
-                                                                                        : SizedBox(
-                                                                                            height: 230,
-                                                                                            child: SingleChildScrollView(
-                                                                                              scrollDirection: Axis.vertical,
-                                                                                              child: Expanded(
-                                                                                                child: Padding(
-                                                                                                    padding: const EdgeInsets.all(0),
-                                                                                                    child: Column(
-                                                                                                      children: [
-                                                                                                        BubbleSpecialThree(
-                                                                                                          text: '${data.notesCustomer}',
-                                                                                                          color: const Color.fromARGB(255, 7, 19, 27),
-                                                                                                          tail: true,
-                                                                                                          isSender: false, //true kanan
-                                                                                                          seen: true,
-                                                                                                          textStyle: const TextStyle(color: Colors.white, fontSize: 16),
-                                                                                                        ),
-                                                                                                        // Text(data.tanggal_aktivitas.toString()),
-                                                                                                      ],
-                                                                                                    )),
-                                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 150,
+                                                                                child: SingleChildScrollView(
+                                                                                  scrollDirection: Axis.vertical,
+                                                                                  child: Column(
+                                                                                    children: [
+                                                                                      data.notesCustomer.isEmpty
+                                                                                          ? const SizedBox()
+                                                                                          : SizedBox(
+                                                                                              child: 
+                                                                                                          BubbleSpecialThree(
+                                                                                                            text: '${data.notesCustomer}',
+                                                                                                            color: const Color.fromARGB(255, 7, 19, 27),
+                                                                                                            tail: true,
+                                                                                                            isSender: false, //true kanan
+                                                                                                            seen: true,
+                                                                                                            textStyle: const TextStyle(color: Colors.white, fontSize: 16),
+                                                                                                          ),
+                                                                                                          // Text(data.tanggal_aktivitas.toString()),
+                                                                                                      
                                                                                             ),
-                                                                                          ),
-                                                                                    data.notesCustomer2.isEmpty
-                                                                                        ? const SizedBox()
-                                                                                        : SizedBox(
-                                                                                            height: 230,
-                                                                                            child: SingleChildScrollView(
-                                                                                              scrollDirection: Axis.vertical,
-                                                                                              child: Expanded(
-                                                                                                child: Padding(
-                                                                                                    padding: const EdgeInsets.all(0),
-                                                                                                    child: Column(
-                                                                                                      children: [
-                                                                                                        BubbleSpecialThree(
-                                                                                                          text: '${data.notesCustomer2}',
-                                                                                                          color: const Color.fromARGB(255, 7, 19, 27),
-                                                                                                          tail: true,
-                                                                                                          isSender: false, //true kanan
-                                                                                                          seen: true,
-                                                                                                          textStyle: const TextStyle(color: Colors.white, fontSize: 16),
-                                                                                                        ),
-                                                                                                        // Text(data.tanggal_aktivitas.toString()),
-                                                                                                      ],
-                                                                                                    )),
-                                                                                              ),
+                                                                                              data.notesCustomer2.isEmpty
+                                                                                          ? const SizedBox()
+                                                                                          : SizedBox(
+                                                                                              child: 
+                                                                                                          BubbleSpecialThree(
+                                                                                                            text: '${data.notesCustomer2}',
+                                                                                                            color: const Color.fromARGB(255, 7, 19, 27),
+                                                                                                            tail: true,
+                                                                                                            isSender: false, //true kanan
+                                                                                                            seen: true,
+                                                                                                            textStyle: const TextStyle(color: Colors.white, fontSize: 16),
+                                                                                                          ),
+                                                                                                          // Text(data.tanggal_aktivitas.toString()),
+                                                                                                      
                                                                                             ),
-                                                                                          ),
-                                                                                    data.notesCustomer3.isEmpty
-                                                                                        ? const SizedBox()
-                                                                                        : SizedBox(
-                                                                                            height: 230,
-                                                                                            child: SingleChildScrollView(
-                                                                                              scrollDirection: Axis.vertical,
-                                                                                              child: Expanded(
-                                                                                                child: Padding(
-                                                                                                    padding: const EdgeInsets.all(0),
-                                                                                                    child: Column(
-                                                                                                      children: [
-                                                                                                        BubbleSpecialThree(
-                                                                                                          text: '${data.notesCustomer3}',
-                                                                                                          color: const Color.fromARGB(255, 7, 19, 27),
-                                                                                                          tail: true,
-                                                                                                          isSender: false, //true kanan
-                                                                                                          seen: true,
-                                                                                                          textStyle: const TextStyle(color: Colors.white, fontSize: 16),
-                                                                                                        ),
-                                                                                                        // Text(data.tanggal_aktivitas.toString()),
-                                                                                                      ],
-                                                                                                    )),
-                                                                                              ),
+                                                                                              data.notesCustomer3.isEmpty
+                                                                                          ? const SizedBox()
+                                                                                          :
+                                                                                            SizedBox(
+                                                                                              child: 
+                                                                                                          BubbleSpecialThree(
+                                                                                                            text: '${data.notesCustomer3}',
+                                                                                                            color: const Color.fromARGB(255, 7, 19, 27),
+                                                                                                            tail: true,
+                                                                                                            isSender: false, //true kanan
+                                                                                                            seen: true,
+                                                                                                            textStyle: const TextStyle(color: Colors.white, fontSize: 16),
+                                                                                                          ),
+                                                                                                          // Text(data.tanggal_aktivitas.toString()),
                                                                                             ),
-                                                                                          ),
-                                                                                  ],
+                                                                                     
+                                                                                    ],
+                                                                                  ),
                                                                                 ),
                                                                               ),
 

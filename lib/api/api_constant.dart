@@ -1,8 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 // http://110.5.102.154:1212/Api_Flutter/spk/get_estimasi_pricing_by_status.php?status_approval=1
 class ApiConstants {
-  static String baseUrl = 'http://54.179.58.215:8080/api';
-  // static String baseUrl = 'http://54.179.58.215:7000/api'; //! Dummy
+  // static String baseUrl = 'http://54.179.58.215:8080/api';
+  static String baseUrl = 'http://54.179.58.215:7000/api'; //! Dummy
   static String baseUrlPricing = 'http://110.5.102.154:4000/approvals';
   static String baseUrlImageMdbc =
       'https://110.5.102.154:50001/Files/Images/Product/';

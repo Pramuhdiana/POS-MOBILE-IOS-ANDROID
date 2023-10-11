@@ -19,6 +19,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class HistoryModelNew extends StatelessWidget {
   //Read an image data from website/webspace
+  String urlBase = 'http://54.179.58.215:7000';
   String pdfFile = '';
   var pdf = pw.Document();
 
@@ -139,8 +140,8 @@ class HistoryModelNew extends StatelessWidget {
                                         message: "",
                                       );
                                     });
-                                // _createPdfBeliBerlian();
-                                _createPdf();
+                                _createPdfBeliBerlian();
+                                // _createPdf();
                                 await Future.delayed(const Duration(seconds: 8))
                                     .then((value) {
                                   Navigator.pop(
@@ -213,11 +214,11 @@ class HistoryModelNew extends StatelessWidget {
 
   _launchURLInBrowser() async {
     var url = sharedPreferences!.getString('role_sales_brand') == '3'
-        ? 'http://54.179.58.215:8080/metier/laporan/${order.invoices_number}' //? khusus metier
+        ? '$urlBase/metier/laporan/${order.invoices_number}' //? khusus metier
 
-        : 'http://54.179.58.215:8080/transcation/laporan/${order.invoices_number}';
+        : '$urlBase/transcation/laporan/${order.invoices_number}';
 
-    // 'http://54.179.58.215:8080/transcation/laporan/${order.invoices_number}';
+    
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -228,10 +229,7 @@ class HistoryModelNew extends StatelessWidget {
 //link print invoice di web
   _launchURLInApp() async {
     var url =
-        'http://54.179.58.215:8080/transcation/laporan/${order.invoices_number}';
-    // 'https://medium.com/@malkhansingh95699';
-    // 'http://54.179.58.215:8080/transcation/history';
-    // 'http://54.179.58.215:8080/transcation/laporan/INV-000156';
+        'http://54.179.58.215:7000/transcation/laporan/${order.invoices_number}';
 
     if (await canLaunch(url)) {
       await launch(url, forceSafariVC: true, forceWebView: true);
@@ -3179,6 +3177,7 @@ class HistoryModelNew extends StatelessWidget {
                                         // pw.Text(order.invoices_number,
                                         pw.Text('00192391294',
                                             style: const pw.TextStyle(
+                                              // fontFamily: 'Poppins',
                                               fontSize: 11.5,
                                             )),
                                   ),
@@ -3187,6 +3186,7 @@ class HistoryModelNew extends StatelessWidget {
                                         // pw.Text(order.invoices_number,
                                         pw.Text('VINA',
                                             style: const pw.TextStyle(
+                                              fontFamily: 'Poppins',
                                               fontSize: 11.5,
                                             )),
                                   ),
@@ -3195,6 +3195,7 @@ class HistoryModelNew extends StatelessWidget {
                                         // pw.Text(order.invoices_number,
                                         pw.Text('0813231294123',
                                             style: const pw.TextStyle(
+                                              fontFamily: 'Poppins',
                                               fontSize: 11.5,
                                             )),
                                   ),
@@ -3225,16 +3226,19 @@ class HistoryModelNew extends StatelessWidget {
                               children: [
                                 pw.Text('Qty',
                                     style: pw.TextStyle(
+                                              fontFamily: 'Poppins',
                                         fontSize: 12,
                                         color: PdfColors.white,
                                         fontWeight: pw.FontWeight.bold)),
                                 pw.Text('Product Description',
                                     style: pw.TextStyle(
+                                              fontFamily: 'Poppins',
                                         fontSize: 12,
                                         color: PdfColors.white,
                                         fontWeight: pw.FontWeight.bold)),
                                 pw.Text('Price',
                                     style: pw.TextStyle(
+                                              fontFamily: 'Poppins',
                                         fontSize: 12,
                                         color: PdfColors.white,
                                         fontWeight: pw.FontWeight.bold)),
@@ -3637,41 +3641,53 @@ class HistoryModelNew extends StatelessWidget {
                                       style: const pw.TextStyle(
                                           color: PdfColors.black, fontSize: 7)),
                                   pw.SizedBox(height: 5),
-                                  pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '2.Potongan untuk jual kembali sebesar 25%, dan potongan untuk tukar tambah sebesar 205 dari harga perhiasan yang tertera di invoice.',
+                                      '2.Potongan untuk jual kembali sebesar 25%, dan potongan untuk tukar tambah sebesar 20% dari harga perhiasan yang tertera di invoice.',
                                       style: const pw.TextStyle(
                                           color: PdfColors.black, fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '3.Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 2,5 tahun (rentang waktu bulan ke-13-bulan ke -30) setelah tanggal pembelian',
+                                      '3.Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 2,5 tahun (rentang waktu bulan ke-13 - bulan ke -30) setelah tanggal pembelian',
                                       style: const pw.TextStyle(
                                           color: PdfColors.black, fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '1.Jual kembali dan tukar tambah hanya dapat dilakukan jika disertai invoice Pembelian asli dengan stempel asli',
+                                      '4.Perhiasan dengan kategori wedding ring tidak bisa dijual kembali/tukar tambah.',
                                       style: const pw.TextStyle(
                                           color: PdfColors.black, fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '2.Potongan untuk jual kembali sebesar 25%, dan potongan untuk tukar tambah sebesar 205 dari harga perhiasan yang tertera di invoice.',
+                                      '5.Perhiasan harus diterima dalam keadaan baik dan akan diperiksa ulang untuk memenuhi kualitas standar, dan beliberlian.id berhak untuk menolak jika tidak sesuai standar (syarat dan ketentuan berlaku).',
                                       style: const pw.TextStyle(
                                           color: PdfColors.black, fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '3.Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 2,5 tahun (rentang waktu bulan ke-13-bulan ke -30) setelah tanggal pembelian',
+                                      '6.Pembelian dengan voucher,special price atau promo tertentu tidak dapat dijual kembali.',
                                       style: const pw.TextStyle(
                                           color: PdfColors.black, fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '1.Jual kembali dan tukar tambah hanya dapat dilakukan jika disertai invoice Pembelian asli dengan stempel asli',
+                                      '7.Pihak beliberlian.id tidak bertanggung jawab atas kehilangan barang milik pembeli.',
                                       style: const pw.TextStyle(
                                           color: PdfColors.black, fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '2.Potongan untuk jual kembali sebesar 25%, dan potongan untuk tukar tambah sebesar 205 dari harga perhiasan yang tertera di invoice.',
+                                      '8.Peraturan bisa berubah sewaktu-waktu sesuai dengan kebijakan beliberlian.id.',
                                       style: const pw.TextStyle(
                                           color: PdfColors.black, fontSize: 7)),
+                                  pw.SizedBox(height: 22),
+                                     pw.Text(
+                                      'Hormat Kami,',
+                                      style: pw.TextStyle(
+                                          color: PdfColors.black, fontSize: 20,fontWeight: pw.FontWeight.bold)),
+                                  pw.SizedBox(height: 75),
+        pw.SizedBox(
+          width: 110,
+          child: pw.Divider(thickness: 1)),
+                pw.Text(
+                                      'Hendrik Wijaya',
+                                      style: const pw.TextStyle(
+                                          color: PdfColors.black, fontSize: 11.5)),
                                 ],
                               ),
                             )
