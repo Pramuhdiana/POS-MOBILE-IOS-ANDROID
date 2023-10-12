@@ -3167,12 +3167,14 @@ print('list Jenis : $jenisDiamond');
     final ByteData bytes = await rootBundle.load('images/welcomeIcon.png');
     final Uint8List byteList = bytes.buffer.asUint8List();
 
-    final ByteData bgByte = await rootBundle.load('images/bgBeli.jpg');
+    final ByteData bgByte = await rootBundle.load('images/bgBeliberlian.jpg');
     final Uint8List bgUint2 = bgByte.buffer.asUint8List();
+
+    final ByteData bgBB = await rootBundle.load('images/bgBeli.jpg');
+    final Uint8List bgBB2 = bgBB.buffer.asUint8List();
 
     final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
     final Uint8List byteList2 = bytes2.buffer.asUint8List();
-
 //new multi
     List<String> assetImages = [
       for (var i = 0; i < order.total_quantity; i++)
@@ -3214,7 +3216,7 @@ print('list Jenis : $jenisDiamond');
                     child: pw.Container(
                   width: 595,
                   height: 841,
-                  child: pw.Image(pw.MemoryImage(bgUint2),
+                  child: pw.Image(pw.MemoryImage(bgBB2),
                       fit: pw.BoxFit.fitHeight, height: 841, width: 595),
                 )),
                 pw.Container(
