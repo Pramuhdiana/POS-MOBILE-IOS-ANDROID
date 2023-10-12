@@ -3090,14 +3090,84 @@ class HistoryModelNew extends StatelessWidget {
         onLayout: (PdfPageFormat format) async => doc.save());
   }
 
+//! function memisahkan kalimat
+List<String>splitSeparator(String text,String separator){
+  return text.split(separator);
+}
+
+
 //pdf beli berlian
   void _createPdfBeliBerlian() async {
+
+    //! fungsi untuk mengambil keterangan barang
+    var keteranganBarang = order2[0].keterangan_barang.toString(); //!18k-1.54GR,RD4-0.14CT,RD4-0.14CT
+    var separator1 = ',';
+    var separator2 = '-';
+    List result = [];
+    List listSeparator2 = [];
+    List? resultEmas;
+    List? jenisDiamond = [];
+    List? qtyDiamond = [];
+    List? crtDiamond = [];
+
+
+    List? separator22 =[];
+
+    final resultSeparator1 = splitSeparator(keteranganBarang, separator1); //[18k-1.54GR,RD4-0.14CT,RD4-0.14CT]
+    //! function remove where
+    resultSeparator1.removeWhere((element) => element == '-');
+    resultSeparator1.removeWhere((element) => element == '');
+    //? end fungsi
+    for(var i=0; i < resultSeparator1.length; i++){
+      if(i ==0){
+    resultEmas = splitSeparator(resultSeparator1[0], separator2);
+      } 
+      separator22 = splitSeparator(resultSeparator1[i], separator2);
+      for(var j =0; j < separator22.length; j++){
+      result.add(separator22[j]);
+      }
+      
+    }
+
+for(var i = 2; i< result.length; i++){
+  if(i % 2 ==1){
+//index ganjil
+final newString = result[i].toString().replaceAll('CT', ' CT');
+crtDiamond.add(newString);
+  }else {
+      String sQty = '';
+      String sDiamond = '';
+
+    // print(result[i]);
+    for(var j = 0; j < result[i].length; j++){
+      //BDQ51
+    if(int.tryParse(result[i][j]) is num) {
+
+      sQty += result[i][j].toString();
+    } else{
+      sDiamond += result[i][j].toString();
+
+    }
+    
+
+    }
+      qtyDiamond.add(sQty); //dapat qty
+      jenisDiamond.add(sDiamond); //dapat jenis
+
+  }
+
+
+
+}
+print('list QTY : $qtyDiamond');
+print('list Jenis : $jenisDiamond');
+
     PdfDocument document = PdfDocument();
     final doc = pw.Document();
     final ByteData bytes = await rootBundle.load('images/welcomeIcon.png');
     final Uint8List byteList = bytes.buffer.asUint8List();
 
-    final ByteData bgByte = await rootBundle.load('images/bgBeliberlian.jpg');
+    final ByteData bgByte = await rootBundle.load('images/bgBeli.jpg');
     final Uint8List bgUint2 = bgByte.buffer.asUint8List();
 
     final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
@@ -3186,7 +3256,7 @@ class HistoryModelNew extends StatelessWidget {
                                         // pw.Text(order.invoices_number,
                                         pw.Text('VINA',
                                             style: const pw.TextStyle(
-                                              fontFamily: 'Poppins',
+                                              // fontFamily: 'Poppins',
                                               fontSize: 11.5,
                                             )),
                                   ),
@@ -3195,7 +3265,7 @@ class HistoryModelNew extends StatelessWidget {
                                         // pw.Text(order.invoices_number,
                                         pw.Text('0813231294123',
                                             style: const pw.TextStyle(
-                                              fontFamily: 'Poppins',
+                                              // fontFamily: 'Poppins',
                                               fontSize: 11.5,
                                             )),
                                   ),
@@ -3226,19 +3296,19 @@ class HistoryModelNew extends StatelessWidget {
                               children: [
                                 pw.Text('Qty',
                                     style: pw.TextStyle(
-                                              fontFamily: 'Poppins',
+                                              // fontFamily: 'Poppins',
                                         fontSize: 12,
                                         color: PdfColors.white,
                                         fontWeight: pw.FontWeight.bold)),
                                 pw.Text('Product Description',
                                     style: pw.TextStyle(
-                                              fontFamily: 'Poppins',
+                                              // fontFamily: 'Poppins',
                                         fontSize: 12,
                                         color: PdfColors.white,
                                         fontWeight: pw.FontWeight.bold)),
                                 pw.Text('Price',
                                     style: pw.TextStyle(
-                                              fontFamily: 'Poppins',
+                                              // fontFamily: 'Poppins',
                                         fontSize: 12,
                                         color: PdfColors.white,
                                         fontWeight: pw.FontWeight.bold)),
@@ -3249,16 +3319,16 @@ class HistoryModelNew extends StatelessWidget {
                                         fontWeight: pw.FontWeight.bold)),
                               ],
                             )),
-                        //? body isi
+                        //? body isi beli berilian
                         pw.Container(
                             padding: const pw.EdgeInsets.only(top: 15),
-                            height: 125,
+                            height: 85,
                             child: pw.Row(
                               mainAxisAlignment: pw.MainAxisAlignment.start,
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 45,
                                 ),
                                 pw.Container(
                                   // color: PdfColors.amber,
@@ -3274,7 +3344,8 @@ class HistoryModelNew extends StatelessWidget {
                                 pw.Container(
                                   width: 185,
                                   child: pw.Text(
-                                      'BRG04224890I44K Millenia Diamond Ring - Cincin Berlian Asli Eropa Size 11',
+                                      '${order2[0].name} - ${order2[0].description}', 
+                                      //'BRG04224890I44K Millenia Diamond Ring - Cincin Berlian Asli Eropa Size 11',
                                       maxLines: 10,
                                       style: pw.TextStyle(
                                           fontSize: 11.5,
@@ -3285,7 +3356,7 @@ class HistoryModelNew extends StatelessWidget {
                                 ),
                                 pw.Container(
                                   width: 90,
-                                  child: pw.Text('1,000,000',
+                                  child: pw.Text(CurrencyFormat.convertToDollar(order2[0].price * 15000,0).toString(),
                                       maxLines: 10,
                                       style: pw.TextStyle(
                                           fontSize: 11.5,
@@ -3296,7 +3367,7 @@ class HistoryModelNew extends StatelessWidget {
                                 ),
                                 pw.Container(
                                   width: 90,
-                                  child: pw.Text('1,000,000',
+                                  child: pw.Text(CurrencyFormat.convertToDollar(order2[0].price * 15000,0).toString(),
                                       maxLines: 10,
                                       style: pw.TextStyle(
                                           fontSize: 11.5,
@@ -3307,13 +3378,14 @@ class HistoryModelNew extends StatelessWidget {
 
                         //? garis
                         pw.Divider(
-                          color: PdfColors.blue,
+                        color:  PdfColor.fromHex('#6595b5'),
+                          // color: PdfColors.blue,
                           thickness: 3,
                         ),
 
                         //bottom pdf beliberlian
                         pw.Container(
-                          height: 65,
+                          height: 105,
                           child: pw.Row(
                             mainAxisAlignment:
                                 pw.MainAxisAlignment.spaceBetween,
@@ -3333,21 +3405,53 @@ class HistoryModelNew extends StatelessWidget {
                                       padding:
                                           const pw.EdgeInsets.only(left: 5),
                                       width: 238,
-                                      child: pw.Text('Sub Total',
-                                          style: const pw.TextStyle(
-                                              fontSize: 11.5))),
+                                      child: pw.Row(
+                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          pw.Text('Sub Total',
+                                              style: const pw.TextStyle(
+                                                  fontSize: 11.5)),
+                                                   pw.Text('${CurrencyFormat.convertToDollar(order2[0].price * 15000,0)}',
+                                              style: const pw.TextStyle(
+                                                  fontSize: 11.5)),
+                                        ],
+                                      )),
                                   pw.Container(
                                       padding:
-                                          const pw.EdgeInsets.only(left: 5),
+                                          const pw.EdgeInsets.only(left: 5,top:5),
                                       width: 238,
-                                      child: pw.Text('Tax Rate',
-                                          style: const pw.TextStyle(
-                                              fontSize: 11.5))),
+                                      child: pw.Row(
+                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          pw.Text('Tax Rate',
+                                              style: const pw.TextStyle(
+                                                  fontSize: 11.5)),
+                                           pw.Text('${CurrencyFormat.convertToDollar((((order2[0].price * 15000) * 1.65) / 100),0)}',
+                                              style: const pw.TextStyle(
+                                                  fontSize: 11.5)),
+                                        ],
+                                      )),
+                                       pw.Container(
+                                      padding:
+                                          const pw.EdgeInsets.only(left: 5,top:5),
+                                      width: 238,
+                                      child: pw.Row(
+                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          pw.Text('Basic Discount',
+                                              style: const pw.TextStyle(
+                                                  fontSize: 11.5)),
+                                           pw.Text('${CurrencyFormat.convertToDollar(((order2[0].price * 15000) / 2),0)}',
+                                              style: const pw.TextStyle(
+                                                  fontSize: 11.5)),
+                                        ],
+                                      )),
+                                      pw.SizedBox(height: 9),
                                   pw.Container(
                                       padding: const pw.EdgeInsets.only(
-                                          left: 5, top: 5, bottom: 5),
+                                          left: 5, top: 2, bottom: 5),
                                       width: 238,
-                                      height: 30,
+                                      height: 20,
                                       color: PdfColors.black,
                                       child: pw.Text('Grand Total :',
                                           style: const pw.TextStyle(
@@ -3363,7 +3467,8 @@ class HistoryModelNew extends StatelessWidget {
                         ),
                         //? garis
                         pw.Divider(
-                          color: PdfColors.blue200,
+                        color:  PdfColor.fromHex('#6595b5'),
+
                           height: 2,
                           thickness: 3,
                         ),
@@ -3376,30 +3481,30 @@ class HistoryModelNew extends StatelessWidget {
                               child: pw.Row(
                                 mainAxisAlignment: pw.MainAxisAlignment.start,
                                 children: [
-                                  // pw.Container(
-                                  //     // color:  PdfColor.fromRYB(255, 180, 178, 164),
-                                  //     child: pw.Column(
-                                  //   mainAxisAlignment:
-                                  //       pw.MainAxisAlignment.start,
-                                  //   children: [
-                                  //     for (var i = 0; i <= 120; i++)
-                                  //       pw.Container(
-                                  //         padding:
-                                  //             const pw.EdgeInsets.symmetric(
-                                  //                 vertical: 4),
-                                  //         child: pw.Text('|',
-                                  //             style: pw.TextStyle(
-                                  //                 fontSize: 16,
-                                  //                 color: PdfColors.blue200,
-                                  //                 fontWeight:
-                                  //                     pw.FontWeight.bold)),
-                                  //       ),
-                                  //   ],
-                                  // )),
+                                  pw.Container(
+                                       child: pw.Column(
+                                    mainAxisAlignment:
+                                        pw.MainAxisAlignment.start,
+                                    children: [
+                                      for (var i = 0; i <= 120; i++)
+                                        pw.Container(
+                                          padding:
+                                              const pw.EdgeInsets.symmetric(
+                                                  vertical: 4),
+                                          child: pw.Text('|',
+                                              style: pw.TextStyle(
+                                                  fontSize: 10,
+                                                                       color:  PdfColor.fromHex('#6595b5'),
+
+                                                  fontWeight:
+                                                      pw.FontWeight.bold)),
+                                        ),
+                                    ],
+                                  )),
                                   pw.Container(
                                       padding: const pw.EdgeInsets.only(
-                                          left: 30, top: 8),
-                                      width: 176,
+                                          left: 20, top: 8),
+                                      width: 200,
                                       height: 375,
                                       child: pw.Column(
                                         crossAxisAlignment:
@@ -3453,7 +3558,7 @@ class HistoryModelNew extends StatelessWidget {
                                                           fontSize: 11.5,
                                                         )),
                                                   ),
-                                                  pw.Text('18K WHITE GOLD ',
+                                                  pw.Text(resultEmas![0],
                                                       style: const pw.TextStyle(
                                                         fontSize: 11.5,
                                                       )),
@@ -3472,7 +3577,7 @@ class HistoryModelNew extends StatelessWidget {
                                                           fontSize: 11.5,
                                                         )),
                                                   ),
-                                                  pw.Text('18K WHITE GOLD ',
+                                                  pw.Text(resultEmas[1],
                                                       style: const pw.TextStyle(
                                                         fontSize: 11.5,
                                                       )),
@@ -3486,44 +3591,9 @@ class HistoryModelNew extends StatelessWidget {
                                                       fontSize: 12,
                                                       fontWeight:
                                                           pw.FontWeight.bold))),
-                                          pw.Container(
-                                              padding: const pw.EdgeInsets.only(
-                                                  top: 5),
-                                              child: pw.Row(
-                                                children: [
-                                                  pw.SizedBox(
-                                                    width: 60,
-                                                    child: pw.Text('RD',
-                                                        style:
-                                                            const pw.TextStyle(
-                                                          fontSize: 11.5,
-                                                        )),
-                                                  ),
-                                                  pw.Text('46 PCS - 0.22 CT',
-                                                      style: const pw.TextStyle(
-                                                        fontSize: 11.5,
-                                                      )),
-                                                ],
-                                              )),
-                                          pw.Container(
-                                              padding: const pw.EdgeInsets.only(
-                                                  top: 5),
-                                              child: pw.Row(
-                                                children: [
-                                                  pw.SizedBox(
-                                                    width: 60,
-                                                    child: pw.Text('RD',
-                                                        style:
-                                                            const pw.TextStyle(
-                                                          fontSize: 11.5,
-                                                        )),
-                                                  ),
-                                                  pw.Text('11 PCS - 0.0378 CT',
-                                                      style: const pw.TextStyle(
-                                                        fontSize: 11.5,
-                                                      )),
-                                                ],
-                                              )),
+                                                          //looping batu 
+                                          
+                                         
                                           pw.Container(
                                               padding: const pw.EdgeInsets.only(
                                                   top: 5),
@@ -3600,27 +3670,47 @@ class HistoryModelNew extends StatelessWidget {
                                                       )),
                                                 ],
                                               )),
+                                                 for(var i=0; i<jenisDiamond.length; i++)
+                            pw.Container(
+                                              padding: const pw.EdgeInsets.only(
+                                                  top: 5),
+                                              child: pw.Row(
+                                                children: [
+                                                  pw.SizedBox(
+                                                    width: 60,
+                                                    child: pw.Text('${jenisDiamond[i]}',
+                                                        style:
+                                                            const pw.TextStyle(
+                                                          fontSize: 11.5,
+                                                        )),
+                                                  ),
+                                                  pw.Text('${qtyDiamond[i]} PCS - ${crtDiamond[i]}',
+                                                      style: const pw.TextStyle(
+                                                        fontSize: 11.5,
+                                                      )),
+                                                ],
+                                              )),
                                         ],
                                       )),
-                                  // pw.Container(
-                                  //                   child: pw.Column(
-                                  //                 mainAxisAlignment:
-                                  //                     pw.MainAxisAlignment.start,
-                                  //                 children: [
-                                  //                   for (var i = 0; i <= 120; i++)
-                                  //                     pw.Container(
-                                  //                       padding:
-                                  //                           const pw.EdgeInsets.symmetric(
-                                  //                               vertical: 4),
-                                  //                       child: pw.Text('|',
-                                  //                           style: pw.TextStyle(
-                                  //                               fontSize: 16,
-                                  //                               color: PdfColors.blue200,
-                                  //                               fontWeight:
-                                  //                                   pw.FontWeight.bold)),
-                                  //                     ),
-                                  //                 ],
-                                  //               )),
+                                  pw.Container(
+                                                    child: pw.Column(
+                                                  mainAxisAlignment:
+                                                      pw.MainAxisAlignment.start,
+                                                  children: [
+                                                    for (var i = 0; i <= 120; i++)
+                                                      pw.Container(
+                                                        padding:
+                                                            const pw.EdgeInsets.symmetric(
+                                                                vertical: 4),
+                                                        child: pw.Text('|',
+                                                            style: pw.TextStyle(
+                                                                fontSize: 10,
+                        color:  PdfColor.fromHex('#6595b5'),
+                                                                fontWeight:
+                                                                    pw.FontWeight.bold)),
+                                                      ),
+                                                  ],
+                                                )),
                                 ],
                               ),
                             ),
@@ -3628,6 +3718,8 @@ class HistoryModelNew extends StatelessWidget {
                               height: 375,
                               width: 276,
                               child: pw.Column(
+                                mainAxisAlignment: pw.MainAxisAlignment.start,
+                                crossAxisAlignment: pw.CrossAxisAlignment.start,
                                 children: [
                                   pw.SizedBox(height: 10),
                                   pw.Text('Syarat dan Ketentuan',
@@ -3637,7 +3729,7 @@ class HistoryModelNew extends StatelessWidget {
                                           fontSize: 12)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '1.Jual kembali dan tukar tambah hanya dapat dilakukan jika disertai invoice Pembelian asli dengan stempel asli',
+                                      '1.Jual kembali dan tukar tambah hanya dapat dilakukan jika disertai invoice Pembelian asli dengan stempel asli.',
                                       style: const pw.TextStyle(
                                           color: PdfColors.black, fontSize: 7)),
                                   pw.SizedBox(height: 5),
@@ -3647,14 +3739,15 @@ class HistoryModelNew extends StatelessWidget {
                                           color: PdfColors.black, fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '3.Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 2,5 tahun (rentang waktu bulan ke-13 - bulan ke -30) setelah tanggal pembelian',
+                                      '3.Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 2,5 tahun (rentang waktu bulan ke-13 - bulan ke -30) setelah tanggal pembelian.',
                                       style: const pw.TextStyle(
                                           color: PdfColors.black, fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '4.Perhiasan dengan kategori wedding ring tidak bisa dijual kembali/tukar tambah.',
-                                      style: const pw.TextStyle(
-                                          color: PdfColors.black, fontSize: 7)),
+                                        '4.Perhiasan dengan kategori wedding ring tidak bisa dijual kembali/tukar tambah.',
+                                      //  textAlign: pw.TextAlign.left,
+                                        style: const pw.TextStyle(
+                                            color: PdfColors.black, fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
                                       '5.Perhiasan harus diterima dalam keadaan baik dan akan diperiksa ulang untuk memenuhi kualitas standar, dan beliberlian.id berhak untuk menolak jika tidak sesuai standar (syarat dan ketentuan berlaku).',
@@ -3675,19 +3768,31 @@ class HistoryModelNew extends StatelessWidget {
                                       '8.Peraturan bisa berubah sewaktu-waktu sesuai dengan kebijakan beliberlian.id.',
                                       style: const pw.TextStyle(
                                           color: PdfColors.black, fontSize: 7)),
+                                  pw.SizedBox(height: 5),
+                                       pw.Text(
+                                      '9.Perhiasan yang dibeli sudah termasuk PPN 11%.',
+                                      style: const pw.TextStyle(
+                                          color: PdfColors.black, fontSize: 7)),
                                   pw.SizedBox(height: 22),
-                                     pw.Text(
-                                      'Hormat Kami,',
-                                      style: pw.TextStyle(
-                                          color: PdfColors.black, fontSize: 20,fontWeight: pw.FontWeight.bold)),
+                                     pw.Container(
+                                      padding: const pw.EdgeInsets.only(left:10),
+                                       child: pw.Text(
+                                        'Hormat Kami,',
+                                        style: pw.TextStyle(
+                                            color: PdfColors.black, fontSize: 20,fontWeight: pw.FontWeight.bold)),
+                                     ),
                                   pw.SizedBox(height: 75),
-        pw.SizedBox(
+        pw.Container(
+          padding: const pw.EdgeInsets.only(left:5),
           width: 110,
           child: pw.Divider(thickness: 1)),
-                pw.Text(
-                                      'Hendrik Wijaya',
-                                      style: const pw.TextStyle(
-                                          color: PdfColors.black, fontSize: 11.5)),
+                pw.Container(
+                  padding: const pw.EdgeInsets.only(left:15),
+                  child: pw.Text(
+                                        'Hendrik Wijaya',
+                                        style: const pw.TextStyle(
+                                            color: PdfColors.black, fontSize: 11.5)),
+                ),
                                 ],
                               ),
                             )
