@@ -61,7 +61,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //start color chart
+  Color? bgColors;
+
   List<Color> get availableColors => const <Color>[
         AppColors.contentColorPurple,
         AppColors.contentColorYellow,
@@ -69,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
         AppColors.contentColorOrange,
         AppColors.contentColorPink,
         AppColors.contentColorRed,
+        AppColors.contentColorWhite,
       ];
   final Color barBackgroundColor =
       AppColors.contentColorWhite.darken().withOpacity(0.3);
@@ -78,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int touchedIndex = -1;
   bool isPlaying = false;
+  bool isButton = true;
   double percentYear = 0.0;
   double percentMonth = 0.0;
   double percentWeek = 0.0;
@@ -1489,515 +1492,588 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //show popup dialog
-  void myMenu() {
+  myMenu() {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            title: const Text(
-              'Please choose menu to select',
-            ),
-            content: SizedBox(
-              height: MediaQuery.of(context).size.height / 2,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    //pos sales
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: 50,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                            // side: BorderSide(color: Colors.grey.shade200)
-                          ))),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => PosSalesScreen()));
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: Image.asset(
-                                  "images/sales-team.png",
-                                  color: Colors.white,
-                                  width: 25,
-                                  height: 25,
-                                ),
+          // var i = 0;
+          // i == 0
+          //     ? setState(
+          //         () {},
+          //       )
+          //     : null;
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+                title: const Text(
+                  'Please choose menu to select',
+                ),
+                content: SizedBox(
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        //pos sales
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: 50,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                                // side: BorderSide(color: Colors.grey.shade200)
+                              ))),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => PosSalesScreen()));
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Image.asset(
+                                      "images/sales-team.png",
+                                      color: Colors.white,
+                                      width: 25,
+                                      height: 25,
+                                    ),
+                                  ),
+                                  const Expanded(
+                                    child: Text(
+                                      'Pos Sales',
+                                      style: TextStyle(fontSize: 16),
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '$qtyProductSales Products',
+                                      textAlign: TextAlign.right,
+                                      style: const TextStyle(fontSize: 11),
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const Expanded(
-                                child: Text(
-                                  'Pos Sales',
-                                  style: TextStyle(fontSize: 16),
-                                  maxLines: 1,
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  '$qtyProductSales Products',
-                                  textAlign: TextAlign.right,
-                                  style: const TextStyle(fontSize: 11),
-                                  maxLines: 2,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
 
-                    //pos toko
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: 50,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                            // side: BorderSide(color: Colors.grey.shade200)
-                          ))),
-                          onPressed: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            prefs.setString('customer_id', 0.toString());
-                            prefs.setString('total_product', 0.toString());
-                            context.read<PCartToko>().clearCart();
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => const PosTokoScreen()));
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: Image.asset(
-                                  "images/shop.png",
-                                  color: Colors.white,
-                                  width: 25,
-                                  height: 25,
-                                ),
+                        //pos toko
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: 50,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                                // side: BorderSide(color: Colors.grey.shade200)
+                              ))),
+                              onPressed: () async {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.setString('customer_id', 0.toString());
+                                prefs.setString('total_product', 0.toString());
+                                context.read<PCartToko>().clearCart();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => const PosTokoScreen()));
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Image.asset(
+                                      "images/shop.png",
+                                      color: Colors.white,
+                                      width: 25,
+                                      height: 25,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: sharedPreferences!.getString(
+                                                'role_sales_brand')! ==
+                                            '3'
+                                        ? const Text(
+                                            'Pos Toko Metier',
+                                            style: TextStyle(fontSize: 16),
+                                            maxLines: 1,
+                                          )
+                                        : const Text(
+                                            'Pos Toko',
+                                            style: TextStyle(fontSize: 16),
+                                            maxLines: 1,
+                                          ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '$qtyProductToko Products',
+                                      textAlign: TextAlign.right,
+                                      style: const TextStyle(fontSize: 11),
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Expanded(
-                                child: sharedPreferences!
-                                            .getString('role_sales_brand')! ==
-                                        '3'
-                                    ? const Text(
-                                        'Pos Toko Metier',
-                                        style: TextStyle(fontSize: 16),
-                                        maxLines: 1,
-                                      )
-                                    : const Text(
-                                        'Pos Toko',
-                                        style: TextStyle(fontSize: 16),
-                                        maxLines: 1,
-                                      ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  '$qtyProductToko Products',
-                                  textAlign: TextAlign.right,
-                                  style: const TextStyle(fontSize: 11),
-                                  maxLines: 2,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
 
-                    //pos retur
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: 50,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                            // side: BorderSide(color: Colors.grey.shade200)
-                          ))),
-                          onPressed: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            prefs.setString('customer_id_retur', 0.toString());
-                            context.read<PCartRetur>().clearCart();
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => const PosReturScreen()));
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: Image.asset(
-                                  "images/return.png",
-                                  color: Colors.white,
-                                  width: 25,
-                                  height: 25,
-                                ),
+                        //pos retur
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: 50,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                                // side: BorderSide(color: Colors.grey.shade200)
+                              ))),
+                              onPressed: () async {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.setString(
+                                    'customer_id_retur', 0.toString());
+                                context.read<PCartRetur>().clearCart();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) =>
+                                            const PosReturScreen()));
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Image.asset(
+                                      "images/return.png",
+                                      color: Colors.white,
+                                      width: 25,
+                                      height: 25,
+                                    ),
+                                  ),
+                                  const Expanded(
+                                    child: Text(
+                                      'Pos Retur',
+                                      style: TextStyle(fontSize: 16),
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '${CurrencyFormat.convertToTitik(qtyProductRetur, 0)} Products',
+                                      textAlign: TextAlign.right,
+                                      style: const TextStyle(fontSize: 11),
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const Expanded(
-                                child: Text(
-                                  'Pos Retur',
-                                  style: TextStyle(fontSize: 16),
-                                  maxLines: 1,
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  '${CurrencyFormat.convertToTitik(qtyProductRetur, 0)} Products',
-                                  textAlign: TextAlign.right,
-                                  style: const TextStyle(fontSize: 11),
-                                  maxLines: 2,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
 
-                    //QR
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: 50,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                            // side: BorderSide(color: Colors.grey.shade200)
-                          ))),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => const QrScanner()));
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: Image.asset(
-                                  "images/qr-code-scan.png",
-                                  color: Colors.white,
-                                  width: 25,
-                                  height: 25,
-                                ),
+                        //QR
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: 50,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                                // side: BorderSide(color: Colors.grey.shade200)
+                              ))),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => const QrScanner()));
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Image.asset(
+                                      "images/qr-code-scan.png",
+                                      color: Colors.white,
+                                      width: 25,
+                                      height: 25,
+                                    ),
+                                  ),
+                                  const Expanded(
+                                    child: Text(
+                                      'QR',
+                                      style: TextStyle(fontSize: 16),
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '$qtyProductSales Products',
+                                      textAlign: TextAlign.right,
+                                      style: const TextStyle(fontSize: 11),
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const Expanded(
-                                child: Text(
-                                  'QR',
-                                  style: TextStyle(fontSize: 16),
-                                  maxLines: 1,
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  '$qtyProductSales Products',
-                                  textAlign: TextAlign.right,
-                                  style: const TextStyle(fontSize: 11),
-                                  maxLines: 2,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
 
-                    //history
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: 50,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                            // side: BorderSide(color: Colors.grey.shade200)
-                          ))),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => const MainHistory()));
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: Image.asset(
-                                  "images/history.png",
-                                  color: Colors.white,
-                                  width: 25,
-                                  height: 25,
-                                ),
+                        //history
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: 50,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                                // side: BorderSide(color: Colors.grey.shade200)
+                              ))),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => const MainHistory()));
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Image.asset(
+                                      "images/history.png",
+                                      color: Colors.white,
+                                      width: 25,
+                                      height: 25,
+                                    ),
+                                  ),
+                                  const Expanded(
+                                    child: Text(
+                                      'History',
+                                      style: TextStyle(fontSize: 16),
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '$qtyProductHistory Transaksi',
+                                      textAlign: TextAlign.right,
+                                      style: const TextStyle(fontSize: 11),
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const Expanded(
-                                child: Text(
-                                  'History',
-                                  style: TextStyle(fontSize: 16),
-                                  maxLines: 1,
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  '$qtyProductHistory Transaksi',
-                                  textAlign: TextAlign.right,
-                                  style: const TextStyle(fontSize: 11),
-                                  maxLines: 2,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
 
-                    //add toko baru
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: 50,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                          ))),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => AddCustomerMetierScreen()));
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: Image.asset(
-                                  "images/store (2).png",
-                                  color: Colors.white,
-                                  width: 25,
-                                  height: 25,
-                                ),
+                        //add toko baru
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: 50,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                              ))),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) =>
+                                            AddCustomerMetierScreen()));
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Image.asset(
+                                      "images/store (2).png",
+                                      color: Colors.white,
+                                      width: 25,
+                                      height: 25,
+                                    ),
+                                  ),
+                                  const Expanded(
+                                    child: Text(
+                                      'Add Customer',
+                                      style: TextStyle(fontSize: 16),
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '${CurrencyFormat.convertToTitik(qtyProductCustomer, 0)} Customers',
+                                      textAlign: TextAlign.right,
+                                      style: const TextStyle(fontSize: 11),
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const Expanded(
-                                child: Text(
-                                  'Add Customer',
-                                  style: TextStyle(fontSize: 16),
-                                  maxLines: 2,
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  '${CurrencyFormat.convertToTitik(qtyProductCustomer, 0)} Customers',
-                                  textAlign: TextAlign.right,
-                                  style: const TextStyle(fontSize: 11),
-                                  maxLines: 2,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    // //! add toko sebelumnya yang dengan gambar
-                    // Padding(
-                    //     padding: const EdgeInsets.only(top: 15),
-                    //     child: SizedBox(
-                    //       width: MediaQuery.of(context).size.width * 1,
-                    //       height: 50,
-                    //       child: ElevatedButton(
-                    //         style: ButtonStyle(
-                    //             shape: MaterialStateProperty.all<
-                    //                     RoundedRectangleBorder>(
-                    //                 RoundedRectangleBorder(
-                    //           borderRadius: BorderRadius.circular(50.0),
-                    //         ))),
-                    //         onPressed: () {
-                    //           Navigator.push(
-                    //               context,
-                    //               MaterialPageRoute(
-                    //                   builder: (c) =>
-                    //                       const UploadTokoScreen()));
-                    //         },
-                    //         child: Row(
-                    //           mainAxisAlignment:
-                    //               MainAxisAlignment.spaceBetween,
-                    //           children: [
-                    //             Padding(
-                    //               padding: const EdgeInsets.only(right: 5),
-                    //               child: Image.asset(
-                    //                 "images/store (2).png",
-                    //                 color: Colors.white,
-                    //                 width: 25,
-                    //                 height: 25,
-                    //               ),
-                    //             ),
-                    //             const Expanded(
-                    //               child: Text(
-                    //                 'Add toko',
-                    //                 style: TextStyle(fontSize: 16),
-                    //                 maxLines: 1,
-                    //               ),
-                    //             ),
-                    //             Expanded(
-                    //               child: Text(
-                    //                 '${CurrencyFormat.convertToTitik(qtyProductCustomer, 0)} Customers',
-                    //                 textAlign: TextAlign.right,
-                    //                 style: const TextStyle(fontSize: 11),
-                    //                 maxLines: 2,
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
+                        // //! add toko sebelumnya yang dengan gambar
+                        // Padding(
+                        //     padding: const EdgeInsets.only(top: 15),
+                        //     child: SizedBox(
+                        //       width: MediaQuery.of(context).size.width * 1,
+                        //       height: 50,
+                        //       child: ElevatedButton(
+                        //         style: ButtonStyle(
+                        //             shape: MaterialStateProperty.all<
+                        //                     RoundedRectangleBorder>(
+                        //                 RoundedRectangleBorder(
+                        //           borderRadius: BorderRadius.circular(50.0),
+                        //         ))),
+                        //         onPressed: () {
+                        //           Navigator.push(
+                        //               context,
+                        //               MaterialPageRoute(
+                        //                   builder: (c) =>
+                        //                       const UploadTokoScreen()));
+                        //         },
+                        //         child: Row(
+                        //           mainAxisAlignment:
+                        //               MainAxisAlignment.spaceBetween,
+                        //           children: [
+                        //             Padding(
+                        //               padding: const EdgeInsets.only(right: 5),
+                        //               child: Image.asset(
+                        //                 "images/store (2).png",
+                        //                 color: Colors.white,
+                        //                 width: 25,
+                        //                 height: 25,
+                        //               ),
+                        //             ),
+                        //             const Expanded(
+                        //               child: Text(
+                        //                 'Add toko',
+                        //                 style: TextStyle(fontSize: 16),
+                        //                 maxLines: 1,
+                        //               ),
+                        //             ),
+                        //             Expanded(
+                        //               child: Text(
+                        //                 '${CurrencyFormat.convertToTitik(qtyProductCustomer, 0)} Customers',
+                        //                 textAlign: TextAlign.right,
+                        //                 style: const TextStyle(fontSize: 11),
+                        //                 maxLines: 2,
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
 
-                    //CRM
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: 50,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                            // side: BorderSide(color: Colors.grey.shade200)
-                          ))),
-                          onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (c) => CrmScreen()));
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: Image.asset(
-                                  "images/crm (1).png",
-                                  color: Colors.white,
-                                  width: 25,
-                                  height: 25,
-                                ),
+                        //CRM
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: 50,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                                // side: BorderSide(color: Colors.grey.shade200)
+                              ))),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => CrmScreen()));
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Image.asset(
+                                      "images/crm (1).png",
+                                      color: Colors.white,
+                                      width: 25,
+                                      height: 25,
+                                    ),
+                                  ),
+                                  const Expanded(
+                                    child: Text(
+                                      'CRM',
+                                      style: TextStyle(fontSize: 16),
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '$qtyProductCRM Reports',
+                                      textAlign: TextAlign.right,
+                                      style: const TextStyle(fontSize: 11),
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const Expanded(
-                                child: Text(
-                                  'CRM',
-                                  style: TextStyle(fontSize: 16),
-                                  maxLines: 1,
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  '$qtyProductCRM Reports',
-                                  textAlign: TextAlign.right,
-                                  style: const TextStyle(fontSize: 11),
-                                  maxLines: 2,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
 
-                    //E TICKETING
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: 50,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                            // side: BorderSide(color: Colors.grey.shade200)
-                          ))),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => TicketingScreen()));
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: Image.asset(
-                                  "images/ticket (1).png",
-                                  color: Colors.white,
-                                  width: 25,
-                                  height: 25,
-                                ),
+                        //E TICKETING
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: 50,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                                // side: BorderSide(color: Colors.grey.shade200)
+                              ))),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => TicketingScreen()));
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Image.asset(
+                                      "images/ticket (1).png",
+                                      color: Colors.white,
+                                      width: 25,
+                                      height: 25,
+                                    ),
+                                  ),
+                                  const Expanded(
+                                    child: Text(
+                                      'E-Ticketing',
+                                      style: TextStyle(fontSize: 16),
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '$qtyProductTicketing Reports',
+                                      textAlign: TextAlign.right,
+                                      style: const TextStyle(fontSize: 11),
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const Expanded(
-                                child: Text(
-                                  'E-Ticketing',
-                                  style: TextStyle(fontSize: 16),
-                                  maxLines: 1,
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  '$qtyProductTicketing Reports',
-                                  textAlign: TextAlign.right,
-                                  style: const TextStyle(fontSize: 11),
-                                  maxLines: 2,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+              SizedBox(
+                height: 110,
+                child: AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(60)),
+                  backgroundColor:
+                      availableColors[Random().nextInt(availableColors.length)],
+                  content: Padding(
+                    padding: const EdgeInsets.only(top: 0),
+                    child: SizedBox(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: Image.asset(
+                              "images/sales-team.png",
+                              color: Colors.black,
+                              width: 25,
+                              height: 25,
+                            ),
+                          ),
+                          const Expanded(
+                            child: Text(
+                              'Pos Event',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              '$qtyProductSales Products',
+                              textAlign: TextAlign.right,
+                              style: const TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                              maxLines: 2,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           );
         });
   }

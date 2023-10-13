@@ -218,7 +218,6 @@ class HistoryModelNew extends StatelessWidget {
 
         : '$urlBase/transcation/laporan/${order.invoices_number}';
 
-    
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -3091,16 +3090,21 @@ class HistoryModelNew extends StatelessWidget {
   }
 
 //! function memisahkan kalimat
-List<String>splitSeparator(String text,String separator){
-  return text.split(separator);
-}
-
+  List<String> splitSeparator(String text, String separator) {
+    return text.split(separator);
+  }
 
 //pdf beli berlian
   void _createPdfBeliBerlian() async {
+    var font = await PdfGoogleFonts.poppinsRegular(); //memanggil font poppings
+    var fontBold = await PdfGoogleFonts.poppinsBold(); //memanggil font poppings
+    var fontHeadCertif =
+        await PdfGoogleFonts.dMSerifDisplayItalic(); //memanggil font poppings
 
     //! fungsi untuk mengambil keterangan barang
-    var keteranganBarang = order2[0].keterangan_barang.toString(); //!18k-1.54GR,RD4-0.14CT,RD4-0.14CT
+    var keteranganBarang = order2[0]
+        .keterangan_barang
+        .toString(); //!18k-1.54GR,RD4-0.14CT,RD4-0.14CT
     var separator1 = ',';
     var separator2 = '-';
     List result = [];
@@ -3110,71 +3114,67 @@ List<String>splitSeparator(String text,String separator){
     List? qtyDiamond = [];
     List? crtDiamond = [];
 
+    List? separator22 = [];
 
-    List? separator22 =[];
-
-    final resultSeparator1 = splitSeparator(keteranganBarang, separator1); //[18k-1.54GR,RD4-0.14CT,RD4-0.14CT]
+    final resultSeparator1 = splitSeparator(
+        keteranganBarang, separator1); //[18k-1.54GR,RD4-0.14CT,RD4-0.14CT]
     //! function remove where
     resultSeparator1.removeWhere((element) => element == '-');
     resultSeparator1.removeWhere((element) => element == '');
     //? end fungsi
-    for(var i=0; i < resultSeparator1.length; i++){
-      if(i ==0){
-    resultEmas = splitSeparator(resultSeparator1[0], separator2);
-      } 
-      separator22 = splitSeparator(resultSeparator1[i], separator2);
-      for(var j =0; j < separator22.length; j++){
-      result.add(separator22[j]);
+    for (var i = 0; i < resultSeparator1.length; i++) {
+      if (i == 0) {
+        resultEmas = splitSeparator(resultSeparator1[0], separator2);
       }
-      
+      separator22 = splitSeparator(resultSeparator1[i], separator2);
+      for (var j = 0; j < separator22.length; j++) {
+        result.add(separator22[j]);
+      }
     }
 
-for(var i = 2; i< result.length; i++){
-  if(i % 2 ==1){
+    for (var i = 2; i < result.length; i++) {
+      if (i % 2 == 1) {
 //index ganjil
-final newString = result[i].toString().replaceAll('CT', ' CT');
-crtDiamond.add(newString);
-  }else {
-      String sQty = '';
-      String sDiamond = '';
+        final newString = result[i].toString().replaceAll('CT', ' CT');
+        crtDiamond.add(newString);
+      } else {
+        String sQty = '';
+        String sDiamond = '';
 
-    // print(result[i]);
-    for(var j = 0; j < result[i].length; j++){
-      //BDQ51
-    if(int.tryParse(result[i][j]) is num) {
-
-      sQty += result[i][j].toString();
-    } else{
-      sDiamond += result[i][j].toString();
-
+        // print(result[i]);
+        for (var j = 0; j < result[i].length; j++) {
+          //BDQ51
+          if (int.tryParse(result[i][j]) is num) {
+            sQty += result[i][j].toString();
+          } else {
+            sDiamond += result[i][j].toString();
+          }
+        }
+        qtyDiamond.add(sQty); //dapat qty
+        jenisDiamond.add(sDiamond); //dapat jenis
+      }
     }
-    
-
-    }
-      qtyDiamond.add(sQty); //dapat qty
-      jenisDiamond.add(sDiamond); //dapat jenis
-
-  }
-
-
-
-}
-print('list QTY : $qtyDiamond');
-print('list Jenis : $jenisDiamond');
+    print('list QTY : $qtyDiamond');
+    print('list Jenis : $jenisDiamond');
 
     PdfDocument document = PdfDocument();
     final doc = pw.Document();
-    final ByteData bytes = await rootBundle.load('images/welcomeIcon.png');
-    final Uint8List byteList = bytes.buffer.asUint8List();
 
     final ByteData bgByte = await rootBundle.load('images/bgBeliberlian.jpg');
     final Uint8List bgUint2 = bgByte.buffer.asUint8List();
 
-    final ByteData bgBB = await rootBundle.load('images/bgBeli.jpg');
-    final Uint8List bgBB2 = bgBB.buffer.asUint8List();
-
     final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
     final Uint8List byteList2 = bytes2.buffer.asUint8List();
+
+    final ByteData getSertif = await rootBundle.load('images/sertif.png');
+    final Uint8List showSertif = getSertif.buffer.asUint8List();
+
+    final ByteData getBackgroud = await rootBundle.load('images/kopsuratt.png');
+    final Uint8List showBackground = getBackgroud.buffer.asUint8List();
+
+    final imageLogo = MemoryImage(
+        (await rootBundle.load('images/kopsuratt.png')).buffer.asUint8List());
+
 //new multi
     List<String> assetImages = [
       for (var i = 0; i < order.total_quantity; i++)
@@ -3187,21 +3187,28 @@ print('list Jenis : $jenisDiamond');
           pw.MemoryImage(
             image,
           ),
-          height: 129,
-          width: 150,
-          fit: pw.BoxFit.fitHeight,
+          height: 88,
+          width: 145,
+          fit: pw.BoxFit.scaleDown,
         );
       } catch (c) {
         return pw.Image(
           pw.MemoryImage(
             byteList2,
           ),
-          height: 25,
-          width: 25,
-          fit: pw.BoxFit.fitHeight,
+          height: 88,
+          width: 145,
+          fit: pw.BoxFit.scaleDown,
         );
       }
     }).toList();
+
+    //! aritmatika
+    var subTotal = order2[0].price * 15000;
+    var diskon = (subTotal * order.basic_discount) / 100;
+    var totalSubDis = subTotal - diskon;
+    var addDiskon = order.addesdiskon_rupiah ?? 0;
+    var totalPayment = totalSubDis - addDiskon;
 
     doc.addPage(
       pw.MultiPage(
@@ -3216,8 +3223,11 @@ print('list Jenis : $jenisDiamond');
                     child: pw.Container(
                   width: 595,
                   height: 841,
-                  child: pw.Image(pw.MemoryImage(bgBB2),
-                      fit: pw.BoxFit.fitHeight, height: 841, width: 595),
+                  child: pw.Image(pw.MemoryImage(bgUint2),
+                      // child: pw.Image(pw.MemoryImage(showBackground),
+                      fit: pw.BoxFit.fitHeight,
+                      height: 841,
+                      width: 595),
                 )),
                 pw.Container(
                   width: 595,
@@ -3238,17 +3248,18 @@ print('list Jenis : $jenisDiamond');
                         pw.Container(
                           height: 44,
                           child: pw.Row(
-                            mainAxisAlignment: pw.MainAxisAlignment.end,
+                            mainAxisAlignment:
+                                pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Column(
                                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                                 children: [
-                                  //bari1
                                   pw.SizedBox(
                                     child:
                                         // pw.Text(order.invoices_number,
-                                        pw.Text('00192391294',
-                                            style: const pw.TextStyle(
+                                        pw.Text('0019123456',
+                                            style: pw.TextStyle(
+                                              font: font,
                                               // fontFamily: 'Poppins',
                                               fontSize: 11.5,
                                             )),
@@ -3256,8 +3267,27 @@ print('list Jenis : $jenisDiamond');
                                   pw.SizedBox(
                                     child:
                                         // pw.Text(order.invoices_number,
-                                        pw.Text('VINA',
-                                            style: const pw.TextStyle(
+                                        pw.Text(
+                                            DateFormat('dd/MM/yyyy').format(
+                                                DateTime.parse(
+                                                    order.created_at)),
+                                            style: pw.TextStyle(
+                                              font: font,
+                                              // fontFamily: 'Poppins',
+                                              fontSize: 11.5,
+                                            )),
+                                  ),
+                                ],
+                              ),
+                              pw.Column(
+                                crossAxisAlignment: pw.CrossAxisAlignment.end,
+                                children: [
+                                  pw.SizedBox(
+                                    child:
+                                        // pw.Text(order.invoices_number,
+                                        pw.Text(order.customer,
+                                            style: pw.TextStyle(
+                                              font: font,
                                               // fontFamily: 'Poppins',
                                               fontSize: 11.5,
                                             )),
@@ -3265,8 +3295,9 @@ print('list Jenis : $jenisDiamond');
                                   pw.SizedBox(
                                     child:
                                         // pw.Text(order.invoices_number,
-                                        pw.Text('0813231294123',
-                                            style: const pw.TextStyle(
+                                        pw.Text('08123232332',
+                                            style: pw.TextStyle(
+                                              font: font,
                                               // fontFamily: 'Poppins',
                                               fontSize: 11.5,
                                             )),
@@ -3280,8 +3311,9 @@ print('list Jenis : $jenisDiamond');
                         pw.Container(
                           height: 25,
                           child: pw.Center(
-                            child: pw.Text('INVOICE PEMBELIAN',
+                            child: pw.Text('INVOICE',
                                 style: pw.TextStyle(
+                                    // font: font,
                                     fontSize: 20,
                                     fontWeight: pw.FontWeight.bold)),
                           ),
@@ -3298,24 +3330,28 @@ print('list Jenis : $jenisDiamond');
                               children: [
                                 pw.Text('Qty',
                                     style: pw.TextStyle(
-                                              // fontFamily: 'Poppins',
+                                        font: font,
+                                        // fontFamily: 'Poppins',
                                         fontSize: 12,
                                         color: PdfColors.white,
                                         fontWeight: pw.FontWeight.bold)),
                                 pw.Text('Product Description',
                                     style: pw.TextStyle(
-                                              // fontFamily: 'Poppins',
+                                        font: font,
+                                        // fontFamily: 'Poppins',
                                         fontSize: 12,
                                         color: PdfColors.white,
                                         fontWeight: pw.FontWeight.bold)),
                                 pw.Text('Price',
                                     style: pw.TextStyle(
-                                              // fontFamily: 'Poppins',
+                                        font: font,
+                                        // fontFamily: 'Poppins',
                                         fontSize: 12,
                                         color: PdfColors.white,
                                         fontWeight: pw.FontWeight.bold)),
                                 pw.Text('Total',
                                     style: pw.TextStyle(
+                                        font: font,
                                         fontSize: 12,
                                         color: PdfColors.white,
                                         fontWeight: pw.FontWeight.bold)),
@@ -3324,7 +3360,7 @@ print('list Jenis : $jenisDiamond');
                         //? body isi beli berilian
                         pw.Container(
                             padding: const pw.EdgeInsets.only(top: 15),
-                            height: 85,
+                            height: 75,
                             child: pw.Row(
                               mainAxisAlignment: pw.MainAxisAlignment.start,
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -3337,16 +3373,17 @@ print('list Jenis : $jenisDiamond');
                                   width: 40,
                                   child: pw.Text('1',
                                       style: pw.TextStyle(
+                                          font: font,
                                           fontSize: 11.5,
                                           fontWeight: pw.FontWeight.bold)),
                                 ),
                                 pw.SizedBox(
-                                  width: 25,
+                                  width: 48,
                                 ),
                                 pw.Container(
-                                  width: 185,
+                                  width: 105,
                                   child: pw.Text(
-                                      '${order2[0].name} - ${order2[0].description}', 
+                                      '${order2[0].name}  \n${order2[0].description}',
                                       //'BRG04224890I44K Millenia Diamond Ring - Cincin Berlian Asli Eropa Size 11',
                                       maxLines: 10,
                                       style: pw.TextStyle(
@@ -3354,11 +3391,14 @@ print('list Jenis : $jenisDiamond');
                                           fontWeight: pw.FontWeight.bold)),
                                 ),
                                 pw.SizedBox(
-                                  width: 30,
+                                  width: 70,
                                 ),
                                 pw.Container(
                                   width: 90,
-                                  child: pw.Text(CurrencyFormat.convertToDollar(order2[0].price * 15000,0).toString(),
+                                  child: pw.Text(
+                                      CurrencyFormat.convertToDollar(
+                                              order2[0].price * 15000, 0)
+                                          .toString(),
                                       maxLines: 10,
                                       style: pw.TextStyle(
                                           fontSize: 11.5,
@@ -3369,7 +3409,10 @@ print('list Jenis : $jenisDiamond');
                                 ),
                                 pw.Container(
                                   width: 90,
-                                  child: pw.Text(CurrencyFormat.convertToDollar(order2[0].price * 15000,0).toString(),
+                                  child: pw.Text(
+                                      CurrencyFormat.convertToDollar(
+                                              order2[0].price * 15000, 0)
+                                          .toString(),
                                       maxLines: 10,
                                       style: pw.TextStyle(
                                           fontSize: 11.5,
@@ -3380,14 +3423,14 @@ print('list Jenis : $jenisDiamond');
 
                         //? garis
                         pw.Divider(
-                        color:  PdfColor.fromHex('#6595b5'),
+                          color: PdfColor.fromHex('#6595b5'),
                           // color: PdfColors.blue,
                           thickness: 3,
                         ),
 
-                        //bottom pdf beliberlian
+                        //mid  pdf beliberlian payment method
                         pw.Container(
-                          height: 105,
+                          height: 113,
                           child: pw.Row(
                             mainAxisAlignment:
                                 pw.MainAxisAlignment.spaceBetween,
@@ -3408,57 +3451,103 @@ print('list Jenis : $jenisDiamond');
                                           const pw.EdgeInsets.only(left: 5),
                                       width: 238,
                                       child: pw.Row(
-                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            pw.MainAxisAlignment.spaceBetween,
                                         children: [
                                           pw.Text('Sub Total',
                                               style: const pw.TextStyle(
                                                   fontSize: 11.5)),
-                                                   pw.Text('${CurrencyFormat.convertToDollar(order2[0].price * 15000,0)}',
+                                          pw.Text(
+                                              '${CurrencyFormat.convertToDollar(subTotal, 0)}',
                                               style: const pw.TextStyle(
                                                   fontSize: 11.5)),
                                         ],
                                       )),
-                                  pw.Container(
-                                      padding:
-                                          const pw.EdgeInsets.only(left: 5,top:5),
-                                      width: 238,
-                                      child: pw.Row(
-                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          pw.Text('Tax Rate',
-                                              style: const pw.TextStyle(
-                                                  fontSize: 11.5)),
-                                           pw.Text('${CurrencyFormat.convertToDollar((((order2[0].price * 15000) * 1.65) / 100),0)}',
-                                              style: const pw.TextStyle(
-                                                  fontSize: 11.5)),
-                                        ],
-                                      )),
-                                       pw.Container(
-                                      padding:
-                                          const pw.EdgeInsets.only(left: 5,top:5),
-                                      width: 238,
-                                      child: pw.Row(
-                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          pw.Text('Basic Discount',
-                                              style: const pw.TextStyle(
-                                                  fontSize: 11.5)),
-                                           pw.Text('${CurrencyFormat.convertToDollar(((order2[0].price * 15000) / 2),0)}',
-                                              style: const pw.TextStyle(
-                                                  fontSize: 11.5)),
-                                        ],
-                                      )),
-                                      pw.SizedBox(height: 9),
                                   pw.Container(
                                       padding: const pw.EdgeInsets.only(
-                                          left: 5, top: 2, bottom: 5),
+                                          left: 5, top: 5),
+                                      width: 238,
+                                      child: pw.Row(
+                                        mainAxisAlignment:
+                                            pw.MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          pw.Text('Diskon',
+                                              style: const pw.TextStyle(
+                                                  fontSize: 11.5)),
+                                          pw.Text(
+                                              '${CurrencyFormat.convertToDollar(diskon, 0)}',
+                                              // '${CurrencyFormat.convertToDollar((((order2[0].price * 15000) * 1.65) / 100), 0)}',
+                                              style: const pw.TextStyle(
+                                                  fontSize: 11.5)),
+                                        ],
+                                      )),
+                                  //? garis
+                                  pw.Container(
+                                    width: 230,
+                                    child: pw.Divider(
+                                      color: PdfColor.fromHex('#6595b5'),
+                                      // color: PdfColors.blue,
+                                      thickness: 1,
+                                    ),
+                                  ),
+                                  pw.Container(
+                                      padding: const pw.EdgeInsets.only(
+                                          left: 5, top: 1),
+                                      width: 238,
+                                      child: pw.Row(
+                                        mainAxisAlignment:
+                                            pw.MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          pw.Text('Total',
+                                              style: const pw.TextStyle(
+                                                  fontSize: 11.5)),
+                                          pw.Text(
+                                              '${CurrencyFormat.convertToDollar(totalSubDis, 0)}',
+                                              style: const pw.TextStyle(
+                                                  fontSize: 11.5)),
+                                        ],
+                                      )),
+                                  addDiskon == 0
+                                      ? pw.SizedBox(height: 15)
+                                      : pw.Container(
+                                          padding: const pw.EdgeInsets.only(
+                                              left: 5, top: 5),
+                                          width: 238,
+                                          child: pw.Row(
+                                            mainAxisAlignment: pw
+                                                .MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              pw.Text('Additional Discount',
+                                                  style: const pw.TextStyle(
+                                                      fontSize: 11.5)),
+                                              pw.Text(
+                                                  '${CurrencyFormat.convertToDollar(addDiskon, 0)}',
+                                                  style: const pw.TextStyle(
+                                                      fontSize: 11.5)),
+                                            ],
+                                          )),
+                                  pw.SizedBox(height: 9),
+                                  pw.Container(
+                                      padding: const pw.EdgeInsets.only(
+                                          left: 5, top: 2, bottom: 0),
                                       width: 238,
                                       height: 20,
                                       color: PdfColors.black,
-                                      child: pw.Text('Grand Total :',
-                                          style: const pw.TextStyle(
-                                              fontSize: 11.5,
-                                              color: PdfColors.white))),
+                                      child: pw.Row(
+                                        mainAxisAlignment:
+                                            pw.MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          pw.Text('Total Payment :',
+                                              style: const pw.TextStyle(
+                                                  fontSize: 11.5,
+                                                  color: PdfColors.white)),
+                                          pw.Text(
+                                              '${CurrencyFormat.convertToDollar(totalPayment, 0)}',
+                                              style: const pw.TextStyle(
+                                                  fontSize: 11.5,
+                                                  color: PdfColors.white)),
+                                        ],
+                                      )),
                                 ],
                               ),
                             ],
@@ -3469,255 +3558,281 @@ print('list Jenis : $jenisDiamond');
                         ),
                         //? garis
                         pw.Divider(
-                        color:  PdfColor.fromHex('#6595b5'),
-
+                          color: PdfColor.fromHex('#6595b5'),
                           height: 2,
                           thickness: 3,
                         ),
 
+                        //? bottom pdf beli berlian
                         pw.Row(
                           children: [
-                            pw.Container(
-                              height: 375,
-                              width: 225,
-                              child: pw.Row(
-                                mainAxisAlignment: pw.MainAxisAlignment.start,
-                                children: [
-                                  pw.Container(
-                                       child: pw.Column(
-                                    mainAxisAlignment:
-                                        pw.MainAxisAlignment.start,
-                                    children: [
-                                      for (var i = 0; i <= 120; i++)
-                                        pw.Container(
-                                          padding:
-                                              const pw.EdgeInsets.symmetric(
-                                                  vertical: 4),
-                                          child: pw.Text('|',
-                                              style: pw.TextStyle(
-                                                  fontSize: 10,
-                                                                       color:  PdfColor.fromHex('#6595b5'),
-
-                                                  fontWeight:
-                                                      pw.FontWeight.bold)),
-                                        ),
-                                    ],
-                                  )),
-                                  pw.Container(
-                                      padding: const pw.EdgeInsets.only(
-                                          left: 20, top: 8),
-                                      width: 200,
-                                      height: 375,
-                                      child: pw.Column(
-                                        crossAxisAlignment:
-                                            pw.CrossAxisAlignment.start,
-                                        children: [
-                                          pw.Text(
-                                            'Sertificate',
-                                            style: pw.TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: pw.FontWeight.bold),
-                                          ),
-                                          pw.SizedBox(
-                                            height: 5,
-                                          ),
-                                          pw.Container(
-                                            height: 129,
-                                            width: 165,
-                                            decoration: pw.BoxDecoration(
-                                                borderRadius:
-                                                    pw.BorderRadius.circular(
-                                                        12)),
-                                            child: pdfImagesMetier[0],
-                                          ),
-                                          pw.Container(
+                            pw.Stack(children: [
+                              pw.Container(
+                                height: 390,
+                                width: 250,
+                                child: pw.Image(
+                                  pw.MemoryImage(showSertif),
+                                  fit: pw.BoxFit.fitHeight,
+                                  height: 390,
+                                  width: 250,
+                                ),
+                              ),
+                              pw.Container(
+                                height: 390,
+                                width: 250,
+                                child: pw.Row(
+                                  mainAxisAlignment: pw.MainAxisAlignment.start,
+                                  children: [
+                                    pw.Container(
+                                        padding: const pw.EdgeInsets.only(
+                                            left: 20, top: 8),
+                                        width: 200,
+                                        height: 390,
+                                        child: pw.Column(
+                                          crossAxisAlignment:
+                                              pw.CrossAxisAlignment.start,
+                                          children: [
+                                            pw.SizedBox(height: 15),
+                                            pw.Padding(
                                               padding: const pw.EdgeInsets.only(
-                                                  top: 10),
+                                                  left: 20),
                                               child: pw.Center(
-                                                  child: pw.Text(
-                                                      // order.description,
-                                                      'RG003248124',
-                                                      style: const pw.TextStyle(
-                                                          fontSize: 11.5)))),
-                                          pw.Container(
-                                              padding: const pw.EdgeInsets.only(
-                                                  top: 10),
-                                              child: pw.Text('Spesifikasi',
+                                                child: pw.Text(
+                                                  'Certificate',
                                                   style: pw.TextStyle(
-                                                      fontSize: 12,
+                                                      font: fontHeadCertif,
+                                                      fontSize: 16,
                                                       fontWeight:
-                                                          pw.FontWeight.bold))),
-                                          pw.Container(
+                                                          pw.FontWeight.bold),
+                                                ),
+                                              ),
+                                            ),
+                                            pw.SizedBox(
+                                              height: 5,
+                                            ),
+                                            pw.Container(
                                               padding: const pw.EdgeInsets.only(
-                                                  top: 5),
-                                              child: pw.Row(
-                                                children: [
-                                                  pw.SizedBox(
-                                                    width: 60,
-                                                    child: pw.Text('METAL',
-                                                        style:
-                                                            const pw.TextStyle(
-                                                          fontSize: 11.5,
-                                                        )),
-                                                  ),
-                                                  pw.Text(resultEmas![0],
-                                                      style: const pw.TextStyle(
-                                                        fontSize: 11.5,
-                                                      )),
-                                                ],
-                                              )),
-                                          pw.Container(
-                                              padding: const pw.EdgeInsets.only(
-                                                  top: 5),
-                                              child: pw.Row(
-                                                children: [
-                                                  pw.SizedBox(
-                                                    width: 60,
-                                                    child: pw.Text('WEIGHT',
-                                                        style:
-                                                            const pw.TextStyle(
-                                                          fontSize: 11.5,
-                                                        )),
-                                                  ),
-                                                  pw.Text(resultEmas[1],
-                                                      style: const pw.TextStyle(
-                                                        fontSize: 11.5,
-                                                      )),
-                                                ],
-                                              )),
-                                          pw.Container(
-                                              padding: const pw.EdgeInsets.only(
-                                                  top: 10),
-                                              child: pw.Text('Diamond',
-                                                  style: pw.TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          pw.FontWeight.bold))),
-                                                          //looping batu 
-                                          
-                                         
-                                          pw.Container(
-                                              padding: const pw.EdgeInsets.only(
-                                                  top: 5),
-                                              child: pw.Row(
-                                                children: [
-                                                  pw.SizedBox(
-                                                    width: 60,
-                                                    child: pw.Text('CUT',
-                                                        style:
-                                                            const pw.TextStyle(
-                                                          fontSize: 11.5,
-                                                        )),
-                                                  ),
-                                                  pw.Text('EXCELLENT',
-                                                      style: const pw.TextStyle(
-                                                        fontSize: 11.5,
-                                                      )),
-                                                ],
-                                              )),
-                                          pw.Container(
-                                              padding: const pw.EdgeInsets.only(
-                                                  top: 5),
-                                              child: pw.Row(
-                                                children: [
-                                                  pw.SizedBox(
-                                                    width: 60,
-                                                    child: pw.Text('COLOR',
-                                                        style:
-                                                            const pw.TextStyle(
-                                                          fontSize: 11.5,
-                                                        )),
-                                                  ),
-                                                  pw.Text('F',
-                                                      style: const pw.TextStyle(
-                                                        fontSize: 11.5,
-                                                      )),
-                                                ],
-                                              )),
-                                          pw.Container(
-                                              padding: const pw.EdgeInsets.only(
-                                                  top: 5),
-                                              child: pw.Row(
-                                                children: [
-                                                  pw.SizedBox(
-                                                    width: 60,
-                                                    child: pw.Text('CLARITY',
-                                                        style:
-                                                            const pw.TextStyle(
-                                                          fontSize: 11.5,
-                                                        )),
-                                                  ),
-                                                  pw.Text('VVS',
-                                                      style: const pw.TextStyle(
-                                                        fontSize: 11.5,
-                                                      )),
-                                                ],
-                                              )),
-                                          pw.Container(
-                                              padding: const pw.EdgeInsets.only(
-                                                  top: 5),
-                                              child: pw.Row(
-                                                children: [
-                                                  pw.SizedBox(
-                                                    width: 60,
-                                                    child: pw.Text('STORE',
-                                                        style:
-                                                            const pw.TextStyle(
-                                                          fontSize: 11.5,
-                                                        )),
-                                                  ),
-                                                  pw.Text('beliberlian.id',
-                                                      style: const pw.TextStyle(
-                                                        fontSize: 11.5,
-                                                      )),
-                                                ],
-                                              )),
-                                                 for(var i=0; i<jenisDiamond.length; i++)
-                            pw.Container(
-                                              padding: const pw.EdgeInsets.only(
-                                                  top: 5),
-                                              child: pw.Row(
-                                                children: [
-                                                  pw.SizedBox(
-                                                    width: 60,
-                                                    child: pw.Text('${jenisDiamond[i]}',
-                                                        style:
-                                                            const pw.TextStyle(
-                                                          fontSize: 11.5,
-                                                        )),
-                                                  ),
-                                                  pw.Text('${qtyDiamond[i]} PCS - ${crtDiamond[i]}',
-                                                      style: const pw.TextStyle(
-                                                        fontSize: 11.5,
-                                                      )),
-                                                ],
-                                              )),
-                                        ],
-                                      )),
-                                  pw.Container(
-                                                    child: pw.Column(
-                                                  mainAxisAlignment:
-                                                      pw.MainAxisAlignment.start,
+                                                  left: 50),
+                                              decoration: pw.BoxDecoration(
+                                                  borderRadius:
+                                                      pw.BorderRadius.circular(
+                                                          12)),
+                                              child: pdfImagesMetier[0],
+                                            ),
+                                            pw.Container(
+                                                padding:
+                                                    const pw.EdgeInsets.only(
+                                                        top: 10),
+                                                child: pw.Center(
+                                                    child: pw.Text(
+                                                        // order.description,
+                                                        order2[0].description,
+                                                        style: pw.TextStyle(
+                                                            font: font,
+                                                            fontSize: 10)))),
+                                            pw.Container(
+                                                padding:
+                                                    const pw.EdgeInsets.only(
+                                                        left: 30, top: 5),
+                                                child: pw.Text('Spesifikasi',
+                                                    style: pw.TextStyle(
+                                                        font: fontBold,
+                                                        fontSize: 11,
+                                                        fontWeight: pw
+                                                            .FontWeight.bold))),
+                                            pw.Container(
+                                                padding:
+                                                    const pw.EdgeInsets.only(
+                                                        left: 30, top: 2),
+                                                child: pw.Row(
                                                   children: [
-                                                    for (var i = 0; i <= 120; i++)
-                                                      pw.Container(
-                                                        padding:
-                                                            const pw.EdgeInsets.symmetric(
-                                                                vertical: 4),
-                                                        child: pw.Text('|',
-                                                            style: pw.TextStyle(
-                                                                fontSize: 10,
-                        color:  PdfColor.fromHex('#6595b5'),
-                                                                fontWeight:
-                                                                    pw.FontWeight.bold)),
-                                                      ),
+                                                    pw.SizedBox(
+                                                      width: 60,
+                                                      child: pw.Text('METAL',
+                                                          style: pw.TextStyle(
+                                                            font: font,
+                                                            fontSize: 10,
+                                                          )),
+                                                    ),
+                                                    pw.Text(resultEmas![0],
+                                                        style: pw.TextStyle(
+                                                          font: font,
+                                                          fontSize: 11.5,
+                                                        )),
                                                   ],
                                                 )),
-                                ],
+                                            pw.Container(
+                                                padding:
+                                                    const pw.EdgeInsets.only(
+                                                        left: 30, top: 0),
+                                                child: pw.Row(
+                                                  children: [
+                                                    pw.SizedBox(
+                                                      width: 60,
+                                                      child: pw.Text('WEIGHT',
+                                                          style: pw.TextStyle(
+                                                            font: font,
+                                                            fontSize: 10,
+                                                          )),
+                                                    ),
+                                                    pw.Text(resultEmas[1],
+                                                        style: pw.TextStyle(
+                                                          font: font,
+                                                          fontSize: 10,
+                                                        )),
+                                                  ],
+                                                )),
+                                            pw.Container(
+                                                padding:
+                                                    const pw.EdgeInsets.only(
+                                                        left: 30, top: 4),
+                                                child: pw.Text('Diamond',
+                                                    style: pw.TextStyle(
+                                                        font: fontBold,
+                                                        fontSize: 11,
+                                                        fontWeight: pw
+                                                            .FontWeight.bold))),
+                                            //looping batu
+
+                                            pw.Container(
+                                                padding:
+                                                    const pw.EdgeInsets.only(
+                                                        left: 30, top: 0),
+                                                child: pw.Row(
+                                                  children: [
+                                                    pw.SizedBox(
+                                                      width: 60,
+                                                      child: pw.Text('CUT',
+                                                          style: pw.TextStyle(
+                                                            font: font,
+                                                            fontSize: 10,
+                                                          )),
+                                                    ),
+                                                    pw.Text('EXCELLENT',
+                                                        style: pw.TextStyle(
+                                                          font: font,
+                                                          fontSize: 10,
+                                                        )),
+                                                  ],
+                                                )),
+                                            pw.Container(
+                                                padding:
+                                                    const pw.EdgeInsets.only(
+                                                        left: 30, top: 0),
+                                                child: pw.Row(
+                                                  children: [
+                                                    pw.SizedBox(
+                                                      width: 60,
+                                                      child: pw.Text('COLOR',
+                                                          style: pw.TextStyle(
+                                                            font: font,
+                                                            fontSize: 10,
+                                                          )),
+                                                    ),
+                                                    pw.Text('F',
+                                                        style: pw.TextStyle(
+                                                          font: font,
+                                                          fontSize: 10,
+                                                        )),
+                                                  ],
+                                                )),
+                                            pw.Container(
+                                                padding:
+                                                    const pw.EdgeInsets.only(
+                                                        left: 30, top: 0),
+                                                child: pw.Row(
+                                                  children: [
+                                                    pw.SizedBox(
+                                                      width: 60,
+                                                      child: pw.Text('CLARITY',
+                                                          style: pw.TextStyle(
+                                                            font: font,
+                                                            fontSize: 10,
+                                                          )),
+                                                    ),
+                                                    pw.Text('VVS',
+                                                        style: pw.TextStyle(
+                                                          font: font,
+                                                          fontSize: 10,
+                                                        )),
+                                                  ],
+                                                )),
+                                            pw.Container(
+                                                padding:
+                                                    const pw.EdgeInsets.only(
+                                                        left: 30, top: 0),
+                                                child: pw.Row(
+                                                  children: [
+                                                    pw.SizedBox(
+                                                      width: 60,
+                                                      child: pw.Text('STORE',
+                                                          style: pw.TextStyle(
+                                                            font: font,
+                                                            fontSize: 10,
+                                                          )),
+                                                    ),
+                                                    pw.Text('beliberlian.id',
+                                                        style: pw.TextStyle(
+                                                          font: font,
+                                                          fontSize: 10,
+                                                        )),
+                                                  ],
+                                                )),
+                                            for (var i = 0;
+                                                i < jenisDiamond.length;
+                                                i++)
+                                              pw.Container(
+                                                  padding:
+                                                      const pw.EdgeInsets.only(
+                                                          left: 30, top: 0),
+                                                  child: pw.Row(
+                                                    children: [
+                                                      pw.SizedBox(
+                                                        width: 60,
+                                                        child: pw.Text(
+                                                            '${jenisDiamond[i]}',
+                                                            style: pw.TextStyle(
+                                                              font: font,
+                                                              fontSize: 10,
+                                                            )),
+                                                      ),
+                                                      pw.Text(
+                                                          '${qtyDiamond[i]} PCS - ${crtDiamond[i]}',
+                                                          style: pw.TextStyle(
+                                                            font: font,
+                                                            fontSize: 10,
+                                                          )),
+                                                    ],
+                                                  )),
+                                          ],
+                                        )),
+                                    // pw.Container(
+                                    //     child: pw.Column(
+                                    //   mainAxisAlignment:
+                                    //       pw.MainAxisAlignment.start,
+                                    //   children: [
+                                    //     for (var i = 0; i <= 120; i++)
+                                    //       pw.Container(
+                                    //         padding:
+                                    //             const pw.EdgeInsets.symmetric(
+                                    //                 vertical: 4),
+                                    //         child: pw.Text('|',
+                                    //             style: pw.TextStyle(
+                                    //                 fontSize: 10,
+                                    //                 color: PdfColor.fromHex(
+                                    //                     '#6595b5'),
+                                    //                 fontWeight:
+                                    //                     pw.FontWeight.bold)),
+                                    //       ),
+                                    //   ],
+                                    // )),
+                                  ],
+                                ),
                               ),
-                            ),
+                            ]),
                             pw.Container(
-                              height: 375,
+                              padding: const pw.EdgeInsets.only(left: 15),
+                              height: 390,
                               width: 276,
                               child: pw.Column(
                                 mainAxisAlignment: pw.MainAxisAlignment.start,
@@ -3731,70 +3846,97 @@ print('list Jenis : $jenisDiamond');
                                           fontSize: 12)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '1.Jual kembali dan tukar tambah hanya dapat dilakukan jika disertai invoice Pembelian asli dengan stempel asli.',
-                                      style: const pw.TextStyle(
-                                          color: PdfColors.black, fontSize: 7)),
+                                      '1. Jual kembali dan tukar tambah hanya dapat dilakukan jika disertai invoice pembelian asli dengan stempel asli.',
+                                      style: pw.TextStyle(
+                                          font: font,
+                                          color: PdfColors.black,
+                                          fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '2.Potongan untuk jual kembali sebesar 25%, dan potongan untuk tukar tambah sebesar 20% dari harga perhiasan yang tertera di invoice.',
-                                      style: const pw.TextStyle(
-                                          color: PdfColors.black, fontSize: 7)),
+                                      '2. Potongan untuk jual kembali sebesar 25%, dan potongan untuk tukar tambah sebesar 20%.',
+                                      style: pw.TextStyle(
+                                          font: font,
+                                          color: PdfColors.black,
+                                          fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '3.Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 2,5 tahun (rentang waktu bulan ke-13 - bulan ke -30) setelah tanggal pembelian.',
-                                      style: const pw.TextStyle(
-                                          color: PdfColors.black, fontSize: 7)),
+                                      '3. Potongan untuk jual kembali dan tukar tambah berdasarkan dari harga total payment.',
+                                      style: pw.TextStyle(
+                                          font: font,
+                                          color: PdfColors.black,
+                                          fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                        '4.Perhiasan dengan kategori wedding ring tidak bisa dijual kembali/tukar tambah.',
+                                      '4. Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 2,5 tahun (rentang waktu bulan ke-13 - bulan ke -30) setelah tanggal pembelian.',
+                                      style: pw.TextStyle(
+                                          font: font,
+                                          color: PdfColors.black,
+                                          fontSize: 7)),
+                                  pw.SizedBox(height: 5),
+                                  pw.Text(
+                                      '5. Perhiasan dengan kategori wedding ring tidak bisa dijual kembali/tukar tambah.',
                                       //  textAlign: pw.TextAlign.left,
-                                        style: const pw.TextStyle(
-                                            color: PdfColors.black, fontSize: 7)),
+                                      style: pw.TextStyle(
+                                          font: font,
+                                          color: PdfColors.black,
+                                          fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '5.Perhiasan harus diterima dalam keadaan baik dan akan diperiksa ulang untuk memenuhi kualitas standar, dan beliberlian.id berhak untuk menolak jika tidak sesuai standar (syarat dan ketentuan berlaku).',
-                                      style: const pw.TextStyle(
-                                          color: PdfColors.black, fontSize: 7)),
+                                      '6. Perhiasan harus diterima dalam keadaan baik dan akan diperiksa ulang untuk memenuhi kualitas standar, dan beliberlian.id berhak untuk menolak jika tidak sesuai standar (syarat dan ketentuan berlaku).',
+                                      style: pw.TextStyle(
+                                          font: font,
+                                          color: PdfColors.black,
+                                          fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '6.Pembelian dengan voucher,special price atau promo tertentu tidak dapat dijual kembali.',
-                                      style: const pw.TextStyle(
-                                          color: PdfColors.black, fontSize: 7)),
+                                      '7. Pembelian dengan voucher, special price atau promo tertentu tidak dapat dijual kembali.',
+                                      style: pw.TextStyle(
+                                          font: font,
+                                          color: PdfColors.black,
+                                          fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '7.Pihak beliberlian.id tidak bertanggung jawab atas kehilangan barang milik pembeli.',
-                                      style: const pw.TextStyle(
-                                          color: PdfColors.black, fontSize: 7)),
+                                      '8. Pihak beliberlian.id tidak bertanggung jawab atas kehilangan barang milik pembeli.',
+                                      style: pw.TextStyle(
+                                          font: font,
+                                          color: PdfColors.black,
+                                          fontSize: 7)),
                                   pw.SizedBox(height: 5),
                                   pw.Text(
-                                      '8.Peraturan bisa berubah sewaktu-waktu sesuai dengan kebijakan beliberlian.id.',
-                                      style: const pw.TextStyle(
-                                          color: PdfColors.black, fontSize: 7)),
+                                      '9. Peraturan bisa berubah sewaktu-waktu sesuai dengan kebijakan beliberlian.id.',
+                                      style: pw.TextStyle(
+                                          font: font,
+                                          color: PdfColors.black,
+                                          fontSize: 7)),
                                   pw.SizedBox(height: 5),
-                                       pw.Text(
-                                      '9.Perhiasan yang dibeli sudah termasuk PPN 11%.',
-                                      style: const pw.TextStyle(
-                                          color: PdfColors.black, fontSize: 7)),
-                                  pw.SizedBox(height: 22),
-                                     pw.Container(
-                                      padding: const pw.EdgeInsets.only(left:10),
-                                       child: pw.Text(
-                                        'Hormat Kami,',
+                                  pw.Text(
+                                      '10. Perhiasan yang dibeli sudah termasuk PPN 11%.',
+                                      style: pw.TextStyle(
+                                          font: font,
+                                          color: PdfColors.black,
+                                          fontSize: 7)),
+                                  pw.SizedBox(height: 12),
+                                  pw.Container(
+                                    padding: const pw.EdgeInsets.only(left: 12),
+                                    child: pw.Text('Hormat Kami,',
                                         style: pw.TextStyle(
-                                            color: PdfColors.black, fontSize: 20,fontWeight: pw.FontWeight.bold)),
-                                     ),
-                                  pw.SizedBox(height: 75),
-        pw.Container(
-          padding: const pw.EdgeInsets.only(left:5),
-          width: 110,
-          child: pw.Divider(thickness: 1)),
-                pw.Container(
-                  padding: const pw.EdgeInsets.only(left:15),
-                  child: pw.Text(
-                                        'Hendrik Wijaya',
+                                            color: PdfColors.black,
+                                            fontSize: 16,
+                                            fontWeight: pw.FontWeight.bold)),
+                                  ),
+                                  pw.SizedBox(height: 35),
+                                  pw.Container(
+                                      padding:
+                                          const pw.EdgeInsets.only(left: 5),
+                                      width: 130,
+                                      child: pw.Divider(thickness: 1)),
+                                  pw.Container(
+                                    padding: const pw.EdgeInsets.only(left: 25),
+                                    child: pw.Text('Hendrik Wijaya',
                                         style: const pw.TextStyle(
-                                            color: PdfColors.black, fontSize: 11.5)),
-                ),
+                                            color: PdfColors.black,
+                                            fontSize: 11.5)),
+                                  ),
                                 ],
                               ),
                             )
