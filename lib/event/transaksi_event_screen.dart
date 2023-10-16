@@ -159,7 +159,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
           elevation: 0,
           backgroundColor: Colors.white,
           title: const Text(
-            "Billing Information",
+            "Billing Event",
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,

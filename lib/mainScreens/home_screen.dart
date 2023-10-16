@@ -2077,31 +2077,37 @@ class _HomeScreenState extends State<HomeScreen> {
                         Random().nextInt(availableColors.length)],
         fontSize: 20,
         fontWeight: FontWeight.bold),
-    child: AnimatedTextKit(
-      repeatForever: true,
-      isRepeatingAnimation: true,
-      animatedTexts: [
-        TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
-          color: availableColors[
-                        Random().nextInt(availableColors.length)],
-        )),
-        TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
-          color: availableColors[
-                        Random().nextInt(availableColors.length)],
-        )),
-        TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
-          color: availableColors[
-                        Random().nextInt(availableColors.length)],
-        )),
-         TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
-          color: availableColors[
-                        Random().nextInt(availableColors.length)],
-        )),
-         TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
-          color: availableColors[
-                        Random().nextInt(availableColors.length)],
-        )),
-      ],
+    child: GestureDetector(
+      onTap: () {
+             Navigator.push(context,
+                      MaterialPageRoute(builder: (c) => PosEventScreen()));
+      },
+      child: AnimatedTextKit(
+        repeatForever: true,
+        isRepeatingAnimation: true,
+        animatedTexts: [
+          TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
+            color: availableColors[
+                          Random().nextInt(availableColors.length)],
+          )),
+          TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
+            color: availableColors[
+                          Random().nextInt(availableColors.length)],
+          )),
+          TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
+            color: availableColors[
+                          Random().nextInt(availableColors.length)],
+          )),
+           TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
+            color: availableColors[
+                          Random().nextInt(availableColors.length)],
+          )),
+           TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
+            color: availableColors[
+                          Random().nextInt(availableColors.length)],
+          )),
+        ],
+      ),
     ),
   ),
 ),

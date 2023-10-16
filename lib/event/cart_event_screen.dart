@@ -9,7 +9,7 @@ import 'package:e_shop/event/transaksi_event_screen.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/itemsScreens/items_photo.dart';
 import 'package:e_shop/provider/provider_cart.dart';
-import 'package:e_shop/widgets/alert_dialog.dart';
+// import 'package:e_shop/widgets/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
@@ -60,43 +60,44 @@ class _CartEventScreenState extends State<CartEventScreen> {
               fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        actions: [
-          context.watch<PCart>().getItems.isEmpty
-              ? const SizedBox()
-              : IconButton(
-                  onPressed: () {
-                    MyAlertDilaog.showMyDialog(
-                        context: context,
-                        title: 'Clear Cart',
-                        content: 'Are you sure to clear cart ?',
-                        tabNo: () {
-                          Navigator.pop(context);
-                        },
-                        tabYes: () async {
-                          String token =
-                              sharedPreferences!.getString("token").toString();
+        // actions: [
+        //   context.watch<PCart>().getItems.isEmpty
+        //       ? const SizedBox()
+        //       : IconButton(
+        //           onPressed: () {
+        //             MyAlertDilaog.showMyDialog(
+        //                 context: context,
+        //                 title: 'Clear Cart',
+        //                 content: 'Are you sure to clear cart ?',
+        //                 tabNo: () {
+        //                   Navigator.pop(context);
+        //                 },
+        //                 tabYes: () async {
+        //                   String token =
+        //                       sharedPreferences!.getString("token").toString();
 
-                          Map<String, String> body = {
-                            'jenisform_id': '3',
-                          };
-                          final response = await http.post(
-                              Uri.parse(ApiConstants.baseUrl +
-                                  ApiConstants.DELETEallkeranjangsalesendpoint),
-                              headers: <String, String>{
-                                'Authorization': 'Bearer $token',
-                              },
-                              body: body);
-                          print(response.body);
-                          context.read<PCart>().clearCart();
-                          Navigator.pop(context);
-                        });
-                  },
-                  icon: const Icon(
-                    Icons.delete_forever,
-                    color: Colors.black,
-                  ),
-                ),
-        ],
+        //                   Map<String, String> body = {
+        //                     'jenisform_id': '3',
+        //                   };
+        //                   final response = await http.post(
+        //                       Uri.parse(ApiConstants.baseUrl +
+        //                           ApiConstants.DELETEallkeranjangsalesendpoint),
+        //                       headers: <String, String>{
+        //                         'Authorization': 'Bearer $token',
+        //                       },
+        //                       body: body);
+        //                   print(response.body);
+        //                   context.read<PCart>().clearCart();
+        //                   Navigator.pop(context);
+        //                 });
+        //           },
+        //           icon: const Icon(
+        //             Icons.delete_forever,
+        //             color: Colors.black,
+        //           ),
+        //         ),
+        // ],
+     
       ),
       body: context.watch<PCart>().getItems.isNotEmpty
           ? const CartItems()
