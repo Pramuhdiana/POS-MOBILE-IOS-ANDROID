@@ -3698,7 +3698,7 @@ class HistoryModelNew extends StatelessWidget {
                                                         '${resultEmas![0]} $warna',
                                                         style: pw.TextStyle(
                                                           font: font,
-                                                          fontSize: 11.5,
+                                                          fontSize: 10,
                                                         )),
                                                   ],
                                                 )),
