@@ -5,14 +5,14 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
+import 'package:e_shop/event/appbar_cart_event.dart';
+import 'package:e_shop/event/pos_event_screen_ui.dart';
 import 'package:http/http.dart' as http;
 import 'package:e_shop/database/model_allitems.dart';
 import 'package:e_shop/event/event_search.dart';
 import 'package:e_shop/mainScreens/profile_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
-import 'package:e_shop/posSales/pos_sales_screen_ui.dart';
 import 'package:e_shop/provider/provider_cart.dart';
-import 'package:e_shop/widgets/appbar_cart_pos_sales.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
@@ -155,7 +155,7 @@ class _PosEventScreenState extends State<PosEventScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBarWithCartBadgeSales(
+      appBar: AppBarWithCartBadgeEvent(
         title: '$qtyProduct product ',
       ),
       body: Container(
@@ -198,7 +198,7 @@ class _PosEventScreenState extends State<PosEventScreen> {
                                       'total_product_sales',
                                       dataSnapshot.data.length.toString());
                                   var item = (dataSnapshot.data[index]);
-                                  return SalesItemsUiDesign(
+                                  return EventItemsUiDesign(
                                     model: ModelAllitems(
                                         id: item.id,
                                         name: item.name,

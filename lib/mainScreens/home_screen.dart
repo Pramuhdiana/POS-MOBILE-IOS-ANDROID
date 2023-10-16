@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously, avoid_print
 
 import 'dart:math';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_allcustomer.dart';
 import 'package:e_shop/database/db_crm.dart';
@@ -62,6 +63,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
+// static const colorizeColors = [
+//   Colors.black,
+//   Colors.blue,
+//   Colors.orange,
+//   Colors.red,
+// ];
+
+// static const colorizeTextStyle = TextStyle(
+//   fontSize: 20.0,
+//   fontWeight: FontWeight.bold,
+// );
+
   Color? bgColors;
 
   List<Color> get availableColors => const <Color>[
@@ -2031,21 +2046,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       MaterialPageRoute(builder: (c) => PosEventScreen()));
                 },
                 child: SizedBox(
-                  height: 110,
+                  height: 120,
+
                   child: AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(60)),
-                    backgroundColor: availableColors[
-                        Random().nextInt(availableColors.length)],
-                    content: const Padding(
-                      padding: EdgeInsets.only(top: 0),
+                    backgroundColor: Colors.black,
+                    content:  Padding(
+                      padding: const EdgeInsets.only(top: 0),
                       child: SizedBox(
+  height: 100,
+
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
+                            const Padding(
                                 padding: EdgeInsets.only(right: 45),
-                                child: Icon(Icons.event_available)
+                                child: Icon(Icons.event_available,color: Colors.white,)
                                 // Image.asset(
                                 //   "images/sales-team.png",
                                 //   color: Colors.black,
@@ -2053,16 +2070,41 @@ class _HomeScreenState extends State<HomeScreen> {
                                 //   height: 25,
                                 // ),
                                 ),
-                            Expanded(
-                              child: Text(
-                                'Pos Event',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                                maxLines: 1,
-                              ),
-                            ),
+                        SizedBox(
+  child: DefaultTextStyle(
+    style:  TextStyle(
+        color: availableColors[
+                        Random().nextInt(availableColors.length)],
+        fontSize: 20,
+        fontWeight: FontWeight.bold),
+    child: AnimatedTextKit(
+      repeatForever: true,
+      isRepeatingAnimation: true,
+      animatedTexts: [
+        TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
+          color: availableColors[
+                        Random().nextInt(availableColors.length)],
+        )),
+        TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
+          color: availableColors[
+                        Random().nextInt(availableColors.length)],
+        )),
+        TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
+          color: availableColors[
+                        Random().nextInt(availableColors.length)],
+        )),
+         TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
+          color: availableColors[
+                        Random().nextInt(availableColors.length)],
+        )),
+         TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
+          color: availableColors[
+                        Random().nextInt(availableColors.length)],
+        )),
+      ],
+    ),
+  ),
+),
                           ],
                         ),
                       ),
