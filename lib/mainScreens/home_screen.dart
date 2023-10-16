@@ -7,6 +7,7 @@ import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/database/db_notification_dummy.dart';
 import 'package:e_shop/database/model_allitems_retur.dart';
 import 'package:e_shop/database/model_alltransaksi.dart';
+import 'package:e_shop/event/pos_event_screen.dart';
 import 'package:e_shop/models/customer_metier.dart';
 import 'package:e_shop/provider/provider_notification.dart';
 import 'package:e_shop/search/new_search.dart';
@@ -2024,50 +2025,46 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 110,
-                child: AlertDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(60)),
-                  backgroundColor:
-                      availableColors[Random().nextInt(availableColors.length)],
-                  content: Padding(
-                    padding: const EdgeInsets.only(top: 0),
-                    child: SizedBox(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 5),
-                            child: Image.asset(
-                              "images/sales-team.png",
-                              color: Colors.black,
-                              width: 25,
-                              height: 25,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (c) => PosEventScreen()));
+                },
+                child: SizedBox(
+                  height: 110,
+                  child: AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(60)),
+                    backgroundColor: availableColors[
+                        Random().nextInt(availableColors.length)],
+                    content: const Padding(
+                      padding: EdgeInsets.only(top: 0),
+                      child: SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                                padding: EdgeInsets.only(right: 45),
+                                child: Icon(Icons.event_available)
+                                // Image.asset(
+                                //   "images/sales-team.png",
+                                //   color: Colors.black,
+                                //   width: 25,
+                                //   height: 25,
+                                // ),
+                                ),
+                            Expanded(
+                              child: Text(
+                                'Pos Event',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                                maxLines: 1,
+                              ),
                             ),
-                          ),
-                          const Expanded(
-                            child: Text(
-                              'Pos Event',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                              maxLines: 1,
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              '$qtyProductSales Products',
-                              textAlign: TextAlign.right,
-                              style: const TextStyle(
-                                  fontSize: 11,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                              maxLines: 2,
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

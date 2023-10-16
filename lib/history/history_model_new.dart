@@ -1,7 +1,10 @@
 // ignore_for_file: depend_on_referenced_packages, unnecessary_import, unused_local_variable, prefer_interpolation_to_compose_strings, unnecessary_string_interpolations, avoid_print, deprecated_member_use, must_be_immutable, unused_element, curly_braces_in_flow_control_structures
 
+import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:e_shop/api/api_constant.dart';
+import 'package:e_shop/database/model_allcustomer.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/widgets/loading_widget.dart';
@@ -11,6 +14,7 @@ import 'package:http/http.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' show get;
+import 'package:http/http.dart' as http;
 
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -3209,6 +3213,42 @@ class HistoryModelNew extends StatelessWidget {
     var totalSubDis = subTotal - diskon;
     var addDiskon = order.addesdiskon_rupiah ?? 0;
     var totalPayment = totalSubDis - addDiskon;
+    String noHP = '0';
+    String? tokens = sharedPreferences!.getString('token');
+    String warna = '';
+    //? get warna barang
+    String str = order2[0].description;
+    if (10 < 0 || 10 >= str.length) {
+      throw RangeError('Index out of range.');
+    } else {
+      str[10].toString() == '0'
+          ? warna = 'WHITE GOLD'
+          : str[10].toString() == '1'
+              ? warna = 'ROSE GOLD'
+              : str[10].toString() == '4'
+                  ? warna = "Mix W/R GOLD"
+                  : warna = '';
+    }
+
+    //? get HP customer
+    final response = await http.get(
+        Uri.parse(ApiConstants.baseUrl + ApiConstants.GETcustomerendpoint),
+        headers: {"Authorization": "Bearer $tokens"});
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+
+      var allData =
+          jsonResponse.map((data) => ModelAllCustomer.fromJson(data)).toList();
+      var filterByname = allData.where((element) =>
+          element.name.toString().toLowerCase() ==
+          order.customer.toString().toLowerCase());
+      allData = filterByname.toList();
+      noHP = allData.first.phone!;
+    } else {
+      throw Exception('Database Off');
+    }
+
+    final resultEmasFix = resultEmas![1].toString().replaceAll('GR', ' GR');
 
     doc.addPage(
       pw.MultiPage(
@@ -3257,7 +3297,7 @@ class HistoryModelNew extends StatelessWidget {
                                   pw.SizedBox(
                                     child:
                                         // pw.Text(order.invoices_number,
-                                        pw.Text('0019123456',
+                                        pw.Text(order.invoices_number,
                                             style: pw.TextStyle(
                                               font: font,
                                               // fontFamily: 'Poppins',
@@ -3295,7 +3335,7 @@ class HistoryModelNew extends StatelessWidget {
                                   pw.SizedBox(
                                     child:
                                         // pw.Text(order.invoices_number,
-                                        pw.Text('08123232332',
+                                        pw.Text('$noHP',
                                             style: pw.TextStyle(
                                               font: font,
                                               // fontFamily: 'Poppins',
@@ -3654,7 +3694,8 @@ class HistoryModelNew extends StatelessWidget {
                                                             fontSize: 10,
                                                           )),
                                                     ),
-                                                    pw.Text(resultEmas![0],
+                                                    pw.Text(
+                                                        '${resultEmas![0]} $warna',
                                                         style: pw.TextStyle(
                                                           font: font,
                                                           fontSize: 11.5,
@@ -3675,7 +3716,7 @@ class HistoryModelNew extends StatelessWidget {
                                                             fontSize: 10,
                                                           )),
                                                     ),
-                                                    pw.Text(resultEmas[1],
+                                                    pw.Text(resultEmasFix,
                                                         style: pw.TextStyle(
                                                           font: font,
                                                           fontSize: 10,
@@ -3692,7 +3733,6 @@ class HistoryModelNew extends StatelessWidget {
                                                         fontSize: 11,
                                                         fontWeight: pw
                                                             .FontWeight.bold))),
-                                            //looping batu
 
                                             pw.Container(
                                                 padding:
@@ -3778,6 +3818,8 @@ class HistoryModelNew extends StatelessWidget {
                                                         )),
                                                   ],
                                                 )),
+                                            //looping batu
+
                                             for (var i = 0;
                                                 i < jenisDiamond.length;
                                                 i++)
