@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/event/add_customer_event.dart';
+import 'package:e_shop/event/cart_event_screen.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
@@ -42,7 +43,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   int? idtoko = 0;
   int idform = 0;
   int idformAPI = 0;
-  int rate = 15000;
+  int rate = 1;
   int diskonrequest = 90;
   int result = 0;
   int diskon = 0;
@@ -50,6 +51,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   TextEditingController addDiskon = TextEditingController();
   int dpp = 0;
   int addesdiskon = 0;
+  String? idBarang ='';
 
   final _formKey = GlobalKey<FormState>();
 
@@ -79,9 +81,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
             dpp -
             addesdiskon;
     if (rate <= 2) {
-      return sharedPreferences!.getString('role_sales_brand') == '3'
-          ? 'Rp.${CurrencyFormat.convertToDollar(total, 0)}'
-          : '\$${CurrencyFormat.convertToDollar(total, 0)}';
+           return'Rp. ${CurrencyFormat.convertToDollar(total, 0)}';
     } else {
       return CurrencyFormat.convertToIdr(total, 0);
     }
@@ -122,6 +122,9 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   @override
   void initState() {
     super.initState();
+   idBarang = sharedPreferences!.getString('idBarang');
+  idBarang == '4' ? rate = 1 : rate = 15000;
+  print(idBarang);
     sharedPreferences!.getString('role_sales_brand') == '3'
         ? idform = 2
         : idform = 0;
@@ -170,7 +173,10 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
               height: 35,
             ),
             onPressed: () {
-              Navigator.pop(context);
+               Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (c) => const CartEventScreen()));
             },
           ),
         ),
@@ -273,7 +279,9 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                         : sharedPreferences!.getString('role_sales_brand') ==
                                 '3'
                             ? const SizedBox()
-                            : Container(
+                     :  idBarang == '4' 
+                            ? const SizedBox()
+                            :  Container(
                                 padding: const EdgeInsets.only(top: 10),
                                 height: 80,
                                 child: DropdownSearch<int>(
@@ -304,7 +312,8 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                         : sharedPreferences!.getString('role_sales_brand') ==
                                 '3'
                             ? const SizedBox()
-                            : Container(
+                            :  idBarang == '4' 
+                            ? const SizedBox()  : Container(
                                 padding: const EdgeInsets.only(top: 10),
                                 height: 80,
                                 child: TextFormField(

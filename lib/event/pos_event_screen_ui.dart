@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/model_allitems.dart';
+import 'package:e_shop/event/transaksi_event_screen.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/posSales/main_posSales_screen.dart';
@@ -172,8 +173,6 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
                         .firstWhereOrNull(
                             (element) => element.name == widget.model?.name);
 
-                    print(existingitemcart);
-                    // existingitemcart == null
                     if (existingitemcart == null) {
                       Fluttertoast.showToast(
                           msg: "Barang Berhasil Di Tambahkan");
@@ -188,10 +187,13 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
                             widget.model!.keterangan_barang.toString(),
                           );
                       setState(() {
+                        sharedPreferences!.setString('idBarang', widget.model!.name![0]);
                         postAPIcart();
-                        DbAllitems.db
-                            .updateAllitemsByname(widget.model?.name, 0);
                       });
+                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (c) => const TransaksiScreenEvent()));
                     } else {
                       Fluttertoast.showToast(
                           msg: "Barang Sudah Ada Di Keranjang");

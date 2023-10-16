@@ -1,4 +1,5 @@
 import 'package:e_shop/event/cart_event_screen.dart';
+import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
 import 'package:e_shop/testing/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,10 @@ class _AppBarWithCartBadgeEventState extends State<AppBarWithCartBadgeEvent> {
           height: 35,
         ),
         onPressed: () {
-          Navigator.pop(context);
+         Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (c) => const MainScreen()));
         },
       ),
       flexibleSpace: Container(

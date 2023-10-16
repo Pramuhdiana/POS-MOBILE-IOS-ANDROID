@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/model_allitems.dart';
+import 'package:e_shop/event/pos_event_screen.dart';
 import 'package:e_shop/event/transaksi_event_screen.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/itemsScreens/items_photo.dart';
@@ -51,7 +52,10 @@ class _CartEventScreenState extends State<CartEventScreen> {
             height: 35,
           ),
           onPressed: () {
-            Navigator.pop(context);
+             Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (c) => PosEventScreen()));
           },
         ),
         title: const Text(
