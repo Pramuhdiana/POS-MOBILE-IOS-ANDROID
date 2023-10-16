@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously, avoid_print
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
@@ -10,11 +11,14 @@ import 'package:e_shop/authScreens/auth_screen.dart';
 import 'package:e_shop/buStephanie/main_screen_approve_pricing.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
+import 'package:e_shop/models/version_model.dart';
 import 'package:e_shop/provider/provider_cart.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 import '../api/api_services.dart';
 import '../provider/provider_waiting_brj.dart';
@@ -32,6 +36,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
   int role = 0;
+  String? version ='';
 
   var isLoading = false;
   splashScreenTimer() {
@@ -40,7 +45,12 @@ class _MySplashScreenState extends State<MySplashScreen> {
       print('token $token');
       if (sharedPreferences!.getString("token").toString() != "null") {
         await requestPermission();
-        try {
+if(version != noBuild.toString()) {
+           dialogBoxVersion();
+} else {
+
+
+         try {
           await _loadFromApi();
           try {
             sharedPreferences!.setString('newOpen', 'true');
@@ -74,6 +84,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
           Navigator.push(
               context, MaterialPageRoute(builder: (c) => const AuthScreen()));
         }
+}
       } else //user is NOT already Logged-in
       {
         Fluttertoast.showToast(msg: "Failed To Load Data");
@@ -277,6 +288,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
       initState() //called automatically when user comes here to this splash screen
   {
     super.initState();
+    getVersion();
+    // noBuild != noVersion ? :
     PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
     pushNotificationsSystem.whenNotificationReceivedInPricing(context);
     context.read<PApprovalBrj>().clearNotif(); //clear cart
@@ -284,6 +297,28 @@ class _MySplashScreenState extends State<MySplashScreen> {
     context.read<PApprovalEticketing>().clearNotif(); //clear cart
     loadListEticketing(); //ambil data cart
     splashScreenTimer();
+  }
+
+  
+  Future<List<VersionModel>> getVersion() async {
+    String? tokens = sharedPreferences!.getString('token');
+    final response = await http.get(
+        Uri.parse('http://110.5.102.154:1212/Api_flutter/spk/get_version.php'),
+        headers: {"Authorization": "Bearer $tokens"});
+    print('status : ${response.statusCode}');
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      var allData =
+          jsonResponse.map((data) => VersionModel.fromJson(data)).toList();
+      setState(() {
+        version = allData.first.version;
+            sharedPreferences!.setString('version', version!);
+
+      });
+      return allData;
+    } else {
+      throw Fluttertoast.showToast(msg: "Database Off");
+    }
   }
 
   loadListBRJ() async {
@@ -366,7 +401,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
           return AlertDialog(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            title: const Text('Please choose aplikasi'),
+            title: const Text('Please choose application'),
             content: SizedBox(
               height: 100,
               // height: MediaQuery.of(context).size.height * 0.5,
@@ -408,6 +443,72 @@ class _MySplashScreenState extends State<MySplashScreen> {
             ),
           );
         });
+  }
+
+  dialogBoxVersion() {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            title: const Text('Please update application'),
+            content: SizedBox(
+              height: 100,
+              // height: MediaQuery.of(context).size.height * 0.5,
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    //if user click this button, user can upload image from gallery
+                    onPressed: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (c) => const MainScreen()));
+                              _launchURLInApp();
+
+                    },
+                    child: const Row(
+                      children: [
+                        Icon(Icons.flight),
+                        Text('Test Flight'),
+                      ],
+                    ),
+                  ),
+                  // ElevatedButton(
+                  //   //if user click this button. user can upload image from camera
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (c) =>
+                  //                 const MainScreenApprovePricing()));
+                  //   },
+                  //   child: const Row(
+                  //     children: [
+                  //       Icon(Icons.price_check_sharp),
+                  //       Text('Approval Pricing'),
+                  //     ],
+                  //   ),
+                  // ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+  _launchURLInApp() async {
+    var url =
+        'https://beta.itunes.apple.com';
+
+    // ignore: deprecated_member_use
+    if (await canLaunch(url)) {
+      // ignore: deprecated_member_use
+      await launch(url, forceSafariVC: true, forceWebView: true);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
 
