@@ -24,7 +24,7 @@ import '../cartScreens/db_helper.dart';
 import '../global/global.dart';
 import '../mainScreens/home_screen.dart';
 import '../models/sales.dart';
-import '../qr/qr_scanner.dart';
+// import '../qr/qr_scanner.dart';
 
 // ignore: must_be_immutable
 class PosEventScreen extends StatefulWidget {
@@ -241,18 +241,18 @@ class _PosEventScreenState extends State<PosEventScreen> {
                     ))
         ]),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (c) => const QrScanner()));
-        },
-        backgroundColor: Colors.black,
-        splashColor: Colors.black,
-        child: const Icon(
-          Icons.add_a_photo_outlined,
-          color: Colors.white,
-        ),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(
+      //         context, MaterialPageRoute(builder: (c) => const QrScanner()));
+      //   },
+      //   backgroundColor: Colors.black,
+      //   splashColor: Colors.black,
+      //   child: const Icon(
+      //     Icons.add_a_photo_outlined,
+      //     color: Colors.white,
+      //   ),
+      // ),
     );
   }
 }
