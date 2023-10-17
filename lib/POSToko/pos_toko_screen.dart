@@ -73,8 +73,11 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
           scrollController.position.maxScrollExtent) {
         if (page != qtyProduct) {
           // on bottom scroll API Call until last page
-          limit += 5;
-          DbAllitemsToko.db.getAllitemsTokoByPage(idtoko, page, limit);
+          setState(() {
+            limit += 5;
+            DbAllitemsToko.db.getAllitemsTokoByPage(idtoko, page, limit);
+            print('masuk');
+          });
         }
       }
     });
@@ -263,17 +266,13 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                             DbAllitemsToko.db
                                 .getAllitemsTokoMetier(idtoko)
                                 .then((value) {
-                              setState(() {
-                                qtyProduct = value.length;
-                              });
+                              qtyProduct = value.length;
                             });
                           } else {
                             DbAllitemsToko.db
                                 .getAllitemsToko(idtoko)
                                 .then((value) {
-                              setState(() {
-                                qtyProduct = value.length;
-                              });
+                              qtyProduct = value.length;
                             });
                           }
 

@@ -82,17 +82,17 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
           scrollController.position.maxScrollExtent) {
         if (page != qtyProduct) {
           // on bottom scroll API Call until last page
-
-          limit += 5;
-          DbAllitems.db.getAllitemsBtPage(page, limit);
+          setState(() {
+            limit += 5;
+            DbAllitems.db.getAllitemsBtPage(page, limit);
+            print('masuk');
+          });
         }
       }
     });
 
     DbAllitems.db.getAllitems().then((value) {
-      setState(() {
-        qtyProduct = value.length;
-      });
+      qtyProduct = value.length;
     });
     list = [];
     DbAllKodekeluarbarang.db.getAllkeluarbarang().then((listMap) {
@@ -101,7 +101,9 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
       }).forEach((dropDownItem) {
         list?.add(dropDownItem);
       });
-      setState(() {});
+      setState(() {
+        print('cek');
+      });
     });
   }
 
@@ -202,7 +204,6 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                   style: TextStyle(color: Colors.black),
                 ),
                 onChanged: (value) {
-                  print(value);
                   setState(() {
                     selectedOmzet = value;
                     kodeRefrensi = value!;
@@ -238,20 +239,12 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                           {
                             kodeRefrensi == 'null'
                                 ? DbAllitems.db.getAllitems().then((value) => {
-                                      setState(
-                                        () {
-                                          qtyProduct = value.length;
-                                        },
-                                      )
+                                      qtyProduct = value.length,
                                     })
                                 : DbAllitems.db
                                     .getAllitemsBykode(kodeRefrensi, 0, 9999)
                                     .then((value) => {
-                                          setState(
-                                            () {
-                                              qtyProduct = value.length;
-                                            },
-                                          )
+                                          qtyProduct = value.length,
                                         });
                             return SingleChildScrollView(
                               controller: scrollController,

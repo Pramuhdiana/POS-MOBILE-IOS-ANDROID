@@ -1,16 +1,35 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_import
 
+import 'package:e_shop/api/api_services.dart';
+import 'package:e_shop/database/db_alldetailtransaksi.dart';
+import 'package:e_shop/database/db_alltransaksi.dart';
 import 'package:e_shop/history/history_invoice_screen.dart';
 import 'package:e_shop/history/history_kembalibarang_screen.dart';
 import 'package:e_shop/history/history_titipan_screen.dart';
 import 'package:e_shop/widgets/fake_search_history.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MainHistory extends StatelessWidget {
   const MainHistory({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // DbAlltransaksi.db.deleteAlltransaksi();
+    // DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
+
+    // try {
+    //   ApiServices().getAllTransaksi(); //ambil data ntransaksi
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+    // }
+
+    // try {
+    //   ApiServices().getAllDetailTransaksi(); //ambil data ntransaksi
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all detail transaksi");
+    // }
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(

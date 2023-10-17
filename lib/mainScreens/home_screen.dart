@@ -87,6 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
         AppColors.contentColorRed,
         AppColors.contentColorBlack,
         AppColors.contentColorGreen,
+        AppColors.contentColorCyan,
       ];
   final Color barBackgroundColor =
       AppColors.contentColorWhite.darken().withOpacity(0.3);
@@ -2031,7 +2032,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     isRepeatingAnimation: true,
                                     animatedTexts: [
                                       for (var i = 0; i < 15; i++)
-                                        TypewriterAnimatedText('Pos Event!',
+                                        TypewriterAnimatedText('Pos Event !',
+                                            curve: Curves.easeIn,
+                                            speed: const Duration(
+                                                milliseconds: 80),
                                             textStyle: TextStyle(
                                               color: availableColors[Random()
                                                   .nextInt(
