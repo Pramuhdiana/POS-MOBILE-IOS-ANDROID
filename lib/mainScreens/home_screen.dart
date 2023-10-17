@@ -1994,7 +1994,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       MaterialPageRoute(builder: (c) => PosEventScreen()));
                 },
                 child: SizedBox(
-                  height: 120,
+                  height: 110,
                   child: AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(60)),
@@ -2002,19 +2002,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     content: Padding(
                       padding: const EdgeInsets.only(top: 0),
                       child: SizedBox(
-                        height: 100,
+                        height: 120,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                                padding: const EdgeInsets.only(right: 45),
-                                child: Lottie.asset("json/iconEvent.json")),
+                                padding: const EdgeInsets.only(right: 0),
+                                child: Transform.scale(
+                                    scale: 2.5,
+                                    child:
+                                        Lottie.asset("json/iconEvent.json"))),
                             SizedBox(
                               child: DefaultTextStyle(
                                 style: TextStyle(
                                     color: availableColors[Random()
                                         .nextInt(availableColors.length)],
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold),
                                 child: GestureDetector(
                                   onTap: () {
