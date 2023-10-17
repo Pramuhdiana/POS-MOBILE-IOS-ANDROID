@@ -11,7 +11,6 @@ import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:e_shop/widgets/keyboard_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
@@ -51,7 +50,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   TextEditingController addDiskon = TextEditingController();
   int dpp = 0;
   int addesdiskon = 0;
-  String? idBarang ='';
+  String? idBarang = '';
 
   final _formKey = GlobalKey<FormState>();
 
@@ -66,11 +65,11 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
 
   double get upto10 {
     // var dpin = int.parse(dp);
-      var totalAwal =
+    var totalAwal =
         ((context.read<PCart>().totalPrice2) * rate) * (1 - (diskon / 100));
     var total =
         ((context.read<PCart>().totalPrice2) * rate) * (1 - (diskon / 100));
-  var max10 =totalAwal - (total * (1 - (10/100)));
+    var max10 = totalAwal - (total * (1 - (10 / 100)));
     return max10;
   }
 
@@ -81,7 +80,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
             dpp -
             addesdiskon;
     if (rate <= 2) {
-           return'Rp. ${CurrencyFormat.convertToDollar(total, 0)}';
+      return 'Rp. ${CurrencyFormat.convertToDollar(total, 0)}';
     } else {
       return CurrencyFormat.convertToIdr(total, 0);
     }
@@ -122,9 +121,9 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   @override
   void initState() {
     super.initState();
-   idBarang = sharedPreferences!.getString('idBarang');
-  idBarang == '4' ? rate = 1 : rate = 15000;
-  print(idBarang);
+    idBarang = sharedPreferences!.getString('idBarang');
+    idBarang == '4' ? rate = 1 : rate = 15000;
+    print(idBarang);
     sharedPreferences!.getString('role_sales_brand') == '3'
         ? idform = 2
         : idform = 0;
@@ -173,10 +172,8 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
               height: 35,
             ),
             onPressed: () {
-               Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (c) => const CartEventScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (c) => const CartEventScreen()));
             },
           ),
         ),
@@ -202,11 +199,19 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                               labelText: "Search..",
                               prefixIcon: Icon(Icons.search),
                               //fungsi add customer
-                              suffixIcon: InkWell(onTap: () {
-                                Navigator.pop(context);
-                                Navigator.push(context,
-          MaterialPageRoute(builder: (c) => AddCustomerEventScreen()));
-                              },child: Icon(Icons.add,color: Colors.black,)),
+                              suffixIcon: InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (c) =>
+                                                AddCustomerEventScreen()));
+                                  },
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.black,
+                                  )),
                             )),
                             showSelectedItems: true,
                             itemBuilder: _customPopupItemBuilderExample2,
@@ -215,8 +220,8 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                           compareFn: (item, sItem) => item.id == sItem.id,
                           onChanged: (item) {
                             setState(() {
-                                idform = 1;
-                                idformAPI = 1;
+                              idform = 1;
+                              idformAPI = 1;
                               print('toko : ${item?.name}');
                               print('id  : ${item?.id}');
                               print('diskonnya  : ${item?.diskon_customer}');
@@ -235,8 +240,6 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                           ),
                         ),
                       ),
-
-             
 
                 //Rate
                 // idform == 0
@@ -279,30 +282,31 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                         : sharedPreferences!.getString('role_sales_brand') ==
                                 '3'
                             ? const SizedBox()
-                     :  idBarang == '4' 
-                            ? const SizedBox()
-                            :  Container(
-                                padding: const EdgeInsets.only(top: 10),
-                                height: 80,
-                                child: DropdownSearch<int>(
-                                  items: const [48,49,50],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      diskon = value!;
-                                    });
-                                  },
-                                  dropdownDecoratorProps:
-                                      DropDownDecoratorProps(
-                                    dropdownSearchDecoration: InputDecoration(
-                                      labelText: "Basic discount",
-                                      filled: true,
-                                      fillColor: Theme.of(context)
-                                          .inputDecorationTheme
-                                          .fillColor,
+                            : idBarang == '4'
+                                ? const SizedBox()
+                                : Container(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    height: 80,
+                                    child: DropdownSearch<int>(
+                                      items: const [48, 49, 50],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          diskon = value!;
+                                        });
+                                      },
+                                      dropdownDecoratorProps:
+                                          DropDownDecoratorProps(
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                          labelText: "Basic discount",
+                                          filled: true,
+                                          fillColor: Theme.of(context)
+                                              .inputDecorationTheme
+                                              .fillColor,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
 //addesdiskon
 
                 idform == 0
@@ -312,53 +316,60 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                         : sharedPreferences!.getString('role_sales_brand') ==
                                 '3'
                             ? const SizedBox()
-                            :  idBarang == '4' 
-                            ? const SizedBox()  : Container(
-                                padding: const EdgeInsets.only(top: 10),
-                                height: 80,
-                                child: TextFormField(
-                                  style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                  textInputAction: TextInputAction.next,
-                                  controller: addDiskon,
-                                  focusNode: numberFocusNode,
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  onChanged: (addDiskon) {
-                                    print(upto10);
-                                    addDiskon.isEmpty
-                                        ? setState(() {
-                                            addesdiskon = 0;
-                                          })
-                                        : setState(() {
-                                            addesdiskon = int.parse(addDiskon);
-                                          });
-                                  addesdiskon > upto10 ?  
-                                  showDialog(
-        context: context,
-        builder: (BuildContext context) {
-
-                                return  AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                title: const Text(
-                  'Diskon tambahan melebihi limit',
-                ),);}) : 
-      Fluttertoast.showToast(msg: "Oke");
-                      
-                                  },
-                                  decoration: InputDecoration(
-                                    labelText: "Add discount",
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0)),
+                            : idBarang == '4'
+                                ? const SizedBox()
+                                : Container(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    height: 80,
+                                    child: TextFormField(
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                      textInputAction: TextInputAction.next,
+                                      controller: addDiskon,
+                                      focusNode: numberFocusNode,
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      onChanged: (addDiskon) {
+                                        print(upto10);
+                                        addDiskon.isEmpty
+                                            ? setState(() {
+                                                addesdiskon = 0;
+                                              })
+                                            : setState(() {
+                                                addesdiskon =
+                                                    int.parse(addDiskon);
+                                              });
+                                        addesdiskon > upto10
+                                            ? showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8)),
+                                                    title: const Text(
+                                                      'Diskon tambahan melebihi limit',
+                                                    ),
+                                                  );
+                                                })
+                                            : print('oke');
+                                      },
+                                      decoration: InputDecoration(
+                                        labelText: "Add discount",
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0)),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
 
                 // //DP
                 // idform == 0
@@ -419,21 +430,23 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
         ),
         bottomNavigationBar: idform == 0
             ? const SizedBox()
-            :    addesdiskon > upto10 ?  SizedBox() :Padding(
-                padding: const EdgeInsets.only(bottom: 40),
-                child: CustomLoadingButton(
-                  controller: btnController,
-                  onPressed: () {
-                    sharedPreferences!.getString('role_sales_brand') == '3'
-                        ? formValidationMetier()
-                        : formValidation();
-                  },
-                  child: const Text(
-                    "Save Transaction",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ));
+            : addesdiskon > upto10
+                ? SizedBox()
+                : Padding(
+                    padding: const EdgeInsets.only(bottom: 40),
+                    child: CustomLoadingButton(
+                      controller: btnController,
+                      onPressed: () {
+                        sharedPreferences!.getString('role_sales_brand') == '3'
+                            ? formValidationMetier()
+                            : formValidation();
+                      },
+                      child: const Text(
+                        "Save Transaction",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ));
   }
 
   formValidation() async {

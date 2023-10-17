@@ -17,6 +17,7 @@ import 'package:e_shop/widgets/shimmer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'package:collection/collection.dart';
@@ -63,8 +64,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
 // static const colorizeColors = [
 //   Colors.black,
 //   Colors.blue,
@@ -86,7 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
         AppColors.contentColorOrange,
         AppColors.contentColorPink,
         AppColors.contentColorRed,
-        AppColors.contentColorWhite,
+        AppColors.contentColorBlack,
+        AppColors.contentColorGreen,
       ];
   final Color barBackgroundColor =
       AppColors.contentColorWhite.darken().withOpacity(0.3);
@@ -1507,17 +1507,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void loopingColor(List<String> colors) {
+    for (var color in colors) {
+      print(color);
+    }
+  }
+
   //show popup dialog
   myMenu() {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          // var i = 0;
-          // i == 0
-          //     ? setState(
-          //         () {},
-          //       )
-          //     : null;
+          print(DateTime.now().millisecond);
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -1874,59 +1875,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        // //! add toko sebelumnya yang dengan gambar
-                        // Padding(
-                        //     padding: const EdgeInsets.only(top: 15),
-                        //     child: SizedBox(
-                        //       width: MediaQuery.of(context).size.width * 1,
-                        //       height: 50,
-                        //       child: ElevatedButton(
-                        //         style: ButtonStyle(
-                        //             shape: MaterialStateProperty.all<
-                        //                     RoundedRectangleBorder>(
-                        //                 RoundedRectangleBorder(
-                        //           borderRadius: BorderRadius.circular(50.0),
-                        //         ))),
-                        //         onPressed: () {
-                        //           Navigator.push(
-                        //               context,
-                        //               MaterialPageRoute(
-                        //                   builder: (c) =>
-                        //                       const UploadTokoScreen()));
-                        //         },
-                        //         child: Row(
-                        //           mainAxisAlignment:
-                        //               MainAxisAlignment.spaceBetween,
-                        //           children: [
-                        //             Padding(
-                        //               padding: const EdgeInsets.only(right: 5),
-                        //               child: Image.asset(
-                        //                 "images/store (2).png",
-                        //                 color: Colors.white,
-                        //                 width: 25,
-                        //                 height: 25,
-                        //               ),
-                        //             ),
-                        //             const Expanded(
-                        //               child: Text(
-                        //                 'Add toko',
-                        //                 style: TextStyle(fontSize: 16),
-                        //                 maxLines: 1,
-                        //               ),
-                        //             ),
-                        //             Expanded(
-                        //               child: Text(
-                        //                 '${CurrencyFormat.convertToTitik(qtyProductCustomer, 0)} Customers',
-                        //                 textAlign: TextAlign.right,
-                        //                 style: const TextStyle(fontSize: 11),
-                        //                 maxLines: 2,
-                        //               ),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
 
                         //CRM
                         Padding(
@@ -2047,70 +1995,50 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: SizedBox(
                   height: 120,
-
                   child: AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(60)),
-                    backgroundColor: Colors.black,
-                    content:  Padding(
+                    backgroundColor: Colors.white,
+                    content: Padding(
                       padding: const EdgeInsets.only(top: 0),
                       child: SizedBox(
-  height: 100,
-
+                        height: 100,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Padding(
-                                padding: EdgeInsets.only(right: 45),
-                                child: Icon(Icons.event_available,color: Colors.white,)
-                                // Image.asset(
-                                //   "images/sales-team.png",
-                                //   color: Colors.black,
-                                //   width: 25,
-                                //   height: 25,
-                                // ),
+                            Padding(
+                                padding: const EdgeInsets.only(right: 45),
+                                child: Lottie.asset("json/iconEvent.json")),
+                            SizedBox(
+                              child: DefaultTextStyle(
+                                style: TextStyle(
+                                    color: availableColors[Random()
+                                        .nextInt(availableColors.length)],
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (c) => PosEventScreen()));
+                                  },
+                                  child: AnimatedTextKit(
+                                    repeatForever: true,
+                                    isRepeatingAnimation: true,
+                                    animatedTexts: [
+                                      for (var i = 0; i < 15; i++)
+                                        TypewriterAnimatedText('Pos Event!',
+                                            textStyle: TextStyle(
+                                              color: availableColors[Random()
+                                                  .nextInt(
+                                                      availableColors.length)],
+                                            )),
+                                    ],
+                                  ),
                                 ),
-                        SizedBox(
-  child: DefaultTextStyle(
-    style:  TextStyle(
-        color: availableColors[
-                        Random().nextInt(availableColors.length)],
-        fontSize: 20,
-        fontWeight: FontWeight.bold),
-    child: GestureDetector(
-      onTap: () {
-             Navigator.push(context,
-                      MaterialPageRoute(builder: (c) => PosEventScreen()));
-      },
-      child: AnimatedTextKit(
-        repeatForever: true,
-        isRepeatingAnimation: true,
-        animatedTexts: [
-          TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
-            color: availableColors[
-                          Random().nextInt(availableColors.length)],
-          )),
-          TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
-            color: availableColors[
-                          Random().nextInt(availableColors.length)],
-          )),
-          TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
-            color: availableColors[
-                          Random().nextInt(availableColors.length)],
-          )),
-           TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
-            color: availableColors[
-                          Random().nextInt(availableColors.length)],
-          )),
-           TypewriterAnimatedText('Pos Event!',textStyle: TextStyle(
-            color: availableColors[
-                          Random().nextInt(availableColors.length)],
-          )),
-        ],
-      ),
-    ),
-  ),
-),
+                              ),
+                            ),
                           ],
                         ),
                       ),

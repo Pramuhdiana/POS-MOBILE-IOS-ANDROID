@@ -3209,7 +3209,7 @@ class HistoryModelNew extends StatelessWidget {
 
     //! aritmatika
     var subTotal = order2[0].price * 15000;
-    var diskon = (subTotal * order.basic_discount) / 100;
+    var diskon = ((subTotal * order.basic_discount) / 100) ?? 0;
     var totalSubDis = subTotal - diskon;
     var addDiskon = order.addesdiskon_rupiah ?? 0;
     var totalPayment = totalSubDis - addDiskon;
@@ -3503,24 +3503,26 @@ class HistoryModelNew extends StatelessWidget {
                                                   fontSize: 11.5)),
                                         ],
                                       )),
-                                  pw.Container(
-                                      padding: const pw.EdgeInsets.only(
-                                          left: 5, top: 5),
-                                      width: 238,
-                                      child: pw.Row(
-                                        mainAxisAlignment:
-                                            pw.MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          pw.Text('Diskon',
-                                              style: const pw.TextStyle(
-                                                  fontSize: 11.5)),
-                                          pw.Text(
-                                              '${CurrencyFormat.convertToDollar(diskon, 0)}',
-                                              // '${CurrencyFormat.convertToDollar((((order2[0].price * 15000) * 1.65) / 100), 0)}',
-                                              style: const pw.TextStyle(
-                                                  fontSize: 11.5)),
-                                        ],
-                                      )),
+                                  diskon == 0
+                                      ? pw.SizedBox(height: 15)
+                                      : pw.Container(
+                                          padding: const pw.EdgeInsets.only(
+                                              left: 5, top: 5),
+                                          width: 238,
+                                          child: pw.Row(
+                                            mainAxisAlignment: pw
+                                                .MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              pw.Text('Diskon',
+                                                  style: const pw.TextStyle(
+                                                      fontSize: 11.5)),
+                                              pw.Text(
+                                                  '${CurrencyFormat.convertToDollar(diskon, 0)}',
+                                                  // '${CurrencyFormat.convertToDollar((((order2[0].price * 15000) * 1.65) / 100), 0)}',
+                                                  style: const pw.TextStyle(
+                                                      fontSize: 11.5)),
+                                            ],
+                                          )),
                                   //? garis
                                   pw.Container(
                                     width: 230,
