@@ -2,12 +2,18 @@
 
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
+import 'package:dio/dio.dart';
+import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/api/api_services.dart';
+import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
+import 'package:e_shop/provider/provider_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gif/flutter_gif.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 import '../database/db_alldetailtransaksi.dart';
 import '../database/db_allitems.dart';
@@ -121,6 +127,8 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
       // await _deleteAllitemstokofirebase();
       // await _deleteAlltransaksifirebase();
       await _loadFromApi();
+      context.read<PCart>().clearCart(); //clear cart
+      await loadCartFromApiPOSSALES();
       // await _loadAllDataApi();
       await Navigator.push(
           context, MaterialPageRoute(builder: (c) => MainScreen()));
@@ -226,5 +234,34 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
         print('delete alltransaksi in firebase berhasil');
       }
     });
+  }
+
+  loadCartFromApiPOSSALES() async {
+    String? tokens = sharedPreferences!.getString('token');
+    var url = ApiConstants.baseUrl + ApiConstants.GETkeranjangsalesendpoint;
+    Response response = await Dio().get(url,
+        options: Options(headers: {"Authorization": "Bearer $tokens"}));
+
+    return (response.data as List).map((cart) {
+      var existingitemcart = context
+          .read<PCart>()
+          .getItems
+          .firstWhereOrNull((element) => element.name == cart['lot']);
+
+      if (existingitemcart == null) {
+        print('Inserting Cart berhasil');
+        context.read<PCart>().addItem(
+              cart['lot'].toString(),
+              cart['price'],
+              cart['qty'],
+              cart['image_name'].toString(),
+              cart['product_id'].toString(),
+              cart['user_id'].toString(),
+              cart['description'].toString(),
+              cart['keterangan_barang'].toString(),
+            );
+      } else {}
+      // DbAllItems.db.createAllItems(AllItems.fromJson(items));
+    }).toList();
   }
 }

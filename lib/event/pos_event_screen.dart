@@ -7,12 +7,12 @@ import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/event/appbar_cart_event.dart';
 import 'package:e_shop/event/pos_event_screen_ui.dart';
+import 'package:e_shop/provider/provider_cart_event.dart';
 import 'package:http/http.dart' as http;
 import 'package:e_shop/database/model_allitems.dart';
 import 'package:e_shop/event/event_search.dart';
 import 'package:e_shop/mainScreens/profile_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
-import 'package:e_shop/provider/provider_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
@@ -55,6 +55,7 @@ class _PosEventScreenState extends State<PosEventScreen> {
   DBHelper dbHelper = DBHelper();
   String? title = '';
   String query = '';
+  String? idBeliBerlian = '440';
   String? selectedOmzet;
   String kodeRefrensi = 'null';
   bool isLoading = false;
@@ -67,6 +68,9 @@ class _PosEventScreenState extends State<PosEventScreen> {
   @override
   void initState() {
     super.initState();
+    context.read<PCartEvent>().clearCart();
+
+    loadCartFromApiPOSTOKO();
     futureData = _getAllData(page, limit);
     scrollController.addListener(() async {
       if (scrollController.position.pixels ==
@@ -83,18 +87,22 @@ class _PosEventScreenState extends State<PosEventScreen> {
   Future<List<ModelAllitems>> _getAllData(page, limit) async {
     String? tokens = sharedPreferences!.getString('token');
     final response = await http.get(
-        Uri.parse(ApiConstants.baseUrl + ApiConstants.GETposSalesendpoint),
+        Uri.parse(ApiConstants.baseUrl + ApiConstants.GETposTokoendpoint),
         headers: {"Authorization": "Bearer $tokens"});
     print('status : ${response.statusCode}');
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
-      var qtyData =
-          jsonResponse.map((data) => ModelAllitems.fromJson(data)).toList();
 
       var allData =
           jsonResponse.map((data) => ModelAllitems.fromJson(data)).toList();
+      var filterByIdToko = allData.where((element) =>
+          element.customer_id.toString() == idBeliBerlian && element.qty! >= 1);
+
+      allData = filterByIdToko.toList();
+      var qtyData = allData.toList();
       var getLimit = allData.getRange(page, limit);
       allData = getLimit.toList();
+
       setState(() {
         qtyProduct = qtyData.length;
         isLoading = false;
@@ -115,13 +123,13 @@ class _PosEventScreenState extends State<PosEventScreen> {
 
     return (response.data as List).map((cart) {
       var existingitemcart = context
-          .read<PCart>()
+          .read<PCartEvent>()
           .getItems
           .firstWhereOrNull((element) => element.name == cart['lot']);
 
       if (existingitemcart == null) {
         print('Inserting Cart berhasil');
-        context.read<PCart>().addItem(
+        context.read<PCartEvent>().addItem(
               cart['lot'].toString(),
               cart['price'],
               cart['qty'],
@@ -254,6 +262,37 @@ class _PosEventScreenState extends State<PosEventScreen> {
       //   ),
       // ),
     );
+  }
+
+  loadCartFromApiPOSTOKO() async {
+    String token = sharedPreferences!.getString("token").toString();
+
+    var url =
+        '${ApiConstants.baseUrl}${ApiConstants.GETkeranjangtokoendpoint}440';
+    Response response = await Dio().get(url,
+        options: Options(headers: {"Authorization": "Bearer $token"}));
+
+    return (response.data as List).map((cart) {
+      var existingitemcart = context
+          .read<PCartEvent>()
+          .getItems
+          .firstWhereOrNull((element) => element.name == cart['lot']);
+
+      print(existingitemcart);
+      if (existingitemcart == null) {
+        print('Inserting Cart Toko berhasil');
+        context.read<PCartEvent>().addItem(
+              cart['lot'].toString(),
+              cart['price'],
+              cart['qty'],
+              cart['image_name'].toString(),
+              cart['product_id'].toString(),
+              cart['user_id'].toString(),
+              cart['description'].toString(),
+              cart['keterangan_barang'].toString(),
+            );
+      } else {}
+    }).toList();
   }
 }
 

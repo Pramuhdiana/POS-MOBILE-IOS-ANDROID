@@ -30,6 +30,7 @@ class ApiConstants {
   static String GETposTokoendpoint = '/indexpostoko';
   static String GETposReturendpoint = '/indexposretur';
   static String GETcustomerendpoint = '/indexcustomer';
+  static String GETcustomerendbeliberlianpoint = '/indexcustomerbeliberlian';
   static String GETtransaksiendpoint = '/indextransaksi';
   static String GETkeranjangsalesendpoint = '/indexcartpossales';
   static String GETkeranjangtokoendpoint = '/indexcartpostoko/';
@@ -42,6 +43,8 @@ class ApiConstants {
   static String POSTsalescheckoutendpoint = '/possalescheckout';
   static String POSTtokocheckoutendpoint = '/postokocheckout';
   static String POSTtokometiercheckoutendpoint = '/postokometiercheckout';
+  static String POSTtokobeliberliancheckoutendpoint =
+      '/postokobeliberliancheckout';
   static String POSTreturcheckoutendpoint = '/posreturcheckout';
   static String POSTcreateCRMendpoint = '/createcrmsales';
   static String POSTcreateCustomerMetier = '/createcustomer';

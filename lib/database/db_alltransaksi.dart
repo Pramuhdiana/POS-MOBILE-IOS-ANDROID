@@ -37,6 +37,7 @@ class DbAlltransaksi {
           user_id INTEGER,
           customer_id INTEGER,
           customer_metier INTEGER,
+          customer_beliberlian TEXT,
           jenisform_id INTEGER,
           sales_id INTEGER,
           total INTEGER,

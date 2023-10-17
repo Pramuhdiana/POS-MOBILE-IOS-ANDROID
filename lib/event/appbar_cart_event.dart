@@ -1,6 +1,6 @@
 import 'package:e_shop/event/cart_event_screen.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
-import 'package:e_shop/provider/provider_cart.dart';
+import 'package:e_shop/provider/provider_cart_event.dart';
 import 'package:e_shop/testing/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,10 +39,8 @@ class _AppBarWithCartBadgeEventState extends State<AppBarWithCartBadgeEvent> {
           height: 35,
         ),
         onPressed: () {
-         Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (c) => const MainScreen()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (c) => const MainScreen()));
         },
       ),
       flexibleSpace: Container(
@@ -79,13 +77,14 @@ class _AppBarWithCartBadgeEventState extends State<AppBarWithCartBadgeEvent> {
               icon: Padding(
                 padding: const EdgeInsets.all(3),
                 child: badges.Badge(
-                  showBadge:
-                      context.read<PCart>().getItems.isEmpty ? false : true,
+                  showBadge: context.read<PCartEvent>().getItems.isEmpty
+                      ? false
+                      : true,
                   badgeStyle: const badges.BadgeStyle(
                     badgeColor: AppColors.contentColorBlack,
                   ),
                   badgeContent: Text(
-                    context.watch<PCart>().getItems.length.toString(),
+                    context.watch<PCartEvent>().getItems.length.toString(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 8,

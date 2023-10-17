@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/provider/provider_cart.dart';
+import 'package:e_shop/provider/provider_cart_event.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
 import 'package:e_shop/provider/provider_notification.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => PCart()),
         ChangeNotifierProvider(create: (_) => PCartToko()),
+        ChangeNotifierProvider(create: (_) => PCartEvent()),
         ChangeNotifierProvider(create: (_) => PCartRetur()),
         ChangeNotifierProvider(create: (_) => PNewNotif()),
         ChangeNotifierProvider(create: (_) => PApprovalBrj()),

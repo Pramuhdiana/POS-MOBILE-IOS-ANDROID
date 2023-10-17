@@ -8,6 +8,7 @@ import 'package:e_shop/event/transaksi_event_screen.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/posSales/main_posSales_screen.dart';
+import 'package:e_shop/provider/provider_cart_event.dart';
 import 'package:e_shop/provider/provider_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -41,6 +42,8 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
   var isLoading = false;
   int num = 0;
   DBHelper dbHelper = DBHelper();
+  String? idBarang = sharedPreferences!.getString('idBarang');
+
   // static final customCacheManager = CacheManager(Config(
   //   'customCacheKey',
   //   stalePeriod: const Duration(days: 1), //menyimpan cache gambar 1 hari
@@ -150,7 +153,9 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
                           sharedPreferences!.getString('role_sales_brand') ==
                                   '3'
                               ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
-                              : "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
+                              : widget.model!.name![0].toString() == '4'
+                                  ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
+                                  : "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -168,7 +173,7 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
                 child: IconButton(
                   onPressed: () async {
                     var existingitemcart = context
-                        .read<PCart>()
+                        .read<PCartEvent>()
                         .getItems
                         .firstWhereOrNull(
                             (element) => element.name == widget.model?.name);
@@ -176,7 +181,7 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
                     if (existingitemcart == null) {
                       Fluttertoast.showToast(
                           msg: "Barang Berhasil Di Tambahkan");
-                      context.read<PCart>().addItem(
+                      context.read<PCartEvent>().addItem(
                             widget.model!.name.toString(),
                             int.parse(widget.model!.price.toString()),
                             1,
@@ -187,13 +192,14 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
                             widget.model!.keterangan_barang.toString(),
                           );
                       setState(() {
-                        sharedPreferences!.setString('idBarang', widget.model!.name![0]);
+                        sharedPreferences!
+                            .setString('idBarang', widget.model!.name![0]);
                         postAPIcart();
                       });
                       Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (c) => const TransaksiScreenEvent()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (c) => const TransaksiScreenEvent()));
                     } else {
                       Fluttertoast.showToast(
                           msg: "Barang Sudah Ada Di Keranjang");
@@ -218,12 +224,13 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
       'product_id': widget.model!.id.toString(),
       'qty': '1',
       'price': widget.model!.price.toString(),
-      'jenisform_id': '3',
+      'customer_id': '440',
+      'jenisform_id': '2',
       'update_by': '1'
     };
     final response = await http.post(
         Uri.parse(
-            ApiConstants.baseUrl + ApiConstants.POSTkeranjangsalesendpoint),
+            ApiConstants.baseUrl + ApiConstants.POSTkeranjangtokoendpoint),
         headers: <String, String>{
           'Authorization': 'Bearer $token',
         },

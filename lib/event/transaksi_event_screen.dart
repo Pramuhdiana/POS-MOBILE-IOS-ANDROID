@@ -6,6 +6,7 @@ import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/event/add_customer_event.dart';
 import 'package:e_shop/event/cart_event_screen.dart';
 import 'package:e_shop/models/user_model.dart';
+import 'package:e_shop/provider/provider_cart_event.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:e_shop/widgets/keyboard_overlay.dart';
@@ -18,7 +19,6 @@ import 'package:http/http.dart' as http;
 
 import '../global/currency_format.dart';
 import '../global/global.dart';
-import '../provider/provider_cart.dart';
 
 class TransaksiScreenEvent extends StatefulWidget {
   const TransaksiScreenEvent({super.key});
@@ -56,29 +56,29 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
 
   double get totalPrice {
     // var dpin = int.parse(dp);
-    var total =
-        ((context.read<PCart>().totalPrice2) * rate) * (1 - (diskon / 100)) -
-            dpp -
-            addesdiskon;
+    var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
+            (1 - (diskon / 100)) -
+        dpp -
+        addesdiskon;
     return total;
   }
 
   double get upto10 {
     // var dpin = int.parse(dp);
-    var totalAwal =
-        ((context.read<PCart>().totalPrice2) * rate) * (1 - (diskon / 100));
-    var total =
-        ((context.read<PCart>().totalPrice2) * rate) * (1 - (diskon / 100));
+    var totalAwal = ((context.read<PCartEvent>().totalPrice2) * rate) *
+        (1 - (diskon / 100));
+    var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
+        (1 - (diskon / 100));
     var max10 = totalAwal - (total * (1 - (10 / 100)));
     return max10;
   }
 
   String get totalPrice3 {
     // var dpin = int.parse(dp);
-    var total =
-        ((context.read<PCart>().totalPrice2) * rate) * (1 - (diskon / 100)) -
-            dpp -
-            addesdiskon;
+    var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
+            (1 - (diskon / 100)) -
+        dpp -
+        addesdiskon;
     if (rate <= 2) {
       return 'Rp. ${CurrencyFormat.convertToDollar(total, 0)}';
     } else {
@@ -88,20 +88,20 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
 
   String get totalPriceAPI {
     // var dpin = int.parse(dp);
-    var total =
-        ((context.read<PCart>().totalPrice2) * rate) * (1 - (diskon / 100)) -
-            dpp -
-            addesdiskon;
+    var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
+            (1 - (diskon / 100)) -
+        dpp -
+        addesdiskon;
     return total.toString();
   }
 
   String get totalDiskonRp {
     // var dpin = int.parse(dp);
-    var total1 =
-        ((context.read<PCart>().totalPrice2) * rate) * (1 - (diskon / 100)) -
-            dpp -
-            addesdiskon;
-    var total = ((context.read<PCart>().totalPrice2) * rate);
+    var total1 = ((context.read<PCartEvent>().totalPrice2) * rate) *
+            (1 - (diskon / 100)) -
+        dpp -
+        addesdiskon;
+    var total = ((context.read<PCartEvent>().totalPrice2) * rate);
     var result = total - total1;
 
     return result.toString();
@@ -109,7 +109,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
 
   String get totalRp {
     // var dpin = int.parse(dp);
-    var total = ((context.read<PCart>().totalPrice2) * rate);
+    var total = ((context.read<PCartEvent>().totalPrice2) * rate);
     return total.toString();
   }
 
@@ -436,10 +436,15 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                     padding: const EdgeInsets.only(bottom: 40),
                     child: CustomLoadingButton(
                       controller: btnController,
-                      onPressed: () {
-                        sharedPreferences!.getString('role_sales_brand') == '3'
-                            ? formValidationMetier()
-                            : formValidation();
+                      onPressed: () async {
+                        await postAPI();
+                        btnController.success(); //sucses
+                        context.read<PCartEvent>().clearCart(); //clear cart
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (c) =>
+                                    const MySplashScreenTransaksi()));
                       },
                       child: const Text(
                         "Save Transaction",
@@ -447,23 +452,6 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                       ),
                     ),
                   ));
-  }
-
-  formValidation() async {
-    if (toko == null) {
-      btnController.error(); //error
-    } else {
-      await postAPIsales();
-      btnController.success(); //sucses
-      context.read<PCart>().clearCart(); //clear cart
-      Navigator.push(context,
-          MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
-    }
-  }
-
-  //validasi metier
-  formValidationMetier() async {
-    await postAPImetier();
   }
 
   Widget _customPopupItemBuilderExample2(
@@ -491,7 +479,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   Future<List<UserModel>> getData(filter) async {
     String token = sharedPreferences!.getString("token").toString();
     var response = await Dio().get(
-      ApiConstants.baseUrl + ApiConstants.GETcustomerendpoint,
+      ApiConstants.baseUrl + ApiConstants.GETcustomerMetier,
       options: Options(headers: {"Authorization": 'Bearer $token'}),
       queryParameters: {"filter": filter},
     );
@@ -504,242 +492,55 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     return [];
   }
 
-  postAPIsales() async {
+  postAPI() async {
     String token = sharedPreferences!.getString("token").toString();
-    String cart_total = context.read<PCart>().totalPrice2.toString();
-    String cart_totalquantity = context.read<PCart>().count.toString();
-    String bayar = dpp.toString();
-    String customer_id = idtoko.toString();
-    String jenisform_id = idformAPI.toString();
+    String cart_total = context.read<PCartEvent>().totalPrice2.toString();
+    String cart_totalquantity = context.read<PCartEvent>().count.toString();
+    String customer_id = '440'; //id beliberlian
+    String jenisform_id = '1';
     String basicdiskon = diskon.toString();
-    String addesdiskon = '0';
-    String basicrate = rate.toString();
-    String nett = totalPriceAPI;
+    String customerbeliberlian = idtoko.toString();
+    String pajak = '0';
+    String rate = '15000';
     String total = totalRp;
-    String diskon_rupiah = totalDiskonRp;
-    String addesdiskon_rupiah = addesdiskon;
     String total_potongan = totalDiskonRp;
-    String keterangan_bayar = 'null';
+    String totalkurangdiskon = totalPriceAPI;
+    String totalkurangpajak = totalRp;
+    String addesdiskonApi = addesdiskon.toString();
+    print('cart_total : $cart_total');
+    print('cart_totalquantity : $cart_totalquantity');
+    print('customer_id : $customer_id');
+    print('jenisform_id : $jenisform_id');
+    print('basicdiskon : $basicdiskon');
+    print('customerbeliberlian : $customerbeliberlian');
+    print('pajak : $pajak');
+    print('total : $total');
+    print('total_potongan : $total_potongan');
+    print('totalkurangdiskon : $totalkurangdiskon');
+    print('totalkurangpajak : $totalkurangpajak');
+    print('addesdiskonApi : $addesdiskonApi');
     Map<String, String> body = {
       'cart_total': cart_total,
       'cart_totalquantity': cart_totalquantity, //total item di cart
-      'bayar': bayar,
       'customer_id': customer_id,
       'jenisform_id': jenisform_id,
-      'diskon': basicdiskon,
-      'addesdiskon': addesdiskon,
-      'rate': basicrate,
-      'nett': nett,
+      'basic_discount': basicdiskon,
+      'customerbeliberlian': customerbeliberlian,
+      'pajak': pajak,
+      'rate': rate,
       'total': total,
-      'diskon_rupiah': diskon_rupiah,
-      'addesdiskon_rupiah': addesdiskon_rupiah,
       'total_potongan': total_potongan,
-      'keterangan_bayar': keterangan_bayar
+      'totalkurangdiskon': totalkurangdiskon,
+      'totalkurangpajak': totalkurangpajak,
+      'addesdiskon': addesdiskonApi,
     };
     final response = await http.post(
-        Uri.parse(
-            ApiConstants.baseUrl + ApiConstants.POSTsalescheckoutendpoint),
+        Uri.parse(ApiConstants.baseUrl +
+            ApiConstants.POSTtokobeliberliancheckoutendpoint),
         headers: <String, String>{
           'Authorization': 'Bearer $token',
         },
         body: body);
     print(response.body);
-  }
-
-  postAPImetier() async {
-    String token = sharedPreferences!.getString("token").toString();
-    String customer_id = '19';
-    String jenisform_id = '2';
-    String total = totalRp;
-    String cart_totalquantity = context.read<PCart>().count.toString();
-    print(total);
-    Map<String, String> body = {
-      'customer_id': customer_id,
-      'jenisform_id': jenisform_id,
-      'total': total,
-      'cart_totalquantity': cart_totalquantity, //total item di cart
-    };
-    final response = await http.post(
-        Uri.parse(ApiConstants.baseUrl + ApiConstants.POSTmetiercheckout),
-        headers: <String, String>{
-          'Authorization': 'Bearer $token',
-        },
-        body: body);
-    print(response.statusCode);
-    print(response.body);
-    if (response.statusCode == 200) {
-      btnController.success(); //sucses
-      context.read<PCart>().clearCart(); //clear cart
-      Navigator.push(context,
-          MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
-    } else {
-      btnController.error();
-      Future.delayed(const Duration(seconds: 1)).then((value) {
-        btnController.reset(); //reset
-      });
-    }
   }
 }
-
- // bottomNavigationBar: BottomAppBar(
-        //     child: ElevatedButton(
-        //   onPressed: () {
-        //     showModalBottomSheet(
-        //         context: context,
-        //         builder: (context) => SizedBox(
-        //               height: MediaQuery.of(context).size.height * 0.3,
-        //               child: Padding(
-        //                 padding: const EdgeInsets.only(bottom: 100),
-        //                 child: Column(
-        //                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-        //                   children: [
-        //                     Text(
-        //                       'Total : $totalPrice3',
-        //                       style: const TextStyle(fontSize: 24),
-        //                     ),
-        //                     ElevatedButton(
-        //                         style: ElevatedButton.styleFrom(
-        //                             backgroundColor:
-        //                                 Colors.black), // set the backgroun
-        //                         onPressed: () async {
-        //                           showProgress();
-
-        //                           if (idform == 1) {
-        //                             print("invoice");
-        //                             await postAPIsales();
-        //                             //invoice
-        //                             for (var item
-        //                                 in context.read<PCart>().getItems) {
-        //                               //real bawah
-        //                               //delete semua items karena akan pindah ke all transaksi details
-        //                               // var apiProvider = ApiServices();
-        //                               // await apiProvider.getAllDetailTransaksi();
-        //                               // await apiProvider.getAllTransaksi();
-        //                               // print('inserting API');
-        //                               //update posisi id ke firestore
-        //                               // await FirebaseFirestore.instance
-        //                               //     .runTransaction((transaction) async {
-        //                               //   DocumentReference documentReference =
-        //                               //       FirebaseFirestore.instance
-        //                               //           .collection("allitems")
-        //                               //           .doc(item.name);
-        //                               //   transaction.update(documentReference, {
-        //                               //     'posisi_id':
-        //                               //         "100", //ganti posisi sales (3) menjadi terjual (100)
-        //                               //     'customer_id': idtoko
-        //                               //         .toString(), //tambahkan customer id agar tahu terjual oleh tko mana
-        //                               //     'qty': 0 //set qty menjadi 0
-        //                               //   });
-        //                               // });
-
-        //                               // delete all items id
-        //                               // FirebaseFirestore.instance
-        //                               //     .collection('allitems')
-        //                               //     .doc(item.name)
-        //                               //     .delete();
-        //                             }
-        //                             // print('delete data firebase berhasil');
-        //                             context
-        //                                 .read<PCart>()
-        //                                 .clearCart(); //clear cart
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (c) =>
-        //                                         const MySplashScreenTransaksi()));
-        //                           } else if (idform == 2) {
-        //                             //titipan
-        //                             await postAPIsales();
-        //                             // for (var item
-        //                             //     in context.read<PCart>().getItems) {
-        //                             //   CollectionReference orderRef =
-        //                             //       FirebaseFirestore.instance
-        //                             //           .collection('allitemstoko');
-        //                             //   await orderRef.doc(item.name).set({
-        //                             //     'brand_id': 9999,
-        //                             //     'category_id': '1',
-        //                             //     'created_at': DateTime.now(),
-        //                             //     'customer_id': idtoko.toString(),
-        //                             //     'description': item.description,
-        //                             //     'id': item.documentId,
-        //                             //     'image_name': item.imageUrl,
-        //                             //     'keterangan_barang':
-        //                             //         item.keterangan_barang,
-        //                             //     'kode_refrensi': 'null',
-        //                             //     'name': item.name,
-        //                             //     'posisi_id': 2,
-        //                             //     'price':
-        //                             //         item.price, //harus int atau double
-        //                             //     'qty': 1, //harus int
-        //                             //     'sales_id': int.parse(id!),
-        //                             //     'slug': item.name,
-        //                             //     'status_titipan': 0,
-        //                             //     'updated_at': DateTime.now()
-        //                             //   });
-        //                             //   // delete all items id
-        //                             //   // FirebaseFirestore.instance
-        //                             //   //     .collection('allitems')
-        //                             //   //     .doc(item.name)
-        //                             //   //     .delete();
-        //                             // }
-        //                             // print('delete data firebase berhasil');
-        //                             context.read<PCart>().clearCart();
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (c) =>
-        //                                         const MySplashScreenTransaksi()));
-        //                           } else if (idform == 3) {
-        //                             //PAMERAN
-        //                             await postAPIsales();
-        //                             // for (var item
-        //                             //     in context.read<PCart>().getItems) {
-        //                             //   CollectionReference orderRef =
-        //                             //       FirebaseFirestore.instance
-        //                             //           .collection('allitemstoko');
-        //                             //   await orderRef.doc(item.name).set({
-        //                             //     'brand_id': 9999,
-        //                             //     'category_id': '1',
-        //                             //     'created_at': DateTime.now(),
-        //                             //     'customer_id': idtoko.toString(),
-        //                             //     'description': item.description,
-        //                             //     'id': int.parse(item.documentId),
-        //                             //     'image_name': item.imageUrl,
-        //                             //     'keterangan_barang':
-        //                             //         item.keterangan_barang,
-        //                             //     'kode_refrensi': 'null',
-        //                             //     'name': item.name,
-        //                             //     'posisi_id': 2,
-        //                             //     'price':
-        //                             //         item.price, //harus int atau double
-        //                             //     'qty': 1, //harus int
-        //                             //     'sales_id': int.parse(id!),
-        //                             //     'slug': item.name,
-        //                             //     'status_titipan': 1,
-        //                             //     'updated_at': DateTime.now()
-        //                             //   });
-
-        //                             //   // delete all items id
-        //                             //   // FirebaseFirestore.instance
-        //                             //   //     .collection('allitems')
-        //                             //   //     .doc(item.name)
-        //                             //   //     .delete();
-        //                             // }
-        //                             // print('delete data firebase berhasil');
-
-        //                             context.read<PCart>().clearCart();
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (c) =>
-        //                                         const MySplashScreenTransaksi()));
-        //                           }
-        //                         },
-        //                         child: const Text('Save'))
-        //                   ],
-        //                 ),
-        //               ),
-        //             ));
-        //   },
-        //   child: const Text('Save Transaksi'),
-        // )),

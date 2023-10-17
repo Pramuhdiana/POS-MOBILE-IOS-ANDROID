@@ -9,7 +9,7 @@ import 'package:e_shop/event/pos_event_screen.dart';
 import 'package:e_shop/event/transaksi_event_screen.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/itemsScreens/items_photo.dart';
-import 'package:e_shop/provider/provider_cart.dart';
+import 'package:e_shop/provider/provider_cart_event.dart';
 // import 'package:e_shop/widgets/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -52,10 +52,8 @@ class _CartEventScreenState extends State<CartEventScreen> {
             height: 35,
           ),
           onPressed: () {
-             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (c) => PosEventScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (c) => PosEventScreen()));
           },
         ),
         title: const Text(
@@ -65,7 +63,7 @@ class _CartEventScreenState extends State<CartEventScreen> {
         ),
         centerTitle: true,
         // actions: [
-        //   context.watch<PCart>().getItems.isEmpty
+        //   context.watch<PCartEvent>().getItems.isEmpty
         //       ? const SizedBox()
         //       : IconButton(
         //           onPressed: () {
@@ -91,7 +89,7 @@ class _CartEventScreenState extends State<CartEventScreen> {
         //                       },
         //                       body: body);
         //                   print(response.body);
-        //                   context.read<PCart>().clearCart();
+        //                   context.read<PCartEvent>().clearCart();
         //                   Navigator.pop(context);
         //                 });
         //           },
@@ -101,9 +99,8 @@ class _CartEventScreenState extends State<CartEventScreen> {
         //           ),
         //         ),
         // ],
-     
       ),
-      body: context.watch<PCart>().getItems.isNotEmpty
+      body: context.watch<PCartEvent>().getItems.isNotEmpty
           ? const CartItems()
           : const EmptyCart(),
       bottomNavigationBar: Container(
@@ -111,7 +108,7 @@ class _CartEventScreenState extends State<CartEventScreen> {
         padding: const EdgeInsets.only(left: 25, right: 25),
         child: Column(
           children: [
-            context.watch<PCart>().getItems.isEmpty
+            context.watch<PCartEvent>().getItems.isEmpty
                 ? const SizedBox()
                 : SizedBox(
                     height: 42,
@@ -119,15 +116,15 @@ class _CartEventScreenState extends State<CartEventScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Total (${context.watch<PCart>().getItems.length} item)',
+                          'Total (${context.watch<PCartEvent>().getItems.length} item)',
                           style:
                               const TextStyle(fontSize: 18, color: Colors.grey),
                         ),
                         Text(
                           sharedPreferences!.getString('role_sales_brand') ==
                                   '3'
-                              ? 'Rp.${CurrencyFormat.convertToDollar(context.watch<PCart>().totalPrice, 0)}'
-                              : '\$${CurrencyFormat.convertToDollar(context.watch<PCart>().totalPrice, 0)}',
+                              ? 'Rp.${CurrencyFormat.convertToDollar(context.watch<PCartEvent>().totalPrice, 0)}'
+                              : '\$${CurrencyFormat.convertToDollar(context.watch<PCartEvent>().totalPrice, 0)}',
                           style: const TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -136,7 +133,7 @@ class _CartEventScreenState extends State<CartEventScreen> {
                       ],
                     ),
                   ),
-            context.watch<PCart>().getItems.isEmpty
+            context.watch<PCartEvent>().getItems.isEmpty
                 ? const SizedBox()
                 : Padding(
                     padding: const EdgeInsets.only(top: 17),
@@ -148,11 +145,11 @@ class _CartEventScreenState extends State<CartEventScreen> {
                           borderRadius: BorderRadius.circular(10)),
                       child: MaterialButton(
                         onPressed: () {
-                          
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (c) => const TransaksiScreenEvent()));
+                                  builder: (c) =>
+                                      const TransaksiScreenEvent()));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -238,7 +235,7 @@ class CartItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 25, right: 25),
-      child: Consumer<PCart>(builder: (context, cart, child) {
+      child: Consumer<PCartEvent>(builder: (context, cart, child) {
         return ListView.builder(
           itemCount: cart.count,
           itemBuilder: (context, index) {

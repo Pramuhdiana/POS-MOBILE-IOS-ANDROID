@@ -14,6 +14,7 @@ class ModelAlltransaksi {
   int? user_id;
   int? customer_id;
   int? customer_metier;
+  String? customer_beliberlian;
   int? jenisform_id;
   int? sales_id;
   int? total;
@@ -37,6 +38,7 @@ class ModelAlltransaksi {
     this.user_id,
     this.customer_id,
     this.customer_metier,
+    this.customer_beliberlian,
     this.jenisform_id,
     this.sales_id,
     this.total,
@@ -62,6 +64,7 @@ class ModelAlltransaksi {
         user_id: json["user_id"],
         customer_id: json["customer_id"],
         customer_metier: json["customer_metier"] ?? 0,
+        customer_beliberlian: json["customer_beliberlian"] ?? '0',
         jenisform_id: json["jenisform_id"],
         sales_id: json["sales_id"] ?? 0,
         total: json["total"] ?? 0,
@@ -88,6 +91,7 @@ class ModelAlltransaksi {
         "user_id": user_id,
         "customer_id": customer_id,
         "customer_metier": customer_metier,
+        "customer_beliberlian": customer_beliberlian,
         "jenisform_id": jenisform_id,
         "sales_id": sales_id,
         "total": total,
