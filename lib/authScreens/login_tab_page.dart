@@ -186,7 +186,7 @@ class _LoginTabPageState extends State<LoginTabPage> {
                         color: Colors.black,
                         fontWeight: FontWeight.bold),
                     labelText: 'Email',
-                    suffixIcon: emailTextEditingController.text == ''
+                    suffixIcon: emailTextEditingController.text.isEmpty
                         ? const Padding(
                             padding: EdgeInsets.only(top: 10),
                             child: Icon(
@@ -198,6 +198,7 @@ class _LoginTabPageState extends State<LoginTabPage> {
                             padding: EdgeInsets.only(top: 10),
                             child: Icon(
                               Icons.check_circle,
+                              color: Colors.green,
                               size: 20,
                             ),
                           ),
@@ -222,7 +223,7 @@ class _LoginTabPageState extends State<LoginTabPage> {
                         color: Colors.black,
                         fontWeight: FontWeight.bold),
                     labelText: 'Password',
-                    suffixIcon: passwordTextEditingController.text == ''
+                    suffixIcon: passwordTextEditingController.text.isEmpty
                         ? const Padding(
                             padding: EdgeInsets.only(top: 10),
                             child: Icon(
@@ -234,6 +235,7 @@ class _LoginTabPageState extends State<LoginTabPage> {
                             padding: EdgeInsets.only(top: 10),
                             child: Icon(
                               Icons.check_circle,
+                              color: Colors.green,
                               size: 20,
                             ),
                           ),
