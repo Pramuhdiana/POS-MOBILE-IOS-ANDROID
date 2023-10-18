@@ -77,7 +77,7 @@ class HistoryModelNew extends StatelessWidget {
                                 message: "",
                               );
                             });
-                        _sharePdf();
+                        _createPdf();
                         printMessageAfterDelay(
                             const Duration(seconds: 6), 'Delayed loading');
                       },
@@ -102,7 +102,7 @@ class HistoryModelNew extends StatelessWidget {
                               );
                             });
 
-                        _sharePdfBeliberlian();
+                        _createPdfBeliBerlian();
                         printMessageAfterDelay(
                             const Duration(seconds: 4), 'Delayed loading');
                       },
@@ -153,7 +153,7 @@ class HistoryModelNew extends StatelessWidget {
                                 message: "",
                               );
                             });
-                        _createPdf();
+                        _sharePdf();
                         printMessageAfterDelay(
                             const Duration(seconds: 6), 'Delayed loading');
                       },
@@ -178,7 +178,7 @@ class HistoryModelNew extends StatelessWidget {
                               );
                             });
 
-                        _createPdfBeliBerlian();
+                        _sharePdfBeliberlian();
                         printMessageAfterDelay(
                             const Duration(seconds: 4), 'Delayed loading');
                       },
@@ -380,15 +380,7 @@ class HistoryModelNew extends StatelessWidget {
                                           message: "",
                                         );
                                       });
-                                  _sharePdfBeliberlian();
-                                  // _sharePdf();
-                                  await Future.delayed(
-                                          const Duration(seconds: 7))
-                                      .then((value) {
-                                    Navigator.pop(
-                                      context,
-                                    );
-                                  });
+                                  await sharePdf();
                                 },
                                 icon: const Icon(
                                   Icons.share,
