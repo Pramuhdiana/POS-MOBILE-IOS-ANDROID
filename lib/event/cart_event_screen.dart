@@ -192,34 +192,34 @@ class EmptyCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
+          Text(
             'Your Cart Is Empty !',
             style: TextStyle(fontSize: 30),
           ),
-          const SizedBox(
+          SizedBox(
             height: 50,
           ),
-          Material(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(25),
-            child: MaterialButton(
-              minWidth: MediaQuery.of(context).size.width * 0.6,
-              onPressed: () {
-                Navigator.pop(context);
+          // Material(
+          //   color: Colors.black,
+          //   borderRadius: BorderRadius.circular(25),
+          //   child: MaterialButton(
+          //     minWidth: MediaQuery.of(context).size.width * 0.6,
+          //     onPressed: () {
+          //       Navigator.pop(context);
 
-                // Navigator.pushReplacement(context,
-                //     MaterialPageRoute(builder: (context) => PosSalesScreen()));
-              },
-              child: const Text(
-                'back to POS SALES',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-            ),
-          )
+          //       // Navigator.pushReplacement(context,
+          //       //     MaterialPageRoute(builder: (context) => PosSalesScreen()));
+          //     },
+          //     child: const Text(
+          //       'back to POS SALES',
+          //       style: TextStyle(fontSize: 18, color: Colors.white),
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );
