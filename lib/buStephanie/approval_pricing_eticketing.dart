@@ -2889,6 +2889,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                             child:
                                                                 CachedNetworkImage(
                                                               width: 130,
+                                                              height: 140,
                                                               imageUrl: data
                                                                   .imageDesign1!,
                                                               placeholder: (context, url) => Center(
@@ -2909,7 +2910,8 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                   Image.asset(
                                                                 "images/default.jpg",
                                                               ),
-                                                              fit: BoxFit.cover,
+                                                              fit: BoxFit
+                                                                  .scaleDown,
                                                             ),
                                                           ),
                                                         ),
@@ -2937,6 +2939,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                             child:
                                                                 CachedNetworkImage(
                                                               width: 130,
+                                                              height: 140,
                                                               imageUrl: data
                                                                   .imageSales1!,
                                                               placeholder: (context, url) => Center(
@@ -2957,7 +2960,8 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                   Image.asset(
                                                                 "images/default.jpg",
                                                               ),
-                                                              fit: BoxFit.cover,
+                                                              fit: BoxFit
+                                                                  .scaleDown,
                                                             ),
                                                           ),
                                                         ),
@@ -3431,49 +3435,42 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                       data.notesCustomer.isEmpty
                                                                                           ? const SizedBox()
                                                                                           : SizedBox(
-                                                                                              child: 
-                                                                                                          BubbleSpecialThree(
-                                                                                                            text: '${data.notesCustomer}',
-                                                                                                            color: const Color.fromARGB(255, 7, 19, 27),
-                                                                                                            tail: true,
-                                                                                                            isSender: false, //true kanan
-                                                                                                            seen: true,
-                                                                                                            textStyle: const TextStyle(color: Colors.white, fontSize: 16),
-                                                                                                          ),
-                                                                                                          // Text(data.tanggal_aktivitas.toString()),
-                                                                                                      
+                                                                                              child: BubbleSpecialThree(
+                                                                                                text: '${data.notesCustomer}',
+                                                                                                color: const Color.fromARGB(255, 7, 19, 27),
+                                                                                                tail: true,
+                                                                                                isSender: false, //true kanan
+                                                                                                seen: true,
+                                                                                                textStyle: const TextStyle(color: Colors.white, fontSize: 16),
+                                                                                              ),
+                                                                                              // Text(data.tanggal_aktivitas.toString()),
                                                                                             ),
-                                                                                              data.notesCustomer2.isEmpty
+                                                                                      data.notesCustomer2.isEmpty
                                                                                           ? const SizedBox()
                                                                                           : SizedBox(
-                                                                                              child: 
-                                                                                                          BubbleSpecialThree(
-                                                                                                            text: '${data.notesCustomer2}',
-                                                                                                            color: const Color.fromARGB(255, 7, 19, 27),
-                                                                                                            tail: true,
-                                                                                                            isSender: false, //true kanan
-                                                                                                            seen: true,
-                                                                                                            textStyle: const TextStyle(color: Colors.white, fontSize: 16),
-                                                                                                          ),
-                                                                                                          // Text(data.tanggal_aktivitas.toString()),
-                                                                                                      
+                                                                                              child: BubbleSpecialThree(
+                                                                                                text: '${data.notesCustomer2}',
+                                                                                                color: const Color.fromARGB(255, 7, 19, 27),
+                                                                                                tail: true,
+                                                                                                isSender: false, //true kanan
+                                                                                                seen: true,
+                                                                                                textStyle: const TextStyle(color: Colors.white, fontSize: 16),
+                                                                                              ),
+                                                                                              // Text(data.tanggal_aktivitas.toString()),
                                                                                             ),
-                                                                                              data.notesCustomer3.isEmpty
+                                                                                      data.notesCustomer3.isEmpty
                                                                                           ? const SizedBox()
-                                                                                          :
-                                                                                            SizedBox(
-                                                                                              child: 
-                                                                                                          BubbleSpecialThree(
-                                                                                                            text: '${data.notesCustomer3}',
-                                                                                                            color: const Color.fromARGB(255, 7, 19, 27),
-                                                                                                            tail: true,
-                                                                                                            isSender: false, //true kanan
-                                                                                                            seen: true,
-                                                                                                            textStyle: const TextStyle(color: Colors.white, fontSize: 16),
-                                                                                                          ),
-                                                                                                          // Text(data.tanggal_aktivitas.toString()),
+                                                                                          : SizedBox(
+                                                                                              child: BubbleSpecialThree(
+                                                                                                text: '${data.notesCustomer3}',
+                                                                                                color: const Color.fromARGB(255, 7, 19, 27),
+                                                                                                tail: true,
+                                                                                                isSender: false, //true kanan
+                                                                                                seen: true,
+                                                                                                textStyle: const TextStyle(color: Colors.white, fontSize: 16),
+                                                                                              ),
+                                                                                              // Text(data.tanggal_aktivitas.toString()),
                                                                                             ),
-                                                                                     
                                                                                     ],
                                                                                   ),
                                                                                 ),
@@ -3751,6 +3748,7 @@ class SearchModel extends StatelessWidget {
                     height: 100,
                     width: 100,
                     child: CachedNetworkImage(
+                      height: 140,
                       imageUrl:
                           'https://parvabisnis.id/uploads/products/${e['image_name'].toString()}',
                       placeholder: (context, url) => Center(
@@ -3762,8 +3760,7 @@ class SearchModel extends StatelessWidget {
                       errorWidget: (context, url, error) => Image.asset(
                         "images/noimage.png",
                       ),
-                      height: 124,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.scaleDown,
                     ),
                   ),
                 ),

@@ -1220,6 +1220,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                   children: [
                                                     ClipRRect(
                                                       child: CachedNetworkImage(
+                                                        height: 140,
                                                         width: 130,
                                                         imageUrl: ApiConstants
                                                                 .baseUrlImageMdbc +
@@ -1243,7 +1244,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                             Image.asset(
                                                           "images/default.jpg",
                                                         ),
-                                                        fit: BoxFit.cover,
+                                                        fit: BoxFit.scaleDown,
                                                       ),
                                                     ),
                                                     Text(
@@ -1625,6 +1626,7 @@ class SearchModel extends StatelessWidget {
                     height: 100,
                     width: 100,
                     child: CachedNetworkImage(
+                      height: 140,
                       imageUrl:
                           'https://parvabisnis.id/uploads/products/${e['image_name'].toString()}',
                       placeholder: (context, url) => Center(
@@ -1636,8 +1638,7 @@ class SearchModel extends StatelessWidget {
                       errorWidget: (context, url, error) => Image.asset(
                         "images/noimage.png",
                       ),
-                      height: 124,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.scaleDown,
                     ),
                   ),
                 ),

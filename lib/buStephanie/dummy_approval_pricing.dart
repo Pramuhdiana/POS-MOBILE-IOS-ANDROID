@@ -3238,7 +3238,8 @@ class _SearchScreenState extends State<DummyApprovalPricingEticketingScreen> {
                                                             //       .black,
                                                             //   size: 50,
                                                             // ),
-                                                            fit: BoxFit.cover,
+                                                            fit: BoxFit
+                                                                .scaleDown,
                                                           ),
                                                         ),
                                                       ),
@@ -3292,7 +3293,8 @@ class _SearchScreenState extends State<DummyApprovalPricingEticketingScreen> {
                                                             //       .black,
                                                             //   size: 50,
                                                             // ),
-                                                            fit: BoxFit.cover,
+                                                            fit: BoxFit
+                                                                .scaleDown,
                                                           ),
                                                         ),
                                                       ),
@@ -3432,7 +3434,7 @@ class SearchModel extends StatelessWidget {
                         "images/noimage.png",
                       ),
                       height: 124,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.scaleDown,
                     ),
                   ),
                 ),

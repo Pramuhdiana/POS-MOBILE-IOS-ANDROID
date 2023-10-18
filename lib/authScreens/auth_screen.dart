@@ -56,7 +56,7 @@ class _AuthScreenState extends State<AuthScreen> {
           decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("images/bg-blue.png"),
-                fit: BoxFit.cover,
+                fit: BoxFit.scaleDown,
               ),
               gradient: LinearGradient(
                 colors: [

@@ -2848,6 +2848,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                           child: ClipRRect(
                                                             child:
                                                                 CachedNetworkImage(
+                                                              height: 140,
                                                               width: 130,
                                                               imageUrl: data
                                                                   .imageDesign1!,
@@ -2875,7 +2876,8 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                               //       .black,
                                                               //   size: 50,
                                                               // ),
-                                                              fit: BoxFit.cover,
+                                                              fit: BoxFit
+                                                                  .scaleDown,
                                                             ),
                                                           ),
                                                         ),
@@ -2902,6 +2904,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                           child: ClipRRect(
                                                             child:
                                                                 CachedNetworkImage(
+                                                              height: 140,
                                                               width: 130,
                                                               imageUrl: data
                                                                   .imageSales1!,
@@ -2929,7 +2932,8 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                               //       .black,
                                                               //   size: 50,
                                                               // ),
-                                                              fit: BoxFit.cover,
+                                                              fit: BoxFit
+                                                                  .scaleDown,
                                                             ),
                                                           ),
                                                         ),
@@ -3411,6 +3415,7 @@ class SearchModel extends StatelessWidget {
                     height: 100,
                     width: 100,
                     child: CachedNetworkImage(
+                      height: 140,
                       imageUrl:
                           'https://parvabisnis.id/uploads/products/${e['image_name'].toString()}',
                       placeholder: (context, url) => Center(
@@ -3422,8 +3427,7 @@ class SearchModel extends StatelessWidget {
                       errorWidget: (context, url, error) => Image.asset(
                         "images/noimage.png",
                       ),
-                      height: 124,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.scaleDown,
                     ),
                   ),
                 ),
