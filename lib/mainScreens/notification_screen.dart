@@ -98,6 +98,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   //get token
   getToken() async {
+    print('masuk get token');
     await FirebaseMessaging.instance.getToken().then((token) {
       setState(() {
         mtoken = token;

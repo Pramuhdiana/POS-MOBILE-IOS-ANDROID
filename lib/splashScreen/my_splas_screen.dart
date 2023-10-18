@@ -59,7 +59,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
               sharedPreferences?.setBool('loading', true);
               // sharedPreferences!.setString('newOpenHistory', 'true');
               sharedPreferences!.setString('total_product_sales', '0');
-              await getToken();
+              print('wait token');
+              getToken();
               role == 15
                   ? dialogBox()
                   : Navigator.push(context,
@@ -106,6 +107,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
 
   //save token
   saveToken(String token) async {
+    print('token save');
     await FirebaseFirestore.instance
         .collection("UserTokens")
         .doc(sharedPreferences!.getString("name").toString())
@@ -203,9 +205,10 @@ class _MySplashScreenState extends State<MySplashScreen> {
       await apiProvider.getUsers();
       setState(() {
         role = int.parse(sharedPreferences!.getString('role_sales_brand')!);
-        print(role);
+        print('Role user : $role');
       });
     } catch (c) {
+        print('gagal get user');
       sharedPreferences!.setString('name', 'Failed To Load Data');
       Fluttertoast.showToast(msg: "Failed To Load Data User");
     }
@@ -238,7 +241,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     var url = ApiConstants.baseUrl + ApiConstants.GETkeranjangsalesendpoint;
     Response response = await Dio().get(url,
         options: Options(headers: {"Authorization": "Bearer $tokens"}));
-
+  print('cart sales ke');
     return (response.data as List).map((cart) {
       var existingitemcart = context
           .read<PCart>()
@@ -348,11 +351,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
   loadListBRJ() async {
     var url =
         ApiConstants.baseUrlPricing + ApiConstants.GETapprovelPricingWaiting;
-    Response response = await Dio().get(url, options: Options(
-      validateStatus: (status) {
-        return status! < 500;
-      },
-    ));
+    Response response = await Dio().get(url,
+    );
     print(response.statusCode);
     if (response.statusCode != 200) {
       throw Fluttertoast.showToast(msg: "Database Off");
