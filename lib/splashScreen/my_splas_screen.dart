@@ -286,24 +286,44 @@ class _MySplashScreenState extends State<MySplashScreen> {
       initState() //called automatically when user comes here to this splash screen
   {
     super.initState();
-    print('No Version : $noBuild');
-    getVersion();
-    // noBuild != noVersion ? :
     PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
     pushNotificationsSystem.whenNotificationReceivedInPricing(context);
     context.read<PApprovalBrj>().clearNotif(); //clear cart
-    loadListBRJ(); //ambil data cart
     context.read<PApprovalEticketing>().clearNotif(); //clear cart
-    loadListEticketing(); //ambil data cart
+    print('No Version : $noBuild');
+    try {
+      getVersion();
+    } catch (c) {
+      print('No Version DB : $noBuild');
+      setState(() {
+        version = noBuild.toString();
+        sharedPreferences!.setString('version', noBuild.toString());
+        notif.sendNotificationTo(fcmTokensandy, 'Error Version',
+            'version database dan mobile tidak');
+        print('No Version DB : $noBuild');
+      });
+      throw Fluttertoast.showToast(msg: "Database Off");
+    }
+    try {
+      loadListBRJ(); //ambil data cart
+    } catch (c) {
+      throw Fluttertoast.showToast(msg: "Database Off");
+    }
+    try {
+      loadListEticketing(); //ambil data cart
+    } catch (c) {
+      throw Fluttertoast.showToast(msg: "Database Off");
+    }
+
     splashScreenTimer();
   }
 
   Future<List<VersionModel>> getVersion() async {
-    String? tokens = sharedPreferences!.getString('token');
     final response = await http.get(
-        Uri.parse('http://110.5.102.154:1212/Api_flutter/spk/get_version.php'),
-        headers: {"Authorization": "Bearer $tokens"});
+        Uri.parse('http://110.5.102.154:1212/Api_flutter/spk/get_version.php'));
     print('status : ${response.statusCode}');
+    print('No Version DB : ${response.body}');
+
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       var allData =
@@ -314,6 +334,13 @@ class _MySplashScreenState extends State<MySplashScreen> {
       });
       return allData;
     } else {
+      setState(() {
+        version = noBuild.toString();
+        sharedPreferences!.setString('version', noBuild.toString());
+        notif.sendNotificationTo(fcmTokensandy, 'Error Version',
+            'version database dan mobile tidak');
+        print('No Version DB : $noBuild');
+      });
       throw Fluttertoast.showToast(msg: "Database Off");
     }
   }
@@ -321,16 +348,21 @@ class _MySplashScreenState extends State<MySplashScreen> {
   loadListBRJ() async {
     var url =
         ApiConstants.baseUrlPricing + ApiConstants.GETapprovelPricingWaiting;
-    Response response = await Dio().get(
-      url,
-    );
-    print('bawah');
+    Response response = await Dio().get(url, options: Options(
+      validateStatus: (status) {
+        return status! < 500;
+      },
+    ));
     print(response.statusCode);
-    return (response.data as List).map((cart) {
-      context.read<PApprovalBrj>().addItem(
-            1,
-          );
-    }).toList();
+    if (response.statusCode != 200) {
+      throw Fluttertoast.showToast(msg: "Database Off");
+    } else {
+      return (response.data as List).map((cart) {
+        context.read<PApprovalBrj>().addItem(
+              1,
+            );
+      }).toList();
+    }
   }
 
   loadListEticketing() async {
@@ -339,8 +371,6 @@ class _MySplashScreenState extends State<MySplashScreen> {
     Response response = await Dio().get(
       url,
     );
-    print('bawah');
-    print(response.statusCode);
     return (response.data as List).map((cart) {
       context.read<PApprovalEticketing>().addItem(
             1,
