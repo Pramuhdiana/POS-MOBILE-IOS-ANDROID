@@ -208,7 +208,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
             itemColor: Colors.black,
             // autofocus: false,
             backgroundColor: Colors.black12,
-            keyboardType: TextInputType.text,
+            keyboardType: TextInputType.number,
             onChanged: (value) {
               setState(() {
                 searchInput = value;
