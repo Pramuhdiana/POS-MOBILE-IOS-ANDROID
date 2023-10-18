@@ -121,6 +121,12 @@ class _LoginTabPageState extends State<LoginTabPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    print('No Version : $noBuild');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,

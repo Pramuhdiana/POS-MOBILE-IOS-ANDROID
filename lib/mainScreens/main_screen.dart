@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:e_shop/cartScreens/cart_screen_home.dart';
+import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/profile_screen.dart';
 import 'package:e_shop/mainScreens/home_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
@@ -35,6 +36,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: avoid_print
+    print('No Version : $noBuild');
     return WillPopScope(
       onWillPop: () => _onBackButtonClicked(context),
       child: Scaffold(

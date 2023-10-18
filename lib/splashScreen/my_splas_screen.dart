@@ -286,6 +286,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       initState() //called automatically when user comes here to this splash screen
   {
     super.initState();
+    print('No Version : $noBuild');
     getVersion();
     // noBuild != noVersion ? :
     PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
