@@ -7,6 +7,7 @@ import 'package:collection/collection.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/buStephanie/approve_pricing_model.dart';
 import 'package:e_shop/global/global.dart';
+import 'package:e_shop/widgets/keyboard_overlay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -37,7 +38,22 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
   @override
   void initState() {
     super.initState();
+    numberFocusNode.addListener(() {
+      bool hasFocus = numberFocusNode.hasFocus;
+      if (hasFocus) {
+        KeyboardOverlay.showOverlay(context);
+      } else {
+        KeyboardOverlay.removeOverlay();
+      }
+    });
     fetchData();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the focus node
+    numberFocusNode.dispose();
+    super.dispose();
   }
 
   Future<List<ApprovePricingModel>> fetchData() async {
@@ -168,6 +184,8 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
             // autofocus: false,
             backgroundColor: Colors.black12,
             keyboardType: TextInputType.number,
+            focusNode: numberFocusNode,
+          
             onChanged: (value) {
               setState(() {
                 searchInput = value;

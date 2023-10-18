@@ -10,6 +10,7 @@ import 'package:e_shop/buStephanie/approve_pricing_model.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/provider/provider_waiting_brj.dart';
 import 'package:e_shop/provider/provider_waiting_eticketing.dart';
+import 'package:e_shop/widgets/keyboard_overlay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,6 +47,14 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   @override
   void initState() {
     super.initState();
+    numberFocusNode.addListener(() {
+      bool hasFocus = numberFocusNode.hasFocus;
+      if (hasFocus) {
+        KeyboardOverlay.showOverlay(context);
+      } else {
+        KeyboardOverlay.removeOverlay();
+      }
+    });
     _getData();
     context.read<PApprovalBrj>().clearNotif(); //clear cart
     loadListBRJ(); //ambil data cart
@@ -55,6 +64,12 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
     pushNotificationsSystem.whenNotificationReceivedInPricing(context);
   }
 
+  @override
+  void dispose() {
+    // Clean up the focus node
+    numberFocusNode.dispose();
+    super.dispose();
+  }
   // Future<List<ApprovePricingModel>> fetchData() async {
   //   var url = Uri.parse(
   //       ApiConstants.baseUrlPricing + ApiConstants.GETapprovelPricingWaiting);
@@ -209,6 +224,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
             // autofocus: false,
             backgroundColor: Colors.black12,
             keyboardType: TextInputType.number,
+            focusNode: numberFocusNode,
             onChanged: (value) {
               setState(() {
                 searchInput = value;
