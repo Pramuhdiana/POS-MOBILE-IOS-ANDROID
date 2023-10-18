@@ -13,6 +13,7 @@ import 'package:e_shop/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -205,7 +206,9 @@ class HistoryModelNew extends StatelessWidget {
 
     getCustomerBB(bb) async {
       String? tokens = sharedPreferences!.getString('token');
-      final response = await http.get(
+
+      try{
+ final response = await http.get(
           Uri.parse(ApiConstants.baseUrl +
               ApiConstants.GETcustomerendbeliberlianpoint),
           headers: {"Authorization": "Bearer $tokens"});
@@ -222,6 +225,11 @@ class HistoryModelNew extends StatelessWidget {
         namaCustomerBB = allData.first.name!;
         return namaCustomerBB;
       }
+      } catch(c){
+        namaCustomerBB = '-';
+        return namaCustomerBB;
+      }
+     
     }
 
     print(getCustomerBB(order.customer_beliberlian));
@@ -3445,6 +3453,9 @@ class HistoryModelNew extends StatelessWidget {
     }
 
     //? get HP customer
+    try{
+
+    
     final response = await http.get(
         Uri.parse(
             ApiConstants.baseUrl + ApiConstants.GETcustomerendbeliberlianpoint),
@@ -3464,7 +3475,10 @@ class HistoryModelNew extends StatelessWidget {
     } else {
       throw Exception('Database Off');
     }
-
+    } catch(c) {
+       noHP = '+62';
+      namaCustomer = '-';
+    }
     final resultEmasFix = resultEmas![1].toString().replaceAll('GR', ' GR');
 
     doc.addPage(
