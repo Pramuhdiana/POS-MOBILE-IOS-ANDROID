@@ -1,5 +1,5 @@
 import 'package:e_shop/database/db_alldetailtransaksi.dart';
-import 'package:e_shop/database/db_alltransaksi.dart';
+import 'package:e_shop/database/db_alltransaksi_new.dart';
 import 'package:e_shop/history/history_model_new.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -10,7 +10,8 @@ class HistoryInvoiceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: DbAlltransaksi.db.getAlltransaksi(1),
+        // future: DbAlltransaksi.db.getAlltransaksi(1),
+        future: DbAlltransaksiNew.db.getAlltransaksiNew(1),
         //kembali barang 4
         // inv 1
         // ttp 2

@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/api/api_services.dart';
+import 'package:e_shop/database/db_alltransaksi_new.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
@@ -18,7 +19,6 @@ import 'package:provider/provider.dart';
 import '../database/db_alldetailtransaksi.dart';
 import '../database/db_allitems.dart';
 import '../database/db_allitems_toko.dart';
-import '../database/db_alltransaksi.dart';
 
 class MySplashScreenTransaksi extends StatefulWidget {
   const MySplashScreenTransaksi({super.key});
@@ -41,7 +41,7 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
     var apiProvider = ApiServices();
     await DbAllitems.db.deleteAllitems();
     await DbAllitemsToko.db.deleteAllitemsToko();
-    await DbAlltransaksi.db.deleteAlltransaksi();
+    await DbAlltransaksiNew.db.deleteAlltransaksiNew();
     // await DbAllitemsRetur.db.deleteAllitemsRetur();
     await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
     await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
@@ -56,7 +56,7 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
       Fluttertoast.showToast(msg: "Failed To Load Data all items toko");
     }
     try {
-      await apiProvider.getAllTransaksi();
+      await apiProvider.getAllTransaksiNew();
     } catch (c) {
       Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
     }

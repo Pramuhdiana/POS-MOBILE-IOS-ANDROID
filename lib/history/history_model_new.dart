@@ -30,7 +30,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class HistoryModelNew extends StatelessWidget {
   //Read an image data from website/webspace
-  String urlBase = 'http://54.179.58.215:7000';
+  String urlBase = 'http://54.179.58.215:8080';
+  // String urlBase = 'http://54.179.58.215:7000';
   String pdfFile = '';
   var pdf = pw.Document();
 
@@ -207,29 +208,29 @@ class HistoryModelNew extends StatelessWidget {
     getCustomerBB(bb) async {
       String? tokens = sharedPreferences!.getString('token');
 
-      try{
- final response = await http.get(
-          Uri.parse(ApiConstants.baseUrl +
-              ApiConstants.GETcustomerendbeliberlianpoint),
-          headers: {"Authorization": "Bearer $tokens"});
-      if (response.statusCode == 200) {
-        List jsonResponse = json.decode(response.body);
+      try {
+        final response = await http.get(
+            Uri.parse(ApiConstants.baseUrl +
+                ApiConstants.GETcustomerendbeliberlianpoint),
+            headers: {"Authorization": "Bearer $tokens"});
+        if (response.statusCode == 200) {
+          List jsonResponse = json.decode(response.body);
 
-        var allData = jsonResponse
-            .map((data) => ModelAllCustomer.fromJson(data))
-            .toList();
-        var filterByname = allData.where((element) =>
-            element.id.toString().toLowerCase() == bb.toString().toLowerCase());
-        allData = filterByname.toList();
+          var allData = jsonResponse
+              .map((data) => ModelAllCustomer.fromJson(data))
+              .toList();
+          var filterByname = allData.where((element) =>
+              element.id.toString().toLowerCase() ==
+              bb.toString().toLowerCase());
+          allData = filterByname.toList();
 
-        namaCustomerBB = allData.first.name!;
-        return namaCustomerBB;
-      }
-      } catch(c){
+          namaCustomerBB = allData.first.name!;
+          return namaCustomerBB;
+        }
+      } catch (c) {
         namaCustomerBB = '-';
         return namaCustomerBB;
       }
-     
     }
 
     print(getCustomerBB(order.customer_beliberlian));
@@ -422,8 +423,7 @@ class HistoryModelNew extends StatelessWidget {
 
 //link print invoice di web
   _launchURLInApp() async {
-    var url =
-        'http://54.179.58.215:7000/transcation/laporan/${order.invoices_number}';
+    var url = '$urlBase/transcation/laporan/${order.invoices_number}';
 
     if (await canLaunch(url)) {
       await launch(url, forceSafariVC: true, forceWebView: true);
@@ -3453,30 +3453,29 @@ class HistoryModelNew extends StatelessWidget {
     }
 
     //? get HP customer
-    try{
+    try {
+      final response = await http.get(
+          Uri.parse(ApiConstants.baseUrl +
+              ApiConstants.GETcustomerendbeliberlianpoint),
+          headers: {"Authorization": "Bearer $tokens"});
+      print(response.body);
+      if (response.statusCode == 200) {
+        List jsonResponse = json.decode(response.body);
 
-    
-    final response = await http.get(
-        Uri.parse(
-            ApiConstants.baseUrl + ApiConstants.GETcustomerendbeliberlianpoint),
-        headers: {"Authorization": "Bearer $tokens"});
-    print(response.body);
-    if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-
-      var allData =
-          jsonResponse.map((data) => ModelAllCustomer.fromJson(data)).toList();
-      var filterByname = allData.where((element) =>
-          element.id.toString().toLowerCase() ==
-          order.customer_beliberlian.toString().toLowerCase());
-      allData = filterByname.toList();
-      noHP = allData.first.phone!;
-      namaCustomer = allData.first.name!;
-    } else {
-      throw Exception('Database Off');
-    }
-    } catch(c) {
-       noHP = '+62';
+        var allData = jsonResponse
+            .map((data) => ModelAllCustomer.fromJson(data))
+            .toList();
+        var filterByname = allData.where((element) =>
+            element.id.toString().toLowerCase() ==
+            order.customer_beliberlian.toString().toLowerCase());
+        allData = filterByname.toList();
+        noHP = allData.first.phone!;
+        namaCustomer = allData.first.name!;
+      } else {
+        throw Exception('Database Off');
+      }
+    } catch (c) {
+      noHP = '+62';
       namaCustomer = '-';
     }
     final resultEmasFix = resultEmas![1].toString().replaceAll('GR', ' GR');

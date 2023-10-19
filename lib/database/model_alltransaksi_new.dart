@@ -3,13 +3,14 @@
 import 'dart:convert';
 import 'package:intl/intl.dart';
 
-List<ModelAlltransaksi> allitems(String str) => List<ModelAlltransaksi>.from(
-    json.decode(str).map((x) => ModelAlltransaksi.fromJson(x)));
+List<ModelAlltransaksiNew> allitemsnew(String str) =>
+    List<ModelAlltransaksiNew>.from(
+        json.decode(str).map((x) => ModelAlltransaksiNew.fromJson(x)));
 
-String allitemsToJson(List<ModelAlltransaksi> data) =>
+String allitemsnewToJson(List<ModelAlltransaksiNew> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class ModelAlltransaksi {
+class ModelAlltransaksiNew {
   String? invoices_number;
   int? user_id;
   int? customer_id;
@@ -32,9 +33,8 @@ class ModelAlltransaksi {
   String? jenisform;
   String? month;
   String? year;
-  String? status;
 
-  ModelAlltransaksi({
+  ModelAlltransaksiNew({
     this.invoices_number,
     this.user_id,
     this.customer_id,
@@ -57,36 +57,35 @@ class ModelAlltransaksi {
     this.jenisform,
     this.month,
     this.year,
-    this.status,
   });
 
-  factory ModelAlltransaksi.fromJson(Map<String, dynamic> json) =>
-      ModelAlltransaksi(
-          invoices_number: json["invoices_number"] ?? 'null',
-          user_id: json["user_id"],
-          customer_id: json["customer_id"],
-          customer_metier: json["customer_metier"] ?? 0,
-          customer_beliberlian: json["customer_beliberlian"] ?? '0',
-          jenisform_id: json["jenisform_id"],
-          sales_id: json["sales_id"] ?? 0,
-          total: json["total"] ?? 0,
-          total_quantity: json["total_quantity"] ?? 0,
-          total_rupiah: json["total_rupiah"] ?? '0',
-          basic_discount: json["basic_discount"] ?? 0,
-          addesdiskon_rupiah: json["addesdiskon_rupiah"] ?? 0,
-          rate: json["rate"] ?? 0,
-          nett: json["nett"] ?? 0,
-          created_at: json["created_at"],
-          updated_at: json["updated_at"],
-          user: json["user"],
-          customer: json["customer"],
-          alamat: json["alamat"],
-          jenisform: json["jenisform"],
-          month: DateFormat('M')
-              .format(DateTime.parse(json["created_at"] ?? '13')),
-          year: DateFormat('y')
-              .format(DateTime.parse(json["created_at"] ?? '13')),
-          status: 'oke');
+  factory ModelAlltransaksiNew.fromJson(Map<String, dynamic> json) =>
+      ModelAlltransaksiNew(
+        invoices_number: json["invoices_number"] ?? 'null',
+        user_id: json["user_id"],
+        customer_id: json["customer_id"],
+        customer_metier: json["customer_metier"] ?? 0,
+        customer_beliberlian: json["customer_beliberlian"] ?? '0',
+        jenisform_id: json["jenisform_id"],
+        sales_id: json["sales_id"] ?? 0,
+        total: json["total"] ?? 0,
+        total_quantity: json["total_quantity"] ?? 0,
+        total_rupiah: json["total_rupiah"] ?? '0',
+        basic_discount: json["basic_discount"] ?? 0,
+        addesdiskon_rupiah: json["addesdiskon_rupiah"] ?? 0,
+        rate: json["rate"] ?? 0,
+        nett: json["nett"] ?? 0,
+        created_at: json["created_at"],
+        updated_at: json["updated_at"],
+        user: json["user"],
+        customer: json["customer"],
+        alamat: json["alamat"],
+        jenisform: json["jenisform"],
+        month:
+            DateFormat('M').format(DateTime.parse(json["created_at"] ?? '13')),
+        year:
+            DateFormat('y').format(DateTime.parse(json["created_at"] ?? '13')),
+      );
 
   Map<String, dynamic> toJson() => {
         "invoices_number": invoices_number,
@@ -111,6 +110,5 @@ class ModelAlltransaksi {
         "jenisform": jenisform,
         "month": month,
         "year": year,
-        "status": status,
       };
 }
