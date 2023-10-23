@@ -257,6 +257,7 @@ class _AddCustomerMetierScreenState extends State<AddCustomerMetierScreen> {
         },
         body: body);
     print(response.statusCode);
+    print(response.body);
     if (response.statusCode != 200) {
       btnController.error();
       Fluttertoast.showToast(msg: 'Add customer error (database off)');

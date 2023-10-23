@@ -37,6 +37,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   FocusNode numberFocusNode = FocusNode();
   TextEditingController price = TextEditingController();
   TextEditingController notes = TextEditingController();
+  TextEditingController textInput = TextEditingController();
   int totalHistori = 0;
   int limitHistori = 0;
   String date = '';
@@ -222,6 +223,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
             borderRadius: const BorderRadius.all(Radius.circular(25)),
             itemColor: Colors.black,
             // autofocus: false,
+            controller: textInput,
             backgroundColor: Colors.black12,
             keyboardType: TextInputType.number,
             focusNode: numberFocusNode,
@@ -1587,7 +1589,10 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                           Future.delayed(const Duration(seconds: 1)).then((value) {
                                                                                             btnController.reset(); //reset
                                                                                             Navigator.of(context).pop();
-                                                                                            setState(() {});
+                                                                                            setState(() {
+                                                                                              textInput.text = '';
+                                                                                              searchInput = '';
+                                                                                            });
 
                                                                                             showDialog<String>(
                                                                                                 context: context,

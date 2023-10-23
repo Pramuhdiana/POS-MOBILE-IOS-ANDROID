@@ -22,4 +22,3 @@ int rilisPerbaikanbug =
 int noBuild = 15; //nobuild                                      (PATCH)
 
 String version = 'v$revisiBesar.$revisiKecil.$rilisPerbaikanbug ($noBuild)';
-

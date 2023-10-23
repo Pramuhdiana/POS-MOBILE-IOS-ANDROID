@@ -3493,11 +3493,11 @@ class HistoryModelNew extends StatelessWidget {
                     child: pw.Container(
                   width: 595,
                   height: 841,
-                  child: pw.Image(pw.MemoryImage(bgUint2),
-                      // child: pw.Image(pw.MemoryImage(showBackground),
-                      fit: pw.BoxFit.fitHeight,
-                      height: 841,
-                      width: 595),
+                  // child: pw.Image(pw.MemoryImage(bgUint2),
+                  //     // child: pw.Image(pw.MemoryImage(showBackground),
+                  //     fit: pw.BoxFit.fitHeight,
+                  //     height: 841,
+                  //     width: 595),
                 )),
                 pw.Container(
                   width: 595,

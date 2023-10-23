@@ -33,6 +33,7 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreenState extends State<MySplashScreen> {
+  int noBuild = 15;
   String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
   int role = 0;
@@ -45,44 +46,45 @@ class _MySplashScreenState extends State<MySplashScreen> {
       print('token $token');
       if (sharedPreferences!.getString("token").toString() != "null") {
         await requestPermission();
-        if (version != noBuild.toString()) {
-          dialogBoxVersion();
-        } else {
+
+        try {
+          await _loadFromApi();
           try {
-            await _loadFromApi();
-            try {
-              sharedPreferences!.setString('newOpen', 'true');
-              sharedPreferences!.setString('newOpenHome', 'true');
-              sharedPreferences!.setString('newOpenPosSales', 'true');
-              sharedPreferences!.setString('newOpenPosToko', 'true');
-              sharedPreferences!.setString('newOpenPosRetur', 'true');
-              sharedPreferences?.setBool('loading', true);
-              // sharedPreferences!.setString('newOpenHistory', 'true');
-              sharedPreferences!.setString('total_product_sales', '0');
-              print('wait token');
-              getToken();
-              role == 15
-                  ? dialogBox()
-                  : Navigator.push(context,
-                      MaterialPageRoute(builder: (c) => const MainScreen()));
-            } catch (c) {
-              sharedPreferences!.setString('newOpen', 'true');
-              sharedPreferences?.setBool('loading', true);
-              sharedPreferences!.setString('newOpenHome', 'true');
-              sharedPreferences!.setString('newOpenPosSales', 'true');
-              sharedPreferences!.setString('newOpenPosToko', 'true');
-              sharedPreferences!.setString('newOpenPosRetur', 'true');
-              sharedPreferences!.setString('total_product_sales', '0');
+            sharedPreferences!.setString('newOpen', 'true');
+            sharedPreferences!.setString('newOpenHome', 'true');
+            sharedPreferences!.setString('newOpenPosSales', 'true');
+            sharedPreferences!.setString('newOpenPosToko', 'true');
+            sharedPreferences!.setString('newOpenPosRetur', 'true');
+            sharedPreferences?.setBool('loading', true);
+            // sharedPreferences!.setString('newOpenHistory', 'true');
+            sharedPreferences!.setString('total_product_sales', '0');
+            print('wait token');
+            getToken();
+            if (version != noBuild.toString()) {
+              dialogBoxVersion();
+            } else {
               role == 15
                   ? dialogBox()
                   : Navigator.push(context,
                       MaterialPageRoute(builder: (c) => const MainScreen()));
             }
           } catch (c) {
-            Fluttertoast.showToast(msg: "Failed To Load Data");
-            Navigator.push(
-                context, MaterialPageRoute(builder: (c) => const AuthScreen()));
+            sharedPreferences!.setString('newOpen', 'true');
+            sharedPreferences?.setBool('loading', true);
+            sharedPreferences!.setString('newOpenHome', 'true');
+            sharedPreferences!.setString('newOpenPosSales', 'true');
+            sharedPreferences!.setString('newOpenPosToko', 'true');
+            sharedPreferences!.setString('newOpenPosRetur', 'true');
+            sharedPreferences!.setString('total_product_sales', '0');
+            role == 15
+                ? dialogBox()
+                : Navigator.push(context,
+                    MaterialPageRoute(builder: (c) => const MainScreen()));
           }
+        } catch (c) {
+          Fluttertoast.showToast(msg: "Failed To Load Data");
+          Navigator.push(
+              context, MaterialPageRoute(builder: (c) => const AuthScreen()));
         }
       } else //user is NOT already Logged-in
       {
@@ -208,7 +210,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
         print('Role user : $role');
       });
     } catch (c) {
-        print('gagal get user');
+      print('gagal get user');
       sharedPreferences!.setString('name', 'Failed To Load Data');
       Fluttertoast.showToast(msg: "Failed To Load Data User");
     }
@@ -241,7 +243,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     var url = ApiConstants.baseUrl + ApiConstants.GETkeranjangsalesendpoint;
     Response response = await Dio().get(url,
         options: Options(headers: {"Authorization": "Bearer $tokens"}));
-  print('cart sales ke');
+    print('cart sales ke');
     return (response.data as List).map((cart) {
       var existingitemcart = context
           .read<PCart>()
@@ -351,7 +353,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
   loadListBRJ() async {
     var url =
         ApiConstants.baseUrlPricing + ApiConstants.GETapprovelPricingWaiting;
-    Response response = await Dio().get(url,
+    Response response = await Dio().get(
+      url,
     );
     print(response.statusCode);
     if (response.statusCode != 200) {
