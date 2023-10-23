@@ -60,43 +60,43 @@ class _CartScreenState extends State<CartScreen> {
               fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        actions: [
-          context.watch<PCart>().getItems.isEmpty
-              ? const SizedBox()
-              : IconButton(
-                  onPressed: () {
-                    MyAlertDilaog.showMyDialog(
-                        context: context,
-                        title: 'Clear Cart',
-                        content: 'Are you sure to clear cart ?',
-                        tabNo: () {
-                          Navigator.pop(context);
-                        },
-                        tabYes: () async {
-                          String token =
-                              sharedPreferences!.getString("token").toString();
+        // actions: [
+        //   context.watch<PCart>().getItems.isEmpty
+        //       ? const SizedBox()
+        //       : IconButton(
+        //           onPressed: () {
+        //             MyAlertDilaog.showMyDialog(
+        //                 context: context,
+        //                 title: 'Clear Cart',
+        //                 content: 'Are you sure to clear cart ?',
+        //                 tabNo: () {
+        //                   Navigator.pop(context);
+        //                 },
+        //                 tabYes: () async {
+        //                   String token =
+        //                       sharedPreferences!.getString("token").toString();
 
-                          Map<String, String> body = {
-                            'jenisform_id': '3',
-                          };
-                          final response = await http.post(
-                              Uri.parse(ApiConstants.baseUrl +
-                                  ApiConstants.DELETEallkeranjangsalesendpoint),
-                              headers: <String, String>{
-                                'Authorization': 'Bearer $token',
-                              },
-                              body: body);
-                          print(response.body);
-                          context.read<PCart>().clearCart();
-                          Navigator.pop(context);
-                        });
-                  },
-                  icon: const Icon(
-                    Icons.delete_forever,
-                    color: Colors.black,
-                  ),
-                ),
-        ],
+        //                   Map<String, String> body = {
+        //                     'jenisform_id': '3',
+        //                   };
+        //                   final response = await http.post(
+        //                       Uri.parse(ApiConstants.baseUrl +
+        //                           ApiConstants.DELETEallkeranjangsalesendpoint),
+        //                       headers: <String, String>{
+        //                         'Authorization': 'Bearer $token',
+        //                       },
+        //                       body: body);
+        //                   print(response.body);
+        //                   context.read<PCart>().clearCart();
+        //                   Navigator.pop(context);
+        //                 });
+        //           },
+        //           icon: const Icon(
+        //             Icons.delete_forever,
+        //             color: Colors.black,
+        //           ),
+        //         ),
+        // ],
       ),
       body: context.watch<PCart>().getItems.isNotEmpty
           ? const CartItems()

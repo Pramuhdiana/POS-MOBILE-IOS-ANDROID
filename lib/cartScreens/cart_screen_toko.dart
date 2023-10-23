@@ -58,42 +58,42 @@ class _CartScreenTokoState extends State<CartScreenToko> {
               fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        actions: [
-          context.watch<PCartToko>().getItems.isEmpty
-              ? const SizedBox()
-              : IconButton(
-                  onPressed: () {
-                    MyAlertDilaog.showMyDialog(
-                        context: context,
-                        title: 'Clear Cart',
-                        content: 'Are you sure to clear cart ?',
-                        tabNo: () {
-                          Navigator.pop(context);
-                        },
-                        tabYes: () async {
-                          Map<String, String> body = {
-                            'customer_id':
-                                sharedPreferences!.getString('customer_id')!,
-                            'jenisform_id': '2',
-                          };
-                          final response = await http.post(
-                              Uri.parse(ApiConstants.baseUrl +
-                                  ApiConstants.DELETEallkeranjangtokondpoint),
-                              headers: <String, String>{
-                                'Authorization': 'Bearer $token',
-                              },
-                              body: body);
-                          print(response.body);
-                          context.read<PCartToko>().clearCart();
-                          Navigator.pop(context);
-                        });
-                  },
-                  icon: const Icon(
-                    Icons.delete_forever,
-                    color: Colors.black,
-                  ),
-                ),
-        ],
+        // actions: [
+        //   context.watch<PCartToko>().getItems.isEmpty
+        //       ? const SizedBox()
+        //       : IconButton(
+        //           onPressed: () {
+        //             MyAlertDilaog.showMyDialog(
+        //                 context: context,
+        //                 title: 'Clear Cart',
+        //                 content: 'Are you sure to clear cart ?',
+        //                 tabNo: () {
+        //                   Navigator.pop(context);
+        //                 },
+        //                 tabYes: () async {
+        //                   Map<String, String> body = {
+        //                     'customer_id':
+        //                         sharedPreferences!.getString('customer_id')!,
+        //                     'jenisform_id': '2',
+        //                   };
+        //                   final response = await http.post(
+        //                       Uri.parse(ApiConstants.baseUrl +
+        //                           ApiConstants.DELETEallkeranjangtokondpoint),
+        //                       headers: <String, String>{
+        //                         'Authorization': 'Bearer $token',
+        //                       },
+        //                       body: body);
+        //                   print(response.body);
+        //                   context.read<PCartToko>().clearCart();
+        //                   Navigator.pop(context);
+        //                 });
+        //           },
+        //           icon: const Icon(
+        //             Icons.delete_forever,
+        //             color: Colors.black,
+        //           ),
+        //         ),
+        // ],
       ),
       body: context.watch<PCartToko>().getItems.isNotEmpty
           ? const CartItems()
