@@ -61,45 +61,45 @@ class _CartScreenReturState extends State<CartScreenRetur> {
               fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        actions: [
-          context.watch<PCartRetur>().getItems.isEmpty
-              ? const SizedBox()
-              : IconButton(
-                  onPressed: () {
-                    MyAlertDilaog.showMyDialog(
-                        context: context,
-                        title: 'Clear Cart',
-                        content: 'Are you sure to clear cart ?',
-                        tabNo: () {
-                          Navigator.pop(context);
-                        },
-                        tabYes: () async {
-                          String token =
-                              sharedPreferences!.getString("token").toString();
+        // actions: [
+        //   context.watch<PCartRetur>().getItems.isEmpty
+        //       ? const SizedBox()
+        //       : IconButton(
+        //           onPressed: () {
+        //             MyAlertDilaog.showMyDialog(
+        //                 context: context,
+        //                 title: 'Clear Cart',
+        //                 content: 'Are you sure to clear cart ?',
+        //                 tabNo: () {
+        //                   Navigator.pop(context);
+        //                 },
+        //                 tabYes: () async {
+        //                   String token =
+        //                       sharedPreferences!.getString("token").toString();
 
-                          Map<String, String> body = {
-                            'customer_id':
-                                sharedPreferences!.getString('customer_id')!,
-                            'jenisform_id': '4',
-                          };
-                          final response = await http.post(
-                              Uri.parse(ApiConstants.baseUrl +
-                                  ApiConstants.DELETEallkeranjangreturendpoint),
-                              headers: <String, String>{
-                                'Authorization': 'Bearer $token',
-                              },
-                              body: body);
-                          print(response.body);
-                          context.read<PCartRetur>().clearCart();
-                          Navigator.pop(context);
-                        });
-                  },
-                  icon: const Icon(
-                    Icons.delete_forever,
-                    color: Colors.white,
-                  ),
-                ),
-        ],
+        //                   Map<String, String> body = {
+        //                     'customer_id':
+        //                         sharedPreferences!.getString('customer_id')!,
+        //                     'jenisform_id': '4',
+        //                   };
+        //                   final response = await http.post(
+        //                       Uri.parse(ApiConstants.baseUrl +
+        //                           ApiConstants.DELETEallkeranjangreturendpoint),
+        //                       headers: <String, String>{
+        //                         'Authorization': 'Bearer $token',
+        //                       },
+        //                       body: body);
+        //                   print(response.body);
+        //                   context.read<PCartRetur>().clearCart();
+        //                   Navigator.pop(context);
+        //                 });
+        //           },
+        //           icon: const Icon(
+        //             Icons.delete_forever,
+        //             color: Colors.white,
+        //           ),
+        //         ),
+        // ],
       ),
       body: context.watch<PCartRetur>().getItems.isNotEmpty
           ? const CartItems()
