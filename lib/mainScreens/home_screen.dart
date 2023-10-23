@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       print('masuk second');
       _getDataToko(token);
-      _getDataRetur(token);
+      // _getDataRetur(token);
       _getDataSales(token);
       // DbAllitems.db.getAllitems().then((value) {
       //   setState(() {
@@ -415,7 +415,6 @@ class _HomeScreenState extends State<HomeScreen> {
         throw Exception('Unexpected error occured!');
       }
     } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
       throw Exception('Unexpected error occured!');
     }
   }
@@ -442,7 +441,6 @@ class _HomeScreenState extends State<HomeScreen> {
         throw Exception('Unexpected error occured!');
       }
     } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
       throw Exception('Unexpected error occured!');
     }
   }
@@ -518,7 +516,19 @@ class _HomeScreenState extends State<HomeScreen> {
     sharedPreferences!.setString('newOpenPosSales', 'true');
     sharedPreferences!.setString('newOpenPosToko', 'true');
     sharedPreferences!.setString('newOpenPosRetur', 'true');
-    await DbAlltransaksiNew.db.getAlltransaksiNew(1); //ambil data ntransaksi
+    await DbAlltransaksiNew.db.deleteAlltransaksiNew();
+    await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
+    var apiProvider = ApiServices();
+    try {
+      await apiProvider.getAllTransaksiNew();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+    }
+    try {
+      await apiProvider.getAllDetailTransaksi();
+    } catch (c) {
+      Fluttertoast.showToast(msg: "Failed To Load Data all details transaksi");
+    }
     await DbAlltransaksiNew.db.getAllHistoryNew().then((value) {
       setState(() {
         qtyProductHistory = value.length;

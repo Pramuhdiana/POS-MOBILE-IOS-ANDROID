@@ -3,9 +3,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cart_stepper/cart_stepper.dart';
 import 'package:e_shop/api/api_constant.dart';
-import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/model_allitems.dart';
 import 'package:e_shop/event/appbar_cart_event.dart';
+import 'package:e_shop/event/transaksi_event_screen.dart';
 import 'package:e_shop/itemsScreens/items_photo.dart';
 import 'package:e_shop/provider/provider_cart_event.dart';
 import 'package:http/http.dart' as http;
@@ -100,8 +100,13 @@ class _ItemsDetailsEventScreenState extends State<ItemsDetailsEventScreen> {
                       widget.model!.keterangan_barang.toString(),
                     );
                 setState(() {
+                  sharedPreferences!
+                      .setString('idBarang', widget.model!.name![0]);
                   postAPIcart();
-                  DbAllitems.db.updateAllitemsByname(widget.model?.name, 0);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (c) => const TransaksiScreenEvent()));
                 });
               } else {
                 showSnackBar();
@@ -226,17 +231,19 @@ class _ItemsDetailsEventScreenState extends State<ItemsDetailsEventScreen> {
 
   postAPIcart() async {
     String token = sharedPreferences!.getString("token").toString();
+
     Map<String, String> body = {
       // 'user_id': id.toString(),
       'product_id': widget.model!.id.toString(),
       'qty': '1',
       'price': widget.model!.price.toString(),
-      'jenisform_id': '3',
+      'customer_id': '440',
+      'jenisform_id': '2',
       'update_by': '1'
     };
     final response = await http.post(
         Uri.parse(
-            ApiConstants.baseUrl + ApiConstants.POSTkeranjangsalesendpoint),
+            ApiConstants.baseUrl + ApiConstants.POSTkeranjangtokoendpoint),
         headers: <String, String>{
           'Authorization': 'Bearer $token',
         },

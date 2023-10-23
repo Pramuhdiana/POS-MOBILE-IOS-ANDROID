@@ -1,14 +1,16 @@
 // ignore_for_file: use_key_in_widget_constructors, avoid_print, use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:badges/badges.dart' as badges;
+// import 'package:badges/badges.dart' as badges;
 import 'package:collection/collection.dart';
 import 'package:e_shop/api/api_constant.dart';
-import 'package:e_shop/cartScreens/cart_screen.dart';
-import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/model_allitems.dart';
+// import 'package:e_shop/event/cart_event_screen.dart';
+import 'package:e_shop/event/search_pos_event.dart';
+// import 'package:e_shop/event/transaksi_event_screen.dart';
 import 'package:e_shop/global/global.dart';
-import 'package:e_shop/posSales/search_pos_sales.dart';
 import 'package:e_shop/provider/provider_cart_event.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,27 @@ class NewSearchEventScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<NewSearchEventScreen> {
+  Future<List<ModelAllitems>> _getDataBySearch(lot) async {
+    String? tokens = sharedPreferences!.getString('token');
+    final response = await http.get(
+        Uri.parse(ApiConstants.baseUrl + ApiConstants.GETposTokoendpoint),
+        headers: {"Authorization": "Bearer $tokens"});
+    print('status : ${response.statusCode}');
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+
+      var allData =
+          jsonResponse.map((data) => ModelAllitems.fromJson(data)).toList();
+      var filterByLot =
+          allData.where((element) => element.name.toString().contains(lot));
+      allData = filterByLot.toList();
+
+      return allData;
+    } else {
+      throw Fluttertoast.showToast(msg: "Database Off");
+    }
+  }
+
   String searchInput = '';
   @override
   Widget build(BuildContext context) {
@@ -53,48 +76,50 @@ class _SearchScreenState extends State<NewSearchEventScreen> {
             });
           },
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: Stack(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (c) => const CartScreen()));
-                    // }
-                  },
-                  icon: Padding(
-                    padding: const EdgeInsets.all(2),
-                    child: badges.Badge(
-                      showBadge: context.read<PCartEvent>().getItems.isEmpty
-                          ? false
-                          : true,
-                      badgeStyle: const badges.BadgeStyle(
-                        badgeColor: Colors.green,
-                      ),
-                      badgeContent: Text(
-                        context.watch<PCartEvent>().getItems.length.toString(),
-                        style: const TextStyle(
-                          fontSize: 8,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      child: Transform.scale(
-                        scale: 1.3,
-                        child: Image.asset(
-                          "assets/cart.png",
-                          width: 45,
-                          height: 45,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 10),
+        //     child: Stack(
+        //       children: [
+        //         IconButton(
+        //           onPressed: () {
+        //             Navigator.push(
+        //                 context,
+        //                 MaterialPageRoute(
+        //                     builder: (c) => const CartEventScreen()));
+        //             // }
+        //           },
+        //           icon: Padding(
+        //             padding: const EdgeInsets.all(2),
+        //             child: badges.Badge(
+        //               showBadge: context.read<PCartEvent>().getItems.isEmpty
+        //                   ? false
+        //                   : true,
+        //               badgeStyle: const badges.BadgeStyle(
+        //                 badgeColor: Colors.green,
+        //               ),
+        //               badgeContent: Text(
+        //                 context.watch<PCartEvent>().getItems.length.toString(),
+        //                 style: const TextStyle(
+        //                   fontSize: 8,
+        //                   fontWeight: FontWeight.w600,
+        //                 ),
+        //               ),
+        //               child: Transform.scale(
+        //                 scale: 1.3,
+        //                 child: Image.asset(
+        //                   "assets/cart.png",
+        //                   width: 45,
+        //                   height: 45,
+        //                 ),
+        //               ),
+        //             ),
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ],
       ),
       body: searchInput == ''
           ? Center(
@@ -119,14 +144,14 @@ class _SearchScreenState extends State<NewSearchEventScreen> {
               ),
             )
           : FutureBuilder(
-              future: DbAllitems.db.getAllitemsBylot(searchInput),
+              future: _getDataBySearch(searchInput),
               builder: (BuildContext context, AsyncSnapshot dataSnapshot) {
                 if (dataSnapshot.hasData) //if brands exists
                 {
                   return ListView.builder(
                     itemBuilder: (BuildContext context, int index) {
                       var item = (dataSnapshot.data[index]);
-                      return SearchPosSales(
+                      return SearchPosEvent(
                         model: ModelAllitems(
                             id: item.id,
                             name: item.name,
@@ -269,10 +294,8 @@ class SearchModel extends StatelessWidget {
                     if (existingitemcart == null) {
                       String token =
                           sharedPreferences!.getString("token").toString();
-
                       //add cart API
                       Map<String, String> body = {
-                        // 'user_id': id.toString(),
                         'product_id': e['id'].toString(),
                         'qty': '1',
                         'price': e['price'].toString(),

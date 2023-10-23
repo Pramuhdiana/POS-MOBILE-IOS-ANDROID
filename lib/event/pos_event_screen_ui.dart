@@ -7,6 +7,7 @@ import 'package:e_shop/database/model_allitems.dart';
 import 'package:e_shop/event/transaksi_event_screen.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
+import 'package:e_shop/itemsScreens/items_details_event.dart';
 import 'package:e_shop/posSales/main_posSales_screen.dart';
 import 'package:e_shop/provider/provider_cart_event.dart';
 import 'package:e_shop/provider/provider_notification.dart';
@@ -64,7 +65,7 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (c) => ItemsDetailsScreen(
+                      builder: (c) => ItemsDetailsEventScreen(
                             model: widget.model,
                           )));
             },

@@ -8,7 +8,6 @@ import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/itemsScreens/items_photo_toko.dart';
 import 'package:e_shop/transaksiScreens/transaksi_screen_toko.dart';
-import 'package:e_shop/widgets/alert_dialog.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
