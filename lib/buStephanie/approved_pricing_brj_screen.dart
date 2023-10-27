@@ -3,19 +3,15 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:collection/collection.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/buStephanie/approve_pricing_model.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/widgets/keyboard_overlay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 import '../global/currency_format.dart';
-import '../provider/provider_cart.dart';
 import 'package:http/http.dart' as http;
 
 import 'item_photo_pricing.dart';
@@ -41,6 +37,10 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
   @override
   void initState() {
     super.initState();
+    bool? isDinamis = sharedPreferences!.getBool('isDinamis');
+    baseUrlDinamis = sharedPreferences!.getString('urlDinamis');
+    print('is Dinamis =  $isDinamis');
+    print('is base url =  $baseUrlDinamis');
     numberFocusNode.addListener(() {
       bool hasFocus = numberFocusNode.hasFocus;
       if (hasFocus) {
@@ -59,9 +59,13 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
   }
 
   Future<List<ApprovePricingModel>> fetchData() async {
+    bool? isDinamis = sharedPreferences!.getBool('isDinamis');
+    baseUrlDinamis = sharedPreferences!.getString('urlDinamis');
     // var url = Uri.parse('https://fakestoreapi.com/products');
-    var url = Uri.parse(
-        ApiConstants.baseUrlPricing + ApiConstants.GETapprovelPricingApproved);
+    var url = isDinamis == true
+        ? Uri.parse(baseUrlDinamis! + ApiConstants.GETapprovelPricingApproved)
+        : Uri.parse(ApiConstants.baseUrlPricing +
+            ApiConstants.GETapprovelPricingApproved);
 
     final response = await http.get(url);
     print(response.statusCode);
@@ -76,9 +80,14 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
   }
 
   Future _getData() async {
+    bool? isDinamis = sharedPreferences!.getBool('isDinamis');
+    baseUrlDinamis = sharedPreferences!.getString('urlDinamis');
     try {
-      final response = await http.get(Uri.parse(ApiConstants.baseUrlPricing +
-          ApiConstants.GETapprovelPricingApproved));
+      final response = isDinamis == true
+          ? await http.get(Uri.parse(
+              baseUrlDinamis! + ApiConstants.GETapprovelPricingApproved))
+          : await http.get(Uri.parse(ApiConstants.baseUrlPricing +
+              ApiConstants.GETapprovelPricingApproved));
       // if response successful
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(response.body);
@@ -96,9 +105,14 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
   }
 
   Future _getDataByModel(model) async {
+    bool? isDinamis = sharedPreferences!.getBool('isDinamis');
+    baseUrlDinamis = sharedPreferences!.getString('urlDinamis');
     try {
-      final response = await http.get(Uri.parse(ApiConstants.baseUrlPricing +
-          ApiConstants.GETapprovelPricingApproved));
+      final response = isDinamis == true
+          ? await http.get(Uri.parse(
+              baseUrlDinamis! + ApiConstants.GETapprovelPricingApproved))
+          : await http.get(Uri.parse(ApiConstants.baseUrlPricing +
+              ApiConstants.GETapprovelPricingApproved));
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(response.body);
         var g = jsonResponse
@@ -122,9 +136,14 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
   }
 
   Future _getDataSearch(search) async {
+    bool? isDinamis = sharedPreferences!.getBool('isDinamis');
+    baseUrlDinamis = sharedPreferences!.getString('urlDinamis');
     try {
-      final response = await http.get(Uri.parse(ApiConstants.baseUrlPricing +
-          ApiConstants.GETapprovelPricingApproved));
+      final response = isDinamis == true
+          ? await http.get(Uri.parse(
+              baseUrlDinamis! + ApiConstants.GETapprovelPricingApproved))
+          : await http.get(Uri.parse(ApiConstants.baseUrlPricing +
+              ApiConstants.GETapprovelPricingApproved));
       // if response successful
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(response.body);
@@ -1625,160 +1644,5 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
         : awalPrice = double.parse(price.text);
 
     print(awalPrice);
-  }
-}
-
-class SearchModel extends StatelessWidget {
-  final dynamic e;
-  const SearchModel({Key? key, required this.e}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      // onTap: () {
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => ProductDetailsScreen(proList: e)));
-      // Fluttertoast.showToast(msg: "Not Available");
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (c) => ItemsDetailsScreen(
-      //               model: e.model,
-      //             )));
-      // },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(12)),
-          height: 100,
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: CachedNetworkImage(
-                      height: 140,
-                      imageUrl:
-                          'https://parvabisnis.id/uploads/products/${e['image_name'].toString()}',
-                      placeholder: (context, url) => Center(
-                          child: Container(
-                              padding: const EdgeInsets.all(0),
-                              width: 90,
-                              height: 90,
-                              child: Lottie.asset("json/loading_black.json"))),
-                      errorWidget: (context, url, error) => Image.asset(
-                        "images/noimage.png",
-                      ),
-                      fit: BoxFit.scaleDown,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Flexible(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            e['name'],
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            '\$ ${e['price']}',
-                            overflow: TextOverflow.ellipsis,
-                            // maxLines: 2,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  onPressed: () async {
-                    var existingitemcart = context
-                        .read<PCart>()
-                        .getItems
-                        .firstWhereOrNull(
-                            (element) => element.name == e['name'].toString());
-                    //cart API
-                    // existingitemcart == null
-                    if (existingitemcart == null) {
-                      String token =
-                          sharedPreferences!.getString("token").toString();
-
-                      //add cart API
-                      Map<String, String> body = {
-                        // 'user_id': id.toString(),
-                        'product_id': e['id'].toString(),
-                        'qty': '1',
-                        'price': e['price'].toString(),
-                        'jenisform_id': '3',
-                        'update_by': '1'
-                      };
-                      final response = await http.post(
-                          Uri.parse(ApiConstants.baseUrl +
-                              ApiConstants.POSTkeranjangsalesendpoint),
-                          headers: <String, String>{
-                            'Authorization': 'Bearer $token',
-                          },
-                          body: body);
-                      print(response.body);
-
-                      Fluttertoast.showToast(
-                          msg: "Barang Berhasil Di Tambahkan");
-                      context.read<PCart>().addItem(
-                            e['name'].toString(),
-                            int.parse(e['price'].toString()),
-                            1,
-                            e['image_name'].toString(),
-                            e['id'].toString(),
-                            e['sales_id'].toString(),
-                            e['description'].toString(),
-                            e['keterangan_barang'].toString(),
-                          );
-                    } else {
-                      Fluttertoast.showToast(
-                          msg: "Barang Sudah Ada Di Keranjang");
-                    }
-                  },
-                  hoverColor: Colors.green,
-                  icon: const Icon(
-                    Icons.shopping_cart,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

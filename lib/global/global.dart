@@ -10,6 +10,7 @@ Notification notif = Notification();
 // if (sharedPreferences!.getString("role")! != "SALES")
 String fcmTokenSales = "";
 String fcmTokensandy = "";
+String? baseUrlDinamis = sharedPreferences!.getString('urlDinamis');
 String fcmServerToken =
     "AAAAu6dblLA:APA91bEanz7VkI6wyJSxAGE8L1lVDFcv5VWg_9qlVsuRUwXUtoXmK5apL0fYMSOdDqt_OEL8uQhfBDJvFMJmwHYm3n0aav4z4Dg56tfsnkyZobqCwtGLO6PM0WBb2vsA_XtakPNIKJQT";
 
