@@ -64,6 +64,7 @@ class ApprovePricingModel {
   double? eticketingApprovalPrice;
   double? eticketingTargetWeight;
   double? eticketingTargetDiamond;
+  String? theme;
 
   ApprovePricingModel({
     this.entryNo,
@@ -119,6 +120,7 @@ class ApprovePricingModel {
     this.eticketingApprovalPrice,
     this.eticketingTargetWeight,
     this.eticketingTargetDiamond,
+    this.theme,
   });
 
   factory ApprovePricingModel.fromJson(Map<String, dynamic> json) =>
@@ -176,6 +178,7 @@ class ApprovePricingModel {
         eticketingApprovalPrice: json['eticketingApprovalPrice'] ?? 0,
         eticketingTargetWeight: json['eticketingApprovalPrice'] ?? 0,
         eticketingTargetDiamond: json['eticketingTargetDiamond'] ?? 0,
+        theme: json['theme'] ?? 'Tanpa tema',
       );
 
   Map<String, dynamic> toJson() => {
@@ -232,5 +235,6 @@ class ApprovePricingModel {
         "eticketingApprovalPrice": eticketingApprovalPrice,
         "eticketingTargetWeight": eticketingTargetWeight,
         "eticketingTargetDiamond": eticketingTargetDiamond,
+        "theme": theme,
       };
 }
