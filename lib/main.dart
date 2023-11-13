@@ -66,6 +66,23 @@ class MyApp extends StatelessWidget {
             Locale('es'), // Spanish
           ],
           home: const MySplashScreen(),
+          // home: AnimatedSplashScreen(
+          //     splash: Container(
+          //         padding: const EdgeInsets.all(12.0),
+          //         // child: Image.asset("images/splashLogo.png")),
+
+          //         child: Lottie.asset(
+          //           'json/think.json',
+          //           // 'json/success.json',
+          //           // width: 250,
+          //           // // height: 250,
+          //           // fit: BoxFit.fill,
+          //         )),
+          //     splashIconSize: 350,
+          //     // duration: ,
+          //     splashTransition: SplashTransition.sizeTransition,
+          //     // pageTransitionType: PageTransitionType.leftToRightWithFade,
+          //     nextScreen: const MySplashScreen()),
         ),
       ),
     );

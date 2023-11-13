@@ -10,6 +10,7 @@ import 'package:e_shop/database/db_allitems_retur.dart';
 import 'package:e_shop/database/db_allitems_toko.dart';
 import 'package:e_shop/database/db_alltransaksi.dart';
 import 'package:e_shop/database/db_alltransaksi_new.dart';
+import 'package:e_shop/database/db_alltransaksi_voucher.dart';
 import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/database/model_allcustomer.dart';
 import 'package:e_shop/database/model_alldetailtransaksi.dart';
@@ -18,6 +19,7 @@ import 'package:e_shop/database/model_allitems_retur.dart';
 import 'package:e_shop/database/model_allitems_toko.dart';
 import 'package:e_shop/database/model_alltransaksi.dart';
 import 'package:e_shop/database/model_alltransaksi_new.dart';
+import 'package:e_shop/database/model_alltransaksi_voucher.dart';
 import 'package:e_shop/global/global.dart';
 
 import 'package:flutter/material.dart';
@@ -83,11 +85,23 @@ class ApiServices {
     Response response = await Dio().get(
         ApiConstants.baseUrl + ApiConstants.GETtransaksiendpoint,
         options: Options(headers: {"Authorization": "Bearer $token"}));
-
+    print('status ${response.statusCode}');
+    print('body ${response.data}');
     return (response.data as List).map((transaksi) {
       DbAlltransaksiNew.db
-          .createAlltransaksi(ModelAlltransaksiNew.fromJson(transaksi));
-      print('Inserting transaksi new berhasil');
+          .createAlltransaksiNew(ModelAlltransaksiNew.fromJson(transaksi));
+    }).toList();
+  }
+
+  Future<List<Null>> getAllTransaksiNewVoucher() async {
+    Response response = await Dio().get(
+        ApiConstants.baseUrl + ApiConstants.GETtransaksiendpoint,
+        options: Options(headers: {"Authorization": "Bearer $token"}));
+    print('status ${response.statusCode}');
+    print('body ${response.data}');
+    return (response.data as List).map((transaksi) {
+      DbAlltransaksiNewVoucher.db.createAlltransaksiNewVoucher(
+          ModelAlltransaksiNewVoucher.fromJson(transaksi));
     }).toList();
   }
 

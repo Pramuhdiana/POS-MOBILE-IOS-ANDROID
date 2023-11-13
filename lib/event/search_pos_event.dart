@@ -144,7 +144,6 @@ class _SearchPosEvent extends State<SearchPosEvent> {
                                 .firstWhereOrNull((element) =>
                                     element.name == widget.model?.name);
 
-                            print(existingitemcart);
                             if (existingitemcart == null) {
                               Fluttertoast.showToast(
                                   msg: "Barang Berhasil Di Tambahkan");
@@ -162,12 +161,12 @@ class _SearchPosEvent extends State<SearchPosEvent> {
                                 sharedPreferences!.setString(
                                     'idBarang', widget.model!.name![0]);
                                 postAPIcart();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (c) =>
-                                            const TransaksiScreenEvent()));
                               });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (c) =>
+                                          const TransaksiScreenEvent()));
                             } else {
                               Fluttertoast.showToast(
                                   msg: "Barang Sudah Ada Di Keranjang");
@@ -191,7 +190,6 @@ class _SearchPosEvent extends State<SearchPosEvent> {
   postAPIcart() async {
     String token = sharedPreferences!.getString("token").toString();
 
-    // 'user_id': id.toString(),
     Map<String, String> body = {
       // 'user_id': id.toString(),
       'product_id': widget.model!.id.toString(),

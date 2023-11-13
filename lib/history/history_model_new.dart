@@ -328,7 +328,7 @@ class HistoryModelNew extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        'Total price    : ${CurrencyFormat.convertToIdr(order.nett, 0)}',
+                        'Total price    : ${CurrencyFormat.convertToIdr(order.nett - order.voucherDiskon, 0)}',
                         style: const TextStyle(fontSize: 15),
                       ),
                     ),
@@ -3433,7 +3433,15 @@ class HistoryModelNew extends StatelessWidget {
     var diskon = ((subTotal * order.basic_discount) / 100) ?? 0;
     var totalSubDis = subTotal - diskon;
     var addDiskon = order.addesdiskon_rupiah ?? 0;
-    var totalPayment = totalSubDis - addDiskon;
+    var voucherDiskon = order.voucherDiskon ?? 0;
+    var totalPayment = totalSubDis - addDiskon - voucherDiskon;
+    String kodeDiskon = voucherDiskon == 50000
+        ? 'Voucher (BB50RB)'
+        : voucherDiskon == 100000
+            ? 'Voucher (BB100RB)'
+            : voucherDiskon == 500000
+                ? 'Voucher (BB500RB)'
+                : '-';
     String noHP = '0';
     String namaCustomer = '-';
     String? tokens = sharedPreferences!.getString('token');
@@ -3630,7 +3638,7 @@ class HistoryModelNew extends StatelessWidget {
                         //? body isi beli berilian
                         pw.Container(
                             padding: const pw.EdgeInsets.only(top: 15),
-                            height: 55,
+                            height: 45,
                             child: pw.Row(
                               mainAxisAlignment: pw.MainAxisAlignment.start,
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -3700,7 +3708,7 @@ class HistoryModelNew extends StatelessWidget {
 
                         //mid  pdf beliberlian payment method
                         pw.Container(
-                          height: 113,
+                          height: 133,
                           child: pw.Row(
                             mainAxisAlignment:
                                 pw.MainAxisAlignment.spaceBetween,
@@ -3794,6 +3802,25 @@ class HistoryModelNew extends StatelessWidget {
                                                       fontSize: 11.5)),
                                               pw.Text(
                                                   '${CurrencyFormat.convertToDollar(addDiskon, 0)}',
+                                                  style: const pw.TextStyle(
+                                                      fontSize: 11.5)),
+                                            ],
+                                          )),
+                                  voucherDiskon == 0
+                                      ? pw.SizedBox(height: 15)
+                                      : pw.Container(
+                                          padding: const pw.EdgeInsets.only(
+                                              left: 5, top: 5),
+                                          width: 238,
+                                          child: pw.Row(
+                                            mainAxisAlignment: pw
+                                                .MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              pw.Text(kodeDiskon,
+                                                  style: const pw.TextStyle(
+                                                      fontSize: 11.5)),
+                                              pw.Text(
+                                                  '${CurrencyFormat.convertToDollar(voucherDiskon, 0)}',
                                                   style: const pw.TextStyle(
                                                       fontSize: 11.5)),
                                             ],
@@ -4383,7 +4410,15 @@ class HistoryModelNew extends StatelessWidget {
     var diskon = ((subTotal * order.basic_discount) / 100) ?? 0;
     var totalSubDis = subTotal - diskon;
     var addDiskon = order.addesdiskon_rupiah ?? 0;
-    var totalPayment = totalSubDis - addDiskon;
+    var voucherDiskon = order.voucherDiskon ?? 0;
+    var totalPayment = totalSubDis - addDiskon - voucherDiskon;
+    String kodeDiskon = voucherDiskon == 50000
+        ? 'Voucher (BB50RB)'
+        : voucherDiskon == 100000
+            ? 'Voucher (BB100RB)'
+            : voucherDiskon == 500000
+                ? 'Voucher (BB500RB)'
+                : '-';
     String noHP = '0';
     String namaCustomer = '-';
     String? tokens = sharedPreferences!.getString('token');
@@ -4403,26 +4438,31 @@ class HistoryModelNew extends StatelessWidget {
     }
 
     //? get HP customer
-    final response = await http.get(
-        Uri.parse(
-            ApiConstants.baseUrl + ApiConstants.GETcustomerendbeliberlianpoint),
-        headers: {"Authorization": "Bearer $tokens"});
-    print(response.body);
-    if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
+    try {
+      final response = await http.get(
+          Uri.parse(ApiConstants.baseUrl +
+              ApiConstants.GETcustomerendbeliberlianpoint),
+          headers: {"Authorization": "Bearer $tokens"});
+      print(response.body);
+      if (response.statusCode == 200) {
+        List jsonResponse = json.decode(response.body);
 
-      var allData =
-          jsonResponse.map((data) => ModelAllCustomer.fromJson(data)).toList();
-      var filterByname = allData.where((element) =>
-          element.id.toString().toLowerCase() ==
-          order.customer_beliberlian.toString().toLowerCase());
-      allData = filterByname.toList();
-      noHP = allData.first.phone!;
-      namaCustomer = allData.first.name!;
-    } else {
-      throw Exception('Database Off');
+        var allData = jsonResponse
+            .map((data) => ModelAllCustomer.fromJson(data))
+            .toList();
+        var filterByname = allData.where((element) =>
+            element.id.toString().toLowerCase() ==
+            order.customer_beliberlian.toString().toLowerCase());
+        allData = filterByname.toList();
+        noHP = allData.first.phone!;
+        namaCustomer = allData.first.name!;
+      } else {
+        throw Exception('Database Off');
+      }
+    } catch (c) {
+      noHP = '+62';
+      namaCustomer = '-';
     }
-
     final resultEmasFix = resultEmas![1].toString().replaceAll('GR', ' GR');
 
     doc.addPage(
@@ -4438,11 +4478,11 @@ class HistoryModelNew extends StatelessWidget {
                     child: pw.Container(
                   width: 595,
                   height: 841,
-                  child: pw.Image(pw.MemoryImage(bgUint2),
-                      // child: pw.Image(pw.MemoryImage(showBackground),
-                      fit: pw.BoxFit.fitHeight,
-                      height: 841,
-                      width: 595),
+                  // child: pw.Image(pw.MemoryImage(bgUint2),
+                  //     // child: pw.Image(pw.MemoryImage(showBackground),
+                  //     fit: pw.BoxFit.fitHeight,
+                  //     height: 841,
+                  //     width: 595),
                 )),
                 pw.Container(
                   width: 595,
@@ -4575,7 +4615,7 @@ class HistoryModelNew extends StatelessWidget {
                         //? body isi beli berilian
                         pw.Container(
                             padding: const pw.EdgeInsets.only(top: 15),
-                            height: 55,
+                            height: 45,
                             child: pw.Row(
                               mainAxisAlignment: pw.MainAxisAlignment.start,
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -4645,7 +4685,7 @@ class HistoryModelNew extends StatelessWidget {
 
                         //mid  pdf beliberlian payment method
                         pw.Container(
-                          height: 113,
+                          height: 133,
                           child: pw.Row(
                             mainAxisAlignment:
                                 pw.MainAxisAlignment.spaceBetween,
@@ -4739,6 +4779,25 @@ class HistoryModelNew extends StatelessWidget {
                                                       fontSize: 11.5)),
                                               pw.Text(
                                                   '${CurrencyFormat.convertToDollar(addDiskon, 0)}',
+                                                  style: const pw.TextStyle(
+                                                      fontSize: 11.5)),
+                                            ],
+                                          )),
+                                  voucherDiskon == 0
+                                      ? pw.SizedBox(height: 15)
+                                      : pw.Container(
+                                          padding: const pw.EdgeInsets.only(
+                                              left: 5, top: 5),
+                                          width: 238,
+                                          child: pw.Row(
+                                            mainAxisAlignment: pw
+                                                .MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              pw.Text(kodeDiskon,
+                                                  style: const pw.TextStyle(
+                                                      fontSize: 11.5)),
+                                              pw.Text(
+                                                  '${CurrencyFormat.convertToDollar(voucherDiskon, 0)}',
                                                   style: const pw.TextStyle(
                                                       fontSize: 11.5)),
                                             ],
@@ -5161,7 +5220,8 @@ class HistoryModelNew extends StatelessWidget {
                                       child: pw.Divider(thickness: 1)),
                                   pw.Container(
                                     padding: const pw.EdgeInsets.only(left: 25),
-                                    child: pw.Text('Hendrik Wijaya',
+                                    child: pw.Text(
+                                        '${sharedPreferences!.getString("name")!}',
                                         style: const pw.TextStyle(
                                             color: PdfColors.black,
                                             fontSize: 11.5)),

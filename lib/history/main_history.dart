@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_import
+// ignore_for_file: prefer_const_constructors, unused_import, avoid_print
 
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_alldetailtransaksi.dart';
@@ -21,13 +21,15 @@ class MainHistory extends StatelessWidget {
     // try {
     //   ApiServices().getAllTransaksi(); //ambil data ntransaksi
     // } catch (c) {
-    //   Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+    //   print('Error get transaksi : $c');
+    //   throw Exception('error : $c');
     // }
 
     // try {
     //   ApiServices().getAllDetailTransaksi(); //ambil data ntransaksi
     // } catch (c) {
-    //   Fluttertoast.showToast(msg: "Failed To Load Data all detail transaksi");
+    //     print('Error get detail transaksi : $c');
+    //   throw Exception('error : $c');
     // }
 
     return DefaultTabController(

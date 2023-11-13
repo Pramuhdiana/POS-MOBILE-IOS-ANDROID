@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/api/api_services.dart';
-import 'package:e_shop/database/db_alltransaksi_new.dart';
+import 'package:e_shop/database/db_alltransaksi_voucher.dart';
 import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
@@ -227,14 +227,15 @@ class _AddFormCRMState extends State<AddFormCRM> {
                         toko = item?.name; // menyimpan nama toko
                         cek_error_customer = 'customer oke';
                         list?.clear();
-                        DbAlltransaksiNew.db.getAllinvoicesnumberNew(idtoko);
+                        DbAlltransaksiNewVoucher.db
+                            .getAllinvoicesnumbernewvoucher(idtoko);
                         // DbAlltransaksi.db.getAllinvoicesnumber(idtoko);
                         btnController.reset();
                       });
                       // DbAlltransaksi.db
                       //     .getAllinvoicesnumber(idtoko)
-                      DbAlltransaksiNew.db
-                          .getAllinvoicesnumberNew(idtoko)
+                      DbAlltransaksiNewVoucher.db
+                          .getAllinvoicesnumbernewvoucher(idtoko)
                           .then((listMap) {
                         listMap.map((map) {
                           return getDropDownWidget(map);
@@ -659,8 +660,8 @@ class _AddFormCRMState extends State<AddFormCRM> {
                                         //fungsi show value without builder
                                         // DbAlltransaksi.db
                                         //     .getAllNominalTransaksi(
-                                        DbAlltransaksiNew.db
-                                            .getAllNominalTransaksiNew(
+                                        DbAlltransaksiNewVoucher.db
+                                            .getAllNominalTransaksiNewVoucher(
                                                 selectedOmzet)
                                             .then((result) {
                                           result.isEmpty

@@ -60,6 +60,7 @@ class DbCRM {
   Future<int> deleteAllcrm() async {
     final db = await database;
     final res = await db.rawDelete('DELETE FROM allcrm');
+    print('delete crm berhasil');
 
     return res;
   }

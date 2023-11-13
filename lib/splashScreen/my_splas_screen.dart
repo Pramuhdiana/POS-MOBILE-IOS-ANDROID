@@ -9,6 +9,13 @@ import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/authScreens/auth_screen.dart';
 import 'package:e_shop/buStephanie/main_screen_approve_pricing.dart';
+import 'package:e_shop/database/db_allcustomer.dart';
+import 'package:e_shop/database/db_alldetailtransaksi.dart';
+import 'package:e_shop/database/db_allitems.dart';
+import 'package:e_shop/database/db_allitems_retur.dart';
+import 'package:e_shop/database/db_allitems_toko.dart';
+import 'package:e_shop/database/db_alltransaksi_voucher.dart';
+import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/models/version_model.dart';
@@ -16,6 +23,7 @@ import 'package:e_shop/provider/provider_cart.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -39,9 +47,9 @@ class _MySplashScreenState extends State<MySplashScreen> {
   int role = 0;
   String? version = '';
 
-  var isLoading = false;
+  var isLoading = true;
   splashScreenTimer() {
-    Timer(const Duration(seconds: 1), () async {
+    Timer(const Duration(seconds: 0), () async {
       //user sudah login
       print('token $token');
       if (sharedPreferences!.getString("token").toString() != "null") {
@@ -50,6 +58,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
         try {
           await _loadFromApi();
           try {
+            sharedPreferences?.setBool('isDinamis', false);
+
             sharedPreferences!.setString('newOpen', 'true');
             sharedPreferences!.setString('newOpenHome', 'true');
             sharedPreferences!.setString('newOpenPosSales', 'true');
@@ -60,14 +70,14 @@ class _MySplashScreenState extends State<MySplashScreen> {
             sharedPreferences!.setString('total_product_sales', '0');
             print('wait token');
             getToken();
-            if (version != noBuild.toString()) {
-              dialogBoxVersion();
-            } else {
-              role == 15
-                  ? dialogBox()
-                  : Navigator.push(context,
-                      MaterialPageRoute(builder: (c) => const MainScreen()));
-            }
+            // if (version != noBuild.toString()) {
+            //   dialogBoxVersion();
+            // } else {
+            role == 15
+                ? dialogBox()
+                : Navigator.push(context,
+                    MaterialPageRoute(builder: (c) => const MainScreen()));
+            // }
           } catch (c) {
             sharedPreferences!.setString('newOpen', 'true');
             sharedPreferences?.setBool('loading', true);
@@ -82,13 +92,13 @@ class _MySplashScreenState extends State<MySplashScreen> {
                     MaterialPageRoute(builder: (c) => const MainScreen()));
           }
         } catch (c) {
-          Fluttertoast.showToast(msg: "Failed To Load Data");
+          Fluttertoast.showToast(msg: "Failed To Load user data");
           Navigator.push(
               context, MaterialPageRoute(builder: (c) => const AuthScreen()));
         }
       } else //user is NOT already Logged-in
       {
-        Fluttertoast.showToast(msg: "Failed To Load Data");
+        Fluttertoast.showToast(msg: "Failed To Load All Data");
 
         Navigator.push(
             context, MaterialPageRoute(builder: (c) => const AuthScreen()));
@@ -143,9 +153,9 @@ class _MySplashScreenState extends State<MySplashScreen> {
   }
 
   _loadFromApi() async {
-    setState(() {
-      isLoading = true;
-    });
+    // setState(() {
+    //   isLoading = true;
+    // });
     FirebaseFirestore.instance
         .collection("UserTokens")
         .doc('Sandy')
@@ -160,65 +170,75 @@ class _MySplashScreenState extends State<MySplashScreen> {
     // context.read<PCartToko>().clearCart();
     // context.read<PCartRetur>().clearCart();
     var apiProvider = ApiServices();
-    // await DbAllitems.db.deleteAllitems();
-    // await DbAllitemsToko.db.deleteAllitemsToko();
-    // await DbAlltransaksi.db.deleteAlltransaksi();
-    // await DbAllCustomer.db.deleteAllcustomer();
-    // await DbAllitemsRetur.db.deleteAllitemsRetur();
-    // await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
-    // await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-    // await DbCRM.db.deleteAllcrm();
+    await DbAllitems.db.deleteAllitems();
+    await DbAllitemsToko.db.deleteAllitemsToko();
+    await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+    await DbAllCustomer.db.deleteAllcustomer();
+    await DbAllitemsRetur.db.deleteAllitemsRetur();
+    await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
+    await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
+    await DbCRM.db.deleteAllcrm();
+
+    try {
+      apiProvider.getAllItems();
+    } catch (c) {
+      print('Error all transaksi : $c');
+      throw Exception('error : $c');
+    }
     // try {
-    //   await apiProvider.getAllItems();
+    //   apiProvider.getAllItemsToko();
     // } catch (c) {
-    //   Fluttertoast.showToast(msg: "Failed To Load Data all items");
-    // }
-    // try {
-    //   await apiProvider.getAllItemsToko();
-    // } catch (c) {
-    //   Fluttertoast.showToast(msg: "Failed To Load Data all items toko");
-    // }
-    // try {
-    //   await apiProvider.getAllTransaksi();
-    // } catch (c) {
-    //   Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+    //   throw Exception('Unexpected error occured!');
     // }
     // try {
     //   apiProvider.getAllItemsRetur();
     // } catch (c) {
-    //   Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all items");
     // }
-    // try {
-    //   await apiProvider.getAllDetailTransaksi();
-    // } catch (c) {
-    //   Fluttertoast.showToast(msg: "Failed To Load Data all details transaksi");
-    // }
-    // try {
-    //   await apiProvider.getAllKodekeluarbarang();
-    // } catch (c) {
-    //   Fluttertoast.showToast(msg: "Failed To Load Data all code refrence");
-    // }
+    try {
+      print('in function all transaksi');
+      await apiProvider.getAllTransaksiNewVoucher();
+    } catch (c) {
+      print('Error all transaksi : $c');
+      throw Exception('error : $c');
+    }
+    try {
+      print('in function detail transaksi');
+      await apiProvider.getAllDetailTransaksi();
+    } catch (c) {
+      print('Error detail transaksi : $c');
+      throw Exception('error : $c');
+    }
+    try {
+      await apiProvider.getAllKodekeluarbarang();
+    } catch (c) {
+      print('Error all kode keluar barang : $c');
+      throw Exception('error : $c');
+    }
     // try {
     //   await apiProvider.getAllCustomer();
     // } catch (c) {
-    //   Fluttertoast.showToast(msg: "Failed To Load Data all customer");
+    //   print('Error gett all customer : $c');
+    //   throw Exception('error : $c');
+    // }
+
+    // try {
+    //   await apiProvider.getAllTCRM();
+    // } catch (c) {
+    //   throw Exception('Unexpected error occured!');
     // }
     try {
+      print('in function get user');
       await apiProvider.getUsers();
       setState(() {
         role = int.parse(sharedPreferences!.getString('role_sales_brand')!);
         print('Role user : $role');
       });
     } catch (c) {
-      print('gagal get user');
+      print('Error ambil user : $c');
       sharedPreferences!.setString('name', 'Failed To Load Data');
       Fluttertoast.showToast(msg: "Failed To Load Data User");
     }
-    // try {
-    //   await apiProvider.getAllTCRM();
-    // } catch (c) {
-    //   Fluttertoast.showToast(msg: "Failed To Load Data CRM");
-    // }
 
     // context.read<PNewNotif>().clearNotif();
     // DbNotifDummy.db.getAllNotif(1).then((value) {
@@ -303,8 +323,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
       setState(() {
         version = noBuild.toString();
         sharedPreferences!.setString('version', noBuild.toString());
-        notif.sendNotificationTo(fcmTokensandy, 'Error Version',
-            'version database dan mobile tidak');
+        // notif.sendNotificationTo(fcmTokensandy, 'Error Version',
+        //     'version database dan mobile tidak');
         print('No Version DB : $noBuild');
       });
       throw Fluttertoast.showToast(msg: "Database Off");
@@ -326,7 +346,6 @@ class _MySplashScreenState extends State<MySplashScreen> {
   Future<List<VersionModel>> getVersion() async {
     final response = await http.get(
         Uri.parse('http://110.5.102.154:1212/Api_flutter/spk/get_version.php'));
-    print('status : ${response.statusCode}');
     print('No Version DB : ${response.body}');
 
     if (response.statusCode == 200) {
@@ -385,41 +404,48 @@ class _MySplashScreenState extends State<MySplashScreen> {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-          colors: [
-            Colors.white,
-            Colors.white,
-          ],
-          begin: FractionalOffset(0.0, 0.0),
-          end: FractionalOffset(1.0, 0.0),
-          stops: [0.0, 1.0],
-          tileMode: TileMode.clamp,
-        )),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Image.asset("images/splashLogo.png"),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                "",
-                style: TextStyle(
-                  fontSize: 30,
-                  letterSpacing: 3,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+            colors: [
+              Colors.white,
+              Colors.white,
             ],
-          ),
-        ),
-      ),
+            begin: FractionalOffset(0.0, 0.0),
+            end: FractionalOffset(1.0, 0.0),
+            stops: [0.0, 1.0],
+            tileMode: TileMode.clamp,
+          )),
+          child: isLoading == true
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Padding(
+                      //   padding: const EdgeInsets.all(12.0),
+                      //   child: Image.asset("images/splashLogo.png"),
+                      // ),
+                      Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Lottie.asset(
+                            'json/logo275kb.json',
+                            // width: 250,
+                            // height: 250,
+                            fit: BoxFit.cover,
+                          )),
+                      // DotLottieLoader.fromAsset("json/logoOriDot.lottie",
+                      //     frameBuilder:
+                      //         (BuildContext ctx, DotLottie? dotlottie) {
+                      //   if (dotlottie != null) {
+                      //     return Lottie.memory(
+                      //         dotlottie.animations.values.single);
+                      //   } else {
+                      //     return Container();
+                      //   }
+                      // }),
+                    ],
+                  ),
+                )
+              : const Center(child: SizedBox())),
     );
   }
 
@@ -643,7 +669,6 @@ class _MySplashScreenState extends State<MySplashScreen> {
 //     }).toList();
 //   }
 // }
-
 
 // Widget _dialogContent; // Declare this outside the method, globally in the class
 

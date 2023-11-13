@@ -3,14 +3,14 @@
 import 'dart:convert';
 import 'package:intl/intl.dart';
 
-List<ModelAlltransaksiNew> allitemsnew(String str) =>
-    List<ModelAlltransaksiNew>.from(
-        json.decode(str).map((x) => ModelAlltransaksiNew.fromJson(x)));
+List<ModelAlltransaksiNewVoucher> allitemsnewvoucher(String str) =>
+    List<ModelAlltransaksiNewVoucher>.from(
+        json.decode(str).map((x) => ModelAlltransaksiNewVoucher.fromJson(x)));
 
-String allitemsnewToJson(List<ModelAlltransaksiNew> data) =>
+String allitemsnewvoucherToJson(List<ModelAlltransaksiNewVoucher> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class ModelAlltransaksiNew {
+class ModelAlltransaksiNewVoucher {
   String? invoices_number;
   int? user_id;
   int? customer_id;
@@ -31,10 +31,12 @@ class ModelAlltransaksiNew {
   String? customer;
   String? alamat;
   String? jenisform;
+  int? voucherDiskon;
   String? month;
   String? year;
+  String? status;
 
-  ModelAlltransaksiNew({
+  ModelAlltransaksiNewVoucher({
     this.invoices_number,
     this.user_id,
     this.customer_id,
@@ -55,37 +57,40 @@ class ModelAlltransaksiNew {
     this.customer,
     this.alamat,
     this.jenisform,
+    this.voucherDiskon,
     this.month,
     this.year,
+    this.status,
   });
 
-  factory ModelAlltransaksiNew.fromJson(Map<String, dynamic> json) =>
-      ModelAlltransaksiNew(
-        invoices_number: json["invoices_number"] ?? 'null',
-        user_id: json["user_id"],
-        customer_id: json["customer_id"],
-        customer_metier: json["customer_metier"] ?? 0,
-        customer_beliberlian: json["customer_beliberlian"] ?? '0',
-        jenisform_id: json["jenisform_id"],
-        sales_id: json["sales_id"] ?? 0,
-        total: int.parse((json["total"] ?? 0).toString()),
-        total_quantity: json["total_quantity"] ?? 0,
-        total_rupiah: json["total_rupiah"] ?? '0',
-        basic_discount: json["basic_discount"] ?? 0,
-        addesdiskon_rupiah: json["addesdiskon_rupiah"] ?? 0,
-        rate: json["rate"] ?? 0,
-        nett: json["nett"] ?? 0,
-        created_at: json["created_at"],
-        updated_at: json["updated_at"],
-        user: json["user"],
-        customer: json["customer"],
-        alamat: json["alamat"],
-        jenisform: json["jenisform"],
-        month:
-            DateFormat('M').format(DateTime.parse(json["created_at"] ?? '13')),
-        year:
-            DateFormat('y').format(DateTime.parse(json["created_at"] ?? '13')),
-      );
+  factory ModelAlltransaksiNewVoucher.fromJson(Map<String, dynamic> json) =>
+      ModelAlltransaksiNewVoucher(
+          invoices_number: json["invoices_number"] ?? 'null',
+          user_id: json["user_id"],
+          customer_id: json["customer_id"],
+          customer_metier: json["customer_metier"] ?? 0,
+          customer_beliberlian: json["customer_beliberlian"] ?? '0',
+          jenisform_id: json["jenisform_id"],
+          sales_id: json["sales_id"] ?? 0,
+          total: json["total"] ?? 0,
+          total_quantity: json["total_quantity"] ?? 0,
+          total_rupiah: json["total_rupiah"] ?? '0',
+          basic_discount: json["basic_discount"] ?? 0,
+          addesdiskon_rupiah: json["addesdiskon_rupiah"] ?? 0,
+          rate: json["rate"] ?? 0,
+          nett: json["nett"] ?? 0,
+          created_at: json["created_at"],
+          updated_at: json["updated_at"],
+          user: json["user"],
+          customer: json["customer"],
+          alamat: json["alamat"],
+          jenisform: json["jenisform"],
+          voucherDiskon: json["voucher_diskon"] ?? 0,
+          month: DateFormat('M')
+              .format(DateTime.parse(json["created_at"] ?? '13')),
+          year: DateFormat('y')
+              .format(DateTime.parse(json["created_at"] ?? '13')),
+          status: 'oke');
 
   Map<String, dynamic> toJson() => {
         "invoices_number": invoices_number,
@@ -108,7 +113,9 @@ class ModelAlltransaksiNew {
         "customer": customer,
         "alamat": alamat,
         "jenisform": jenisform,
+        "voucher_diskon": voucherDiskon,
         "month": month,
         "year": year,
+        "status": status,
       };
 }
