@@ -851,7 +851,7 @@ class HistoryModelNew extends StatelessWidget {
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${detailTransaksi[i].price.toString()}',
+                                        '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -889,7 +889,7 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    '\$ ' + allTransaksi.total.toString(),
+                                    '\$ ${CurrencyFormat.convertToDollar(allTransaksi.total, 0)}',
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -1332,7 +1332,7 @@ class HistoryModelNew extends StatelessWidget {
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${detailTransaksi[i].price.toString()}',
+                                        '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -1421,7 +1421,7 @@ class HistoryModelNew extends StatelessWidget {
                               padding:
                                   const pw.EdgeInsets.only(right: -5, left: 20),
                               child: pw.Text(
-                                  '\$ ${detailTransaksi[i].price.toString()}',
+                                  '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
                             pw.Divider(thickness: 1)
@@ -1454,7 +1454,8 @@ class HistoryModelNew extends StatelessWidget {
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text('\$ ' + allTransaksi.total.toString(),
+                          child: pw.Text(
+                              '\$ ${CurrencyFormat.convertToDollar(allTransaksi.total, 0)}',
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -1937,7 +1938,7 @@ class HistoryModelNew extends StatelessWidget {
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${detailTransaksi[i].price.toString()}',
+                                        '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -1975,7 +1976,7 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    '\$ ' + allTransaksi.total.toString(),
+                                    '\$ ${CurrencyFormat.convertToDollar(allTransaksi.total, 0)}',
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -2418,7 +2419,7 @@ class HistoryModelNew extends StatelessWidget {
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${detailTransaksi[i].price.toString()}',
+                                        '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -2507,7 +2508,7 @@ class HistoryModelNew extends StatelessWidget {
                               padding:
                                   const pw.EdgeInsets.only(right: -5, left: 20),
                               child: pw.Text(
-                                  '\$ ${detailTransaksi[i].price.toString()}',
+                                  '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
                             pw.Divider(thickness: 1)
@@ -2540,7 +2541,8 @@ class HistoryModelNew extends StatelessWidget {
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text('\$ ' + allTransaksi.total.toString(),
+                          child: pw.Text(
+                              '\$ ${CurrencyFormat.convertToDollar(allTransaksi.total, 0)}',
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -2958,7 +2960,7 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    '\$ ' + allTransaksi.total.toString(),
+                                    '\$ ${CurrencyFormat.convertToDollar(allTransaksi.total, 0)}',
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -3344,7 +3346,7 @@ class HistoryModelNew extends StatelessWidget {
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${detailTransaksi[i].price.toString()}',
+                                        '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -3434,7 +3436,7 @@ class HistoryModelNew extends StatelessWidget {
                               padding:
                                   const pw.EdgeInsets.only(right: -5, left: 20),
                               child: pw.Text(
-                                  '\$ ${detailTransaksi[i].price.toString()}',
+                                  '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
                             pw.Divider(thickness: 1)
@@ -3467,7 +3469,8 @@ class HistoryModelNew extends StatelessWidget {
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text('\$ ' + allTransaksi.total.toString(),
+                          child: pw.Text(
+                              '\$ ${CurrencyFormat.convertToDollar(allTransaksi.total, 0)}',
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -5908,7 +5911,7 @@ class HistoryModelNew extends StatelessWidget {
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${detailTransaksi[i].price.toString()}',
+                                        '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -5946,7 +5949,7 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    '\$ ' + allTransaksi.total.toString(),
+                                    '\$ ${CurrencyFormat.convertToDollar(allTransaksi.total, 0)}',
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -6389,7 +6392,7 @@ class HistoryModelNew extends StatelessWidget {
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${detailTransaksi[i].price.toString()}',
+                                        '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -6478,7 +6481,7 @@ class HistoryModelNew extends StatelessWidget {
                               padding:
                                   const pw.EdgeInsets.only(right: -5, left: 20),
                               child: pw.Text(
-                                  '\$ ${detailTransaksi[i].price.toString()}',
+                                  '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
                             pw.Divider(thickness: 1)
@@ -6511,7 +6514,8 @@ class HistoryModelNew extends StatelessWidget {
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text('\$ ' + allTransaksi.total.toString(),
+                          child: pw.Text(
+                              '\$ ${CurrencyFormat.convertToDollar(allTransaksi.total, 0)}',
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -6994,7 +6998,7 @@ class HistoryModelNew extends StatelessWidget {
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${detailTransaksi[i].price.toString()}',
+                                        '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -7032,7 +7036,7 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    '\$ ' + allTransaksi.total.toString(),
+                                    '\$ ${CurrencyFormat.convertToDollar(allTransaksi.total, 0)}',
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -7475,7 +7479,7 @@ class HistoryModelNew extends StatelessWidget {
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${detailTransaksi[i].price.toString()}',
+                                        '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -7564,7 +7568,7 @@ class HistoryModelNew extends StatelessWidget {
                               padding:
                                   const pw.EdgeInsets.only(right: -5, left: 20),
                               child: pw.Text(
-                                  '\$ ${detailTransaksi[i].price.toString()}',
+                                  '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
                             pw.Divider(thickness: 1)
@@ -7597,7 +7601,8 @@ class HistoryModelNew extends StatelessWidget {
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text('\$ ' + allTransaksi.total.toString(),
+                          child: pw.Text(
+                              '\$ ${CurrencyFormat.convertToDollar(allTransaksi.total, 0)}',
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
