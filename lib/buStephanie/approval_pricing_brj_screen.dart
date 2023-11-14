@@ -250,16 +250,16 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          // leading: IconButton(
-          //   icon: Image.asset(
-          //     "assets/arrow.png",
-          //     width: 35,
-          //     height: 35,
-          //   ),
-          //   onPressed: () {
-          //     Navigator.pop(context);
-          //   },
-          // ),
+          leading: IconButton(
+            icon: Image.asset(
+              "assets/arrow.png",
+              width: 35,
+              height: 35,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           elevation: 0,
           backgroundColor: Colors.white,
           title: CupertinoSearchTextField(
@@ -279,9 +279,9 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
           ),
           actions: [
             Container(
-              padding: const EdgeInsets.only(right: 10),
+              padding: const EdgeInsets.only(right: 5),
               child: Transform.scale(
-                scale: 1.5,
+                scale: 1.2,
                 child: IconButton(
                   onPressed: () {
                     showGeneralDialog(
@@ -294,23 +294,10 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                               child: AlertDialog(
                                 shape: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(16.0)),
-                                title: const Text('Choose Theme'),
+                                title: const Text('Select theme'),
                                 content: Stack(
                                     clipBehavior: Clip.none,
                                     children: <Widget>[
-                                      Positioned(
-                                        right: -50.0,
-                                        top: -90.0,
-                                        child: InkResponse(
-                                          onTap: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const CircleAvatar(
-                                            backgroundColor: Colors.red,
-                                            child: Icon(Icons.close),
-                                          ),
-                                        ),
-                                      ),
                                       ConstrainedBox(
                                         constraints: const BoxConstraints(
                                             maxHeight: 400),
@@ -393,6 +380,22 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                   ]),
                                             ),
                                           ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: -50.0,
+                                        top: -90.0,
+                                        child: InkResponse(
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          //! Cancel
+                                          child: Transform.scale(
+                                              scale: 2,
+                                              child: SizedBox(
+                                                  height: 40,
+                                                  child: Lottie.asset(
+                                                      "json/icon_delete.json"))),
                                         ),
                                       ),
                                     ]),
@@ -489,19 +492,20 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                 itemBuilder: (BuildContext context, int index) {
                                   var data = snapshot.data![index];
 
-                                  hpp = int.parse(data.grandSTDLabourPrice!
-                                          .round()
-                                          .toString()) +
-                                      int.parse(data.stdGoldPrice!
-                                          .round()
-                                          .toString()) +
-                                      int.parse(data.grandSTDDiamondPrice!
-                                          .round()
-                                          .toString());
                                   return Padding(
                                     padding: const EdgeInsets.all(4.0),
                                     child: GestureDetector(
                                       onTap: () {
+                                        hpp = int.parse(data
+                                                .grandSTDLabourPrice!
+                                                .round()
+                                                .toString()) +
+                                            int.parse(data.stdGoldPrice!
+                                                .round()
+                                                .toString()) +
+                                            int.parse(data.grandSTDDiamondPrice!
+                                                .round()
+                                                .toString());
                                         showGeneralDialog(
                                             transitionDuration: const Duration(
                                                 milliseconds: 200),
@@ -533,13 +537,14 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                       context)
                                                                   .pop();
                                                             },
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundColor:
-                                                                  Colors.red,
-                                                              child: Icon(
-                                                                  Icons.close),
-                                                            ),
+                                                            //! Cancel
+                                                            child: Transform.scale(
+                                                                scale: 2,
+                                                                child: SizedBox(
+                                                                    height: 40,
+                                                                    child: Lottie
+                                                                        .asset(
+                                                                            "json/icon_delete.json"))),
                                                           ),
                                                         ),
                                                         FutureBuilder(
@@ -1543,7 +1548,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                           FloatingActionButton
                                                               .extended(
                                                         onPressed: () {
-                                                          //approve
                                                           final _formKey =
                                                               GlobalKey<
                                                                   FormState>();
@@ -1557,7 +1561,18 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                           valuePrice = data
                                                               .finalPrice3USD
                                                               .round();
-
+                                                          hpp = int.parse(data
+                                                                  .grandSTDLabourPrice!
+                                                                  .round()
+                                                                  .toString()) +
+                                                              int.parse(data
+                                                                  .stdGoldPrice!
+                                                                  .round()
+                                                                  .toString()) +
+                                                              int.parse(data
+                                                                  .grandSTDDiamondPrice!
+                                                                  .round()
+                                                                  .toString());
                                                           RoundedLoadingButtonController
                                                               btnController =
                                                               RoundedLoadingButtonController();
@@ -1592,19 +1607,17 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                           child: StatefulBuilder(
                                                                               builder: (context, setState) => AlertDialog(
                                                                                       content: Stack(clipBehavior: Clip.none, children: <Widget>[
-                                                                                    Positioned(
-                                                                                      right: -50.0,
-                                                                                      top: -50.0,
-                                                                                      child: InkResponse(
-                                                                                        onTap: () {
-                                                                                          Navigator.of(context).pop();
-                                                                                        },
-                                                                                        child: const CircleAvatar(
-                                                                                          backgroundColor: Colors.red,
-                                                                                          child: Icon(Icons.close),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
+                                                                                    // Positioned(
+                                                                                    //   right: -50.0,
+                                                                                    //   top: -50.0,
+                                                                                    //   child: InkResponse(
+                                                                                    //     onTap: () {
+                                                                                    //       Navigator.of(context).pop();
+                                                                                    //     },
+                                                                                    //     //! Cancel
+                                                                                    //     child: Transform.scale(scale: 2, child: SizedBox(height: 40, child: Lottie.asset("json/icon_delete.json"))),
+                                                                                    //   ),
+                                                                                    // ),
                                                                                     Form(
                                                                                       key: _formKey,
                                                                                       child: SingleChildScrollView(
@@ -1735,14 +1748,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                     )),
                                                                                               ],
                                                                                             ),
-                                                                                            Container(
-                                                                                              alignment: Alignment.bottomRight,
-                                                                                              padding: const EdgeInsets.only(right: 15),
-                                                                                              child: const Text(
-                                                                                                '(harga jual - hpp) / harga jual',
-                                                                                                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 10, fontStyle: FontStyle.italic),
-                                                                                              ),
-                                                                                            ),
+
                                                                                             Container(
                                                                                               alignment: Alignment.bottomRight,
                                                                                               padding: const EdgeInsets.only(right: 15),
@@ -1751,7 +1757,14 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                 style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 10, fontStyle: FontStyle.italic),
                                                                                               ),
                                                                                             ),
-                                                                                            //notes
+                                                                                            Container(
+                                                                                              alignment: Alignment.bottomRight,
+                                                                                              padding: const EdgeInsets.only(right: 15),
+                                                                                              child: const Text(
+                                                                                                '(harga jual - hpp) / harga jual',
+                                                                                                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 10, fontStyle: FontStyle.italic),
+                                                                                              ),
+                                                                                            ), //notes
                                                                                             Padding(
                                                                                               padding: const EdgeInsets.all(8.0),
                                                                                               child: TextFormField(
@@ -1812,7 +1825,15 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                       });
                                                                                                     }),
                                                                                               ),
-                                                                                            )
+                                                                                            ),
+                                                                                            const SizedBox(height: 10),
+                                                                                            //! Cancel
+                                                                                            InkWell(
+                                                                                              onTap: () {
+                                                                                                Navigator.pop(context);
+                                                                                              },
+                                                                                              child: Transform.scale(scale: 2, child: SizedBox(height: 40, child: Lottie.asset("json/icon_delete.json"))),
+                                                                                            ),
                                                                                           ],
                                                                                         ),
                                                                                       ),
@@ -1932,10 +1953,13 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                           onTap: () {
                             Navigator.of(context).pop();
                           },
-                          child: const CircleAvatar(
-                            backgroundColor: Colors.red,
-                            child: Icon(Icons.close),
-                          ),
+                          //! Cancel
+                          child: Transform.scale(
+                              scale: 2,
+                              child: SizedBox(
+                                  height: 40,
+                                  child:
+                                      Lottie.asset("json/icon_delete.json"))),
                         ),
                       ),
                       Form(
@@ -2006,15 +2030,14 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                         builder: (c) =>
                                                             const MainScreenApprovePricing()));
 
-                                                showDialog<String>(
-                                                    context: context,
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        const AlertDialog(
-                                                          title: Text(
-                                                            'Save Database Berhasil',
-                                                          ),
-                                                        ));
+                                                showSimpleNotification(
+                                                  const Text(
+                                                      'Save database berhasil'),
+                                                  // subtitle: const Text('sub'),
+                                                  background: Colors.green,
+                                                  duration: const Duration(
+                                                      seconds: 5),
+                                                );
                                               });
                                             });
                                           }),
@@ -2046,15 +2069,14 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                         builder: (c) =>
                                                             const MainScreenApprovePricing()));
 
-                                                showDialog<String>(
-                                                    context: context,
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        const AlertDialog(
-                                                          title: Text(
-                                                            'Reset Database Berhasil',
-                                                          ),
-                                                        ));
+                                                showSimpleNotification(
+                                                  const Text(
+                                                      'Reset database berhasil'),
+                                                  // subtitle: const Text('sub'),
+                                                  background: Colors.green,
+                                                  duration: const Duration(
+                                                      seconds: 5),
+                                                );
                                               });
                                             });
                                           }),

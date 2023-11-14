@@ -178,7 +178,7 @@ class ApprovePricingModel {
         eticketingApprovalPrice: json['eticketingApprovalPrice'] ?? 0,
         eticketingTargetWeight: json['eticketingApprovalPrice'] ?? 0,
         eticketingTargetDiamond: json['eticketingTargetDiamond'] ?? 0,
-        theme: json['theme'] ?? 'Tanpa tema',
+        theme: json['theme'] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
