@@ -69,15 +69,15 @@ class MyApp extends StatelessWidget {
           // home: AnimatedSplashScreen(
           //     splash: Container(
           //         padding: const EdgeInsets.all(12.0),
-          //         // child: Image.asset("images/splashLogo.png")),
+          //         child: Image.asset("images/ilauncher.png")),
 
-          //         child: Lottie.asset(
-          //           'json/think.json',
-          //           // 'json/success.json',
-          //           // width: 250,
-          //           // // height: 250,
-          //           // fit: BoxFit.fill,
-          //         )),
+          //     // child: Lottie.asset(
+          //     //   'json/logo567kb.json',
+          //     //   // 'json/success.json',
+          //     //   // width: 250,
+          //     //   // // height: 250,
+          //     //   // fit: BoxFit.fill,
+          //     // )),
           //     splashIconSize: 350,
           //     // duration: ,
           //     splashTransition: SplashTransition.sizeTransition,

@@ -427,7 +427,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
                       Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Lottie.asset(
-                            'json/logo275kb.json',
+                            'json/logo567kb.json',
                             // width: 250,
                             // height: 250,
                             fit: BoxFit.cover,
