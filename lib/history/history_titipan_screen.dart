@@ -66,8 +66,8 @@ class HistoryTitipanScreen extends StatelessWidget {
                                       Lottie.asset("json/loading_black.json")));
                         } else {
                           return HistoryModelNew(
-                            order2: snapshot2.data,
-                            order: snapshot.data[index],
+                            detailTransaksi: snapshot2.data,
+                            allTransaksi: snapshot.data[index],
                           );
                         }
                       });

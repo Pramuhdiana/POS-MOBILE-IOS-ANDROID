@@ -38,9 +38,9 @@ class HistoryModelNew extends StatelessWidget {
   List<Uint8List> imagesUint8list = [];
   String namaCustomerBB = '-';
 
-  final dynamic order;
-  final dynamic order2;
-  HistoryModelNew({Key? key, required this.order, this.order2})
+  final dynamic allTransaksi;
+  final dynamic detailTransaksi;
+  HistoryModelNew({Key? key, required this.allTransaksi, this.detailTransaksi})
       : super(key: key);
 
   @override
@@ -67,7 +67,6 @@ class HistoryModelNew extends StatelessWidget {
                 child: Column(
                   children: [
                     ElevatedButton(
-                      //if user click this button, user can upload image from gallery
                       onPressed: () async {
                         Navigator.pop(
                           context,
@@ -79,7 +78,9 @@ class HistoryModelNew extends StatelessWidget {
                                 message: "",
                               );
                             });
-                        _createPdf();
+                        allTransaksi.customer_id.toString() == '1'
+                            ? _createPdfHeniBerlian()
+                            : _createPdf();
                         printMessageAfterDelay(
                             const Duration(seconds: 6), 'Delayed loading');
                       },
@@ -129,7 +130,7 @@ class HistoryModelNew extends StatelessWidget {
           });
     }
 
-    sharePdf() {
+    dialogSharePdf() {
       return showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -155,7 +156,9 @@ class HistoryModelNew extends StatelessWidget {
                                 message: "",
                               );
                             });
-                        _sharePdf();
+                        allTransaksi.customer_id.toString() == '1'
+                            ? _sharePdfHeniBerlian()
+                            : _sharePdf();
                         printMessageAfterDelay(
                             const Duration(seconds: 6), 'Delayed loading');
                       },
@@ -233,7 +236,7 @@ class HistoryModelNew extends StatelessWidget {
       }
     }
 
-    print(getCustomerBB(order.customer_beliberlian));
+    print(getCustomerBB(allTransaksi.customer_beliberlian));
     return Padding(
       padding: const EdgeInsets.all(3.0),
       child: Container(
@@ -253,7 +256,7 @@ class HistoryModelNew extends StatelessWidget {
                     Expanded(
                       child: Text(
                         // 'Kode ID       : ${order['name']}',
-                        'Kode ID       : ${order.invoices_number}',
+                        'Kode ID       : ${allTransaksi.invoices_number}',
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TextStyle(
@@ -272,16 +275,17 @@ class HistoryModelNew extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(DateFormat('EEEE, dd MMMM yyyy ')
-                        .format(DateTime.parse(order.created_at)) +
-                    (int.parse(DateFormat('hh')
-                                .format(DateTime.parse(order.created_at))) +
+                        .format(DateTime.parse(allTransaksi.created_at)) +
+                    (int.parse(DateFormat('hh').format(
+                                DateTime.parse(allTransaksi.created_at))) +
                             7)
                         .toString() +
-                    DateFormat(':mm').format(DateTime.parse(order.created_at))),
+                    DateFormat(':mm')
+                        .format(DateTime.parse(allTransaksi.created_at))),
 
-                // DateTime.parse(order.created_at).toLokal().toString()),
+                // DateTime.parse(allTransaksi.created_at).toLokal().toString()),
                 // DateTime.now().toLokal().toString()),
-                // order.created_at.toString()),
+                // allTransaksi.created_at.toString()),
               ),
             ],
           ),
@@ -299,7 +303,8 @@ class HistoryModelNew extends StatelessWidget {
                   children: [
                     Expanded(
                       child: FutureBuilder(
-                          future: getCustomerBB(order.customer_beliberlian),
+                          future:
+                              getCustomerBB(allTransaksi.customer_beliberlian),
                           builder: ((context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -312,23 +317,26 @@ class HistoryModelNew extends StatelessWidget {
                                           "json/loading_black.json")));
                             }
                             return Text(
-                                order.customer.toString().toLowerCase() ==
+                                allTransaksi.customer
+                                            .toString()
+                                            .toLowerCase() ==
                                         'beli berlian'
                                     ? ('Customer     : ') + (snapshot.data!)
-                                    : ('Customer     : ') + (order.customer),
+                                    : ('Customer     : ') +
+                                        ('${allTransaksi.customer} (${allTransaksi.customer_id})'),
                                 style: const TextStyle(fontSize: 15));
                           })),
                     ),
                     Expanded(
                       child: Text(
                         ('Total item     : ') +
-                            (order.total_quantity.toString()),
+                            (allTransaksi.total_quantity.toString()),
                         style: const TextStyle(fontSize: 15),
                       ),
                     ),
                     Expanded(
                       child: Text(
-                        'Total price    : ${CurrencyFormat.convertToIdr(order.nett - order.voucherDiskon, 0)}',
+                        'Total price    : ${CurrencyFormat.convertToIdr(allTransaksi.nett - allTransaksi.voucherDiskon, 0)}',
                         style: const TextStyle(fontSize: 15),
                       ),
                     ),
@@ -382,14 +390,14 @@ class HistoryModelNew extends StatelessWidget {
                             ? const SizedBox()
                             : IconButton(
                                 onPressed: () async {
-                                  showDialog(
-                                      context: context,
-                                      builder: (c) {
-                                        return const LoadingDialogWidget(
-                                          message: "",
-                                        );
-                                      });
-                                  await sharePdf();
+                                  // showDialog(
+                                  //     context: context,
+                                  //     builder: (c) {
+                                  //       return const LoadingDialogWidget(
+                                  //         message: "",
+                                  //       );
+                                  //     });
+                                  await dialogSharePdf();
                                 },
                                 icon: const Icon(
                                   Icons.share,
@@ -410,9 +418,9 @@ class HistoryModelNew extends StatelessWidget {
 
   _launchURLInBrowser() async {
     var url = sharedPreferences!.getString('role_sales_brand') == '3'
-        ? '$urlBase/metier/laporan/${order.invoices_number}' //? khusus metier
+        ? '$urlBase/metier/laporan/${allTransaksi.invoices_number}' //? khusus metier
 
-        : '$urlBase/transcation/laporan/${order.invoices_number}';
+        : '$urlBase/transcation/laporan/${allTransaksi.invoices_number}';
 
     if (await canLaunch(url)) {
       await launch(url);
@@ -423,7 +431,7 @@ class HistoryModelNew extends StatelessWidget {
 
 //link print invoice di web
   _launchURLInApp() async {
-    var url = '$urlBase/transcation/laporan/${order.invoices_number}';
+    var url = '$urlBase/transcation/laporan/${allTransaksi.invoices_number}';
 
     if (await canLaunch(url)) {
       await launch(url, forceSafariVC: true, forceWebView: true);
@@ -434,24 +442,44 @@ class HistoryModelNew extends StatelessWidget {
 
 //convert image nettwork to uint8list
   getImageBytes(String assetImage) async {
-    Response response = await get(
+    Response responseGambar = await get(
       Uri.parse(assetImage),
     );
     final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
     final Uint8List byteList = bytes2.buffer.asUint8List();
-    if (response.statusCode != 200) {
-      imagesUint8list.add(byteList);
-      print(imagesUint8list.length);
+
+    if (responseGambar.statusCode != 200) {
+      throw ArgumentError(
+          'Failed to download image from. Status code: ${responseGambar.statusCode}');
+      // imagesUint8list.add(byteList);
+      //   print(imagesUint8list.length);
     } else {
-      imagesUint8list.add(response.bodyBytes);
-      print(imagesUint8list.length);
+      Uint8List imageData = responseGambar.bodyBytes;
+      //? Compress the image
+      ui.Image originalUiImage = await decodeImageFromList(imageData);
+      ByteData? originalByteData = await originalUiImage.toByteData();
+      print(
+          'original image ByteData size is ${originalByteData!.lengthInBytes}');
+      var codec = await ui.instantiateImageCodec(
+        imageData,
+        //  targetHeight: 200
+      );
+      var frameInfo = await codec.getNextFrame();
+      ui.Image targetUiImage = frameInfo.image;
+      ByteData? targetByteData =
+          await targetUiImage.toByteData(format: ui.ImageByteFormat.png);
+      print('target image ByteData size is ${targetByteData!.lengthInBytes}');
+      Uint8List targetlUinit8List = targetByteData.buffer.asUint8List();
+
+      imagesUint8list.add(targetlUinit8List);
+      // imagesUint8list.add(respon/se.bodyBytes);
     }
   }
 
   void _sharePdf() async {
     PdfDocument document = PdfDocument();
     final doc = pw.Document();
-    final ByteData bytes = await rootBundle.load('images/welcomeIcon.png');
+    final ByteData bytes = await rootBundle.load('images/splashLogo.png');
     final Uint8List byteList = bytes.buffer.asUint8List();
 
     final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
@@ -459,8 +487,9 @@ class HistoryModelNew extends StatelessWidget {
 
 //new multi
     List<String> assetImages = [
-      for (var i = 0; i < order.total_quantity; i++)
-        'https://parvabisnis.id/uploads/products/' + order2[i].image_name
+      for (var i = 0; i < allTransaksi.total_quantity; i++)
+        'https://parvabisnis.id/uploads/products/' +
+            detailTransaksi[i].image_name
     ];
 
     for (String image in assetImages) await getImageBytes(image);
@@ -491,7 +520,7 @@ class HistoryModelNew extends StatelessWidget {
       pw.MultiPage(
           pageFormat: PdfPageFormat.a4,
           build: (context) {
-            if (order.total_quantity <= 10) {
+            if (allTransaksi.total_quantity <= 10) {
               return [
                 pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -500,9 +529,14 @@ class HistoryModelNew extends StatelessWidget {
                       pw.Row(
                         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                         children: [
-                          pw.Image(pw.MemoryImage(byteList),
-                              fit: pw.BoxFit.fitHeight, height: 50, width: 150),
-                          pw.Header(text: order.jenisform, level: 1),
+                          pw.Transform.scale(
+                            scale: 3,
+                            child: pw.Image(pw.MemoryImage(byteList),
+                                fit: pw.BoxFit.fitHeight,
+                                height: 50,
+                                width: 150),
+                          ),
+                          pw.Header(text: allTransaksi.jenisform, level: 1),
                         ],
                       ),
                       pw.SizedBox(height: 10),
@@ -519,14 +553,30 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
-                                pw.SizedBox(
+                                pw.Container(
                                   width: 300,
-                                  child: pw.Text(
-                                      'No Surat        : ' +
-                                          order.invoices_number,
-                                      style: pw.TextStyle(
-                                          fontWeight: pw.FontWeight.bold,
-                                          fontSize: 10)),
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('No Surat',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                    pw.FontWeight.bold)),
+                                      ),
+                                      pw.Text(allTransaksi.invoices_number,
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: pw.FontWeight.bold)),
+                                    ],
+                                  ),
                                 ),
                                 pw.SizedBox(
                                   width: 35,
@@ -536,7 +586,7 @@ class HistoryModelNew extends StatelessWidget {
                                 pw.Text(':'),
                                 pw.SizedBox(
                                   width: 100,
-                                  child: pw.Text(order.customer,
+                                  child: pw.Text(allTransaksi.customer,
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                               ],
@@ -548,11 +598,33 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
-                                pw.SizedBox(
-                                  width: 300,
-                                  child: pw.Text(
-                                      'BC                  : ' + order.user,
-                                      style: const pw.TextStyle(fontSize: 10)),
+                                pw.Row(
+                                  mainAxisAlignment:
+                                      pw.MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    pw.Container(
+                                      width: 300,
+                                      child: pw.Row(
+                                        children: [
+                                          pw.Container(
+                                            width: 80,
+                                            child: pw.Text('BC',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Container(
+                                            width: 10,
+                                            child: pw.Text(':',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Text(allTransaksi.user,
+                                              style: const pw.TextStyle(
+                                                  fontSize: 10)),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 pw.SizedBox(
                                   width: 35,
@@ -562,7 +634,7 @@ class HistoryModelNew extends StatelessWidget {
                                 pw.Text(':'),
                                 pw.SizedBox(
                                   width: 100,
-                                  child: pw.Text(order.alamat,
+                                  child: pw.Text(allTransaksi.alamat,
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                               ],
@@ -574,14 +646,29 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
-                                pw.SizedBox(
+                                pw.Container(
                                   width: 300,
-                                  child: pw.Text(
-                                    'Hari/Tanggal  : ' +
-                                        DateFormat('EEEE, dd MMMM yyyy H:mm')
-                                            .format(DateTime.parse(
-                                                order.created_at)),
-                                    style: const pw.TextStyle(fontSize: 10),
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('Hari/Tanggal',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Text(
+                                          DateFormat('EEEE, dd MMMM yyyy H:mm')
+                                              .format(DateTime.parse(
+                                                  allTransaksi.created_at)),
+                                          style:
+                                              const pw.TextStyle(fontSize: 10)),
+                                    ],
                                   ),
                                 ),
                                 pw.SizedBox(
@@ -598,7 +685,6 @@ class HistoryModelNew extends StatelessWidget {
                           ],
                         ),
                       ),
-
                       pw.SizedBox(height: 20),
 
                       //head table
@@ -689,7 +775,7 @@ class HistoryModelNew extends StatelessWidget {
 
                       //body isi
                       pw.Table(children: [
-                        for (var i = 0; i < order.total_quantity; i++)
+                        for (var i = 0; i < allTransaksi.total_quantity; i++)
                           pw.TableRow(children: [
                             pw.Column(
                                 crossAxisAlignment:
@@ -713,7 +799,8 @@ class HistoryModelNew extends StatelessWidget {
                                   pw.SizedBox(height: 18),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(left: -5),
-                                    child: pw.Text(order2[i].name.toString(),
+                                    child: pw.Text(
+                                        detailTransaksi[i].name.toString(),
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -733,8 +820,8 @@ class HistoryModelNew extends StatelessWidget {
                                       padding:
                                           const pw.EdgeInsets.only(left: -45),
                                       child: pw.Text(
-                                          order2[i].keterangan_barang,
-                                          // order2.docs[i - 1]['description'],
+                                          detailTransaksi[i].keterangan_barang,
+                                          // detailTransaksi.docs[i - 1]['description'],
                                           style:
                                               const pw.TextStyle(fontSize: 6)),
                                     ),
@@ -764,7 +851,7 @@ class HistoryModelNew extends StatelessWidget {
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${order2[i].price.toString()}',
+                                        '\$ ${detailTransaksi[i].price.toString()}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -801,7 +888,8 @@ class HistoryModelNew extends StatelessWidget {
                               pw.Text(':'),
                               pw.SizedBox(
                                 width: 100,
-                                child: pw.Text('\$ ' + order.total.toString(),
+                                child: pw.Text(
+                                    '\$ ' + allTransaksi.total.toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -820,7 +908,8 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    order.basic_discount.toString() + ' %',
+                                    allTransaksi.basic_discount.toString() +
+                                        ' %',
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -838,7 +927,7 @@ class HistoryModelNew extends StatelessWidget {
                               pw.Text(':'),
                               pw.SizedBox(
                                 width: 100,
-                                child: pw.Text(order.rate.toString(),
+                                child: pw.Text(allTransaksi.rate.toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -858,7 +947,8 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    CurrencyFormat.convertToIdr(order.nett, 0)
+                                    CurrencyFormat.convertToIdr(
+                                            allTransaksi.nett, 0)
                                         .toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
@@ -920,9 +1010,14 @@ class HistoryModelNew extends StatelessWidget {
                       pw.Row(
                         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                         children: [
-                          pw.Image(pw.MemoryImage(byteList),
-                              fit: pw.BoxFit.fitHeight, height: 50, width: 150),
-                          pw.Header(text: order.jenisform, level: 1),
+                          pw.Transform.scale(
+                            scale: 3,
+                            child: pw.Image(pw.MemoryImage(byteList),
+                                fit: pw.BoxFit.fitHeight,
+                                height: 50,
+                                width: 150),
+                          ),
+                          pw.Header(text: allTransaksi.jenisform, level: 1),
                         ],
                       ),
                       pw.SizedBox(height: 10),
@@ -939,14 +1034,30 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
-                                pw.SizedBox(
+                                pw.Container(
                                   width: 300,
-                                  child: pw.Text(
-                                      'No Surat        : ' +
-                                          order.invoices_number,
-                                      style: pw.TextStyle(
-                                          fontWeight: pw.FontWeight.bold,
-                                          fontSize: 10)),
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('No Surat',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                    pw.FontWeight.bold)),
+                                      ),
+                                      pw.Text(allTransaksi.invoices_number,
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: pw.FontWeight.bold)),
+                                    ],
+                                  ),
                                 ),
                                 pw.SizedBox(
                                   width: 35,
@@ -956,7 +1067,7 @@ class HistoryModelNew extends StatelessWidget {
                                 pw.Text(':'),
                                 pw.SizedBox(
                                   width: 100,
-                                  child: pw.Text(order.customer,
+                                  child: pw.Text(allTransaksi.customer,
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                               ],
@@ -968,11 +1079,33 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
-                                pw.SizedBox(
-                                  width: 300,
-                                  child: pw.Text(
-                                      'BC                  : ' + order.user,
-                                      style: const pw.TextStyle(fontSize: 10)),
+                                pw.Row(
+                                  mainAxisAlignment:
+                                      pw.MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    pw.Container(
+                                      width: 300,
+                                      child: pw.Row(
+                                        children: [
+                                          pw.Container(
+                                            width: 80,
+                                            child: pw.Text('BC',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Container(
+                                            width: 10,
+                                            child: pw.Text(':',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Text(allTransaksi.user,
+                                              style: const pw.TextStyle(
+                                                  fontSize: 10)),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 pw.SizedBox(
                                   width: 35,
@@ -982,7 +1115,7 @@ class HistoryModelNew extends StatelessWidget {
                                 pw.Text(':'),
                                 pw.SizedBox(
                                   width: 100,
-                                  child: pw.Text(order.alamat,
+                                  child: pw.Text(allTransaksi.alamat,
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                               ],
@@ -994,14 +1127,29 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
-                                pw.SizedBox(
+                                pw.Container(
                                   width: 300,
-                                  child: pw.Text(
-                                    'Hari/Tanggal  : ' +
-                                        DateFormat('EEEE, dd MMMM yyyy H:mm')
-                                            .format(DateTime.parse(
-                                                order.created_at)),
-                                    style: const pw.TextStyle(fontSize: 10),
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('Hari/Tanggal',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Text(
+                                          DateFormat('EEEE, dd MMMM yyyy H:mm')
+                                              .format(DateTime.parse(
+                                                  allTransaksi.created_at)),
+                                          style:
+                                              const pw.TextStyle(fontSize: 10)),
+                                    ],
                                   ),
                                 ),
                                 pw.SizedBox(
@@ -1019,6 +1167,7 @@ class HistoryModelNew extends StatelessWidget {
                         ),
                       ),
                       pw.SizedBox(height: 20),
+
                       //head table
                       pw.Table(children: [
                         pw.TableRow(children: [
@@ -1132,7 +1281,8 @@ class HistoryModelNew extends StatelessWidget {
                                   pw.SizedBox(height: 18),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(left: -5),
-                                    child: pw.Text(order2[i].name.toString(),
+                                    child: pw.Text(
+                                        detailTransaksi[i].name.toString(),
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -1152,7 +1302,7 @@ class HistoryModelNew extends StatelessWidget {
                                       padding:
                                           const pw.EdgeInsets.only(left: -45),
                                       child: pw.Text(
-                                          order2[i].keterangan_barang,
+                                          detailTransaksi[i].keterangan_barang,
                                           style:
                                               const pw.TextStyle(fontSize: 6)),
                                     ),
@@ -1182,7 +1332,7 @@ class HistoryModelNew extends StatelessWidget {
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${order2[i].price.toString()}',
+                                        '\$ ${detailTransaksi[i].price.toString()}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -1205,7 +1355,7 @@ class HistoryModelNew extends StatelessWidget {
                 // body isi page 2
                 //body isi
                 pw.Table(children: [
-                  for (var i = 10; i < order.total_quantity; i++)
+                  for (var i = 10; i < allTransaksi.total_quantity; i++)
                     pw.TableRow(children: [
                       pw.Column(
                           crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -1226,7 +1376,7 @@ class HistoryModelNew extends StatelessWidget {
                             pw.SizedBox(height: 18),
                             pw.Padding(
                               padding: const pw.EdgeInsets.only(left: -5),
-                              child: pw.Text(order2[i].name.toString(),
+                              child: pw.Text(detailTransaksi[i].name.toString(),
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
                             pw.Divider(thickness: 1)
@@ -1243,7 +1393,8 @@ class HistoryModelNew extends StatelessWidget {
                               width: 80,
                               child: pw.Padding(
                                 padding: const pw.EdgeInsets.only(left: -45),
-                                child: pw.Text(order2[i].keterangan_barang,
+                                child: pw.Text(
+                                    detailTransaksi[i].keterangan_barang,
                                     style: const pw.TextStyle(fontSize: 6)),
                               ),
                             ),
@@ -1269,7 +1420,8 @@ class HistoryModelNew extends StatelessWidget {
                             pw.Padding(
                               padding:
                                   const pw.EdgeInsets.only(right: -5, left: 20),
-                              child: pw.Text('\$ ${order2[i].price.toString()}',
+                              child: pw.Text(
+                                  '\$ ${detailTransaksi[i].price.toString()}',
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
                             pw.Divider(thickness: 1)
@@ -1302,7 +1454,7 @@ class HistoryModelNew extends StatelessWidget {
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text('\$ ' + order.total.toString(),
+                          child: pw.Text('\$ ' + allTransaksi.total.toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -1319,7 +1471,8 @@ class HistoryModelNew extends StatelessWidget {
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text(order.basic_discount.toString() + ' %',
+                          child: pw.Text(
+                              allTransaksi.basic_discount.toString() + ' %',
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -1336,7 +1489,7 @@ class HistoryModelNew extends StatelessWidget {
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text(order.rate.toString(),
+                          child: pw.Text(allTransaksi.rate.toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -1355,7 +1508,7 @@ class HistoryModelNew extends StatelessWidget {
                         pw.SizedBox(
                           width: 100,
                           child: pw.Text(
-                              CurrencyFormat.convertToIdr(order.nett, 0)
+                              CurrencyFormat.convertToIdr(allTransaksi.nett, 0)
                                   .toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
@@ -1406,13 +1559,15 @@ class HistoryModelNew extends StatelessWidget {
 
     //? share the document to other applications:
     await Printing.sharePdf(
-        bytes: await doc.save(), filename: '${order.invoices_number}.pdf');
+        bytes: await doc.save(),
+        filename: '${allTransaksi.invoices_number}.pdf');
   }
 
   void _createPdf() async {
     PdfDocument document = PdfDocument();
     final doc = pw.Document();
-    final ByteData bytes = await rootBundle.load('images/welcomeIcon.png');
+    final ByteData bytes = await rootBundle.load('images/splashLogo.png');
+    // final ByteData bytes = await rootBundle.load('images/welcomeIcon.png');
 
     final Uint8List byteList = bytes.buffer.asUint8List();
     final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
@@ -1420,9 +1575,11 @@ class HistoryModelNew extends StatelessWidget {
 
 //new multi
     List<String> assetImages = [
-      for (var i = 0; i < order.total_quantity; i++)
-        'https://parvabisnis.id/uploads/products/' + order2[i].image_name
+      for (var i = 0; i < allTransaksi.total_quantity; i++)
+        'https://parvabisnis.id/uploads/products/' +
+            detailTransaksi[i].image_name
     ];
+
     for (String image in assetImages) await getImageBytes(image);
     List<pw.Widget> pdfImages = imagesUint8list.map((image) {
       try {
@@ -1450,7 +1607,7 @@ class HistoryModelNew extends StatelessWidget {
       pw.MultiPage(
           pageFormat: PdfPageFormat.a4,
           build: (context) {
-            if (order.total_quantity <= 10) {
+            if (allTransaksi.total_quantity <= 10) {
               return [
                 pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -1459,9 +1616,14 @@ class HistoryModelNew extends StatelessWidget {
                       pw.Row(
                         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                         children: [
-                          pw.Image(pw.MemoryImage(byteList),
-                              fit: pw.BoxFit.fitHeight, height: 50, width: 150),
-                          pw.Header(text: order.jenisform, level: 1),
+                          pw.Transform.scale(
+                            scale: 3,
+                            child: pw.Image(pw.MemoryImage(byteList),
+                                fit: pw.BoxFit.fitHeight,
+                                height: 50,
+                                width: 150),
+                          ),
+                          pw.Header(text: allTransaksi.jenisform, level: 1),
                         ],
                       ),
                       pw.SizedBox(height: 10),
@@ -1478,14 +1640,30 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
-                                pw.SizedBox(
+                                pw.Container(
                                   width: 300,
-                                  child: pw.Text(
-                                      'No Surat        : ' +
-                                          order.invoices_number,
-                                      style: pw.TextStyle(
-                                          fontWeight: pw.FontWeight.bold,
-                                          fontSize: 10)),
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('No Surat',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                    pw.FontWeight.bold)),
+                                      ),
+                                      pw.Text(allTransaksi.invoices_number,
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: pw.FontWeight.bold)),
+                                    ],
+                                  ),
                                 ),
                                 pw.SizedBox(
                                   width: 35,
@@ -1495,7 +1673,7 @@ class HistoryModelNew extends StatelessWidget {
                                 pw.Text(':'),
                                 pw.SizedBox(
                                   width: 100,
-                                  child: pw.Text(order.customer,
+                                  child: pw.Text(allTransaksi.customer,
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                               ],
@@ -1507,11 +1685,33 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
-                                pw.SizedBox(
-                                  width: 300,
-                                  child: pw.Text(
-                                      'BC                  : ' + order.user,
-                                      style: const pw.TextStyle(fontSize: 10)),
+                                pw.Row(
+                                  mainAxisAlignment:
+                                      pw.MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    pw.Container(
+                                      width: 300,
+                                      child: pw.Row(
+                                        children: [
+                                          pw.Container(
+                                            width: 80,
+                                            child: pw.Text('BC',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Container(
+                                            width: 10,
+                                            child: pw.Text(':',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Text(allTransaksi.user,
+                                              style: const pw.TextStyle(
+                                                  fontSize: 10)),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 pw.SizedBox(
                                   width: 35,
@@ -1521,7 +1721,7 @@ class HistoryModelNew extends StatelessWidget {
                                 pw.Text(':'),
                                 pw.SizedBox(
                                   width: 100,
-                                  child: pw.Text(order.alamat,
+                                  child: pw.Text(allTransaksi.alamat,
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                               ],
@@ -1533,14 +1733,29 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
-                                pw.SizedBox(
+                                pw.Container(
                                   width: 300,
-                                  child: pw.Text(
-                                    'Hari/Tanggal  : ' +
-                                        DateFormat('EEEE, dd MMMM yyyy H:mm')
-                                            .format(DateTime.parse(
-                                                order.created_at)),
-                                    style: const pw.TextStyle(fontSize: 10),
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('Hari/Tanggal',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Text(
+                                          DateFormat('EEEE, dd MMMM yyyy H:mm')
+                                              .format(DateTime.parse(
+                                                  allTransaksi.created_at)),
+                                          style:
+                                              const pw.TextStyle(fontSize: 10)),
+                                    ],
                                   ),
                                 ),
                                 pw.SizedBox(
@@ -1557,7 +1772,6 @@ class HistoryModelNew extends StatelessWidget {
                           ],
                         ),
                       ),
-
                       pw.SizedBox(height: 20),
 
                       //head table
@@ -1648,7 +1862,7 @@ class HistoryModelNew extends StatelessWidget {
 
                       //body isi
                       pw.Table(children: [
-                        for (var i = 0; i < order.total_quantity; i++)
+                        for (var i = 0; i < allTransaksi.total_quantity; i++)
                           pw.TableRow(children: [
                             pw.Column(
                                 crossAxisAlignment:
@@ -1672,7 +1886,8 @@ class HistoryModelNew extends StatelessWidget {
                                   pw.SizedBox(height: 18),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(left: -5),
-                                    child: pw.Text(order2[i].name.toString(),
+                                    child: pw.Text(
+                                        detailTransaksi[i].name.toString(),
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -1692,7 +1907,7 @@ class HistoryModelNew extends StatelessWidget {
                                       padding:
                                           const pw.EdgeInsets.only(left: -45),
                                       child: pw.Text(
-                                          order2[i].keterangan_barang,
+                                          detailTransaksi[i].keterangan_barang,
                                           style:
                                               const pw.TextStyle(fontSize: 6)),
                                     ),
@@ -1722,7 +1937,7 @@ class HistoryModelNew extends StatelessWidget {
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${order2[i].price.toString()}',
+                                        '\$ ${detailTransaksi[i].price.toString()}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -1759,7 +1974,8 @@ class HistoryModelNew extends StatelessWidget {
                               pw.Text(':'),
                               pw.SizedBox(
                                 width: 100,
-                                child: pw.Text('\$ ' + order.total.toString(),
+                                child: pw.Text(
+                                    '\$ ' + allTransaksi.total.toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -1778,7 +1994,8 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    order.basic_discount.toString() + ' %',
+                                    allTransaksi.basic_discount.toString() +
+                                        ' %',
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -1796,7 +2013,7 @@ class HistoryModelNew extends StatelessWidget {
                               pw.Text(':'),
                               pw.SizedBox(
                                 width: 100,
-                                child: pw.Text(order.rate.toString(),
+                                child: pw.Text(allTransaksi.rate.toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -1816,7 +2033,8 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    CurrencyFormat.convertToIdr(order.nett, 0)
+                                    CurrencyFormat.convertToIdr(
+                                            allTransaksi.nett, 0)
                                         .toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
@@ -1878,9 +2096,14 @@ class HistoryModelNew extends StatelessWidget {
                       pw.Row(
                         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                         children: [
-                          pw.Image(pw.MemoryImage(byteList),
-                              fit: pw.BoxFit.fitHeight, height: 50, width: 150),
-                          pw.Header(text: order.jenisform, level: 1),
+                          pw.Transform.scale(
+                            scale: 3,
+                            child: pw.Image(pw.MemoryImage(byteList),
+                                fit: pw.BoxFit.fitHeight,
+                                height: 50,
+                                width: 150),
+                          ),
+                          pw.Header(text: allTransaksi.jenisform, level: 1),
                         ],
                       ),
                       pw.SizedBox(height: 10),
@@ -1897,14 +2120,30 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
-                                pw.SizedBox(
+                                pw.Container(
                                   width: 300,
-                                  child: pw.Text(
-                                      'No Surat        : ' +
-                                          order.invoices_number,
-                                      style: pw.TextStyle(
-                                          fontWeight: pw.FontWeight.bold,
-                                          fontSize: 10)),
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('No Surat',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                    pw.FontWeight.bold)),
+                                      ),
+                                      pw.Text(allTransaksi.invoices_number,
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: pw.FontWeight.bold)),
+                                    ],
+                                  ),
                                 ),
                                 pw.SizedBox(
                                   width: 35,
@@ -1914,7 +2153,7 @@ class HistoryModelNew extends StatelessWidget {
                                 pw.Text(':'),
                                 pw.SizedBox(
                                   width: 100,
-                                  child: pw.Text(order.customer,
+                                  child: pw.Text(allTransaksi.customer,
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                               ],
@@ -1926,11 +2165,33 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
-                                pw.SizedBox(
-                                  width: 300,
-                                  child: pw.Text(
-                                      'BC                  : ' + order.user,
-                                      style: const pw.TextStyle(fontSize: 10)),
+                                pw.Row(
+                                  mainAxisAlignment:
+                                      pw.MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    pw.Container(
+                                      width: 300,
+                                      child: pw.Row(
+                                        children: [
+                                          pw.Container(
+                                            width: 80,
+                                            child: pw.Text('BC',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Container(
+                                            width: 10,
+                                            child: pw.Text(':',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Text(allTransaksi.user,
+                                              style: const pw.TextStyle(
+                                                  fontSize: 10)),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 pw.SizedBox(
                                   width: 35,
@@ -1940,7 +2201,7 @@ class HistoryModelNew extends StatelessWidget {
                                 pw.Text(':'),
                                 pw.SizedBox(
                                   width: 100,
-                                  child: pw.Text(order.alamat,
+                                  child: pw.Text(allTransaksi.alamat,
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                               ],
@@ -1952,14 +2213,29 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
-                                pw.SizedBox(
+                                pw.Container(
                                   width: 300,
-                                  child: pw.Text(
-                                    'Hari/Tanggal  : ' +
-                                        DateFormat('EEEE, dd MMMM yyyy H:mm')
-                                            .format(DateTime.parse(
-                                                order.created_at)),
-                                    style: const pw.TextStyle(fontSize: 10),
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('Hari/Tanggal',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Text(
+                                          DateFormat('EEEE, dd MMMM yyyy H:mm')
+                                              .format(DateTime.parse(
+                                                  allTransaksi.created_at)),
+                                          style:
+                                              const pw.TextStyle(fontSize: 10)),
+                                    ],
                                   ),
                                 ),
                                 pw.SizedBox(
@@ -1977,6 +2253,7 @@ class HistoryModelNew extends StatelessWidget {
                         ),
                       ),
                       pw.SizedBox(height: 20),
+
                       //head table
                       pw.Table(children: [
                         pw.TableRow(children: [
@@ -2090,7 +2367,8 @@ class HistoryModelNew extends StatelessWidget {
                                   pw.SizedBox(height: 18),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(left: -5),
-                                    child: pw.Text(order2[i].name.toString(),
+                                    child: pw.Text(
+                                        detailTransaksi[i].name.toString(),
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -2110,7 +2388,7 @@ class HistoryModelNew extends StatelessWidget {
                                       padding:
                                           const pw.EdgeInsets.only(left: -45),
                                       child: pw.Text(
-                                          order2[i].keterangan_barang,
+                                          detailTransaksi[i].keterangan_barang,
                                           style:
                                               const pw.TextStyle(fontSize: 6)),
                                     ),
@@ -2140,7 +2418,7 @@ class HistoryModelNew extends StatelessWidget {
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${order2[i].price.toString()}',
+                                        '\$ ${detailTransaksi[i].price.toString()}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -2163,7 +2441,7 @@ class HistoryModelNew extends StatelessWidget {
                 // body isi page 2
                 //body isi
                 pw.Table(children: [
-                  for (var i = 10; i < order.total_quantity; i++)
+                  for (var i = 10; i < allTransaksi.total_quantity; i++)
                     pw.TableRow(children: [
                       pw.Column(
                           crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -2184,7 +2462,7 @@ class HistoryModelNew extends StatelessWidget {
                             pw.SizedBox(height: 18),
                             pw.Padding(
                               padding: const pw.EdgeInsets.only(left: -5),
-                              child: pw.Text(order2[i].name.toString(),
+                              child: pw.Text(detailTransaksi[i].name.toString(),
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
                             pw.Divider(thickness: 1)
@@ -2201,7 +2479,8 @@ class HistoryModelNew extends StatelessWidget {
                               width: 80,
                               child: pw.Padding(
                                 padding: const pw.EdgeInsets.only(left: -45),
-                                child: pw.Text(order2[i].keterangan_barang,
+                                child: pw.Text(
+                                    detailTransaksi[i].keterangan_barang,
                                     style: const pw.TextStyle(fontSize: 6)),
                               ),
                             ),
@@ -2227,7 +2506,8 @@ class HistoryModelNew extends StatelessWidget {
                             pw.Padding(
                               padding:
                                   const pw.EdgeInsets.only(right: -5, left: 20),
-                              child: pw.Text('\$ ${order2[i].price.toString()}',
+                              child: pw.Text(
+                                  '\$ ${detailTransaksi[i].price.toString()}',
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
                             pw.Divider(thickness: 1)
@@ -2260,7 +2540,7 @@ class HistoryModelNew extends StatelessWidget {
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text('\$ ' + order.total.toString(),
+                          child: pw.Text('\$ ' + allTransaksi.total.toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -2277,7 +2557,8 @@ class HistoryModelNew extends StatelessWidget {
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text(order.basic_discount.toString() + ' %',
+                          child: pw.Text(
+                              allTransaksi.basic_discount.toString() + ' %',
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -2294,7 +2575,7 @@ class HistoryModelNew extends StatelessWidget {
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text(order.rate.toString(),
+                          child: pw.Text(allTransaksi.rate.toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -2313,7 +2594,7 @@ class HistoryModelNew extends StatelessWidget {
                         pw.SizedBox(
                           width: 100,
                           child: pw.Text(
-                              CurrencyFormat.convertToIdr(order.nett, 0)
+                              CurrencyFormat.convertToIdr(allTransaksi.nett, 0)
                                   .toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
@@ -2371,7 +2652,7 @@ class HistoryModelNew extends StatelessWidget {
   void _createPdfMetier() async {
     PdfDocument document = PdfDocument();
     final doc = pw.Document();
-    final ByteData bytes = await rootBundle.load('images/welcomeIcon.png');
+    final ByteData bytes = await rootBundle.load('images/splashLogo.png');
 
     final Uint8List byteList = bytes.buffer.asUint8List();
     final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
@@ -2379,8 +2660,9 @@ class HistoryModelNew extends StatelessWidget {
 
 //new multi
     List<String> assetImages = [
-      for (var i = 0; i < order.total_quantity; i++)
-        'https://parvabisnis.id/uploads/products/' + order2[i].image_name
+      for (var i = 0; i < allTransaksi.total_quantity; i++)
+        'https://parvabisnis.id/uploads/products/' +
+            detailTransaksi[i].image_name
     ];
     for (String image in assetImages) await getImageBytes(image);
     List<pw.Widget> pdfImages = imagesUint8list.map((image) {
@@ -2431,7 +2713,7 @@ class HistoryModelNew extends StatelessWidget {
       pw.MultiPage(
           pageFormat: PdfPageFormat.a4,
           build: (context) {
-            if (order.total_quantity <= 10) {
+            if (allTransaksi.total_quantity <= 10) {
               return [
                 pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -2459,7 +2741,7 @@ class HistoryModelNew extends StatelessWidget {
                                       style: const pw.TextStyle(fontSize: 12)),
                                 ),
                                 pw.SizedBox(
-                                  child: pw.Text(order.invoices_number,
+                                  child: pw.Text(allTransaksi.invoices_number,
                                       style: pw.TextStyle(
                                         fontSize: 12,
                                         fontWeight: pw.FontWeight.bold,
@@ -2477,13 +2759,13 @@ class HistoryModelNew extends StatelessWidget {
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
                                 pw.SizedBox(
-                                  child: pw.Text(order.customer,
+                                  child: pw.Text(allTransaksi.customer,
                                       style: const pw.TextStyle(fontSize: 12)),
                                 ),
                                 pw.SizedBox(
                                     child: pw.Text(
                                         DateFormat('MMMM dd, yyyy').format(
-                                  DateTime.parse(order.created_at),
+                                  DateTime.parse(allTransaksi.created_at),
                                 ))),
                               ],
                             ),
@@ -2497,11 +2779,11 @@ class HistoryModelNew extends StatelessWidget {
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
                                 pw.SizedBox(
-                                  child: pw.Text(order.alamat,
+                                  child: pw.Text(allTransaksi.alamat,
                                       style: const pw.TextStyle(fontSize: 12)),
                                 ),
                                 pw.SizedBox(
-                                  child: pw.Text(order.alamat,
+                                  child: pw.Text(allTransaksi.alamat,
                                       style: const pw.TextStyle(
                                         fontSize: 18,
                                       )),
@@ -2603,19 +2885,20 @@ class HistoryModelNew extends StatelessWidget {
 
                       //body isi
                       pw.Table(children: [
-                        for (var i = 0; i < order.total_quantity; i++)
+                        for (var i = 0; i < allTransaksi.total_quantity; i++)
                           pw.TableRow(children: [
                             pw.Column(
                                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                                 mainAxisAlignment: pw.MainAxisAlignment.start,
                                 children: [
-                                  pw.Text(order2[i].name,
+                                  pw.Text(detailTransaksi[i].name,
                                       maxLines: 1,
                                       style: const pw.TextStyle(fontSize: 14)),
                                   pw.Container(
                                     height: 72,
                                     width: 200,
-                                    child: pw.Text(order2[i].keterangan_barang,
+                                    child: pw.Text(
+                                        detailTransaksi[i].keterangan_barang,
                                         // maxLines: 4,
                                         style:
                                             const pw.TextStyle(fontSize: 16)),
@@ -2647,7 +2930,7 @@ class HistoryModelNew extends StatelessWidget {
                                   pw.Container(
                                     child: pw.Text(
                                         CurrencyFormat.convertToIdr(
-                                                order2[i].price, 0)
+                                                detailTransaksi[i].price, 0)
                                             .toString(),
                                         style:
                                             const pw.TextStyle(fontSize: 16)),
@@ -2674,7 +2957,8 @@ class HistoryModelNew extends StatelessWidget {
                               pw.Text(':'),
                               pw.SizedBox(
                                 width: 100,
-                                child: pw.Text('\$ ' + order.total.toString(),
+                                child: pw.Text(
+                                    '\$ ' + allTransaksi.total.toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -2693,7 +2977,8 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    order.basic_discount.toString() + ' %',
+                                    allTransaksi.basic_discount.toString() +
+                                        ' %',
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -2711,7 +2996,7 @@ class HistoryModelNew extends StatelessWidget {
                               pw.Text(':'),
                               pw.SizedBox(
                                 width: 100,
-                                child: pw.Text(order.rate.toString(),
+                                child: pw.Text(allTransaksi.rate.toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -2731,7 +3016,8 @@ class HistoryModelNew extends StatelessWidget {
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    CurrencyFormat.convertToIdr(order.nett, 0)
+                                    CurrencyFormat.convertToIdr(
+                                            allTransaksi.nett, 0)
                                         .toString(),
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
@@ -2795,7 +3081,7 @@ class HistoryModelNew extends StatelessWidget {
                         children: [
                           pw.Image(pw.MemoryImage(byteList),
                               fit: pw.BoxFit.fitHeight, height: 50, width: 150),
-                          pw.Header(text: order.jenisform, level: 1),
+                          pw.Header(text: allTransaksi.jenisform, level: 1),
                         ],
                       ),
                       pw.SizedBox(height: 10),
@@ -2816,7 +3102,7 @@ class HistoryModelNew extends StatelessWidget {
                                   width: 300,
                                   child: pw.Text(
                                       'No Surat        : ' +
-                                          order.invoices_number,
+                                          allTransaksi.invoices_number,
                                       style: pw.TextStyle(
                                           fontWeight: pw.FontWeight.bold,
                                           fontSize: 10)),
@@ -2829,7 +3115,7 @@ class HistoryModelNew extends StatelessWidget {
                                 pw.Text(':'),
                                 pw.SizedBox(
                                   width: 100,
-                                  child: pw.Text(order.customer,
+                                  child: pw.Text(allTransaksi.customer,
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                               ],
@@ -2844,7 +3130,8 @@ class HistoryModelNew extends StatelessWidget {
                                 pw.SizedBox(
                                   width: 300,
                                   child: pw.Text(
-                                      'BC                  : ' + order.user,
+                                      'BC                  : ' +
+                                          allTransaksi.user,
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                                 pw.SizedBox(
@@ -2855,7 +3142,7 @@ class HistoryModelNew extends StatelessWidget {
                                 pw.Text(':'),
                                 pw.SizedBox(
                                   width: 100,
-                                  child: pw.Text(order.alamat,
+                                  child: pw.Text(allTransaksi.alamat,
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                               ],
@@ -2873,7 +3160,7 @@ class HistoryModelNew extends StatelessWidget {
                                     'Hari/Tanggal  : ' +
                                         DateFormat('EEEE, dd MMMM yyyy H:mm')
                                             .format(DateTime.parse(
-                                                order.created_at)),
+                                                allTransaksi.created_at)),
                                     style: const pw.TextStyle(fontSize: 10),
                                   ),
                                 ),
@@ -3005,7 +3292,8 @@ class HistoryModelNew extends StatelessWidget {
                                   pw.SizedBox(height: 18),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(left: -5),
-                                    child: pw.Text(order2[i].name.toString(),
+                                    child: pw.Text(
+                                        detailTransaksi[i].name.toString(),
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -3025,8 +3313,8 @@ class HistoryModelNew extends StatelessWidget {
                                       padding:
                                           const pw.EdgeInsets.only(left: -45),
                                       child: pw.Text(
-                                          order2[i].keterangan_barang,
-                                          // order2.docs[i - 1]['description'],
+                                          detailTransaksi[i].keterangan_barang,
+                                          // detailTransaksi.docs[i - 1]['description'],
                                           style:
                                               const pw.TextStyle(fontSize: 6)),
                                     ),
@@ -3056,7 +3344,7 @@ class HistoryModelNew extends StatelessWidget {
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${order2[i].price.toString()}',
+                                        '\$ ${detailTransaksi[i].price.toString()}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
                                   pw.Divider(thickness: 1)
@@ -3079,7 +3367,7 @@ class HistoryModelNew extends StatelessWidget {
                 // body isi page 2
                 //body isi
                 pw.Table(children: [
-                  for (var i = 10; i < order.total_quantity; i++)
+                  for (var i = 10; i < allTransaksi.total_quantity; i++)
                     pw.TableRow(children: [
                       pw.Column(
                           crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -3100,7 +3388,7 @@ class HistoryModelNew extends StatelessWidget {
                             pw.SizedBox(height: 18),
                             pw.Padding(
                               padding: const pw.EdgeInsets.only(left: -5),
-                              child: pw.Text(order2[i].name.toString(),
+                              child: pw.Text(detailTransaksi[i].name.toString(),
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
                             pw.Divider(thickness: 1)
@@ -3117,8 +3405,9 @@ class HistoryModelNew extends StatelessWidget {
                               width: 80,
                               child: pw.Padding(
                                 padding: const pw.EdgeInsets.only(left: -45),
-                                child: pw.Text(order2[i].keterangan_barang,
-                                    // order2.docs[i - 1]['description'],
+                                child: pw.Text(
+                                    detailTransaksi[i].keterangan_barang,
+                                    // detailTransaksi.docs[i - 1]['description'],
                                     style: const pw.TextStyle(fontSize: 6)),
                               ),
                             ),
@@ -3144,7 +3433,8 @@ class HistoryModelNew extends StatelessWidget {
                             pw.Padding(
                               padding:
                                   const pw.EdgeInsets.only(right: -5, left: 20),
-                              child: pw.Text('\$ ${order2[i].price.toString()}',
+                              child: pw.Text(
+                                  '\$ ${detailTransaksi[i].price.toString()}',
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
                             pw.Divider(thickness: 1)
@@ -3177,7 +3467,7 @@ class HistoryModelNew extends StatelessWidget {
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text('\$ ' + order.total.toString(),
+                          child: pw.Text('\$ ' + allTransaksi.total.toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -3194,7 +3484,8 @@ class HistoryModelNew extends StatelessWidget {
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text(order.basic_discount.toString() + ' %',
+                          child: pw.Text(
+                              allTransaksi.basic_discount.toString() + ' %',
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -3211,7 +3502,7 @@ class HistoryModelNew extends StatelessWidget {
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text(order.rate.toString(),
+                          child: pw.Text(allTransaksi.rate.toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -3230,7 +3521,7 @@ class HistoryModelNew extends StatelessWidget {
                         pw.SizedBox(
                           width: 100,
                           child: pw.Text(
-                              CurrencyFormat.convertToIdr(order.nett, 0)
+                              CurrencyFormat.convertToIdr(allTransaksi.nett, 0)
                                   .toString(),
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
@@ -3291,15 +3582,15 @@ class HistoryModelNew extends StatelessWidget {
 
 //pdf beli berlian
   void _createPdfBeliBerlian() async {
-    //! nanti hhapus kalo gagal
+    //! start compress image
     Response responseGambar = await http.get(Uri.parse(
-        'https://parvabisnis.id/uploads/products/${order2[0].image_name}'));
+        'https://parvabisnis.id/uploads/products/${detailTransaksi[0].image_name}'));
     if (responseGambar.statusCode != 200) {
       throw ArgumentError(
           'Failed to download image from. Status code: ${responseGambar.statusCode}');
     }
     Uint8List imageData = responseGambar.bodyBytes;
-    // Compress the image
+    //? Compress the image
     ui.Image originalUiImage = await decodeImageFromList(imageData);
     ByteData? originalByteData = await originalUiImage.toByteData();
     print('original image ByteData size is ${originalByteData!.lengthInBytes}');
@@ -3323,7 +3614,7 @@ class HistoryModelNew extends StatelessWidget {
         await PdfGoogleFonts.dMSerifDisplayItalic(); //memanggil font poppings
 
     //! fungsi untuk mengambil keterangan barang
-    var keteranganBarang = order2[0]
+    var keteranganBarang = detailTransaksi[0]
         .keterangan_barang
         .toString(); //!18k-1.54GR,RD4-0.14CT,RD4-0.14CT
     var separator1 = ',';
@@ -3395,8 +3686,9 @@ class HistoryModelNew extends StatelessWidget {
 
 //new multi
     List<String> assetImages = [
-      for (var i = 0; i < order.total_quantity; i++)
-        'https://parvabisnis.id/uploads/products/' + order2[i].image_name
+      for (var i = 0; i < allTransaksi.total_quantity; i++)
+        'https://parvabisnis.id/uploads/products/' +
+            detailTransaksi[i].image_name
     ];
 
     for (String image in assetImages) await getImageBytes(image);
@@ -3424,13 +3716,13 @@ class HistoryModelNew extends StatelessWidget {
 
     //! aritmatika
 
-    var subTotal = order2[0].name[0].toString() == '4'
-        ? order2[0].price
-        : order2[0].price * 15000;
-    var diskon = ((subTotal * order.basic_discount) / 100) ?? 0;
+    var subTotal = detailTransaksi[0].name[0].toString() == '4'
+        ? detailTransaksi[0].price
+        : detailTransaksi[0].price * 15000;
+    var diskon = ((subTotal * allTransaksi.basic_discount) / 100) ?? 0;
     var totalSubDis = subTotal - diskon;
-    var addDiskon = order.addesdiskon_rupiah ?? 0;
-    var voucherDiskon = order.voucherDiskon ?? 0;
+    var addDiskon = allTransaksi.addesdiskon_rupiah ?? 0;
+    var voucherDiskon = allTransaksi.voucherDiskon ?? 0;
     var totalPayment = totalSubDis - addDiskon - voucherDiskon;
     String kodeDiskon = voucherDiskon == 50000
         ? 'Voucher (BB50RB)'
@@ -3444,7 +3736,7 @@ class HistoryModelNew extends StatelessWidget {
     String? tokens = sharedPreferences!.getString('token');
     String warna = '';
     //? get warna barang
-    String str = order2[0].description;
+    String str = detailTransaksi[0].description;
     if (10 < 0 || 10 >= str.length) {
       throw RangeError('Index out of range.');
     } else {
@@ -3472,7 +3764,7 @@ class HistoryModelNew extends StatelessWidget {
             .toList();
         var filterByname = allData.where((element) =>
             element.id.toString().toLowerCase() ==
-            order.customer_beliberlian.toString().toLowerCase());
+            allTransaksi.customer_beliberlian.toString().toLowerCase());
         allData = filterByname.toList();
         noHP = allData.first.phone!;
         namaCustomer = allData.first.name!;
@@ -3531,8 +3823,8 @@ class HistoryModelNew extends StatelessWidget {
                                 children: [
                                   pw.SizedBox(
                                     child:
-                                        // pw.Text(order.invoices_number,
-                                        pw.Text(order.invoices_number,
+                                        // pw.Text(allTransaksi.invoices_number,
+                                        pw.Text(allTransaksi.invoices_number,
                                             style: pw.TextStyle(
                                               font: font,
                                               // fontFamily: 'Poppins',
@@ -3541,11 +3833,11 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                   pw.SizedBox(
                                     child:
-                                        // pw.Text(order.invoices_number,
+                                        // pw.Text(allTransaksi.invoices_number,
                                         pw.Text(
                                             DateFormat('dd/MM/yyyy').format(
                                                 DateTime.parse(
-                                                    order.created_at)),
+                                                    allTransaksi.created_at)),
                                             style: pw.TextStyle(
                                               font: font,
                                               // fontFamily: 'Poppins',
@@ -3559,7 +3851,7 @@ class HistoryModelNew extends StatelessWidget {
                                 children: [
                                   pw.SizedBox(
                                     child:
-                                        // pw.Text(order.invoices_number,
+                                        // pw.Text(allTransaksi.invoices_number,
                                         pw.Text('$namaCustomer',
                                             style: pw.TextStyle(
                                               font: font,
@@ -3569,7 +3861,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                   pw.SizedBox(
                                     child:
-                                        // pw.Text(order.invoices_number,
+                                        // pw.Text(allTransaksi.invoices_number,
                                         pw.Text('$noHP',
                                             style: pw.TextStyle(
                                               font: font,
@@ -3658,7 +3950,7 @@ class HistoryModelNew extends StatelessWidget {
                                 pw.Container(
                                   width: 105,
                                   child: pw.Text(
-                                      '${order2[0].name}  \n${order2[0].description}',
+                                      '${detailTransaksi[0].name}  \n${detailTransaksi[0].description}',
                                       //'BRG04224890I44K Millenia Diamond Ring - Cincin Berlian Asli Eropa Size 11',
                                       maxLines: 10,
                                       style: pw.TextStyle(
@@ -3753,7 +4045,7 @@ class HistoryModelNew extends StatelessWidget {
                                                       fontSize: 11.5)),
                                               pw.Text(
                                                   '${CurrencyFormat.convertToDollar(diskon, 0)}',
-                                                  // '${CurrencyFormat.convertToDollar((((order2[0].price * 15000) * 1.65) / 100), 0)}',
+                                                  // '${CurrencyFormat.convertToDollar((((detailTransaksi[0].price * 15000) * 1.65) / 100), 0)}',
                                                   style: const pw.TextStyle(
                                                       fontSize: 11.5)),
                                             ],
@@ -3930,8 +4222,9 @@ class HistoryModelNew extends StatelessWidget {
                                                         top: 5),
                                                 child: pw.Center(
                                                     child: pw.Text(
-                                                        // order.description,
-                                                        order2[0].description,
+                                                        // allTransaksi.description,
+                                                        detailTransaksi[0]
+                                                            .description,
                                                         style: pw.TextStyle(
                                                             font: font,
                                                             fontSize: 10)))),
@@ -4267,7 +4560,7 @@ class HistoryModelNew extends StatelessWidget {
   void _sharePdfBeliberlian() async {
     //! nanti hhapus kalo gagal
     Response responseGambar = await http.get(Uri.parse(
-        'https://parvabisnis.id/uploads/products/${order2[0].image_name}'));
+        'https://parvabisnis.id/uploads/products/${detailTransaksi[0].image_name}'));
     if (responseGambar.statusCode != 200) {
       throw ArgumentError(
           'Failed to download image from. Status code: ${responseGambar.statusCode}');
@@ -4297,7 +4590,7 @@ class HistoryModelNew extends StatelessWidget {
         await PdfGoogleFonts.dMSerifDisplayItalic(); //memanggil font poppings
 
     //! fungsi untuk mengambil keterangan barang
-    var keteranganBarang = order2[0]
+    var keteranganBarang = detailTransaksi[0]
         .keterangan_barang
         .toString(); //!18k-1.54GR,RD4-0.14CT,RD4-0.14CT
     var separator1 = ',';
@@ -4369,8 +4662,9 @@ class HistoryModelNew extends StatelessWidget {
 
 //new multi
     List<String> assetImages = [
-      for (var i = 0; i < order.total_quantity; i++)
-        'https://parvabisnis.id/uploads/products/' + order2[i].image_name
+      for (var i = 0; i < allTransaksi.total_quantity; i++)
+        'https://parvabisnis.id/uploads/products/' +
+            detailTransaksi[i].image_name
     ];
 
     for (String image in assetImages) await getImageBytes(image);
@@ -4398,13 +4692,13 @@ class HistoryModelNew extends StatelessWidget {
 
     //! aritmatika
 
-    var subTotal = order2[0].name[0].toString() == '4'
-        ? order2[0].price
-        : order2[0].price * 15000;
-    var diskon = ((subTotal * order.basic_discount) / 100) ?? 0;
+    var subTotal = detailTransaksi[0].name[0].toString() == '4'
+        ? detailTransaksi[0].price
+        : detailTransaksi[0].price * 15000;
+    var diskon = ((subTotal * allTransaksi.basic_discount) / 100) ?? 0;
     var totalSubDis = subTotal - diskon;
-    var addDiskon = order.addesdiskon_rupiah ?? 0;
-    var voucherDiskon = order.voucherDiskon ?? 0;
+    var addDiskon = allTransaksi.addesdiskon_rupiah ?? 0;
+    var voucherDiskon = allTransaksi.voucherDiskon ?? 0;
     var totalPayment = totalSubDis - addDiskon - voucherDiskon;
     String kodeDiskon = voucherDiskon == 50000
         ? 'Voucher (BB50RB)'
@@ -4418,7 +4712,7 @@ class HistoryModelNew extends StatelessWidget {
     String? tokens = sharedPreferences!.getString('token');
     String warna = '';
     //? get warna barang
-    String str = order2[0].description;
+    String str = detailTransaksi[0].description;
     if (10 < 0 || 10 >= str.length) {
       throw RangeError('Index out of range.');
     } else {
@@ -4446,7 +4740,7 @@ class HistoryModelNew extends StatelessWidget {
             .toList();
         var filterByname = allData.where((element) =>
             element.id.toString().toLowerCase() ==
-            order.customer_beliberlian.toString().toLowerCase());
+            allTransaksi.customer_beliberlian.toString().toLowerCase());
         allData = filterByname.toList();
         noHP = allData.first.phone!;
         namaCustomer = allData.first.name!;
@@ -4505,8 +4799,8 @@ class HistoryModelNew extends StatelessWidget {
                                 children: [
                                   pw.SizedBox(
                                     child:
-                                        // pw.Text(order.invoices_number,
-                                        pw.Text(order.invoices_number,
+                                        // pw.Text(allTransaksi.invoices_number,
+                                        pw.Text(allTransaksi.invoices_number,
                                             style: pw.TextStyle(
                                               font: font,
                                               // fontFamily: 'Poppins',
@@ -4515,11 +4809,11 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                   pw.SizedBox(
                                     child:
-                                        // pw.Text(order.invoices_number,
+                                        // pw.Text(allTransaksi.invoices_number,
                                         pw.Text(
                                             DateFormat('dd/MM/yyyy').format(
                                                 DateTime.parse(
-                                                    order.created_at)),
+                                                    allTransaksi.created_at)),
                                             style: pw.TextStyle(
                                               font: font,
                                               // fontFamily: 'Poppins',
@@ -4533,7 +4827,7 @@ class HistoryModelNew extends StatelessWidget {
                                 children: [
                                   pw.SizedBox(
                                     child:
-                                        // pw.Text(order.invoices_number,
+                                        // pw.Text(allTransaksi.invoices_number,
                                         pw.Text('$namaCustomer',
                                             style: pw.TextStyle(
                                               font: font,
@@ -4543,7 +4837,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                   pw.SizedBox(
                                     child:
-                                        // pw.Text(order.invoices_number,
+                                        // pw.Text(allTransaksi.invoices_number,
                                         pw.Text('$noHP',
                                             style: pw.TextStyle(
                                               font: font,
@@ -4632,7 +4926,7 @@ class HistoryModelNew extends StatelessWidget {
                                 pw.Container(
                                   width: 105,
                                   child: pw.Text(
-                                      '${order2[0].name}  \n${order2[0].description}',
+                                      '${detailTransaksi[0].name}  \n${detailTransaksi[0].description}',
                                       //'BRG04224890I44K Millenia Diamond Ring - Cincin Berlian Asli Eropa Size 11',
                                       maxLines: 10,
                                       style: pw.TextStyle(
@@ -4727,7 +5021,7 @@ class HistoryModelNew extends StatelessWidget {
                                                       fontSize: 11.5)),
                                               pw.Text(
                                                   '${CurrencyFormat.convertToDollar(diskon, 0)}',
-                                                  // '${CurrencyFormat.convertToDollar((((order2[0].price * 15000) * 1.65) / 100), 0)}',
+                                                  // '${CurrencyFormat.convertToDollar((((detailTransaksi[0].price * 15000) * 1.65) / 100), 0)}',
                                                   style: const pw.TextStyle(
                                                       fontSize: 11.5)),
                                             ],
@@ -4904,8 +5198,9 @@ class HistoryModelNew extends StatelessWidget {
                                                         top: 5),
                                                 child: pw.Center(
                                                     child: pw.Text(
-                                                        // order.description,
-                                                        order2[0].description,
+                                                        // allTransaksi.description,
+                                                        detailTransaksi[0]
+                                                            .description,
                                                         style: pw.TextStyle(
                                                             font: font,
                                                             fontSize: 10)))),
@@ -5234,7 +5529,2180 @@ class HistoryModelNew extends StatelessWidget {
 
     //? share the document to other applications:
     await Printing.sharePdf(
-        bytes: await doc.save(), filename: '${order.invoices_number}.pdf');
+        bytes: await doc.save(),
+        filename: '${allTransaksi.invoices_number}.pdf');
+  }
+
+  void _sharePdfHeniBerlian() async {
+    PdfDocument document = PdfDocument();
+    final doc = pw.Document();
+    final ByteData bytes = await rootBundle.load('images/splashLogo.png');
+    final Uint8List byteList = bytes.buffer.asUint8List();
+
+    final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
+    final Uint8List byteList2 = bytes2.buffer.asUint8List();
+
+//new multi
+    List<String> assetImages = [
+      for (var i = 0; i < allTransaksi.total_quantity; i++)
+        'https://parvabisnis.id/uploads/products/' +
+            detailTransaksi[i].image_name
+    ];
+
+    for (String image in assetImages) await getImageBytes(image);
+    List<pw.Widget> pdfImages = imagesUint8list.map((image) {
+      try {
+        return pw.Image(
+          pw.MemoryImage(
+            image,
+          ),
+          height: 25,
+          width: 25,
+          fit: pw.BoxFit.fitHeight,
+        );
+      } catch (c) {
+        return pw.Image(
+          pw.MemoryImage(
+            byteList2,
+          ),
+          height: 25,
+          width: 25,
+          fit: pw.BoxFit.fitHeight,
+        );
+      }
+    }).toList();
+    print(pdfImages);
+
+    doc.addPage(
+      pw.MultiPage(
+          pageFormat: PdfPageFormat.a4,
+          build: (context) {
+            if (allTransaksi.total_quantity <= 10) {
+              return [
+                pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      //header
+                      pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          pw.Transform.scale(
+                            scale: 3,
+                            child: pw.Image(pw.MemoryImage(byteList),
+                                fit: pw.BoxFit.fitHeight,
+                                height: 50,
+                                width: 150),
+                          ),
+                          pw.Header(text: allTransaksi.jenisform, level: 1),
+                        ],
+                      ),
+                      pw.SizedBox(height: 10),
+                      pw.Divider(
+                        height: 1,
+                        thickness: 1,
+                      ),
+                      pw.SizedBox(height: 10),
+                      pw.Container(
+                        child: pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: [
+                            pw.Row(
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceBetween,
+                              children: [
+                                pw.Container(
+                                  width: 300,
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('No Surat',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                    pw.FontWeight.bold)),
+                                      ),
+                                      pw.Text(allTransaksi.invoices_number,
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: pw.FontWeight.bold)),
+                                    ],
+                                  ),
+                                ),
+                                pw.SizedBox(
+                                  width: 35,
+                                  child: pw.Text('Toko',
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                                pw.Text(':'),
+                                pw.SizedBox(
+                                  width: 100,
+                                  child: pw.Text(allTransaksi.customer,
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                              ],
+                            ),
+                            pw.SizedBox(
+                              height: 3,
+                            ),
+                            pw.Row(
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceBetween,
+                              children: [
+                                pw.Row(
+                                  mainAxisAlignment:
+                                      pw.MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    pw.Container(
+                                      width: 300,
+                                      child: pw.Row(
+                                        children: [
+                                          pw.Container(
+                                            width: 80,
+                                            child: pw.Text('BC',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Container(
+                                            width: 10,
+                                            child: pw.Text(':',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Text(allTransaksi.user,
+                                              style: const pw.TextStyle(
+                                                  fontSize: 10)),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                pw.SizedBox(
+                                  width: 35,
+                                  child: pw.Text('Alamat',
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                                pw.Text(':'),
+                                pw.SizedBox(
+                                  width: 100,
+                                  child: pw.Text(allTransaksi.alamat,
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                              ],
+                            ),
+                            pw.SizedBox(
+                              height: 3,
+                            ),
+                            pw.Row(
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceBetween,
+                              children: [
+                                pw.Container(
+                                  width: 300,
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('Hari/Tanggal',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Text(
+                                          DateFormat('EEEE, dd MMMM yyyy H:mm')
+                                              .format(DateTime.parse(
+                                                  allTransaksi.created_at)),
+                                          style:
+                                              const pw.TextStyle(fontSize: 10)),
+                                    ],
+                                  ),
+                                ),
+                                pw.SizedBox(
+                                  width: 35,
+                                  child: pw.Text('Note',
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                                pw.Text(':'),
+                                pw.SizedBox(
+                                  width: 100,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      pw.SizedBox(height: 20),
+
+                      //head table
+                      pw.Table(children: [
+                        pw.TableRow(children: [
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: 3),
+                                  child: pw.Text("No", //nomor
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: 15),
+                                  child: pw.Text("Kode Barang",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: -5),
+                                  child: pw.Text("Keterangan Barang",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(
+                                      left: 60, right: 3),
+                                  child: pw.Text("Jumlah",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(
+                                      left: 0, right: 25),
+                                  child: pw.Text("Harga",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: 0),
+                                  child: pw.Text("Gambar",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ])
+                        ]),
+                      ]),
+
+                      //body isi
+                      pw.Table(children: [
+                        for (var i = 0; i < allTransaksi.total_quantity; i++)
+                          pw.TableRow(children: [
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18, width: 20),
+                                  pw.Padding(
+                                    padding:
+                                        const pw.EdgeInsets.only(left: -15),
+                                    child: pw.Text((i + 1).toString(), //nomor
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(left: -5),
+                                    child: pw.Text(
+                                        detailTransaksi[i].name.toString(),
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(
+                                    height: 19,
+                                  ),
+                                  pw.SizedBox(
+                                    height: 6,
+                                    width: 80,
+                                    child: pw.Padding(
+                                      padding:
+                                          const pw.EdgeInsets.only(left: -45),
+                                      child: pw.Text(
+                                          detailTransaksi[i].keterangan_barang,
+                                          // detailTransaksi.docs[i - 1]['description'],
+                                          style:
+                                              const pw.TextStyle(fontSize: 6)),
+                                    ),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(left: 0),
+                                    child: pw.Text('1',
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(
+                                        right: -5, left: 20),
+                                    child: pw.Text(
+                                        '\$ ${detailTransaksi[i].price.toString()}',
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pdfImages[i],
+                                  // pw.Image(pw.MemoryImage(byteList2),
+                                  //     fit: pw.BoxFit.fitHeight,
+                                  //     height: 25,
+                                  //     width: 25),
+                                  pw.Divider(thickness: 1),
+                                ])
+                          ])
+                      ]),
+
+                      //bottom pdf
+                      pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                          pw.Row(
+                            mainAxisAlignment:
+                                pw.MainAxisAlignment.spaceBetween,
+                            children: [
+                              pw.SizedBox(
+                                  width: 250,
+                                  child: pw.Text(
+                                      'Terbilang                     :',
+                                      style: const pw.TextStyle(fontSize: 10))),
+                              pw.SizedBox(width: 95, child: pw.Text('Total')),
+                              pw.Text(':'),
+                              pw.SizedBox(
+                                width: 100,
+                                child: pw.Text(
+                                    '\$ ' + allTransaksi.total.toString(),
+                                    style: const pw.TextStyle(fontSize: 10)),
+                              ),
+                            ],
+                          ),
+                          pw.SizedBox(height: 5),
+                          pw.Row(
+                            mainAxisAlignment:
+                                pw.MainAxisAlignment.spaceBetween,
+                            children: [
+                              pw.SizedBox(
+                                  width: 250,
+                                  child: pw.Text('Kondisi Pembayaran   : ',
+                                      style: const pw.TextStyle(fontSize: 10))),
+                              pw.SizedBox(width: 95, child: pw.Text('Diskon')),
+                              pw.Text(':'),
+                              pw.SizedBox(
+                                width: 100,
+                                child: pw.Text(
+                                    allTransaksi.basic_discount.toString() +
+                                        ' %',
+                                    style: const pw.TextStyle(fontSize: 10)),
+                              ),
+                            ],
+                          ),
+                          pw.SizedBox(height: 5),
+                          pw.Row(
+                            mainAxisAlignment:
+                                pw.MainAxisAlignment.spaceBetween,
+                            children: [
+                              pw.SizedBox(
+                                  width: 250,
+                                  child: pw.Text('Jangka Waktu             : ',
+                                      style: const pw.TextStyle(fontSize: 10))),
+                              pw.SizedBox(width: 95, child: pw.Text('Rate')),
+                              pw.Text(':'),
+                              pw.SizedBox(
+                                width: 100,
+                                child: pw.Text(allTransaksi.rate.toString(),
+                                    style: const pw.TextStyle(fontSize: 10)),
+                              ),
+                            ],
+                          ),
+                          pw.SizedBox(height: 5),
+                          pw.Row(
+                            mainAxisAlignment:
+                                pw.MainAxisAlignment.spaceBetween,
+                            children: [
+                              pw.SizedBox(
+                                  width: 250,
+                                  child: pw.Text('Jatuh Tempo               : ',
+                                      style: const pw.TextStyle(fontSize: 10))),
+                              pw.SizedBox(
+                                  width: 95, child: pw.Text('Total Transaksi')),
+                              pw.Text(':'),
+                              pw.SizedBox(
+                                width: 100,
+                                child: pw.Text(
+                                    CurrencyFormat.convertToIdr(
+                                            allTransaksi.nett, 0)
+                                        .toString(),
+                                    style: const pw.TextStyle(fontSize: 10)),
+                              ),
+                            ],
+                          ),
+                          pw.Row(
+                            mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                            children: [
+                              pw.Padding(
+                                  padding: const pw.EdgeInsets.only(
+                                      left: 20, top: 20.0),
+                                  child: pw.SizedBox(
+                                      child: pw.Text('Hormat Kami,',
+                                          style: const pw.TextStyle(
+                                              fontSize: 10)))),
+                              pw.Padding(
+                                  padding: const pw.EdgeInsets.only(
+                                      left: 30, top: 20.0),
+                                  child: pw.SizedBox(
+                                      child: pw.Text('Hormat Kami,',
+                                          style: const pw.TextStyle(
+                                              fontSize: 10)))),
+                            ],
+                          ),
+                          pw.SizedBox(height: 18),
+                          pw.Row(
+                            mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                            children: [
+                              pw.Padding(
+                                  padding: const pw.EdgeInsets.only(
+                                    top: 20.0,
+                                  ),
+                                  child: pw.SizedBox(
+                                      child: pw.Text(
+                                          'Tanda Tangan & Nama Jelas',
+                                          style: const pw.TextStyle(
+                                              fontSize: 10)))),
+                              pw.Padding(
+                                  padding: const pw.EdgeInsets.only(top: 20.0),
+                                  child: pw.SizedBox(
+                                      child: pw.Text(
+                                          '${sharedPreferences!.getString("name")!}',
+                                          style: const pw.TextStyle(
+                                              fontSize: 10)))),
+                            ],
+                          ),
+                        ],
+                      )
+                    ])
+              ];
+            }
+            //total cart lebih dari 10
+            else {
+              return [
+                pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      //header
+                      pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          pw.Transform.scale(
+                            scale: 3,
+                            child: pw.Image(pw.MemoryImage(byteList),
+                                fit: pw.BoxFit.fitHeight,
+                                height: 50,
+                                width: 150),
+                          ),
+                          pw.Header(text: allTransaksi.jenisform, level: 1),
+                        ],
+                      ),
+                      pw.SizedBox(height: 10),
+                      pw.Divider(
+                        height: 1,
+                        thickness: 1,
+                      ),
+                      pw.SizedBox(height: 10),
+                      pw.Container(
+                        child: pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: [
+                            pw.Row(
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceBetween,
+                              children: [
+                                pw.Container(
+                                  width: 300,
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('No Surat',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                    pw.FontWeight.bold)),
+                                      ),
+                                      pw.Text(allTransaksi.invoices_number,
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: pw.FontWeight.bold)),
+                                    ],
+                                  ),
+                                ),
+                                pw.SizedBox(
+                                  width: 35,
+                                  child: pw.Text('Toko',
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                                pw.Text(':'),
+                                pw.SizedBox(
+                                  width: 100,
+                                  child: pw.Text(allTransaksi.customer,
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                              ],
+                            ),
+                            pw.SizedBox(
+                              height: 3,
+                            ),
+                            pw.Row(
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceBetween,
+                              children: [
+                                pw.Row(
+                                  mainAxisAlignment:
+                                      pw.MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    pw.Container(
+                                      width: 300,
+                                      child: pw.Row(
+                                        children: [
+                                          pw.Container(
+                                            width: 80,
+                                            child: pw.Text('BC',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Container(
+                                            width: 10,
+                                            child: pw.Text(':',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Text(allTransaksi.user,
+                                              style: const pw.TextStyle(
+                                                  fontSize: 10)),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                pw.SizedBox(
+                                  width: 35,
+                                  child: pw.Text('Alamat',
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                                pw.Text(':'),
+                                pw.SizedBox(
+                                  width: 100,
+                                  child: pw.Text(allTransaksi.alamat,
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                              ],
+                            ),
+                            pw.SizedBox(
+                              height: 3,
+                            ),
+                            pw.Row(
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceBetween,
+                              children: [
+                                pw.Container(
+                                  width: 300,
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('Hari/Tanggal',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Text(
+                                          DateFormat('EEEE, dd MMMM yyyy H:mm')
+                                              .format(DateTime.parse(
+                                                  allTransaksi.created_at)),
+                                          style:
+                                              const pw.TextStyle(fontSize: 10)),
+                                    ],
+                                  ),
+                                ),
+                                pw.SizedBox(
+                                  width: 35,
+                                  child: pw.Text('Note',
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                                pw.Text(':'),
+                                pw.SizedBox(
+                                  width: 100,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      pw.SizedBox(height: 20),
+
+                      //head table
+                      pw.Table(children: [
+                        pw.TableRow(children: [
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: 3),
+                                  child: pw.Text("No", //nomor
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: 15),
+                                  child: pw.Text("Kode Barang",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: -5),
+                                  child: pw.Text("Keterangan Barang",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(
+                                      left: 60, right: 3),
+                                  child: pw.Text("Jumlah",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(
+                                      left: 0, right: 25),
+                                  child: pw.Text("Harga",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: 0),
+                                  child: pw.Text("Gambar",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ])
+                        ]),
+                      ]),
+
+                      // body isi page 1
+                      //body isi
+                      pw.Table(children: [
+                        for (var i = 0; i < 10; i++)
+                          pw.TableRow(children: [
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18, width: 20),
+                                  pw.Padding(
+                                    padding:
+                                        const pw.EdgeInsets.only(left: -15),
+                                    child: pw.Text((i + 1).toString(), //nomor
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(left: -5),
+                                    child: pw.Text(
+                                        detailTransaksi[i].name.toString(),
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(
+                                    height: 19,
+                                  ),
+                                  pw.SizedBox(
+                                    height: 6,
+                                    width: 80,
+                                    child: pw.Padding(
+                                      padding:
+                                          const pw.EdgeInsets.only(left: -45),
+                                      child: pw.Text(
+                                          detailTransaksi[i].keterangan_barang,
+                                          style:
+                                              const pw.TextStyle(fontSize: 6)),
+                                    ),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(left: 0),
+                                    child: pw.Text('1',
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(
+                                        right: -5, left: 20),
+                                    child: pw.Text(
+                                        '\$ ${detailTransaksi[i].price.toString()}',
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pdfImages[i],
+                                  // pw.Image(pw.MemoryImage(byteList2),
+                                  //     fit: pw.BoxFit.fitHeight,
+                                  //     height: 25,
+                                  //     width: 25),
+                                  pw.Divider(thickness: 1),
+                                ])
+                          ])
+                      ]),
+                    ]),
+                // body isi page 2
+                //body isi
+                pw.Table(children: [
+                  for (var i = 10; i < allTransaksi.total_quantity; i++)
+                    pw.TableRow(children: [
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                            pw.SizedBox(height: 18, width: 20),
+                            pw.Padding(
+                              padding: const pw.EdgeInsets.only(left: -15),
+                              child: pw.Text((i + 1).toString(), //nomor
+                                  style: const pw.TextStyle(fontSize: 6)),
+                            ),
+                            pw.Divider(thickness: 1)
+                          ]),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                            pw.SizedBox(height: 18),
+                            pw.Padding(
+                              padding: const pw.EdgeInsets.only(left: -5),
+                              child: pw.Text(detailTransaksi[i].name.toString(),
+                                  style: const pw.TextStyle(fontSize: 6)),
+                            ),
+                            pw.Divider(thickness: 1)
+                          ]),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                            pw.SizedBox(
+                              height: 19,
+                            ),
+                            pw.SizedBox(
+                              height: 6,
+                              width: 80,
+                              child: pw.Padding(
+                                padding: const pw.EdgeInsets.only(left: -45),
+                                child: pw.Text(
+                                    detailTransaksi[i].keterangan_barang,
+                                    style: const pw.TextStyle(fontSize: 6)),
+                              ),
+                            ),
+                            pw.Divider(thickness: 1)
+                          ]),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                            pw.SizedBox(height: 18),
+                            pw.Padding(
+                              padding: const pw.EdgeInsets.only(left: 0),
+                              child: pw.Text('1',
+                                  style: const pw.TextStyle(fontSize: 6)),
+                            ),
+                            pw.Divider(thickness: 1)
+                          ]),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                            pw.SizedBox(height: 18),
+                            pw.Padding(
+                              padding:
+                                  const pw.EdgeInsets.only(right: -5, left: 20),
+                              child: pw.Text(
+                                  '\$ ${detailTransaksi[i].price.toString()}',
+                                  style: const pw.TextStyle(fontSize: 6)),
+                            ),
+                            pw.Divider(thickness: 1)
+                          ]),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                            pdfImages[i],
+                            // pw.Image(pw.MemoryImage(byteList2),
+                            //     fit: pw.BoxFit.fitHeight,
+                            //     height: 25,
+                            //     width: 25),
+                            pw.Divider(thickness: 1),
+                          ])
+                    ])
+                ]),
+                //bottom pdf
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.SizedBox(
+                            width: 250,
+                            child: pw.Text('Terbilang                     :',
+                                style: const pw.TextStyle(fontSize: 10))),
+                        pw.SizedBox(width: 95, child: pw.Text('Total')),
+                        pw.Text(':'),
+                        pw.SizedBox(
+                          width: 100,
+                          child: pw.Text('\$ ' + allTransaksi.total.toString(),
+                              style: const pw.TextStyle(fontSize: 10)),
+                        ),
+                      ],
+                    ),
+                    pw.SizedBox(height: 5),
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.SizedBox(
+                            width: 250,
+                            child: pw.Text('Kondisi Pembayaran   : ',
+                                style: const pw.TextStyle(fontSize: 10))),
+                        pw.SizedBox(width: 95, child: pw.Text('Diskon')),
+                        pw.Text(':'),
+                        pw.SizedBox(
+                          width: 100,
+                          child: pw.Text(
+                              allTransaksi.basic_discount.toString() + ' %',
+                              style: const pw.TextStyle(fontSize: 10)),
+                        ),
+                      ],
+                    ),
+                    pw.SizedBox(height: 5),
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.SizedBox(
+                            width: 250,
+                            child: pw.Text('Jangka Waktu             : ',
+                                style: const pw.TextStyle(fontSize: 10))),
+                        pw.SizedBox(width: 95, child: pw.Text('Rate')),
+                        pw.Text(':'),
+                        pw.SizedBox(
+                          width: 100,
+                          child: pw.Text(allTransaksi.rate.toString(),
+                              style: const pw.TextStyle(fontSize: 10)),
+                        ),
+                      ],
+                    ),
+                    pw.SizedBox(height: 5),
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.SizedBox(
+                            width: 250,
+                            child: pw.Text('Jatuh Tempo               : ',
+                                style: const pw.TextStyle(fontSize: 10))),
+                        pw.SizedBox(
+                            width: 95, child: pw.Text('Total Transaksi')),
+                        pw.Text(':'),
+                        pw.SizedBox(
+                          width: 100,
+                          child: pw.Text(
+                              CurrencyFormat.convertToIdr(allTransaksi.nett, 0)
+                                  .toString(),
+                              style: const pw.TextStyle(fontSize: 10)),
+                        ),
+                      ],
+                    ),
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                      children: [
+                        pw.Padding(
+                            padding:
+                                const pw.EdgeInsets.only(left: 20, top: 20.0),
+                            child: pw.SizedBox(
+                                child: pw.Text('Hormat Kami,',
+                                    style: const pw.TextStyle(fontSize: 10)))),
+                        pw.Padding(
+                            padding:
+                                const pw.EdgeInsets.only(left: 30, top: 20.0),
+                            child: pw.SizedBox(
+                                child: pw.Text('Hormat Kami,',
+                                    style: const pw.TextStyle(fontSize: 10)))),
+                      ],
+                    ),
+                    pw.SizedBox(height: 50),
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                      children: [
+                        pw.Padding(
+                            padding: const pw.EdgeInsets.only(
+                              top: 20.0,
+                            ),
+                            child: pw.SizedBox(
+                                child: pw.Text('Tanda Tangan & Nama Jelas',
+                                    style: const pw.TextStyle(fontSize: 10)))),
+                        pw.Padding(
+                            padding: const pw.EdgeInsets.only(top: 20.0),
+                            child: pw.SizedBox(
+                                child: pw.Text(
+                                    '${sharedPreferences!.getString("name")!}',
+                                    style: const pw.TextStyle(fontSize: 10)))),
+                      ],
+                    ),
+                  ],
+                )
+              ];
+            }
+          }),
+    ); // Page
+
+    //? share the document to other applications:
+    await Printing.sharePdf(
+        bytes: await doc.save(),
+        filename: '${allTransaksi.invoices_number}.pdf');
+  }
+
+  void _createPdfHeniBerlian() async {
+    PdfDocument document = PdfDocument();
+    final doc = pw.Document();
+    final ByteData bytes = await rootBundle.load('images/splashLogo.png');
+    // final ByteData bytes = await rootBundle.load('images/welcomeIcon.png');
+
+    final Uint8List byteList = bytes.buffer.asUint8List();
+    final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
+    final Uint8List byteList2 = bytes2.buffer.asUint8List();
+
+//new multi
+    List<String> assetImages = [
+      for (var i = 0; i < allTransaksi.total_quantity; i++)
+        'https://parvabisnis.id/uploads/products/' +
+            detailTransaksi[i].image_name
+    ];
+
+    for (String image in assetImages) await getImageBytes(image);
+    List<pw.Widget> pdfImages = imagesUint8list.map((image) {
+      try {
+        return pw.Image(
+          pw.MemoryImage(
+            image,
+          ),
+          height: 25,
+          width: 25,
+          fit: pw.BoxFit.fitHeight,
+        );
+      } catch (c) {
+        return pw.Image(
+          pw.MemoryImage(
+            byteList2,
+          ),
+          height: 25,
+          width: 25,
+          fit: pw.BoxFit.fitHeight,
+        );
+      }
+    }).toList();
+
+    doc.addPage(
+      pw.MultiPage(
+          pageFormat: PdfPageFormat.a4,
+          build: (context) {
+            if (allTransaksi.total_quantity <= 10) {
+              return [
+                pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      //header
+                      pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          pw.Transform.scale(
+                            scale: 3,
+                            child: pw.Image(pw.MemoryImage(byteList),
+                                fit: pw.BoxFit.fitHeight,
+                                height: 50,
+                                width: 150),
+                          ),
+                          pw.Header(text: allTransaksi.jenisform, level: 1),
+                        ],
+                      ),
+                      pw.SizedBox(height: 10),
+                      pw.Divider(
+                        height: 1,
+                        thickness: 1,
+                      ),
+                      pw.SizedBox(height: 10),
+                      pw.Container(
+                        child: pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: [
+                            pw.Row(
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceBetween,
+                              children: [
+                                pw.Container(
+                                  width: 300,
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('No Surat',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                    pw.FontWeight.bold)),
+                                      ),
+                                      pw.Text(allTransaksi.invoices_number,
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: pw.FontWeight.bold)),
+                                    ],
+                                  ),
+                                ),
+                                pw.SizedBox(
+                                  width: 35,
+                                  child: pw.Text('Toko',
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                                pw.Text(':'),
+                                pw.SizedBox(
+                                  width: 100,
+                                  child: pw.Text(allTransaksi.customer,
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                              ],
+                            ),
+                            pw.SizedBox(
+                              height: 3,
+                            ),
+                            pw.Row(
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceBetween,
+                              children: [
+                                pw.Row(
+                                  mainAxisAlignment:
+                                      pw.MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    pw.Container(
+                                      width: 300,
+                                      child: pw.Row(
+                                        children: [
+                                          pw.Container(
+                                            width: 80,
+                                            child: pw.Text('BC',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Container(
+                                            width: 10,
+                                            child: pw.Text(':',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Text(allTransaksi.user,
+                                              style: const pw.TextStyle(
+                                                  fontSize: 10)),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                pw.SizedBox(
+                                  width: 35,
+                                  child: pw.Text('Alamat',
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                                pw.Text(':'),
+                                pw.SizedBox(
+                                  width: 100,
+                                  child: pw.Text(allTransaksi.alamat,
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                              ],
+                            ),
+                            pw.SizedBox(
+                              height: 3,
+                            ),
+                            pw.Row(
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceBetween,
+                              children: [
+                                pw.Container(
+                                  width: 300,
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('Hari/Tanggal',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Text(
+                                          DateFormat('EEEE, dd MMMM yyyy H:mm')
+                                              .format(DateTime.parse(
+                                                  allTransaksi.created_at)),
+                                          style:
+                                              const pw.TextStyle(fontSize: 10)),
+                                    ],
+                                  ),
+                                ),
+                                pw.SizedBox(
+                                  width: 35,
+                                  child: pw.Text('Note',
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                                pw.Text(':'),
+                                pw.SizedBox(
+                                  width: 100,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      pw.SizedBox(height: 20),
+
+                      //head table
+                      pw.Table(children: [
+                        pw.TableRow(children: [
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: 3),
+                                  child: pw.Text("No", //nomor
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: 15),
+                                  child: pw.Text("Kode Barang",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: -5),
+                                  child: pw.Text("Keterangan Barang",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(
+                                      left: 60, right: 3),
+                                  child: pw.Text("Jumlah",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(
+                                      left: 0, right: 25),
+                                  child: pw.Text("Harga",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: 0),
+                                  child: pw.Text("Gambar",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ])
+                        ]),
+                      ]),
+
+                      //body isi
+                      pw.Table(children: [
+                        for (var i = 0; i < allTransaksi.total_quantity; i++)
+                          pw.TableRow(children: [
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18, width: 20),
+                                  pw.Padding(
+                                    padding:
+                                        const pw.EdgeInsets.only(left: -15),
+                                    child: pw.Text((i + 1).toString(), //nomor
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(left: -5),
+                                    child: pw.Text(
+                                        detailTransaksi[i].name.toString(),
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(
+                                    height: 19,
+                                  ),
+                                  pw.SizedBox(
+                                    height: 6,
+                                    width: 80,
+                                    child: pw.Padding(
+                                      padding:
+                                          const pw.EdgeInsets.only(left: -45),
+                                      child: pw.Text(
+                                          detailTransaksi[i].keterangan_barang,
+                                          style:
+                                              const pw.TextStyle(fontSize: 6)),
+                                    ),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(left: 0),
+                                    child: pw.Text('1',
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(
+                                        right: -5, left: 20),
+                                    child: pw.Text(
+                                        '\$ ${detailTransaksi[i].price.toString()}',
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pdfImages[i],
+                                  // pw.Image(pw.MemoryImage(byteList2),
+                                  //     fit: pw.BoxFit.fitHeight,
+                                  //     height: 25,
+                                  //     width: 25),
+                                  pw.Divider(thickness: 1),
+                                ])
+                          ])
+                      ]),
+
+                      //bottom pdf
+                      pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                          pw.Row(
+                            mainAxisAlignment:
+                                pw.MainAxisAlignment.spaceBetween,
+                            children: [
+                              pw.SizedBox(
+                                  width: 250,
+                                  child: pw.Text(
+                                      'Terbilang                     :',
+                                      style: const pw.TextStyle(fontSize: 10))),
+                              pw.SizedBox(width: 95, child: pw.Text('Total')),
+                              pw.Text(':'),
+                              pw.SizedBox(
+                                width: 100,
+                                child: pw.Text(
+                                    '\$ ' + allTransaksi.total.toString(),
+                                    style: const pw.TextStyle(fontSize: 10)),
+                              ),
+                            ],
+                          ),
+                          pw.SizedBox(height: 5),
+                          pw.Row(
+                            mainAxisAlignment:
+                                pw.MainAxisAlignment.spaceBetween,
+                            children: [
+                              pw.SizedBox(
+                                  width: 250,
+                                  child: pw.Text('Kondisi Pembayaran   : ',
+                                      style: const pw.TextStyle(fontSize: 10))),
+                              pw.SizedBox(width: 95, child: pw.Text('Diskon')),
+                              pw.Text(':'),
+                              pw.SizedBox(
+                                width: 100,
+                                child: pw.Text(
+                                    allTransaksi.basic_discount.toString() +
+                                        ' %',
+                                    style: const pw.TextStyle(fontSize: 10)),
+                              ),
+                            ],
+                          ),
+                          pw.SizedBox(height: 5),
+                          pw.Row(
+                            mainAxisAlignment:
+                                pw.MainAxisAlignment.spaceBetween,
+                            children: [
+                              pw.SizedBox(
+                                  width: 250,
+                                  child: pw.Text('Jangka Waktu             : ',
+                                      style: const pw.TextStyle(fontSize: 10))),
+                              pw.SizedBox(width: 95, child: pw.Text('Rate')),
+                              pw.Text(':'),
+                              pw.SizedBox(
+                                width: 100,
+                                child: pw.Text(allTransaksi.rate.toString(),
+                                    style: const pw.TextStyle(fontSize: 10)),
+                              ),
+                            ],
+                          ),
+                          pw.SizedBox(height: 5),
+                          pw.Row(
+                            mainAxisAlignment:
+                                pw.MainAxisAlignment.spaceBetween,
+                            children: [
+                              pw.SizedBox(
+                                  width: 250,
+                                  child: pw.Text('Jatuh Tempo               : ',
+                                      style: const pw.TextStyle(fontSize: 10))),
+                              pw.SizedBox(
+                                  width: 95, child: pw.Text('Total Transaksi')),
+                              pw.Text(':'),
+                              pw.SizedBox(
+                                width: 100,
+                                child: pw.Text(
+                                    CurrencyFormat.convertToIdr(
+                                            allTransaksi.nett, 0)
+                                        .toString(),
+                                    style: const pw.TextStyle(fontSize: 10)),
+                              ),
+                            ],
+                          ),
+                          pw.Row(
+                            mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                            children: [
+                              pw.Padding(
+                                  padding: const pw.EdgeInsets.only(
+                                      left: 20, top: 20.0),
+                                  child: pw.SizedBox(
+                                      child: pw.Text('Hormat Kami,',
+                                          style: const pw.TextStyle(
+                                              fontSize: 10)))),
+                              pw.Padding(
+                                  padding: const pw.EdgeInsets.only(
+                                      left: 30, top: 20.0),
+                                  child: pw.SizedBox(
+                                      child: pw.Text('Hormat Kami,',
+                                          style: const pw.TextStyle(
+                                              fontSize: 10)))),
+                            ],
+                          ),
+                          pw.SizedBox(height: 18),
+                          pw.Row(
+                            mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                            children: [
+                              pw.Padding(
+                                  padding: const pw.EdgeInsets.only(
+                                    top: 20.0,
+                                  ),
+                                  child: pw.SizedBox(
+                                      child: pw.Text(
+                                          'Tanda Tangan & Nama Jelas',
+                                          style: const pw.TextStyle(
+                                              fontSize: 10)))),
+                              pw.Padding(
+                                  padding: const pw.EdgeInsets.only(top: 20.0),
+                                  child: pw.SizedBox(
+                                      child: pw.Text(
+                                          '${sharedPreferences!.getString("name")!}',
+                                          style: const pw.TextStyle(
+                                              fontSize: 10)))),
+                            ],
+                          ),
+                        ],
+                      )
+                    ])
+              ];
+            }
+            //total cart lebih dari 10
+            else {
+              return [
+                pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      //header
+                      pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          pw.Transform.scale(
+                            scale: 3,
+                            child: pw.Image(pw.MemoryImage(byteList),
+                                fit: pw.BoxFit.fitHeight,
+                                height: 50,
+                                width: 150),
+                          ),
+                          pw.Header(text: allTransaksi.jenisform, level: 1),
+                        ],
+                      ),
+                      pw.SizedBox(height: 10),
+                      pw.Divider(
+                        height: 1,
+                        thickness: 1,
+                      ),
+                      pw.SizedBox(height: 10),
+                      pw.Container(
+                        child: pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: [
+                            pw.Row(
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceBetween,
+                              children: [
+                                pw.Container(
+                                  width: 300,
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('No Surat',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: pw.TextStyle(
+                                                fontSize: 10,
+                                                fontWeight:
+                                                    pw.FontWeight.bold)),
+                                      ),
+                                      pw.Text(allTransaksi.invoices_number,
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: pw.FontWeight.bold)),
+                                    ],
+                                  ),
+                                ),
+                                pw.SizedBox(
+                                  width: 35,
+                                  child: pw.Text('Toko',
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                                pw.Text(':'),
+                                pw.SizedBox(
+                                  width: 100,
+                                  child: pw.Text(allTransaksi.customer,
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                              ],
+                            ),
+                            pw.SizedBox(
+                              height: 3,
+                            ),
+                            pw.Row(
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceBetween,
+                              children: [
+                                pw.Row(
+                                  mainAxisAlignment:
+                                      pw.MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    pw.Container(
+                                      width: 300,
+                                      child: pw.Row(
+                                        children: [
+                                          pw.Container(
+                                            width: 80,
+                                            child: pw.Text('BC',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Container(
+                                            width: 10,
+                                            child: pw.Text(':',
+                                                style: const pw.TextStyle(
+                                                    fontSize: 10)),
+                                          ),
+                                          pw.Text(allTransaksi.user,
+                                              style: const pw.TextStyle(
+                                                  fontSize: 10)),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                pw.SizedBox(
+                                  width: 35,
+                                  child: pw.Text('Alamat',
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                                pw.Text(':'),
+                                pw.SizedBox(
+                                  width: 100,
+                                  child: pw.Text(allTransaksi.alamat,
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                              ],
+                            ),
+                            pw.SizedBox(
+                              height: 3,
+                            ),
+                            pw.Row(
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceBetween,
+                              children: [
+                                pw.Container(
+                                  width: 300,
+                                  child: pw.Row(
+                                    children: [
+                                      pw.Container(
+                                        width: 80,
+                                        child: pw.Text('Hari/Tanggal',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Container(
+                                        width: 10,
+                                        child: pw.Text(':',
+                                            style: const pw.TextStyle(
+                                                fontSize: 10)),
+                                      ),
+                                      pw.Text(
+                                          DateFormat('EEEE, dd MMMM yyyy H:mm')
+                                              .format(DateTime.parse(
+                                                  allTransaksi.created_at)),
+                                          style:
+                                              const pw.TextStyle(fontSize: 10)),
+                                    ],
+                                  ),
+                                ),
+                                pw.SizedBox(
+                                  width: 35,
+                                  child: pw.Text('Note',
+                                      style: const pw.TextStyle(fontSize: 10)),
+                                ),
+                                pw.Text(':'),
+                                pw.SizedBox(
+                                  width: 100,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      pw.SizedBox(height: 20),
+
+                      //head table
+                      pw.Table(children: [
+                        pw.TableRow(children: [
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: 3),
+                                  child: pw.Text("No", //nomor
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: 15),
+                                  child: pw.Text("Kode Barang",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: -5),
+                                  child: pw.Text("Keterangan Barang",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(
+                                      left: 60, right: 3),
+                                  child: pw.Text("Jumlah",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(
+                                      left: 0, right: 25),
+                                  child: pw.Text("Harga",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(left: 0),
+                                  child: pw.Text("Gambar",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ])
+                        ]),
+                      ]),
+
+                      // body isi page 1
+                      //body isi
+                      pw.Table(children: [
+                        for (var i = 0; i < 10; i++)
+                          pw.TableRow(children: [
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18, width: 20),
+                                  pw.Padding(
+                                    padding:
+                                        const pw.EdgeInsets.only(left: -15),
+                                    child: pw.Text((i + 1).toString(), //nomor
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(left: -5),
+                                    child: pw.Text(
+                                        detailTransaksi[i].name.toString(),
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(
+                                    height: 19,
+                                  ),
+                                  pw.SizedBox(
+                                    height: 6,
+                                    width: 80,
+                                    child: pw.Padding(
+                                      padding:
+                                          const pw.EdgeInsets.only(left: -45),
+                                      child: pw.Text(
+                                          detailTransaksi[i].keterangan_barang,
+                                          style:
+                                              const pw.TextStyle(fontSize: 6)),
+                                    ),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(left: 0),
+                                    child: pw.Text('1',
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 18),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(
+                                        right: -5, left: 20),
+                                    child: pw.Text(
+                                        '\$ ${detailTransaksi[i].price.toString()}',
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pdfImages[i],
+                                  // pw.Image(pw.MemoryImage(byteList2),
+                                  //     fit: pw.BoxFit.fitHeight,
+                                  //     height: 25,
+                                  //     width: 25),
+                                  pw.Divider(thickness: 1),
+                                ])
+                          ])
+                      ]),
+                    ]),
+                // body isi page 2
+                //body isi
+                pw.Table(children: [
+                  for (var i = 10; i < allTransaksi.total_quantity; i++)
+                    pw.TableRow(children: [
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                            pw.SizedBox(height: 18, width: 20),
+                            pw.Padding(
+                              padding: const pw.EdgeInsets.only(left: -15),
+                              child: pw.Text((i + 1).toString(), //nomor
+                                  style: const pw.TextStyle(fontSize: 6)),
+                            ),
+                            pw.Divider(thickness: 1)
+                          ]),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                            pw.SizedBox(height: 18),
+                            pw.Padding(
+                              padding: const pw.EdgeInsets.only(left: -5),
+                              child: pw.Text(detailTransaksi[i].name.toString(),
+                                  style: const pw.TextStyle(fontSize: 6)),
+                            ),
+                            pw.Divider(thickness: 1)
+                          ]),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                            pw.SizedBox(
+                              height: 19,
+                            ),
+                            pw.SizedBox(
+                              height: 6,
+                              width: 80,
+                              child: pw.Padding(
+                                padding: const pw.EdgeInsets.only(left: -45),
+                                child: pw.Text(
+                                    detailTransaksi[i].keterangan_barang,
+                                    style: const pw.TextStyle(fontSize: 6)),
+                              ),
+                            ),
+                            pw.Divider(thickness: 1)
+                          ]),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                            pw.SizedBox(height: 18),
+                            pw.Padding(
+                              padding: const pw.EdgeInsets.only(left: 0),
+                              child: pw.Text('1',
+                                  style: const pw.TextStyle(fontSize: 6)),
+                            ),
+                            pw.Divider(thickness: 1)
+                          ]),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                            pw.SizedBox(height: 18),
+                            pw.Padding(
+                              padding:
+                                  const pw.EdgeInsets.only(right: -5, left: 20),
+                              child: pw.Text(
+                                  '\$ ${detailTransaksi[i].price.toString()}',
+                                  style: const pw.TextStyle(fontSize: 6)),
+                            ),
+                            pw.Divider(thickness: 1)
+                          ]),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                            pdfImages[i],
+                            // pw.Image(pw.MemoryImage(byteList2),
+                            //     fit: pw.BoxFit.fitHeight,
+                            //     height: 25,
+                            //     width: 25),
+                            pw.Divider(thickness: 1),
+                          ])
+                    ])
+                ]),
+                //bottom pdf
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.SizedBox(
+                            width: 250,
+                            child: pw.Text('Terbilang                     :',
+                                style: const pw.TextStyle(fontSize: 10))),
+                        pw.SizedBox(width: 95, child: pw.Text('Total')),
+                        pw.Text(':'),
+                        pw.SizedBox(
+                          width: 100,
+                          child: pw.Text('\$ ' + allTransaksi.total.toString(),
+                              style: const pw.TextStyle(fontSize: 10)),
+                        ),
+                      ],
+                    ),
+                    pw.SizedBox(height: 5),
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.SizedBox(
+                            width: 250,
+                            child: pw.Text('Kondisi Pembayaran   : ',
+                                style: const pw.TextStyle(fontSize: 10))),
+                        pw.SizedBox(width: 95, child: pw.Text('Diskon')),
+                        pw.Text(':'),
+                        pw.SizedBox(
+                          width: 100,
+                          child: pw.Text(
+                              allTransaksi.basic_discount.toString() + ' %',
+                              style: const pw.TextStyle(fontSize: 10)),
+                        ),
+                      ],
+                    ),
+                    pw.SizedBox(height: 5),
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.SizedBox(
+                            width: 250,
+                            child: pw.Text('Jangka Waktu             : ',
+                                style: const pw.TextStyle(fontSize: 10))),
+                        pw.SizedBox(width: 95, child: pw.Text('Rate')),
+                        pw.Text(':'),
+                        pw.SizedBox(
+                          width: 100,
+                          child: pw.Text(allTransaksi.rate.toString(),
+                              style: const pw.TextStyle(fontSize: 10)),
+                        ),
+                      ],
+                    ),
+                    pw.SizedBox(height: 5),
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.SizedBox(
+                            width: 250,
+                            child: pw.Text('Jatuh Tempo               : ',
+                                style: const pw.TextStyle(fontSize: 10))),
+                        pw.SizedBox(
+                            width: 95, child: pw.Text('Total Transaksi')),
+                        pw.Text(':'),
+                        pw.SizedBox(
+                          width: 100,
+                          child: pw.Text(
+                              CurrencyFormat.convertToIdr(allTransaksi.nett, 0)
+                                  .toString(),
+                              style: const pw.TextStyle(fontSize: 10)),
+                        ),
+                      ],
+                    ),
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                      children: [
+                        pw.Padding(
+                            padding:
+                                const pw.EdgeInsets.only(left: 20, top: 20.0),
+                            child: pw.SizedBox(
+                                child: pw.Text('Hormat Kami,',
+                                    style: const pw.TextStyle(fontSize: 10)))),
+                        pw.Padding(
+                            padding:
+                                const pw.EdgeInsets.only(left: 30, top: 20.0),
+                            child: pw.SizedBox(
+                                child: pw.Text('Hormat Kami,',
+                                    style: const pw.TextStyle(fontSize: 10)))),
+                      ],
+                    ),
+                    pw.SizedBox(height: 50),
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                      children: [
+                        pw.Padding(
+                            padding: const pw.EdgeInsets.only(
+                              top: 20.0,
+                            ),
+                            child: pw.SizedBox(
+                                child: pw.Text('Tanda Tangan & Nama Jelas',
+                                    style: const pw.TextStyle(fontSize: 10)))),
+                        pw.Padding(
+                            padding: const pw.EdgeInsets.only(top: 20.0),
+                            child: pw.SizedBox(
+                                child: pw.Text(
+                                    '${sharedPreferences!.getString("name")!}',
+                                    style: const pw.TextStyle(fontSize: 10)))),
+                      ],
+                    ),
+                  ],
+                )
+              ];
+            }
+          }),
+    ); // Page
+
+    /// print the document using the iOS or Android print service:
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => doc.save());
   }
 }
 
