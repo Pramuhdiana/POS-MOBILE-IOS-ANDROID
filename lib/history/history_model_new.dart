@@ -37,6 +37,7 @@ class HistoryModelNew extends StatelessWidget {
 
   List<Uint8List> imagesUint8list = [];
   String namaCustomerBB = '-';
+  var iCount = 0;
 
   final dynamic allTransaksi;
   final dynamic detailTransaksi;
@@ -82,7 +83,7 @@ class HistoryModelNew extends StatelessWidget {
                             ? _createPdfHeniBerlian()
                             : _createPdf();
                         printMessageAfterDelay(
-                            const Duration(seconds: 6), 'Delayed loading');
+                            const Duration(seconds: 2), 'Delayed loading');
                       },
                       child: const Row(
                         children: [
@@ -441,7 +442,12 @@ class HistoryModelNew extends StatelessWidget {
   }
 
 //convert image nettwork to uint8list
-  getImageBytes(String assetImage) async {
+  getImageBytes(String assetImage, int total) async {
+    if (iCount < total) {
+      iCount++;
+      Fluttertoast.showToast(
+          msg: "Please wait this may take a few minutes $iCount of $total");
+    } else {}
     Response responseGambar = await get(
       Uri.parse(assetImage),
     );
@@ -469,6 +475,7 @@ class HistoryModelNew extends StatelessWidget {
       ByteData? targetByteData =
           await targetUiImage.toByteData(format: ui.ImageByteFormat.png);
       print('target image ByteData size is ${targetByteData!.lengthInBytes}');
+
       Uint8List targetlUinit8List = targetByteData.buffer.asUint8List();
 
       imagesUint8list.add(targetlUinit8List);
@@ -492,7 +499,8 @@ class HistoryModelNew extends StatelessWidget {
             detailTransaksi[i].image_name
     ];
 
-    for (String image in assetImages) await getImageBytes(image);
+    for (String image in assetImages)
+      await getImageBytes(image, assetImages.length);
     List<pw.Widget> pdfImages = imagesUint8list.map((image) {
       try {
         return pw.Image(
@@ -1581,7 +1589,8 @@ class HistoryModelNew extends StatelessWidget {
             detailTransaksi[i].image_name
     ];
 
-    for (String image in assetImages) await getImageBytes(image);
+    for (String image in assetImages)
+      await getImageBytes(image, assetImages.length);
     List<pw.Widget> pdfImages = imagesUint8list.map((image) {
       try {
         return pw.Image(
@@ -2666,7 +2675,8 @@ class HistoryModelNew extends StatelessWidget {
         'https://parvabisnis.id/uploads/products/' +
             detailTransaksi[i].image_name
     ];
-    for (String image in assetImages) await getImageBytes(image);
+    for (String image in assetImages)
+      await getImageBytes(image, assetImages.length);
     List<pw.Widget> pdfImages = imagesUint8list.map((image) {
       try {
         return pw.Image(
@@ -3694,7 +3704,8 @@ class HistoryModelNew extends StatelessWidget {
             detailTransaksi[i].image_name
     ];
 
-    for (String image in assetImages) await getImageBytes(image);
+    for (String image in assetImages)
+      await getImageBytes(image, assetImages.length);
     List<pw.Widget> pdfImagesMetier = imagesUint8list.map((image) {
       try {
         return pw.Image(
@@ -4670,7 +4681,8 @@ class HistoryModelNew extends StatelessWidget {
             detailTransaksi[i].image_name
     ];
 
-    for (String image in assetImages) await getImageBytes(image);
+    for (String image in assetImages)
+      await getImageBytes(image, assetImages.length);
     List<pw.Widget> pdfImagesMetier = imagesUint8list.map((image) {
       try {
         return pw.Image(
@@ -5552,7 +5564,8 @@ class HistoryModelNew extends StatelessWidget {
             detailTransaksi[i].image_name
     ];
 
-    for (String image in assetImages) await getImageBytes(image);
+    for (String image in assetImages)
+      await getImageBytes(image, assetImages.length);
     List<pw.Widget> pdfImages = imagesUint8list.map((image) {
       try {
         return pw.Image(
@@ -6641,7 +6654,8 @@ class HistoryModelNew extends StatelessWidget {
             detailTransaksi[i].image_name
     ];
 
-    for (String image in assetImages) await getImageBytes(image);
+    for (String image in assetImages)
+      await getImageBytes(image, assetImages.length);
     List<pw.Widget> pdfImages = imagesUint8list.map((image) {
       try {
         return pw.Image(

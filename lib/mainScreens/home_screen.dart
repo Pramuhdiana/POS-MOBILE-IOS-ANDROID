@@ -199,7 +199,9 @@ class _HomeScreenState extends State<HomeScreen> {
               });
             });
       //initial customer
-      DbCRM.db.getAllcrm().then((value) {
+      DbCRM.db
+          .getAllcrmBySales(sharedPreferences!.getString('id'))
+          .then((value) {
         setState(() {
           qtyProductCRM = value.length;
         });
@@ -536,7 +538,9 @@ class _HomeScreenState extends State<HomeScreen> {
         qtyProductHistory = value.length;
       });
     });
-    await DbCRM.db.getAllcrm().then((value) {
+    await DbCRM.db
+        .getAllcrmBySales(sharedPreferences!.getString('id'))
+        .then((value) {
       setState(() {
         qtyProductCRM = value.length;
       });
@@ -2259,7 +2263,7 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           });
     //initial crm
-    DbCRM.db.getAllcrm().then((value) {
+    DbCRM.db.getAllcrmBySales(sharedPreferences!.getString('id')).then((value) {
       setState(() {
         qtyProductCRM = value.length;
       });
