@@ -7,7 +7,7 @@ import 'package:e_shop/mainScreens/home_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
 import 'package:e_shop/provider/provider_notification.dart';
-import 'package:e_shop/testing/app_colors.dart';
+import 'package:e_shop/widgets/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';

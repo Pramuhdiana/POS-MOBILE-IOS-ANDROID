@@ -14,6 +14,8 @@ import 'package:e_shop/models/customer_metier.dart';
 import 'package:e_shop/provider/provider_notification.dart';
 import 'package:e_shop/search/new_search.dart';
 import 'package:e_shop/toko/add_customer_metier.dart';
+import 'package:e_shop/widgets/app_colors.dart';
+import 'package:e_shop/widgets/color_extensions.dart';
 import 'package:e_shop/widgets/shimmer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
@@ -25,7 +27,6 @@ import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:e_shop/CRM/crm_screen.dart';
 import 'package:e_shop/global/currency_format.dart';
-import 'package:e_shop/testing/color_extensions.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:e_shop/api/api_constant.dart';
@@ -54,7 +55,6 @@ import '../database/db_allitems_retur.dart';
 import '../database/db_allitems_toko.dart';
 import '../database/model_allitems_toko.dart';
 import '../splashScreen/my_splas_screen.dart';
-import '../testing/app_colors.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {

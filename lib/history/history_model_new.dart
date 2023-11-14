@@ -3390,9 +3390,6 @@ class HistoryModelNew extends StatelessWidget {
     final ByteData getSertif = await rootBundle.load('images/sertif.png');
     final Uint8List showSertif = getSertif.buffer.asUint8List();
 
-    final ByteData getBackgroud = await rootBundle.load('images/kopsuratt.png');
-    final Uint8List showBackground = getBackgroud.buffer.asUint8List();
-
     final imageLogo = MemoryImage(
         (await rootBundle.load('images/kopsuratt.png')).buffer.asUint8List());
 
@@ -4366,9 +4363,6 @@ class HistoryModelNew extends StatelessWidget {
 
     final ByteData getSertif = await rootBundle.load('images/sertif.png');
     final Uint8List showSertif = getSertif.buffer.asUint8List();
-
-    final ByteData getBackgroud = await rootBundle.load('images/kopsuratt.png');
-    final Uint8List showBackground = getBackgroud.buffer.asUint8List();
 
     final imageLogo = MemoryImage(
         (await rootBundle.load('images/kopsuratt.png')).buffer.asUint8List());

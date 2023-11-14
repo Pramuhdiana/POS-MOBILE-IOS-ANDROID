@@ -432,16 +432,6 @@ class _MySplashScreenState extends State<MySplashScreen> {
                             // height: 250,
                             fit: BoxFit.cover,
                           )),
-                      // DotLottieLoader.fromAsset("json/logoOriDot.lottie",
-                      //     frameBuilder:
-                      //         (BuildContext ctx, DotLottie? dotlottie) {
-                      //   if (dotlottie != null) {
-                      //     return Lottie.memory(
-                      //         dotlottie.animations.values.single);
-                      //   } else {
-                      //     return Container();
-                      //   }
-                      // }),
                     ],
                   ),
                 )

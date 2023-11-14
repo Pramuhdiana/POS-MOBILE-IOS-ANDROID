@@ -12,7 +12,7 @@ import 'package:e_shop/database/model_allitems.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/provider/provider_cart.dart';
 import 'package:e_shop/qr/search_qr_screen.dart';
-import 'package:e_shop/testing/app_colors.dart';
+import 'package:e_shop/widgets/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';

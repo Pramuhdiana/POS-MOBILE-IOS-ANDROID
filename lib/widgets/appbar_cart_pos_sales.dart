@@ -1,6 +1,6 @@
 import 'package:e_shop/cartScreens/cart_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
-import 'package:e_shop/testing/app_colors.dart';
+import 'package:e_shop/widgets/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
