@@ -105,6 +105,17 @@ class DbCRM {
     return list;
   }
 
+  Future<List<ModelCRM>> getAllcrmBySales(idSales) async {
+    final db = await database;
+    final res =
+        await db.rawQuery('SELECT * FROM allcrm WHERE user_id=?', [idSales]);
+
+    List<ModelCRM> list =
+        res.isNotEmpty ? res.map((c) => ModelCRM.fromJson(c)).toList() : [];
+    print('get date oke');
+    return list;
+  }
+
   Future<List<ModelCRM>> getAllcrmByDate(fromDate, toDate) async {
     final db = await database;
     final res = await db.rawQuery(

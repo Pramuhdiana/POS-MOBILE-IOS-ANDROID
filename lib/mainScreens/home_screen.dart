@@ -2124,7 +2124,6 @@ class _HomeScreenState extends State<HomeScreen> {
       isLoading = false;
     });
     sharedPreferences!.setString('msg', 'refresh');
-    var apiProvider = ApiServices();
     // context.read<PCart>().clearCart();
     // context.read<PCartToko>().clearCart();
     // context.read<PCartRetur>().clearCart();
@@ -2202,18 +2201,18 @@ class _HomeScreenState extends State<HomeScreen> {
     // } catch (c) {
     //   Fluttertoast.showToast(msg: "Failed To Load Data all code refrence");
     // }
-    try {
-      await apiProvider.getAllCustomer();
-    } catch (c) {
-      print('Error gett all customer : $c');
-      throw Exception('error : $c');
-    }
+    // try {
+    //   await apiProvider.getAllCustomer();
+    // } catch (c) {
+    //   print('Error gett all customer : $c');
+    //   throw Exception('error : $c');
+    // }
 
-    try {
-      await apiProvider.getAllTCRM();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data CRM");
-    }
+    // try {
+    //   await apiProvider.getAllTCRM();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data CRM");
+    // }
 
     context.read<PNewNotif>().clearNotif(); //? clear notif
     await DbNotifDummy.db.getAllNotif(1).then((value) {

@@ -221,12 +221,19 @@ class _MySplashScreenState extends State<MySplashScreen> {
     //   print('Error gett all customer : $c');
     //   throw Exception('error : $c');
     // }
+    try {
+      await apiProvider.getAllCustomer();
+    } catch (c) {
+      print('Error gett all customer : $c');
+      throw Exception('error : $c');
+    }
+    try {
+      await apiProvider.getAllTCRM();
+    } catch (c) {
+      print('Error all crm : $c');
+      throw Exception('error : $c');
+    }
 
-    // try {
-    //   await apiProvider.getAllTCRM();
-    // } catch (c) {
-    //   throw Exception('Unexpected error occured!');
-    // }
     try {
       print('in function get user');
       await apiProvider.getUsers();
