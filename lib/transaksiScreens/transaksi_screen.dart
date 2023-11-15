@@ -3,6 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
+import 'package:e_shop/event/add_customer_event.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
@@ -43,7 +44,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
   int rate = 1;
   int diskonrequest = 90;
   int result = 0;
-  int diskon = 0;
+  double diskon = 0;
   TextEditingController dp = TextEditingController();
   TextEditingController addDiskon = TextEditingController();
   int dpp = 0;
@@ -179,10 +180,25 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                         child: DropdownSearch<UserModel>(
                           asyncItems: (String? filter) => getData(filter),
                           popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                            searchFieldProps: const TextFieldProps(
+                            searchFieldProps: TextFieldProps(
                                 decoration: InputDecoration(
                               labelText: "Search..",
                               prefixIcon: Icon(Icons.search),
+                              //* fungsi add customer
+                              suffixIcon: InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (c) =>
+                                                AddCustomerEventScreen()));
+                                  },
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.black,
+                                  )),
+                              //! end fungsi
                             )),
                             showSelectedItems: true,
                             itemBuilder: _customPopupItemBuilderExample2,
@@ -268,7 +284,13 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                 padding: const EdgeInsets.only(top: 10),
                                 height: 80,
                                 child: DropdownSearch<int>(
-                                  items: const [11500, 11900, 13000],
+                                  items: idtoko == 520
+                                      ? const [
+                                          11500,
+                                          12000,
+                                          12500,
+                                        ]
+                                      : const [11500, 11900, 13000],
                                   onChanged: (value) {
                                     setState(() {
                                       rate = value!;
@@ -300,8 +322,13 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                             : Container(
                                 padding: const EdgeInsets.only(top: 10),
                                 height: 80,
-                                child: DropdownSearch<int>(
-                                  items: const [60, 63],
+                                child: DropdownSearch<double>(
+                                  items: idtoko == 520
+                                      ? const [60, 61, 62, 60.5, 61.5, 62.5]
+                                      : const [
+                                          60,
+                                          63,
+                                        ],
                                   onChanged: (value) {
                                     setState(() {
                                       diskon = value!;
@@ -569,165 +596,165 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
   }
 }
 
- // bottomNavigationBar: BottomAppBar(
-        //     child: ElevatedButton(
-        //   onPressed: () {
-        //     showModalBottomSheet(
-        //         context: context,
-        //         builder: (context) => SizedBox(
-        //               height: MediaQuery.of(context).size.height * 0.3,
-        //               child: Padding(
-        //                 padding: const EdgeInsets.only(bottom: 100),
-        //                 child: Column(
-        //                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-        //                   children: [
-        //                     Text(
-        //                       'Total : $totalPrice3',
-        //                       style: const TextStyle(fontSize: 24),
-        //                     ),
-        //                     ElevatedButton(
-        //                         style: ElevatedButton.styleFrom(
-        //                             backgroundColor:
-        //                                 Colors.black), // set the backgroun
-        //                         onPressed: () async {
-        //                           showProgress();
+// bottomNavigationBar: BottomAppBar(
+//     child: ElevatedButton(
+//   onPressed: () {
+//     showModalBottomSheet(
+//         context: context,
+//         builder: (context) => SizedBox(
+//               height: MediaQuery.of(context).size.height * 0.3,
+//               child: Padding(
+//                 padding: const EdgeInsets.only(bottom: 100),
+//                 child: Column(
+//                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                   children: [
+//                     Text(
+//                       'Total : $totalPrice3',
+//                       style: const TextStyle(fontSize: 24),
+//                     ),
+//                     ElevatedButton(
+//                         style: ElevatedButton.styleFrom(
+//                             backgroundColor:
+//                                 Colors.black), // set the backgroun
+//                         onPressed: () async {
+//                           showProgress();
 
-        //                           if (idform == 1) {
-        //                             print("invoice");
-        //                             await postAPIsales();
-        //                             //invoice
-        //                             for (var item
-        //                                 in context.read<PCart>().getItems) {
-        //                               //real bawah
-        //                               //delete semua items karena akan pindah ke all transaksi details
-        //                               // var apiProvider = ApiServices();
-        //                               // await apiProvider.getAllDetailTransaksi();
-        //                               // await apiProvider.getAllTransaksi();
-        //                               // print('inserting API');
-        //                               //update posisi id ke firestore
-        //                               // await FirebaseFirestore.instance
-        //                               //     .runTransaction((transaction) async {
-        //                               //   DocumentReference documentReference =
-        //                               //       FirebaseFirestore.instance
-        //                               //           .collection("allitems")
-        //                               //           .doc(item.name);
-        //                               //   transaction.update(documentReference, {
-        //                               //     'posisi_id':
-        //                               //         "100", //ganti posisi sales (3) menjadi terjual (100)
-        //                               //     'customer_id': idtoko
-        //                               //         .toString(), //tambahkan customer id agar tahu terjual oleh tko mana
-        //                               //     'qty': 0 //set qty menjadi 0
-        //                               //   });
-        //                               // });
+//                           if (idform == 1) {
+//                             print("invoice");
+//                             await postAPIsales();
+//                             //invoice
+//                             for (var item
+//                                 in context.read<PCart>().getItems) {
+//                               //real bawah
+//                               //delete semua items karena akan pindah ke all transaksi details
+//                               // var apiProvider = ApiServices();
+//                               // await apiProvider.getAllDetailTransaksi();
+//                               // await apiProvider.getAllTransaksi();
+//                               // print('inserting API');
+//                               //update posisi id ke firestore
+//                               // await FirebaseFirestore.instance
+//                               //     .runTransaction((transaction) async {
+//                               //   DocumentReference documentReference =
+//                               //       FirebaseFirestore.instance
+//                               //           .collection("allitems")
+//                               //           .doc(item.name);
+//                               //   transaction.update(documentReference, {
+//                               //     'posisi_id':
+//                               //         "100", //ganti posisi sales (3) menjadi terjual (100)
+//                               //     'customer_id': idtoko
+//                               //         .toString(), //tambahkan customer id agar tahu terjual oleh tko mana
+//                               //     'qty': 0 //set qty menjadi 0
+//                               //   });
+//                               // });
 
-        //                               // delete all items id
-        //                               // FirebaseFirestore.instance
-        //                               //     .collection('allitems')
-        //                               //     .doc(item.name)
-        //                               //     .delete();
-        //                             }
-        //                             // print('delete data firebase berhasil');
-        //                             context
-        //                                 .read<PCart>()
-        //                                 .clearCart(); //clear cart
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (c) =>
-        //                                         const MySplashScreenTransaksi()));
-        //                           } else if (idform == 2) {
-        //                             //titipan
-        //                             await postAPIsales();
-        //                             // for (var item
-        //                             //     in context.read<PCart>().getItems) {
-        //                             //   CollectionReference orderRef =
-        //                             //       FirebaseFirestore.instance
-        //                             //           .collection('allitemstoko');
-        //                             //   await orderRef.doc(item.name).set({
-        //                             //     'brand_id': 9999,
-        //                             //     'category_id': '1',
-        //                             //     'created_at': DateTime.now(),
-        //                             //     'customer_id': idtoko.toString(),
-        //                             //     'description': item.description,
-        //                             //     'id': item.documentId,
-        //                             //     'image_name': item.imageUrl,
-        //                             //     'keterangan_barang':
-        //                             //         item.keterangan_barang,
-        //                             //     'kode_refrensi': 'null',
-        //                             //     'name': item.name,
-        //                             //     'posisi_id': 2,
-        //                             //     'price':
-        //                             //         item.price, //harus int atau double
-        //                             //     'qty': 1, //harus int
-        //                             //     'sales_id': int.parse(id!),
-        //                             //     'slug': item.name,
-        //                             //     'status_titipan': 0,
-        //                             //     'updated_at': DateTime.now()
-        //                             //   });
-        //                             //   // delete all items id
-        //                             //   // FirebaseFirestore.instance
-        //                             //   //     .collection('allitems')
-        //                             //   //     .doc(item.name)
-        //                             //   //     .delete();
-        //                             // }
-        //                             // print('delete data firebase berhasil');
-        //                             context.read<PCart>().clearCart();
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (c) =>
-        //                                         const MySplashScreenTransaksi()));
-        //                           } else if (idform == 3) {
-        //                             //PAMERAN
-        //                             await postAPIsales();
-        //                             // for (var item
-        //                             //     in context.read<PCart>().getItems) {
-        //                             //   CollectionReference orderRef =
-        //                             //       FirebaseFirestore.instance
-        //                             //           .collection('allitemstoko');
-        //                             //   await orderRef.doc(item.name).set({
-        //                             //     'brand_id': 9999,
-        //                             //     'category_id': '1',
-        //                             //     'created_at': DateTime.now(),
-        //                             //     'customer_id': idtoko.toString(),
-        //                             //     'description': item.description,
-        //                             //     'id': int.parse(item.documentId),
-        //                             //     'image_name': item.imageUrl,
-        //                             //     'keterangan_barang':
-        //                             //         item.keterangan_barang,
-        //                             //     'kode_refrensi': 'null',
-        //                             //     'name': item.name,
-        //                             //     'posisi_id': 2,
-        //                             //     'price':
-        //                             //         item.price, //harus int atau double
-        //                             //     'qty': 1, //harus int
-        //                             //     'sales_id': int.parse(id!),
-        //                             //     'slug': item.name,
-        //                             //     'status_titipan': 1,
-        //                             //     'updated_at': DateTime.now()
-        //                             //   });
+//                               // delete all items id
+//                               // FirebaseFirestore.instance
+//                               //     .collection('allitems')
+//                               //     .doc(item.name)
+//                               //     .delete();
+//                             }
+//                             // print('delete data firebase berhasil');
+//                             context
+//                                 .read<PCart>()
+//                                 .clearCart(); //clear cart
+//                             Navigator.push(
+//                                 context,
+//                                 MaterialPageRoute(
+//                                     builder: (c) =>
+//                                         const MySplashScreenTransaksi()));
+//                           } else if (idform == 2) {
+//                             //titipan
+//                             await postAPIsales();
+//                             // for (var item
+//                             //     in context.read<PCart>().getItems) {
+//                             //   CollectionReference orderRef =
+//                             //       FirebaseFirestore.instance
+//                             //           .collection('allitemstoko');
+//                             //   await orderRef.doc(item.name).set({
+//                             //     'brand_id': 9999,
+//                             //     'category_id': '1',
+//                             //     'created_at': DateTime.now(),
+//                             //     'customer_id': idtoko.toString(),
+//                             //     'description': item.description,
+//                             //     'id': item.documentId,
+//                             //     'image_name': item.imageUrl,
+//                             //     'keterangan_barang':
+//                             //         item.keterangan_barang,
+//                             //     'kode_refrensi': 'null',
+//                             //     'name': item.name,
+//                             //     'posisi_id': 2,
+//                             //     'price':
+//                             //         item.price, //harus int atau double
+//                             //     'qty': 1, //harus int
+//                             //     'sales_id': int.parse(id!),
+//                             //     'slug': item.name,
+//                             //     'status_titipan': 0,
+//                             //     'updated_at': DateTime.now()
+//                             //   });
+//                             //   // delete all items id
+//                             //   // FirebaseFirestore.instance
+//                             //   //     .collection('allitems')
+//                             //   //     .doc(item.name)
+//                             //   //     .delete();
+//                             // }
+//                             // print('delete data firebase berhasil');
+//                             context.read<PCart>().clearCart();
+//                             Navigator.push(
+//                                 context,
+//                                 MaterialPageRoute(
+//                                     builder: (c) =>
+//                                         const MySplashScreenTransaksi()));
+//                           } else if (idform == 3) {
+//                             //PAMERAN
+//                             await postAPIsales();
+//                             // for (var item
+//                             //     in context.read<PCart>().getItems) {
+//                             //   CollectionReference orderRef =
+//                             //       FirebaseFirestore.instance
+//                             //           .collection('allitemstoko');
+//                             //   await orderRef.doc(item.name).set({
+//                             //     'brand_id': 9999,
+//                             //     'category_id': '1',
+//                             //     'created_at': DateTime.now(),
+//                             //     'customer_id': idtoko.toString(),
+//                             //     'description': item.description,
+//                             //     'id': int.parse(item.documentId),
+//                             //     'image_name': item.imageUrl,
+//                             //     'keterangan_barang':
+//                             //         item.keterangan_barang,
+//                             //     'kode_refrensi': 'null',
+//                             //     'name': item.name,
+//                             //     'posisi_id': 2,
+//                             //     'price':
+//                             //         item.price, //harus int atau double
+//                             //     'qty': 1, //harus int
+//                             //     'sales_id': int.parse(id!),
+//                             //     'slug': item.name,
+//                             //     'status_titipan': 1,
+//                             //     'updated_at': DateTime.now()
+//                             //   });
 
-        //                             //   // delete all items id
-        //                             //   // FirebaseFirestore.instance
-        //                             //   //     .collection('allitems')
-        //                             //   //     .doc(item.name)
-        //                             //   //     .delete();
-        //                             // }
-        //                             // print('delete data firebase berhasil');
+//                             //   // delete all items id
+//                             //   // FirebaseFirestore.instance
+//                             //   //     .collection('allitems')
+//                             //   //     .doc(item.name)
+//                             //   //     .delete();
+//                             // }
+//                             // print('delete data firebase berhasil');
 
-        //                             context.read<PCart>().clearCart();
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (c) =>
-        //                                         const MySplashScreenTransaksi()));
-        //                           }
-        //                         },
-        //                         child: const Text('Save'))
-        //                   ],
-        //                 ),
-        //               ),
-        //             ));
-        //   },
-        //   child: const Text('Save Transaksi'),
-        // )),
+//                             context.read<PCart>().clearCart();
+//                             Navigator.push(
+//                                 context,
+//                                 MaterialPageRoute(
+//                                     builder: (c) =>
+//                                         const MySplashScreenTransaksi()));
+//                           }
+//                         },
+//                         child: const Text('Save'))
+//                   ],
+//                 ),
+//               ),
+//             ));
+//   },
+//   child: const Text('Save Transaksi'),
+// )),

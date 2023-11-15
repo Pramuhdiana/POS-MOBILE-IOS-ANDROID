@@ -203,7 +203,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                                 decoration: InputDecoration(
                               labelText: "Search..",
                               prefixIcon: Icon(Icons.search),
-                              //fungsi add customer
+                              //* fungsi add customer
                               suffixIcon: InkWell(
                                   onTap: () {
                                     Navigator.pop(context);
@@ -217,6 +217,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                                     Icons.add,
                                     color: Colors.black,
                                   )),
+                              //! end fungsi
                             )),
                             showSelectedItems: true,
                             itemBuilder: _customPopupItemBuilderExample2,

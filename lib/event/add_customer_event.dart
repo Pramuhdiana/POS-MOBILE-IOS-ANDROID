@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print, non_constant_identifier_names, sized_box_for_whitespace, depend_on_referenced_packages
 
 import 'package:e_shop/api/api_constant.dart';
-import 'package:e_shop/event/transaksi_event_screen.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:e_shop/widgets/keyboard_overlay.dart';
@@ -14,8 +13,7 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 // ignore: use_key_in_widget_constructors
 class AddCustomerEventScreen extends StatefulWidget {
   @override
-  State<AddCustomerEventScreen> createState() =>
-      _AddCustomerEventScreenState();
+  State<AddCustomerEventScreen> createState() => _AddCustomerEventScreenState();
 }
 
 class _AddCustomerEventScreenState extends State<AddCustomerEventScreen> {
@@ -269,11 +267,8 @@ class _AddCustomerEventScreenState extends State<AddCustomerEventScreen> {
       Fluttertoast.showToast(msg: 'Add customer success');
       Future.delayed(const Duration(seconds: 1)).then((value) {
         btnController.reset(); //reset
-        setState(() {
-          
-        });
-        Navigator.pop(
-            context, MaterialPageRoute(builder: (c) => const TransaksiScreenEvent()));
+        setState(() {});
+        Navigator.pop(context);
       });
     }
   }

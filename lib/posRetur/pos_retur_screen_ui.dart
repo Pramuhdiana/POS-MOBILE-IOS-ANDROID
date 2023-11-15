@@ -177,7 +177,7 @@ class _PosReturUi extends State<PosReturUi> {
       'jenisform_id': '7', //2
       'qty': '1', //1
       'customer_id':
-          sharedPreferences!.getString('customer_id').toString(), //764
+          sharedPreferences!.getString('customer_id_retur').toString(), //764
       'update_by': '1'
     };
     final response = await http.post(
