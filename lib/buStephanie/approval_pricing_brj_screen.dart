@@ -123,11 +123,13 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
             .map((data) => ApprovePricingModel.fromJson(data))
             .toList();
         for (var i = 0; i < g.length; i++) {
-          listTheme.add(g[i].productTypeDesc!); //! nanti ganti dengan theme
+          listTheme.add(g[i].theme!); //! nanti ganti dengan theme
         }
         listTheme = listTheme
             .toSet()
             .toList(); //! remove duplicate dengan toset dan to list
+        listTheme.removeWhere((value) => value == '');
+
         return g;
       } else {
         throw Exception('Unexpected error occured!');
