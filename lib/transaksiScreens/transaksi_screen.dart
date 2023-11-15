@@ -527,14 +527,15 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
     String customer_id = idtoko.toString();
     String jenisform_id = idformAPI.toString();
     String basicdiskon = diskon.toString();
-    String addesdiskon = '0';
+    String addesdiskonApi = addesdiskon.toString();
     String basicrate = rate.toString();
     String nett = totalPriceAPI;
     String total = totalRp;
     String diskon_rupiah = totalDiskonRp;
-    String addesdiskon_rupiah = addesdiskon;
+    String addesdiskon_rupiahApi = addesdiskon.toString();
     String total_potongan = totalDiskonRp;
     String keterangan_bayar = 'null';
+    print(basicdiskon);
     Map<String, String> body = {
       'cart_total': cart_total,
       'cart_totalquantity': cart_totalquantity, //total item di cart
@@ -542,12 +543,12 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
       'customer_id': customer_id,
       'jenisform_id': jenisform_id,
       'diskon': basicdiskon,
-      'addesdiskon': addesdiskon,
+      'addesdiskon': addesdiskonApi,
       'rate': basicrate,
       'nett': nett,
       'total': total,
       'diskon_rupiah': diskon_rupiah,
-      'addesdiskon_rupiah': addesdiskon_rupiah,
+      'addesdiskon_rupiah': addesdiskon_rupiahApi,
       'total_potongan': total_potongan,
       'keterangan_bayar': keterangan_bayar
     };

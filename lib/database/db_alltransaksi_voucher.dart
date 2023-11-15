@@ -43,7 +43,7 @@ class DbAlltransaksiNewVoucher {
           total INTEGER,
           total_quantity INTEGER,
           total_rupiah TEXT,
-          basic_discount INTEGER,
+          basic_discount TEXT,
           addesdiskon_rupiah INTEGER,
           rate INTEGER,
           nett INTEGER,

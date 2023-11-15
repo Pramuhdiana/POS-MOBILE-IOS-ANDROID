@@ -169,6 +169,21 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                               decoration: InputDecoration(
                             labelText: "Search..",
                             prefixIcon: Icon(Icons.search),
+                            // //* fungsi add customer
+                            // suffixIcon: InkWell(
+                            //     onTap: () {
+                            //       Navigator.pop(context);
+                            //       Navigator.push(
+                            //           context,
+                            //           MaterialPageRoute(
+                            //               builder: (c) =>
+                            //                   AddCustomerEventScreen()));
+                            //     },
+                            //     child: const Icon(
+                            //       Icons.add,
+                            //       color: Colors.black,
+                            //     )),
+                            // //! end fungsi
                           )),
                           showSelectedItems: true,
                           itemBuilder: _customPopupItemBuilderExample2,

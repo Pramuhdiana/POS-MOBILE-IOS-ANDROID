@@ -21,7 +21,7 @@ class ModelAlltransaksiNewVoucher {
   int? total;
   int? total_quantity;
   String? total_rupiah;
-  int? basic_discount;
+  String? basic_discount;
   int? addesdiskon_rupiah;
   int? rate;
   int? nett;
@@ -75,7 +75,7 @@ class ModelAlltransaksiNewVoucher {
           total: json["total"] ?? 0,
           total_quantity: json["total_quantity"] ?? 0,
           total_rupiah: json["total_rupiah"] ?? '0',
-          basic_discount: json["basic_discount"] ?? 0,
+          basic_discount: (json["basic_discount"] ?? 0).toString(),
           addesdiskon_rupiah: json["addesdiskon_rupiah"] ?? 0,
           rate: json["rate"] ?? 0,
           nett: json["nett"] ?? 0,

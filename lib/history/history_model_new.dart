@@ -79,7 +79,7 @@ class HistoryModelNew extends StatelessWidget {
                                 message: "",
                               );
                             });
-                        allTransaksi.customer_id.toString() == '1'
+                        allTransaksi.customer_id.toString() == '520'
                             ? _createPdfHeniBerlian()
                             : _createPdf();
                         printMessageAfterDelay(
@@ -157,7 +157,7 @@ class HistoryModelNew extends StatelessWidget {
                                 message: "",
                               );
                             });
-                        allTransaksi.customer_id.toString() == '1'
+                        allTransaksi.customer_id.toString() == '520'
                             ? _sharePdfHeniBerlian()
                             : _sharePdf();
                         printMessageAfterDelay(
@@ -446,7 +446,8 @@ class HistoryModelNew extends StatelessWidget {
     if (iCount < total) {
       iCount++;
       Fluttertoast.showToast(
-          msg: "Please wait this may take a few minutes $iCount of $total");
+          msg: "Please wait this may take a few minutes ...");
+      // msg: "Please wait this may take a few minutes $iCount of $total");
     } else {}
     Response responseGambar = await get(
       Uri.parse(assetImage),
@@ -466,10 +467,8 @@ class HistoryModelNew extends StatelessWidget {
       ByteData? originalByteData = await originalUiImage.toByteData();
       print(
           'original image ByteData size is ${originalByteData!.lengthInBytes}');
-      var codec = await ui.instantiateImageCodec(
-        imageData,
-        //  targetHeight: 200
-      );
+      var codec = await ui.instantiateImageCodec(imageData,
+          targetHeight: 100, targetWidth: 100);
       var frameInfo = await codec.getNextFrame();
       ui.Image targetUiImage = frameInfo.image;
       ByteData? targetByteData =
@@ -492,7 +491,7 @@ class HistoryModelNew extends StatelessWidget {
     final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
     final Uint8List byteList2 = bytes2.buffer.asUint8List();
 
-//new multi
+    //new multi
     List<String> assetImages = [
       for (var i = 0; i < allTransaksi.total_quantity; i++)
         'https://parvabisnis.id/uploads/products/' +
@@ -681,7 +680,7 @@ class HistoryModelNew extends StatelessWidget {
                                 ),
                                 pw.SizedBox(
                                   width: 35,
-                                  child: pw.Text('Note',
+                                  child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                                 pw.Text(':'),
@@ -1162,7 +1161,7 @@ class HistoryModelNew extends StatelessWidget {
                                 ),
                                 pw.SizedBox(
                                   width: 35,
-                                  child: pw.Text('Note',
+                                  child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                                 pw.Text(':'),
@@ -1582,7 +1581,7 @@ class HistoryModelNew extends StatelessWidget {
     final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
     final Uint8List byteList2 = bytes2.buffer.asUint8List();
 
-//new multi
+    //new multi
     List<String> assetImages = [
       for (var i = 0; i < allTransaksi.total_quantity; i++)
         'https://parvabisnis.id/uploads/products/' +
@@ -1770,7 +1769,7 @@ class HistoryModelNew extends StatelessWidget {
                                 ),
                                 pw.SizedBox(
                                   width: 35,
-                                  child: pw.Text('Note',
+                                  child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                                 pw.Text(':'),
@@ -2250,7 +2249,7 @@ class HistoryModelNew extends StatelessWidget {
                                 ),
                                 pw.SizedBox(
                                   width: 35,
-                                  child: pw.Text('Note',
+                                  child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                                 pw.Text(':'),
@@ -2669,7 +2668,7 @@ class HistoryModelNew extends StatelessWidget {
     final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
     final Uint8List byteList2 = bytes2.buffer.asUint8List();
 
-//new multi
+    //new multi
     List<String> assetImages = [
       for (var i = 0; i < allTransaksi.total_quantity; i++)
         'https://parvabisnis.id/uploads/products/' +
@@ -3178,7 +3177,7 @@ class HistoryModelNew extends StatelessWidget {
                                 ),
                                 pw.SizedBox(
                                   width: 35,
-                                  child: pw.Text('Note',
+                                  child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                                 pw.Text(':'),
@@ -3733,7 +3732,8 @@ class HistoryModelNew extends StatelessWidget {
     var subTotal = detailTransaksi[0].name[0].toString() == '4'
         ? detailTransaksi[0].price
         : detailTransaksi[0].price * 15000;
-    var diskon = ((subTotal * allTransaksi.basic_discount) / 100) ?? 0;
+    var diskon =
+        ((subTotal * double.parse(allTransaksi.basic_discount)) / 100) ?? 0;
     var totalSubDis = subTotal - diskon;
     var addDiskon = allTransaksi.addesdiskon_rupiah ?? 0;
     var voucherDiskon = allTransaksi.voucherDiskon ?? 0;
@@ -4100,7 +4100,7 @@ class HistoryModelNew extends StatelessWidget {
                                             mainAxisAlignment: pw
                                                 .MainAxisAlignment.spaceBetween,
                                             children: [
-                                              pw.Text('Additional Discount',
+                                              pw.Text('Tambahan Discount',
                                                   style: const pw.TextStyle(
                                                       fontSize: 11.5)),
                                               pw.Text(
@@ -4710,7 +4710,8 @@ class HistoryModelNew extends StatelessWidget {
     var subTotal = detailTransaksi[0].name[0].toString() == '4'
         ? detailTransaksi[0].price
         : detailTransaksi[0].price * 15000;
-    var diskon = ((subTotal * allTransaksi.basic_discount) / 100) ?? 0;
+    var diskon =
+        ((subTotal * double.parse(allTransaksi.basic_discount)) / 100) ?? 0;
     var totalSubDis = subTotal - diskon;
     var addDiskon = allTransaksi.addesdiskon_rupiah ?? 0;
     var voucherDiskon = allTransaksi.voucherDiskon ?? 0;
@@ -5077,7 +5078,7 @@ class HistoryModelNew extends StatelessWidget {
                                             mainAxisAlignment: pw
                                                 .MainAxisAlignment.spaceBetween,
                                             children: [
-                                              pw.Text('Additional Discount',
+                                              pw.Text('Tambahan Discount',
                                                   style: const pw.TextStyle(
                                                       fontSize: 11.5)),
                                               pw.Text(
@@ -5552,12 +5553,13 @@ class HistoryModelNew extends StatelessWidget {
     PdfDocument document = PdfDocument();
     final doc = pw.Document();
     final ByteData bytes = await rootBundle.load('images/splashLogo.png');
-    final Uint8List byteList = bytes.buffer.asUint8List();
+    // final ByteData bytes = await rootBundle.load('images/welcomeIcon.png');
 
+    final Uint8List byteList = bytes.buffer.asUint8List();
     final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
     final Uint8List byteList2 = bytes2.buffer.asUint8List();
 
-//new multi
+    //new multi
     List<String> assetImages = [
       for (var i = 0; i < allTransaksi.total_quantity; i++)
         'https://parvabisnis.id/uploads/products/' +
@@ -5574,7 +5576,7 @@ class HistoryModelNew extends StatelessWidget {
           ),
           height: 25,
           width: 25,
-          fit: pw.BoxFit.fitHeight,
+          fit: pw.BoxFit.scaleDown,
         );
       } catch (c) {
         return pw.Image(
@@ -5583,12 +5585,10 @@ class HistoryModelNew extends StatelessWidget {
           ),
           height: 25,
           width: 25,
-          fit: pw.BoxFit.fitHeight,
+          fit: pw.BoxFit.scaleDown,
         );
       }
     }).toList();
-    print(pdfImages);
-
     doc.addPage(
       pw.MultiPage(
           pageFormat: PdfPageFormat.a4,
@@ -5746,7 +5746,7 @@ class HistoryModelNew extends StatelessWidget {
                                 ),
                                 pw.SizedBox(
                                   width: 35,
-                                  child: pw.Text('Note',
+                                  child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                                 pw.Text(':'),
@@ -5764,11 +5764,11 @@ class HistoryModelNew extends StatelessWidget {
                       pw.Table(children: [
                         pw.TableRow(children: [
                           pw.Column(
-                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(left: 3),
+                                  padding: const pw.EdgeInsets.only(),
                                   child: pw.Text("No", //nomor
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -5781,7 +5781,7 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(left: 15),
+                                  padding: const pw.EdgeInsets.only(left: 5),
                                   child: pw.Text("Kode Barang",
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -5794,7 +5794,7 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(left: -5),
+                                  padding: const pw.EdgeInsets.only(),
                                   child: pw.Text("Keterangan Barang",
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -5807,8 +5807,7 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(
-                                      left: 60, right: 3),
+                                  padding: const pw.EdgeInsets.only(),
                                   child: pw.Text("Jumlah",
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -5821,9 +5820,21 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(
-                                      left: 0, right: 25),
-                                  child: pw.Text("Harga",
+                                  padding: const pw.EdgeInsets.only(),
+                                  child: pw.Text("Harga Rupiah",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(),
+                                  child: pw.Text("Harga Diskon",
                                       style: pw.TextStyle(
                                           fontSize: 10,
                                           fontWeight: pw.FontWeight.bold)),
@@ -5855,13 +5866,14 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18, width: 20),
+                                  pw.SizedBox(height: 10, width: 20),
                                   pw.Padding(
                                     padding:
                                         const pw.EdgeInsets.only(left: -15),
                                     child: pw.Text((i + 1).toString(), //nomor
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8, width: 20),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -5869,13 +5881,14 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18),
+                                  pw.SizedBox(height: 10),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(left: -5),
                                     child: pw.Text(
                                         detailTransaksi[i].name.toString(),
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -5884,17 +5897,17 @@ class HistoryModelNew extends StatelessWidget {
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
                                   pw.SizedBox(
-                                    height: 19,
+                                    height: 5,
                                   ),
                                   pw.SizedBox(
-                                    height: 6,
+                                    height: 20,
                                     width: 80,
                                     child: pw.Padding(
                                       padding:
-                                          const pw.EdgeInsets.only(left: -45),
+                                          const pw.EdgeInsets.only(left: 0),
                                       child: pw.Text(
                                           detailTransaksi[i].keterangan_barang,
-                                          // detailTransaksi.docs[i - 1]['description'],
+                                          maxLines: 3,
                                           style:
                                               const pw.TextStyle(fontSize: 6)),
                                     ),
@@ -5906,12 +5919,13 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18),
+                                  pw.SizedBox(height: 10),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(left: 0),
                                     child: pw.Text('1',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -5919,14 +5933,35 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18),
+                                  pw.SizedBox(height: 10),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
+                                        '${CurrencyFormat.convertToIdr(
+                                            //! harga asli idr - harga diskon
+                                            ((detailTransaksi[i].price * allTransaksi.rate) - ((detailTransaksi[i].price * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))), 0)}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 10),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(
+                                        right: -5, left: 10),
+                                    child: pw.Text(
+                                        '${CurrencyFormat.convertToIdr(
+                                            //! harga asli idr - harga diskon
+                                            (((detailTransaksi[i].price * allTransaksi.rate) - ((detailTransaksi[i].price * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))) - (allTransaksi.addesdiskon_rupiah / allTransaksi.total_quantity)), 0)}',
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.SizedBox(height: 8),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -5935,10 +5970,6 @@ class HistoryModelNew extends StatelessWidget {
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
                                   pdfImages[i],
-                                  // pw.Image(pw.MemoryImage(byteList2),
-                                  //     fit: pw.BoxFit.fitHeight,
-                                  //     height: 25,
-                                  //     width: 25),
                                   pw.Divider(thickness: 1),
                                 ])
                           ])
@@ -5957,14 +5988,6 @@ class HistoryModelNew extends StatelessWidget {
                                   child: pw.Text(
                                       'Terbilang                     :',
                                       style: const pw.TextStyle(fontSize: 10))),
-                              pw.SizedBox(width: 95, child: pw.Text('Total')),
-                              pw.Text(':'),
-                              pw.SizedBox(
-                                width: 100,
-                                child: pw.Text(
-                                    '\$ ${CurrencyFormat.convertToDollar(allTransaksi.total, 0)}',
-                                    style: const pw.TextStyle(fontSize: 10)),
-                              ),
                             ],
                           ),
                           pw.SizedBox(height: 5),
@@ -5976,15 +5999,16 @@ class HistoryModelNew extends StatelessWidget {
                                   width: 250,
                                   child: pw.Text('Kondisi Pembayaran   : ',
                                       style: const pw.TextStyle(fontSize: 10))),
-                              pw.SizedBox(width: 95, child: pw.Text('Diskon')),
-                              pw.Text(':'),
-                              pw.SizedBox(
-                                width: 100,
-                                child: pw.Text(
-                                    allTransaksi.basic_discount.toString() +
-                                        ' %',
-                                    style: const pw.TextStyle(fontSize: 10)),
-                              ),
+                              // pw.SizedBox(width: 95, child: pw.Text('Total')),
+                              // pw.Text(':'),
+                              // pw.SizedBox(
+                              //   width: 100,
+                              //   child: pw.Text(
+                              //       '${CurrencyFormat.convertToIdr(
+                              //           //! harga asli idr - harga diskon
+                              //           ((allTransaksi.total * allTransaksi.rate) - ((allTransaksi.total * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))), 0)}',
+                              //       style: const pw.TextStyle(fontSize: 10)),
+                              // ),
                             ],
                           ),
                           pw.SizedBox(height: 5),
@@ -5996,11 +6020,13 @@ class HistoryModelNew extends StatelessWidget {
                                   width: 250,
                                   child: pw.Text('Jangka Waktu             : ',
                                       style: const pw.TextStyle(fontSize: 10))),
-                              pw.SizedBox(width: 95, child: pw.Text('Rate')),
+                              pw.SizedBox(
+                                  width: 95, child: pw.Text('Total Transaksi')),
                               pw.Text(':'),
                               pw.SizedBox(
                                 width: 100,
-                                child: pw.Text(allTransaksi.rate.toString(),
+                                child: pw.Text(
+                                    '${CurrencyFormat.convertToIdr(allTransaksi.nett, 0)}',
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -6015,14 +6041,12 @@ class HistoryModelNew extends StatelessWidget {
                                   child: pw.Text('Jatuh Tempo               : ',
                                       style: const pw.TextStyle(fontSize: 10))),
                               pw.SizedBox(
-                                  width: 95, child: pw.Text('Total Transaksi')),
+                                  width: 95, child: pw.Text('Tambahan Diskon')),
                               pw.Text(':'),
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    CurrencyFormat.convertToIdr(
-                                            allTransaksi.nett, 0)
-                                        .toString(),
+                                    '${CurrencyFormat.convertToIdr(allTransaksi.addesdiskon_rupiah, 0)}',
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -6073,7 +6097,7 @@ class HistoryModelNew extends StatelessWidget {
                     ])
               ];
             }
-            //total cart lebih dari 10
+            //! total cart lebih dari 10
             else {
               return [
                 pw.Column(
@@ -6227,7 +6251,7 @@ class HistoryModelNew extends StatelessWidget {
                                 ),
                                 pw.SizedBox(
                                   width: 35,
-                                  child: pw.Text('Note',
+                                  child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                                 pw.Text(':'),
@@ -6245,11 +6269,11 @@ class HistoryModelNew extends StatelessWidget {
                       pw.Table(children: [
                         pw.TableRow(children: [
                           pw.Column(
-                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(left: 3),
+                                  padding: const pw.EdgeInsets.only(),
                                   child: pw.Text("No", //nomor
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -6262,7 +6286,7 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(left: 15),
+                                  padding: const pw.EdgeInsets.only(left: 5),
                                   child: pw.Text("Kode Barang",
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -6275,7 +6299,7 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(left: -5),
+                                  padding: const pw.EdgeInsets.only(),
                                   child: pw.Text("Keterangan Barang",
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -6288,8 +6312,7 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(
-                                      left: 60, right: 3),
+                                  padding: const pw.EdgeInsets.only(),
                                   child: pw.Text("Jumlah",
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -6302,9 +6325,21 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(
-                                      left: 0, right: 25),
-                                  child: pw.Text("Harga",
+                                  padding: const pw.EdgeInsets.only(),
+                                  child: pw.Text("Harga Rupiah",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(),
+                                  child: pw.Text("Harga Diskon",
                                       style: pw.TextStyle(
                                           fontSize: 10,
                                           fontWeight: pw.FontWeight.bold)),
@@ -6327,8 +6362,8 @@ class HistoryModelNew extends StatelessWidget {
                         ]),
                       ]),
 
-                      // body isi page 1
-                      //body isi
+                      //! body isi page 1
+                      //* body isi
                       pw.Table(children: [
                         for (var i = 0; i < 10; i++)
                           pw.TableRow(children: [
@@ -6337,13 +6372,14 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18, width: 20),
+                                  pw.SizedBox(height: 10, width: 20),
                                   pw.Padding(
                                     padding:
                                         const pw.EdgeInsets.only(left: -15),
                                     child: pw.Text((i + 1).toString(), //nomor
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8, width: 20),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -6351,13 +6387,14 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18),
+                                  pw.SizedBox(height: 10),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(left: -5),
                                     child: pw.Text(
                                         detailTransaksi[i].name.toString(),
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -6366,16 +6403,17 @@ class HistoryModelNew extends StatelessWidget {
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
                                   pw.SizedBox(
-                                    height: 19,
+                                    height: 5,
                                   ),
                                   pw.SizedBox(
-                                    height: 6,
+                                    height: 20,
                                     width: 80,
                                     child: pw.Padding(
                                       padding:
-                                          const pw.EdgeInsets.only(left: -45),
+                                          const pw.EdgeInsets.only(left: 0),
                                       child: pw.Text(
                                           detailTransaksi[i].keterangan_barang,
+                                          maxLines: 3,
                                           style:
                                               const pw.TextStyle(fontSize: 6)),
                                     ),
@@ -6387,12 +6425,13 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18),
+                                  pw.SizedBox(height: 10),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(left: 0),
                                     child: pw.Text('1',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -6400,14 +6439,35 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18),
+                                  pw.SizedBox(height: 10),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
+                                        '${CurrencyFormat.convertToIdr(
+                                            //! harga asli idr - harga diskon
+                                            ((detailTransaksi[i].price * allTransaksi.rate) - ((detailTransaksi[i].price * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))), 0)}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 10),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(
+                                        right: -5, left: 10),
+                                    child: pw.Text(
+                                        '${CurrencyFormat.convertToIdr(
+                                            //! harga asli idr - harga diskon
+                                            (((detailTransaksi[i].price * allTransaksi.rate) - ((detailTransaksi[i].price * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))) - (allTransaksi.addesdiskon_rupiah / allTransaksi.total_quantity)), 0)}',
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.SizedBox(height: 8),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -6416,10 +6476,6 @@ class HistoryModelNew extends StatelessWidget {
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
                                   pdfImages[i],
-                                  // pw.Image(pw.MemoryImage(byteList2),
-                                  //     fit: pw.BoxFit.fitHeight,
-                                  //     height: 25,
-                                  //     width: 25),
                                   pw.Divider(thickness: 1),
                                 ])
                           ])
@@ -6434,24 +6490,26 @@ class HistoryModelNew extends StatelessWidget {
                           crossAxisAlignment: pw.CrossAxisAlignment.center,
                           mainAxisAlignment: pw.MainAxisAlignment.center,
                           children: [
-                            pw.SizedBox(height: 18, width: 20),
+                            pw.SizedBox(height: 10, width: 20),
                             pw.Padding(
                               padding: const pw.EdgeInsets.only(left: -15),
                               child: pw.Text((i + 1).toString(), //nomor
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
+                            pw.SizedBox(height: 8, width: 20),
                             pw.Divider(thickness: 1)
                           ]),
                       pw.Column(
                           crossAxisAlignment: pw.CrossAxisAlignment.center,
                           mainAxisAlignment: pw.MainAxisAlignment.center,
                           children: [
-                            pw.SizedBox(height: 18),
+                            pw.SizedBox(height: 10),
                             pw.Padding(
                               padding: const pw.EdgeInsets.only(left: -5),
                               child: pw.Text(detailTransaksi[i].name.toString(),
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
+                            pw.SizedBox(height: 8),
                             pw.Divider(thickness: 1)
                           ]),
                       pw.Column(
@@ -6459,15 +6517,16 @@ class HistoryModelNew extends StatelessWidget {
                           mainAxisAlignment: pw.MainAxisAlignment.center,
                           children: [
                             pw.SizedBox(
-                              height: 19,
+                              height: 5,
                             ),
                             pw.SizedBox(
-                              height: 6,
+                              height: 20,
                               width: 80,
                               child: pw.Padding(
-                                padding: const pw.EdgeInsets.only(left: -45),
+                                padding: const pw.EdgeInsets.only(left: 0),
                                 child: pw.Text(
                                     detailTransaksi[i].keterangan_barang,
+                                    maxLines: 3,
                                     style: const pw.TextStyle(fontSize: 6)),
                               ),
                             ),
@@ -6477,26 +6536,47 @@ class HistoryModelNew extends StatelessWidget {
                           crossAxisAlignment: pw.CrossAxisAlignment.center,
                           mainAxisAlignment: pw.MainAxisAlignment.center,
                           children: [
-                            pw.SizedBox(height: 18),
+                            pw.SizedBox(height: 10),
                             pw.Padding(
                               padding: const pw.EdgeInsets.only(left: 0),
                               child: pw.Text('1',
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
+                            pw.SizedBox(height: 8),
                             pw.Divider(thickness: 1)
                           ]),
                       pw.Column(
                           crossAxisAlignment: pw.CrossAxisAlignment.center,
                           mainAxisAlignment: pw.MainAxisAlignment.center,
                           children: [
-                            pw.SizedBox(height: 18),
+                            pw.SizedBox(height: 10),
                             pw.Padding(
                               padding:
                                   const pw.EdgeInsets.only(right: -5, left: 20),
                               child: pw.Text(
-                                  '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
+                                  '${CurrencyFormat.convertToIdr(
+                                      //! harga asli idr - harga diskon
+                                      ((detailTransaksi[i].price * allTransaksi.rate) - ((detailTransaksi[i].price * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))), 0)}',
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
+                            pw.SizedBox(height: 8),
+                            pw.Divider(thickness: 1)
+                          ]),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                            pw.SizedBox(height: 10),
+                            pw.Padding(
+                              padding:
+                                  const pw.EdgeInsets.only(right: -5, left: 10),
+                              child: pw.Text(
+                                  '${CurrencyFormat.convertToIdr(
+                                      //! harga asli idr - harga diskon
+                                      (((detailTransaksi[i].price * allTransaksi.rate) - ((detailTransaksi[i].price * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))) - (allTransaksi.addesdiskon_rupiah / allTransaksi.total_quantity)), 0)}',
+                                  style: const pw.TextStyle(fontSize: 6)),
+                            ),
+                            pw.SizedBox(height: 8),
                             pw.Divider(thickness: 1)
                           ]),
                       pw.Column(
@@ -6504,10 +6584,6 @@ class HistoryModelNew extends StatelessWidget {
                           mainAxisAlignment: pw.MainAxisAlignment.center,
                           children: [
                             pdfImages[i],
-                            // pw.Image(pw.MemoryImage(byteList2),
-                            //     fit: pw.BoxFit.fitHeight,
-                            //     height: 25,
-                            //     width: 25),
                             pw.Divider(thickness: 1),
                           ])
                     ])
@@ -6523,14 +6599,6 @@ class HistoryModelNew extends StatelessWidget {
                             width: 250,
                             child: pw.Text('Terbilang                     :',
                                 style: const pw.TextStyle(fontSize: 10))),
-                        pw.SizedBox(width: 95, child: pw.Text('Total')),
-                        pw.Text(':'),
-                        pw.SizedBox(
-                          width: 100,
-                          child: pw.Text(
-                              '\$ ${CurrencyFormat.convertToDollar(allTransaksi.total, 0)}',
-                              style: const pw.TextStyle(fontSize: 10)),
-                        ),
                       ],
                     ),
                     pw.SizedBox(height: 5),
@@ -6541,14 +6609,16 @@ class HistoryModelNew extends StatelessWidget {
                             width: 250,
                             child: pw.Text('Kondisi Pembayaran   : ',
                                 style: const pw.TextStyle(fontSize: 10))),
-                        pw.SizedBox(width: 95, child: pw.Text('Diskon')),
-                        pw.Text(':'),
-                        pw.SizedBox(
-                          width: 100,
-                          child: pw.Text(
-                              allTransaksi.basic_discount.toString() + ' %',
-                              style: const pw.TextStyle(fontSize: 10)),
-                        ),
+                        // pw.SizedBox(width: 95, child: pw.Text('Total')),
+                        // pw.Text(':'),
+                        // pw.SizedBox(
+                        //   width: 100,
+                        //   child: pw.Text(
+                        //       '${CurrencyFormat.convertToIdr(
+                        //           //! harga asli idr - harga diskon
+                        //           ((allTransaksi.total * allTransaksi.rate) - ((allTransaksi.total * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))), 0)}',
+                        //       style: const pw.TextStyle(fontSize: 10)),
+                        // ),
                       ],
                     ),
                     pw.SizedBox(height: 5),
@@ -6559,11 +6629,13 @@ class HistoryModelNew extends StatelessWidget {
                             width: 250,
                             child: pw.Text('Jangka Waktu             : ',
                                 style: const pw.TextStyle(fontSize: 10))),
-                        pw.SizedBox(width: 95, child: pw.Text('Rate')),
+                        pw.SizedBox(
+                            width: 95, child: pw.Text('Total Transaksi')),
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text(allTransaksi.rate.toString(),
+                          child: pw.Text(
+                              '${CurrencyFormat.convertToIdr(allTransaksi.nett, 0)}',
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -6577,13 +6649,12 @@ class HistoryModelNew extends StatelessWidget {
                             child: pw.Text('Jatuh Tempo               : ',
                                 style: const pw.TextStyle(fontSize: 10))),
                         pw.SizedBox(
-                            width: 95, child: pw.Text('Total Transaksi')),
+                            width: 95, child: pw.Text('Tambahan Diskon')),
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
                           child: pw.Text(
-                              CurrencyFormat.convertToIdr(allTransaksi.nett, 0)
-                                  .toString(),
+                              '${CurrencyFormat.convertToIdr(allTransaksi.addesdiskon_rupiah, 0)}',
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -6605,7 +6676,7 @@ class HistoryModelNew extends StatelessWidget {
                                     style: const pw.TextStyle(fontSize: 10)))),
                       ],
                     ),
-                    pw.SizedBox(height: 50),
+                    pw.SizedBox(height: 18),
                     pw.Row(
                       mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
                       children: [
@@ -6631,7 +6702,6 @@ class HistoryModelNew extends StatelessWidget {
           }),
     ); // Page
 
-    //? share the document to other applications:
     await Printing.sharePdf(
         bytes: await doc.save(),
         filename: '${allTransaksi.invoices_number}.pdf');
@@ -6647,7 +6717,7 @@ class HistoryModelNew extends StatelessWidget {
     final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
     final Uint8List byteList2 = bytes2.buffer.asUint8List();
 
-//new multi
+    //new multi
     List<String> assetImages = [
       for (var i = 0; i < allTransaksi.total_quantity; i++)
         'https://parvabisnis.id/uploads/products/' +
@@ -6664,7 +6734,7 @@ class HistoryModelNew extends StatelessWidget {
           ),
           height: 25,
           width: 25,
-          fit: pw.BoxFit.fitHeight,
+          fit: pw.BoxFit.scaleDown,
         );
       } catch (c) {
         return pw.Image(
@@ -6673,11 +6743,10 @@ class HistoryModelNew extends StatelessWidget {
           ),
           height: 25,
           width: 25,
-          fit: pw.BoxFit.fitHeight,
+          fit: pw.BoxFit.scaleDown,
         );
       }
     }).toList();
-
     doc.addPage(
       pw.MultiPage(
           pageFormat: PdfPageFormat.a4,
@@ -6835,7 +6904,7 @@ class HistoryModelNew extends StatelessWidget {
                                 ),
                                 pw.SizedBox(
                                   width: 35,
-                                  child: pw.Text('Note',
+                                  child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                                 pw.Text(':'),
@@ -6853,11 +6922,11 @@ class HistoryModelNew extends StatelessWidget {
                       pw.Table(children: [
                         pw.TableRow(children: [
                           pw.Column(
-                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(left: 3),
+                                  padding: const pw.EdgeInsets.only(),
                                   child: pw.Text("No", //nomor
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -6870,7 +6939,7 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(left: 15),
+                                  padding: const pw.EdgeInsets.only(left: 5),
                                   child: pw.Text("Kode Barang",
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -6883,7 +6952,7 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(left: -5),
+                                  padding: const pw.EdgeInsets.only(),
                                   child: pw.Text("Keterangan Barang",
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -6896,8 +6965,7 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(
-                                      left: 60, right: 3),
+                                  padding: const pw.EdgeInsets.only(),
                                   child: pw.Text("Jumlah",
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -6910,9 +6978,21 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(
-                                      left: 0, right: 25),
-                                  child: pw.Text("Harga",
+                                  padding: const pw.EdgeInsets.only(),
+                                  child: pw.Text("Harga Rupiah",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(),
+                                  child: pw.Text("Harga Diskon",
                                       style: pw.TextStyle(
                                           fontSize: 10,
                                           fontWeight: pw.FontWeight.bold)),
@@ -6944,13 +7024,14 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18, width: 20),
+                                  pw.SizedBox(height: 10, width: 20),
                                   pw.Padding(
                                     padding:
                                         const pw.EdgeInsets.only(left: -15),
                                     child: pw.Text((i + 1).toString(), //nomor
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8, width: 20),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -6958,13 +7039,14 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18),
+                                  pw.SizedBox(height: 10),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(left: -5),
                                     child: pw.Text(
                                         detailTransaksi[i].name.toString(),
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -6973,16 +7055,17 @@ class HistoryModelNew extends StatelessWidget {
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
                                   pw.SizedBox(
-                                    height: 19,
+                                    height: 5,
                                   ),
                                   pw.SizedBox(
-                                    height: 6,
+                                    height: 20,
                                     width: 80,
                                     child: pw.Padding(
                                       padding:
-                                          const pw.EdgeInsets.only(left: -45),
+                                          const pw.EdgeInsets.only(left: 0),
                                       child: pw.Text(
                                           detailTransaksi[i].keterangan_barang,
+                                          maxLines: 3,
                                           style:
                                               const pw.TextStyle(fontSize: 6)),
                                     ),
@@ -6994,12 +7077,13 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18),
+                                  pw.SizedBox(height: 10),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(left: 0),
                                     child: pw.Text('1',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -7007,14 +7091,35 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18),
+                                  pw.SizedBox(height: 10),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
+                                        '${CurrencyFormat.convertToIdr(
+                                            //! harga asli idr - harga diskon
+                                            ((detailTransaksi[i].price * allTransaksi.rate) - ((detailTransaksi[i].price * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))), 0)}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 10),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(
+                                        right: -5, left: 10),
+                                    child: pw.Text(
+                                        '${CurrencyFormat.convertToIdr(
+                                            //! harga asli idr - harga diskon
+                                            (((detailTransaksi[i].price * allTransaksi.rate) - ((detailTransaksi[i].price * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))) - (allTransaksi.addesdiskon_rupiah / allTransaksi.total_quantity)), 0)}',
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.SizedBox(height: 8),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -7023,10 +7128,6 @@ class HistoryModelNew extends StatelessWidget {
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
                                   pdfImages[i],
-                                  // pw.Image(pw.MemoryImage(byteList2),
-                                  //     fit: pw.BoxFit.fitHeight,
-                                  //     height: 25,
-                                  //     width: 25),
                                   pw.Divider(thickness: 1),
                                 ])
                           ])
@@ -7045,14 +7146,6 @@ class HistoryModelNew extends StatelessWidget {
                                   child: pw.Text(
                                       'Terbilang                     :',
                                       style: const pw.TextStyle(fontSize: 10))),
-                              pw.SizedBox(width: 95, child: pw.Text('Total')),
-                              pw.Text(':'),
-                              pw.SizedBox(
-                                width: 100,
-                                child: pw.Text(
-                                    '\$ ${CurrencyFormat.convertToDollar(allTransaksi.total, 0)}',
-                                    style: const pw.TextStyle(fontSize: 10)),
-                              ),
                             ],
                           ),
                           pw.SizedBox(height: 5),
@@ -7064,15 +7157,16 @@ class HistoryModelNew extends StatelessWidget {
                                   width: 250,
                                   child: pw.Text('Kondisi Pembayaran   : ',
                                       style: const pw.TextStyle(fontSize: 10))),
-                              pw.SizedBox(width: 95, child: pw.Text('Diskon')),
-                              pw.Text(':'),
-                              pw.SizedBox(
-                                width: 100,
-                                child: pw.Text(
-                                    allTransaksi.basic_discount.toString() +
-                                        ' %',
-                                    style: const pw.TextStyle(fontSize: 10)),
-                              ),
+                              // pw.SizedBox(width: 95, child: pw.Text('Total')),
+                              // pw.Text(':'),
+                              // pw.SizedBox(
+                              //   width: 100,
+                              //   child: pw.Text(
+                              //       '${CurrencyFormat.convertToIdr(
+                              //           //! harga asli idr - harga diskon
+                              //           ((allTransaksi.total * allTransaksi.rate) - ((allTransaksi.total * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))), 0)}',
+                              //       style: const pw.TextStyle(fontSize: 10)),
+                              // ),
                             ],
                           ),
                           pw.SizedBox(height: 5),
@@ -7084,11 +7178,13 @@ class HistoryModelNew extends StatelessWidget {
                                   width: 250,
                                   child: pw.Text('Jangka Waktu             : ',
                                       style: const pw.TextStyle(fontSize: 10))),
-                              pw.SizedBox(width: 95, child: pw.Text('Rate')),
+                              pw.SizedBox(
+                                  width: 95, child: pw.Text('Total Transaksi')),
                               pw.Text(':'),
                               pw.SizedBox(
                                 width: 100,
-                                child: pw.Text(allTransaksi.rate.toString(),
+                                child: pw.Text(
+                                    '${CurrencyFormat.convertToIdr(allTransaksi.nett, 0)}',
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -7103,14 +7199,12 @@ class HistoryModelNew extends StatelessWidget {
                                   child: pw.Text('Jatuh Tempo               : ',
                                       style: const pw.TextStyle(fontSize: 10))),
                               pw.SizedBox(
-                                  width: 95, child: pw.Text('Total Transaksi')),
+                                  width: 95, child: pw.Text('Tambahan Diskon')),
                               pw.Text(':'),
                               pw.SizedBox(
                                 width: 100,
                                 child: pw.Text(
-                                    CurrencyFormat.convertToIdr(
-                                            allTransaksi.nett, 0)
-                                        .toString(),
+                                    '${CurrencyFormat.convertToIdr(allTransaksi.addesdiskon_rupiah, 0)}',
                                     style: const pw.TextStyle(fontSize: 10)),
                               ),
                             ],
@@ -7161,7 +7255,7 @@ class HistoryModelNew extends StatelessWidget {
                     ])
               ];
             }
-            //total cart lebih dari 10
+            //! total cart lebih dari 10
             else {
               return [
                 pw.Column(
@@ -7315,7 +7409,7 @@ class HistoryModelNew extends StatelessWidget {
                                 ),
                                 pw.SizedBox(
                                   width: 35,
-                                  child: pw.Text('Note',
+                                  child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                                 pw.Text(':'),
@@ -7333,11 +7427,11 @@ class HistoryModelNew extends StatelessWidget {
                       pw.Table(children: [
                         pw.TableRow(children: [
                           pw.Column(
-                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(left: 3),
+                                  padding: const pw.EdgeInsets.only(),
                                   child: pw.Text("No", //nomor
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -7350,7 +7444,7 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(left: 15),
+                                  padding: const pw.EdgeInsets.only(left: 5),
                                   child: pw.Text("Kode Barang",
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -7363,7 +7457,7 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(left: -5),
+                                  padding: const pw.EdgeInsets.only(),
                                   child: pw.Text("Keterangan Barang",
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -7376,8 +7470,7 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(
-                                      left: 60, right: 3),
+                                  padding: const pw.EdgeInsets.only(),
                                   child: pw.Text("Jumlah",
                                       style: pw.TextStyle(
                                           fontSize: 10,
@@ -7390,9 +7483,21 @@ class HistoryModelNew extends StatelessWidget {
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
                                 pw.Padding(
-                                  padding: const pw.EdgeInsets.only(
-                                      left: 0, right: 25),
-                                  child: pw.Text("Harga",
+                                  padding: const pw.EdgeInsets.only(),
+                                  child: pw.Text("Harga Rupiah",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: pw.FontWeight.bold)),
+                                ),
+                                pw.Divider(thickness: 3)
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Padding(
+                                  padding: const pw.EdgeInsets.only(),
+                                  child: pw.Text("Harga Diskon",
                                       style: pw.TextStyle(
                                           fontSize: 10,
                                           fontWeight: pw.FontWeight.bold)),
@@ -7415,8 +7520,8 @@ class HistoryModelNew extends StatelessWidget {
                         ]),
                       ]),
 
-                      // body isi page 1
-                      //body isi
+                      //! body isi page 1
+                      //* body isi
                       pw.Table(children: [
                         for (var i = 0; i < 10; i++)
                           pw.TableRow(children: [
@@ -7425,13 +7530,14 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18, width: 20),
+                                  pw.SizedBox(height: 10, width: 20),
                                   pw.Padding(
                                     padding:
                                         const pw.EdgeInsets.only(left: -15),
                                     child: pw.Text((i + 1).toString(), //nomor
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8, width: 20),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -7439,13 +7545,14 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18),
+                                  pw.SizedBox(height: 10),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(left: -5),
                                     child: pw.Text(
                                         detailTransaksi[i].name.toString(),
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -7454,16 +7561,17 @@ class HistoryModelNew extends StatelessWidget {
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
                                   pw.SizedBox(
-                                    height: 19,
+                                    height: 5,
                                   ),
                                   pw.SizedBox(
-                                    height: 6,
+                                    height: 20,
                                     width: 80,
                                     child: pw.Padding(
                                       padding:
-                                          const pw.EdgeInsets.only(left: -45),
+                                          const pw.EdgeInsets.only(left: 0),
                                       child: pw.Text(
                                           detailTransaksi[i].keterangan_barang,
+                                          maxLines: 3,
                                           style:
                                               const pw.TextStyle(fontSize: 6)),
                                     ),
@@ -7475,12 +7583,13 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18),
+                                  pw.SizedBox(height: 10),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(left: 0),
                                     child: pw.Text('1',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -7488,14 +7597,35 @@ class HistoryModelNew extends StatelessWidget {
                                     pw.CrossAxisAlignment.center,
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
-                                  pw.SizedBox(height: 18),
+                                  pw.SizedBox(height: 10),
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(
                                         right: -5, left: 20),
                                     child: pw.Text(
-                                        '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
+                                        '${CurrencyFormat.convertToIdr(
+                                            //! harga asli idr - harga diskon
+                                            ((detailTransaksi[i].price * allTransaksi.rate) - ((detailTransaksi[i].price * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))), 0)}',
                                         style: const pw.TextStyle(fontSize: 6)),
                                   ),
+                                  pw.SizedBox(height: 8),
+                                  pw.Divider(thickness: 1)
+                                ]),
+                            pw.Column(
+                                crossAxisAlignment:
+                                    pw.CrossAxisAlignment.center,
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.SizedBox(height: 10),
+                                  pw.Padding(
+                                    padding: const pw.EdgeInsets.only(
+                                        right: -5, left: 10),
+                                    child: pw.Text(
+                                        '${CurrencyFormat.convertToIdr(
+                                            //! harga asli idr - harga diskon
+                                            (((detailTransaksi[i].price * allTransaksi.rate) - ((detailTransaksi[i].price * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))) - (allTransaksi.addesdiskon_rupiah / allTransaksi.total_quantity)), 0)}',
+                                        style: const pw.TextStyle(fontSize: 6)),
+                                  ),
+                                  pw.SizedBox(height: 8),
                                   pw.Divider(thickness: 1)
                                 ]),
                             pw.Column(
@@ -7504,10 +7634,6 @@ class HistoryModelNew extends StatelessWidget {
                                 mainAxisAlignment: pw.MainAxisAlignment.center,
                                 children: [
                                   pdfImages[i],
-                                  // pw.Image(pw.MemoryImage(byteList2),
-                                  //     fit: pw.BoxFit.fitHeight,
-                                  //     height: 25,
-                                  //     width: 25),
                                   pw.Divider(thickness: 1),
                                 ])
                           ])
@@ -7522,24 +7648,26 @@ class HistoryModelNew extends StatelessWidget {
                           crossAxisAlignment: pw.CrossAxisAlignment.center,
                           mainAxisAlignment: pw.MainAxisAlignment.center,
                           children: [
-                            pw.SizedBox(height: 18, width: 20),
+                            pw.SizedBox(height: 10, width: 20),
                             pw.Padding(
                               padding: const pw.EdgeInsets.only(left: -15),
                               child: pw.Text((i + 1).toString(), //nomor
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
+                            pw.SizedBox(height: 8, width: 20),
                             pw.Divider(thickness: 1)
                           ]),
                       pw.Column(
                           crossAxisAlignment: pw.CrossAxisAlignment.center,
                           mainAxisAlignment: pw.MainAxisAlignment.center,
                           children: [
-                            pw.SizedBox(height: 18),
+                            pw.SizedBox(height: 10),
                             pw.Padding(
                               padding: const pw.EdgeInsets.only(left: -5),
                               child: pw.Text(detailTransaksi[i].name.toString(),
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
+                            pw.SizedBox(height: 8),
                             pw.Divider(thickness: 1)
                           ]),
                       pw.Column(
@@ -7547,15 +7675,16 @@ class HistoryModelNew extends StatelessWidget {
                           mainAxisAlignment: pw.MainAxisAlignment.center,
                           children: [
                             pw.SizedBox(
-                              height: 19,
+                              height: 5,
                             ),
                             pw.SizedBox(
-                              height: 6,
+                              height: 20,
                               width: 80,
                               child: pw.Padding(
-                                padding: const pw.EdgeInsets.only(left: -45),
+                                padding: const pw.EdgeInsets.only(left: 0),
                                 child: pw.Text(
                                     detailTransaksi[i].keterangan_barang,
+                                    maxLines: 3,
                                     style: const pw.TextStyle(fontSize: 6)),
                               ),
                             ),
@@ -7565,26 +7694,47 @@ class HistoryModelNew extends StatelessWidget {
                           crossAxisAlignment: pw.CrossAxisAlignment.center,
                           mainAxisAlignment: pw.MainAxisAlignment.center,
                           children: [
-                            pw.SizedBox(height: 18),
+                            pw.SizedBox(height: 10),
                             pw.Padding(
                               padding: const pw.EdgeInsets.only(left: 0),
                               child: pw.Text('1',
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
+                            pw.SizedBox(height: 8),
                             pw.Divider(thickness: 1)
                           ]),
                       pw.Column(
                           crossAxisAlignment: pw.CrossAxisAlignment.center,
                           mainAxisAlignment: pw.MainAxisAlignment.center,
                           children: [
-                            pw.SizedBox(height: 18),
+                            pw.SizedBox(height: 10),
                             pw.Padding(
                               padding:
                                   const pw.EdgeInsets.only(right: -5, left: 20),
                               child: pw.Text(
-                                  '\$ ${CurrencyFormat.convertToDollar(detailTransaksi[i].price, 0)}',
+                                  '${CurrencyFormat.convertToIdr(
+                                      //! harga asli idr - harga diskon
+                                      ((detailTransaksi[i].price * allTransaksi.rate) - ((detailTransaksi[i].price * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))), 0)}',
                                   style: const pw.TextStyle(fontSize: 6)),
                             ),
+                            pw.SizedBox(height: 8),
+                            pw.Divider(thickness: 1)
+                          ]),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                            pw.SizedBox(height: 10),
+                            pw.Padding(
+                              padding:
+                                  const pw.EdgeInsets.only(right: -5, left: 10),
+                              child: pw.Text(
+                                  '${CurrencyFormat.convertToIdr(
+                                      //! harga asli idr - harga diskon
+                                      (((detailTransaksi[i].price * allTransaksi.rate) - ((detailTransaksi[i].price * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))) - (allTransaksi.addesdiskon_rupiah / allTransaksi.total_quantity)), 0)}',
+                                  style: const pw.TextStyle(fontSize: 6)),
+                            ),
+                            pw.SizedBox(height: 8),
                             pw.Divider(thickness: 1)
                           ]),
                       pw.Column(
@@ -7592,10 +7742,6 @@ class HistoryModelNew extends StatelessWidget {
                           mainAxisAlignment: pw.MainAxisAlignment.center,
                           children: [
                             pdfImages[i],
-                            // pw.Image(pw.MemoryImage(byteList2),
-                            //     fit: pw.BoxFit.fitHeight,
-                            //     height: 25,
-                            //     width: 25),
                             pw.Divider(thickness: 1),
                           ])
                     ])
@@ -7611,14 +7757,6 @@ class HistoryModelNew extends StatelessWidget {
                             width: 250,
                             child: pw.Text('Terbilang                     :',
                                 style: const pw.TextStyle(fontSize: 10))),
-                        pw.SizedBox(width: 95, child: pw.Text('Total')),
-                        pw.Text(':'),
-                        pw.SizedBox(
-                          width: 100,
-                          child: pw.Text(
-                              '\$ ${CurrencyFormat.convertToDollar(allTransaksi.total, 0)}',
-                              style: const pw.TextStyle(fontSize: 10)),
-                        ),
                       ],
                     ),
                     pw.SizedBox(height: 5),
@@ -7629,14 +7767,16 @@ class HistoryModelNew extends StatelessWidget {
                             width: 250,
                             child: pw.Text('Kondisi Pembayaran   : ',
                                 style: const pw.TextStyle(fontSize: 10))),
-                        pw.SizedBox(width: 95, child: pw.Text('Diskon')),
-                        pw.Text(':'),
-                        pw.SizedBox(
-                          width: 100,
-                          child: pw.Text(
-                              allTransaksi.basic_discount.toString() + ' %',
-                              style: const pw.TextStyle(fontSize: 10)),
-                        ),
+                        // pw.SizedBox(width: 95, child: pw.Text('Total')),
+                        // pw.Text(':'),
+                        // pw.SizedBox(
+                        //   width: 100,
+                        //   child: pw.Text(
+                        //       '${CurrencyFormat.convertToIdr(
+                        //           //! harga asli idr - harga diskon
+                        //           ((allTransaksi.total * allTransaksi.rate) - ((allTransaksi.total * allTransaksi.rate) * (double.parse(allTransaksi.basic_discount) / 100))), 0)}',
+                        //       style: const pw.TextStyle(fontSize: 10)),
+                        // ),
                       ],
                     ),
                     pw.SizedBox(height: 5),
@@ -7647,11 +7787,13 @@ class HistoryModelNew extends StatelessWidget {
                             width: 250,
                             child: pw.Text('Jangka Waktu             : ',
                                 style: const pw.TextStyle(fontSize: 10))),
-                        pw.SizedBox(width: 95, child: pw.Text('Rate')),
+                        pw.SizedBox(
+                            width: 95, child: pw.Text('Total Transaksi')),
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
-                          child: pw.Text(allTransaksi.rate.toString(),
+                          child: pw.Text(
+                              '${CurrencyFormat.convertToIdr(allTransaksi.nett, 0)}',
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -7665,13 +7807,12 @@ class HistoryModelNew extends StatelessWidget {
                             child: pw.Text('Jatuh Tempo               : ',
                                 style: const pw.TextStyle(fontSize: 10))),
                         pw.SizedBox(
-                            width: 95, child: pw.Text('Total Transaksi')),
+                            width: 95, child: pw.Text('Tambahan Diskon')),
                         pw.Text(':'),
                         pw.SizedBox(
                           width: 100,
                           child: pw.Text(
-                              CurrencyFormat.convertToIdr(allTransaksi.nett, 0)
-                                  .toString(),
+                              '${CurrencyFormat.convertToIdr(allTransaksi.addesdiskon_rupiah, 0)}',
                               style: const pw.TextStyle(fontSize: 10)),
                         ),
                       ],
@@ -7693,7 +7834,7 @@ class HistoryModelNew extends StatelessWidget {
                                     style: const pw.TextStyle(fontSize: 10)))),
                       ],
                     ),
-                    pw.SizedBox(height: 50),
+                    pw.SizedBox(height: 18),
                     pw.Row(
                       mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
                       children: [

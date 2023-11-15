@@ -40,7 +40,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
   int idtoko = 0;
   int rate = 1;
   int result = 0;
-  int diskon = 0;
+  double diskon = 0;
   int dpp = 0;
   String? taxApi = '0';
   String? totalPaymentApi = '0';
@@ -290,7 +290,16 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                                 padding: const EdgeInsets.only(top: 10),
                                 height: 80,
                                 child: DropdownSearch<int>(
-                                  items: const [11500, 11900, 13000],
+                                  items: sharedPreferences!
+                                              .getString('customer_id')
+                                              .toString() ==
+                                          '520'
+                                      ? const [
+                                          11500,
+                                          12000,
+                                          12500,
+                                        ]
+                                      : const [11500, 11900, 13000],
                                   onChanged: (value) {
                                     setState(() {
                                       rate = value!;
@@ -320,8 +329,13 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                             : Container(
                                 padding: const EdgeInsets.only(top: 10),
                                 height: 80,
-                                child: DropdownSearch<int>(
-                                  items: const [60, 63],
+                                child: DropdownSearch<double>(
+                                  items: sharedPreferences!
+                                              .getString('customer_id')
+                                              .toString() ==
+                                          '520'
+                                      ? const [60, 61, 62, 60.5, 61.5, 62.5]
+                                      : const [60, 63],
                                   onChanged: (value) {
                                     setState(() {
                                       diskon = value!;
