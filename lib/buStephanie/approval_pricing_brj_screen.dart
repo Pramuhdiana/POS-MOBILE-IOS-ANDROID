@@ -13,7 +13,6 @@ import 'package:e_shop/provider/provider_waiting_eticketing.dart';
 import 'package:e_shop/widgets/keyboard_overlay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -88,7 +87,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
     int total;
     valuePrice == 0
         ? total = 0
-        : total = (((valuePrice - (hpp / 11500)) / valuePrice) * 100).round();
+        : total = (((valuePrice - (hpp)) / valuePrice) * 100).round();
 
     return total;
   }
@@ -140,6 +139,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   }
 
   Future _getDataByModel(model) async {
+    String fixModel = model.toString().substring(0, 9); //mengambil data hanya 9 character get data hanya 9 charackter
+    print(fixModel);
     bool? isDinamis = sharedPreferences!.getBool('isDinamis');
     baseUrlDinamis = sharedPreferences!.getString('urlDinamis');
     try {
@@ -153,9 +154,10 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
         var g = jsonResponse
             .map((data) => ApprovePricingModel.fromJson(data))
             .toList();
-        var filterByModel = g.where((element) =>
-            element.modelItem.toString().toLowerCase() ==
-            model.toString().toLowerCase());
+        var filterByModel = g.where((element) => element.modelItem
+            .toString()
+            .toLowerCase()
+            .contains(fixModel.toString().toLowerCase()));
 
         g = filterByModel.toList();
         totalHistori = g.length;
@@ -1418,7 +1420,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                             });
                                       },
                                       child: Container(
-                                        height: 170,
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.95,
@@ -1492,6 +1493,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                     Text(
                                                       '${data.lotNo!}  (${data.salesDefinitionCode})',
                                                     ),
+
                                                     Text(
                                                       'Emas         : ${data.goldWeight!}',
                                                     ),
@@ -1535,6 +1537,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                         .black),
                                                               ),
                                                             ])),
+
                                                     //* button approve
                                                     Container(
                                                       height: 47,
@@ -1545,7 +1548,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                               0.5,
                                                       padding:
                                                           const EdgeInsets.only(
-                                                              top: 5),
+                                                              top: 5,
+                                                              bottom: 5),
                                                       child:
                                                           FloatingActionButton
                                                               .extended(
@@ -1561,7 +1565,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                           price.text = '';
                                                           notes.text = '';
                                                           valuePrice = data
-                                                              .finalPrice3USD
+                                                              .priceAfterDiscount
                                                               .round();
                                                           hpp = int.parse(data
                                                                   .grandSTDLabourPrice!
@@ -1721,19 +1725,19 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                     textInputAction: TextInputAction.next,
                                                                                                     controller: price,
                                                                                                     keyboardType: TextInputType.number,
-                                                                                                    focusNode: numberFocusNode,
-                                                                                                    inputFormatters: [
-                                                                                                      FilteringTextInputFormatter.digitsOnly
-                                                                                                    ],
-                                                                                                    onChanged: (value) {
-                                                                                                      try {
-                                                                                                        valuePrice = int.parse(value);
-                                                                                                      } catch (c) {
-                                                                                                        valuePrice = data.finalPrice3USD.round();
-                                                                                                      }
+                                                                                                    // focusNode: numberFocusNode,
+                                                                                                    // inputFormatters: [
+                                                                                                    //   FilteringTextInputFormatter.digitsOnly
+                                                                                                    // ],
+                                                                                                    // onChanged: (value) {
+                                                                                                    //   try {
+                                                                                                    //     valuePrice = int.parse(value);
+                                                                                                    //   } catch (c) {
+                                                                                                    //     valuePrice = data.finalPrice3USD.round();
+                                                                                                    //   }
 
-                                                                                                      setState(() => valuePrice);
-                                                                                                    },
+                                                                                                    //   setState(() => valuePrice);
+                                                                                                    // },
                                                                                                     decoration: InputDecoration(
                                                                                                       hintText: "Update Price (optional)",
                                                                                                       // labelText: "Price",
@@ -1755,7 +1759,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                               alignment: Alignment.bottomRight,
                                                                                               padding: const EdgeInsets.only(right: 15),
                                                                                               child: Text(
-                                                                                                '($valuePrice - ${(hpp / 11500).toStringAsFixed(2)}) / $valuePrice',
+                                                                                                '(${CurrencyFormat.convertToDollar(valuePrice, 0)} - ${CurrencyFormat.convertToDollar(hpp, 0)}) / ${CurrencyFormat.convertToDollar(valuePrice, 0)}',
                                                                                                 style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 10, fontStyle: FontStyle.italic),
                                                                                               ),
                                                                                             ),
@@ -1806,7 +1810,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                             );
                                                                                                           }
                                                                                                           notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Lot ${data.lotNo} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
-                                                                                                          _getData();
                                                                                                           context.read<PApprovalBrj>().removesItem();
                                                                                                         });
                                                                                                         btnController.success();
@@ -1814,12 +1817,12 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                           btnController.reset(); //reset
                                                                                                           Navigator.of(context).pop();
                                                                                                           setState(() {
+                                                                                                            refresh();
                                                                                                             textInput.text = '';
                                                                                                             searchInput = '';
                                                                                                           });
                                                                                                           showSimpleNotification(
                                                                                                             const Text('Approve pricing success'),
-                                                                                                            // subtitle: const Text('sub'),
                                                                                                             background: Colors.green,
                                                                                                             duration: const Duration(seconds: 5),
                                                                                                           );

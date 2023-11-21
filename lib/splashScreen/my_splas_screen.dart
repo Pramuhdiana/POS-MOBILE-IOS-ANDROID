@@ -41,7 +41,7 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreenState extends State<MySplashScreen> {
-  int noBuild = 18;
+  int noBuild = 19;
   String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
   int role = 0;
@@ -70,14 +70,14 @@ class _MySplashScreenState extends State<MySplashScreen> {
             sharedPreferences!.setString('total_product_sales', '0');
             print('wait token');
             getToken();
-            // if (version != noBuild.toString()) {
-            //   dialogBoxVersion();
-            // } else {
-            role == 15
-                ? dialogBox()
-                : Navigator.push(context,
-                    MaterialPageRoute(builder: (c) => const MainScreen()));
-            // }
+            if (version != noBuild.toString()) {
+              dialogBoxVersion();
+            } else {
+              role == 15
+                  ? dialogBox()
+                  : Navigator.push(context,
+                      MaterialPageRoute(builder: (c) => const MainScreen()));
+            }
           } catch (c) {
             sharedPreferences!.setString('newOpen', 'true');
             sharedPreferences?.setBool('loading', true);

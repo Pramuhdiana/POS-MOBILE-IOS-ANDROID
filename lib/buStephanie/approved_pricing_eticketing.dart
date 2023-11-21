@@ -2592,7 +2592,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                             });
                                       },
                                       child: Container(
-                                        height: 180,
+                                        // height: 180,
                                         padding:
                                             const EdgeInsets.only(right: 2),
                                         child: Card(
@@ -2745,6 +2745,7 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                     // ),
                                                     Text(
                                                         'Emas         : ${data.beratEmas!}'),
+
                                                     SizedBox(
                                                       width:
                                                           MediaQuery.of(context)

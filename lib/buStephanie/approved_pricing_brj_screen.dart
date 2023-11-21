@@ -37,11 +37,14 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
   double awalPrice = 0;
   int limitHistori = 0;
   int page = 0;
-  int limit = 0;
+  int limit = 10;
   bool isMargin = false;
   int valuePrice = 0;
   int hpp = 0;
   List<String> listTheme = [];
+  ScrollController scrollController = ScrollController();
+  int? qtyProduct = 0;
+  late Future<List<ApprovePricingModel>> futureData;
 
   @override
   void initState() {
@@ -57,6 +60,17 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
         KeyboardOverlay.removeOverlay();
       }
     });
+    futureData = _getData(page, limit);
+    // scrollController.addListener(() async {
+    //   if (scrollController.position.pixels ==
+    //       scrollController.position.maxScrollExtent) {
+    //     print('getNewData');
+    //     if (page != 287) {
+    //       limit += 5;
+    //       futureData = _getData(page, limit);
+    //     }
+    //   }
+    // });
   }
 
   @override
@@ -98,7 +112,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
     }
   }
 
-  Future _getData() async {
+  Future<List<ApprovePricingModel>> _getData(page, limit) async {
     listTheme = [];
     bool? isDinamis = sharedPreferences!.getBool('isDinamis');
     baseUrlDinamis = sharedPreferences!.getString('urlDinamis');
@@ -115,12 +129,19 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
         var g = jsonResponse
             .map((data) => ApprovePricingModel.fromJson(data))
             .toList();
+        // var qtyData = g.toList();
+
         for (var i = 0; i < g.length; i++) {
           listTheme.add(g[i].productTypeDesc!); //! nanti ganti dengan theme
         }
         listTheme = listTheme
             .toSet()
             .toList(); //! remove duplicate dengan toset dan to list
+        // var getLimit = g.getRange(page, limit);
+        // g = getLimit.toList();
+        // setState(() {
+        // qtyProduct = qtyData.length;
+        // });
         return g;
       } else {
         throw Exception('Unexpected error occured!');
@@ -131,6 +152,8 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
   }
 
   Future _getDataByModel(model) async {
+    String fixModel = model.toString().substring(0, 9); // 9 character
+
     bool? isDinamis = sharedPreferences!.getBool('isDinamis');
     baseUrlDinamis = sharedPreferences!.getString('urlDinamis');
     try {
@@ -144,9 +167,10 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
         var g = jsonResponse
             .map((data) => ApprovePricingModel.fromJson(data))
             .toList();
-        var filterByModel = g.where((element) =>
-            element.modelItem.toString().toLowerCase() ==
-            model.toString().toLowerCase());
+        var filterByModel = g.where((element) => element.modelItem
+            .toString()
+            .toLowerCase()
+            .contains(fixModel.toString().toLowerCase()));
 
         g = filterByModel.toList();
         totalHistori = g.length;
@@ -209,7 +233,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
     setState(() {
       isLoading = true;
     });
-    await _getData();
+    await _getData(page, limit);
     setState(() {
       isLoading = false;
     });
@@ -415,7 +439,7 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                     Expanded(
                       child: FutureBuilder(
                         future: searchInput == ''
-                            ? _getData()
+                            ? futureData
                             : _getDataSearch(searchInput),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
@@ -1348,7 +1372,6 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                             });
                                       },
                                       child: Container(
-                                        height: 170,
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.95,

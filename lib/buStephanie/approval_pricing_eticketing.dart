@@ -10,7 +10,6 @@ import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -51,6 +50,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
   int hpp = 0;
   int apiPrice = 0;
   String apiNotes = '';
+
+  String historyEstimasiHarga = '0';
+  String historyDiambilId = '0';
+  String historyJenisPengajuan = '';
+  String historyNamaCustomer = '';
+  String historyKeterangan = '';
+
   @override
   void initState() {
     super.initState();
@@ -65,7 +71,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
     int total;
     valuePrice == 0
         ? total = 0
-        : total = (((valuePrice - (hpp / 11500)) / valuePrice) * 100).round();
+        : total = (((valuePrice - (hpp)) / valuePrice) * 100).round();
 
     return total;
   }
@@ -95,6 +101,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
         throw Exception('Unexpected error occured!');
       }
     } catch (c) {
+      print('Err msg get data : $c');
       return throw Exception(c);
     }
   }
@@ -2638,7 +2645,6 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                             });
                                       },
                                       child: Container(
-                                        height: 185,
                                         padding:
                                             const EdgeInsets.only(right: 2),
                                         child: Card(
@@ -2774,9 +2780,6 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    // Text(
-                                                    //   'id :${data.diambilId!}',
-                                                    // ),
                                                     Text(
                                                         'Emas         : ${data.beratEmas!}'),
 
@@ -3223,7 +3226,8 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                               0.5,
                                                       padding:
                                                           const EdgeInsets.only(
-                                                              top: 5),
+                                                              top: 5,
+                                                              bottom: 5),
                                                       child:
                                                           FloatingActionButton
                                                               .extended(
@@ -3244,7 +3248,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                           notes3.text = data
                                                               .notesCustomer3;
                                                           valuePrice = data
-                                                              .estimasiHarga
+                                                              .priceAfterDiskon
                                                               .round();
                                                           hpp = int.parse(data
                                                                   .labour!) +
@@ -3252,6 +3256,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                   data.emas!) +
                                                               int.parse(data
                                                                   .diamond!);
+
+                                                          //!init variable history
+                                                          historyEstimasiHarga =
+                                                              data.estimasiHarga!
+                                                                  .toString();
+                                                          historyDiambilId =
+                                                              data.diambilId!
+                                                                  .toString();
+                                                          historyJenisPengajuan =
+                                                              data.jenisPengajuan!
+                                                                  .toString();
+                                                          historyNamaCustomer =
+                                                              data.namaCustomer!
+                                                                  .toString();
+
                                                           RoundedLoadingButtonController
                                                               btnController =
                                                               RoundedLoadingButtonController();
@@ -3421,19 +3440,19 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                           textInputAction: TextInputAction.next,
                                                                                           controller: price,
                                                                                           keyboardType: TextInputType.number,
-                                                                                          focusNode: numberFocusNode,
-                                                                                          inputFormatters: [
-                                                                                            FilteringTextInputFormatter.digitsOnly
-                                                                                          ],
-                                                                                          onChanged: (value) {
-                                                                                            try {
-                                                                                              valuePrice = int.parse(value);
-                                                                                            } catch (c) {
-                                                                                              valuePrice = data.estimasiHarga.round();
-                                                                                            }
+                                                                                          // focusNode: numberFocusNode,
+                                                                                          // inputFormatters: [
+                                                                                          //   FilteringTextInputFormatter.digitsOnly
+                                                                                          // ],
+                                                                                          // onChanged: (value) {
+                                                                                          //   try {
+                                                                                          //     valuePrice = int.parse(value);
+                                                                                          //   } catch (c) {
+                                                                                          //     valuePrice = data.estimasiHarga.round();
+                                                                                          //   }
 
-                                                                                            setState(() => valuePrice);
-                                                                                          },
+                                                                                          //   setState(() => valuePrice);
+                                                                                          // },
                                                                                           decoration: InputDecoration(
                                                                                             hintText: "Update Price (optional)",
                                                                                             // labelText: "Price",
@@ -3453,12 +3472,16 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                     Container(
                                                                                       alignment: Alignment.bottomRight,
                                                                                       padding: const EdgeInsets.only(right: 15),
-                                                                                      child: (data.brand == "PARVA" || data.brand == "FINE")
-                                                                                          ? Text('($valuePrice - ${(hpp / 11500).toStringAsFixed(0)}) / $valuePrice', style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 10, fontStyle: FontStyle.italic))
-                                                                                          : Text(
-                                                                                              '($valuePrice - ${(hpp).toStringAsFixed(0)}) / $valuePrice',
-                                                                                              style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 10, fontStyle: FontStyle.italic),
-                                                                                            ),
+                                                                                      // child: (data.brand == "PARVA" || data.brand == "FINE")
+                                                                                      //     ? Text('($valuePrice - ${(hpp / 11500).toStringAsFixed(0)}) / $valuePrice', style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 10, fontStyle: FontStyle.italic))
+                                                                                      //     : Text(
+                                                                                      //         '($valuePrice - ${(hpp).toStringAsFixed(0)}) / $valuePrice',
+                                                                                      //         style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 10, fontStyle: FontStyle.italic),
+                                                                                      //       ),
+                                                                                      child: Text(
+                                                                                        '(${CurrencyFormat.convertToDollar(valuePrice, 0)} - ${CurrencyFormat.convertToDollar(hpp, 0)}) / ${CurrencyFormat.convertToDollar(valuePrice, 0)}',
+                                                                                        style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 10, fontStyle: FontStyle.italic),
+                                                                                      ),
                                                                                     ),
                                                                                     Container(
                                                                                       alignment: Alignment.bottomRight,
@@ -3513,18 +3536,22 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                                   try {
                                                                                                     postApiWeb(data.jenisPengajuan!, data.diambilId!, data.statusApproval!, data.statusGet!);
                                                                                                   } catch (c) {
+                                                                                                    postApiHistoryApprove('gagal $c');
                                                                                                     Fluttertoast.showToast(msg: "Failed to send database web,Database off");
                                                                                                   }
                                                                                                   notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
                                                                                                   notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
-                                                                                                  _getData();
                                                                                                   context.read<PApprovalEticketing>().removesItem();
                                                                                                 });
                                                                                                 btnController.success();
                                                                                                 Future.delayed(const Duration(seconds: 1)).then((value) {
                                                                                                   btnController.reset(); //reset
                                                                                                   Navigator.of(context).pop();
-                                                                                                  setState(() {});
+                                                                                                  setState(() {
+                                                                                                    textInput.text = '';
+                                                                                                    searchInput = '';
+                                                                                                    refresh();
+                                                                                                  });
                                                                                                   showSimpleNotification(
                                                                                                     const Text('Approve pricing success'),
                                                                                                     // subtitle: const Text('sub'),
@@ -3615,6 +3642,27 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
   }
 
   //method approve pricing
+  postApiHistoryApprove(keterangan) async {
+    price.text.isEmpty
+        ? awalPrice = awalPrice
+        : awalPrice = int.parse(price.text);
+
+    Map<String, String> body = {
+      'estimasiHarga': historyEstimasiHarga,
+      'diambil_id': historyDiambilId,
+      'approval_harga': awalPrice.toString(),
+      'jenis_pengajuan': historyJenisPengajuan,
+      'nama_customer': historyNamaCustomer,
+      'keterangan': keterangan,
+    };
+    final response = await http.post(
+        Uri.parse(
+            '${ApiConstants.baseUrlsandy}${ApiConstants.POSThistoryApprove}'),
+        body: body);
+    print(response.body);
+  }
+
+  //method approve pricing
   postApiWeb(jenisPengajuan, diambilId, statusApproval, statusGet) async {
     price.text.isEmpty
         ? awalPrice = awalPrice
@@ -3627,23 +3675,29 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
       'status_approval': statusApproval.toString(),
       'status_get': statusGet.toString(),
       'approval_harga': awalPrice.toString(),
-      'note_approve': notes.text.toString(),
+      'note_approve': notes.text,
     };
     if (jenisPengajuan.toString().toLowerCase() == 'baru') {
       var url = '${ApiConstants.baseUrlPricingWeb}/updatepricing';
+      print('post baru');
       print(url);
       final response = await http.post(Uri.parse(url), body: body);
       print(response.body);
+      postApiHistoryApprove('Berhasil');
     } else if (jenisPengajuan.toString().toLowerCase() == 'revisi 1') {
       var url = '${ApiConstants.baseUrlPricingWeb}/updatepricingrevisisatu';
+      print('post revisi 1');
       print(url);
       final response = await http.post(Uri.parse(url), body: body);
       print(response.body);
+      postApiHistoryApprove('Berhasil');
     } else {
       var url = '${ApiConstants.baseUrlPricingWeb}/updatepricingrevisidua';
+      print('post revisi 2');
       print(url);
       final response = await http.post(Uri.parse(url), body: body);
       print(response.body);
+      postApiHistoryApprove('Berhasil');
     }
   }
 }
