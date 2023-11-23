@@ -487,19 +487,20 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   var data = snapshot.data![index];
-                                  hpp = int.parse(data.grandSTDLabourPrice!
-                                          .round()
-                                          .toString()) +
-                                      int.parse(data.stdGoldPrice!
-                                          .round()
-                                          .toString()) +
-                                      int.parse(data.grandSTDDiamondPrice!
-                                          .round()
-                                          .toString());
                                   return Padding(
                                     padding: const EdgeInsets.all(4.0),
                                     child: GestureDetector(
                                       onTap: () {
+                                        hpp = int.parse(data
+                                                .grandSTDLabourPrice!
+                                                .round()
+                                                .toString()) +
+                                            int.parse(data.stdGoldPrice!
+                                                .round()
+                                                .toString()) +
+                                            int.parse(data.grandSTDDiamondPrice!
+                                                .round()
+                                                .toString());
                                         showGeneralDialog(
                                             transitionDuration: const Duration(
                                                 milliseconds: 200),
