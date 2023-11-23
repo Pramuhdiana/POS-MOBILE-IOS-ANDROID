@@ -41,7 +41,7 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreenState extends State<MySplashScreen> {
-  int noBuild = 19;
+  int noBuild = 20;
   String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
   int role = 0;
@@ -524,6 +524,25 @@ class _MySplashScreenState extends State<MySplashScreen> {
                       ],
                     ),
                   ),
+                  sharedPreferences!
+                              .getString('email')
+                              .toString()
+                              .toLowerCase() ==
+                          'andy@sanivokasi.com'
+                      ? ElevatedButton(
+                          //if user click this button, user can upload image from gallery
+                          onPressed: () {
+                            Navigator.pop(context);
+                            dialogBox();
+                          },
+                          child: const Row(
+                            children: [
+                              Icon(Icons.developer_mode),
+                              Text('Fitur Admin'),
+                            ],
+                          ),
+                        )
+                      : const SizedBox(),
                   // ElevatedButton(
                   //   //if user click this button. user can upload image from camera
                   //   onPressed: () {
