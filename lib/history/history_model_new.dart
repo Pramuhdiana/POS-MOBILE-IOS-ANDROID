@@ -5821,7 +5821,7 @@ class HistoryModelNew extends StatelessWidget {
                               children: [
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(),
-                                  child: pw.Text("Harga Rupiah",
+                                  child: pw.Text("Harga",
                                       style: pw.TextStyle(
                                           fontSize: 10,
                                           fontWeight: pw.FontWeight.bold)),
@@ -5834,7 +5834,7 @@ class HistoryModelNew extends StatelessWidget {
                               children: [
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(),
-                                  child: pw.Text("Harga Diskon",
+                                  child: pw.Text("Setelah Diskon",
                                       style: pw.TextStyle(
                                           fontSize: 10,
                                           fontWeight: pw.FontWeight.bold)),
@@ -6326,7 +6326,7 @@ class HistoryModelNew extends StatelessWidget {
                               children: [
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(),
-                                  child: pw.Text("Harga Rupiah",
+                                  child: pw.Text("Harga",
                                       style: pw.TextStyle(
                                           fontSize: 10,
                                           fontWeight: pw.FontWeight.bold)),
@@ -6339,7 +6339,7 @@ class HistoryModelNew extends StatelessWidget {
                               children: [
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(),
-                                  child: pw.Text("Harga Diskon",
+                                  child: pw.Text("Setelah Diskon",
                                       style: pw.TextStyle(
                                           fontSize: 10,
                                           fontWeight: pw.FontWeight.bold)),
@@ -6979,7 +6979,7 @@ class HistoryModelNew extends StatelessWidget {
                               children: [
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(),
-                                  child: pw.Text("Harga Rupiah",
+                                  child: pw.Text("Harga",
                                       style: pw.TextStyle(
                                           fontSize: 10,
                                           fontWeight: pw.FontWeight.bold)),
@@ -6992,7 +6992,7 @@ class HistoryModelNew extends StatelessWidget {
                               children: [
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(),
-                                  child: pw.Text("Harga Diskon",
+                                  child: pw.Text("Setelah Dsikon ",
                                       style: pw.TextStyle(
                                           fontSize: 10,
                                           fontWeight: pw.FontWeight.bold)),
@@ -7484,7 +7484,7 @@ class HistoryModelNew extends StatelessWidget {
                               children: [
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(),
-                                  child: pw.Text("Harga Rupiah",
+                                  child: pw.Text("Harga",
                                       style: pw.TextStyle(
                                           fontSize: 10,
                                           fontWeight: pw.FontWeight.bold)),
@@ -7497,7 +7497,7 @@ class HistoryModelNew extends StatelessWidget {
                               children: [
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(),
-                                  child: pw.Text("Harga Diskon",
+                                  child: pw.Text("Setelah Diskon",
                                       style: pw.TextStyle(
                                           fontSize: 10,
                                           fontWeight: pw.FontWeight.bold)),
