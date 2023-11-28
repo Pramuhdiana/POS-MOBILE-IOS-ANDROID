@@ -3184,33 +3184,6 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                               )
                                             ],
                                           ),
-                                          //     child: ListTile(
-                                          //   title: Text(data.entryNo!.toString(),
-                                          //       style: const TextStyle(fontSize: 30)),
-                                          //   subtitle: Text(
-                                          //     data.marketingCode!.toString(),
-                                          //   ),
-                                          //   leading: ClipRRect(
-                                          //     child: CachedNetworkImage(
-                                          //       // memCacheWidth: 85, //default 45
-                                          //       // memCacheHeight: 100, //default 60
-                                          //       // maxHeightDiskCache: 100, //default 60
-                                          //       // maxWidthDiskCache: 85, //default 45
-                                          //       // imageUrl:
-                                          //       //     'https://110.5.102.154:50001/Files/Images/Product/${data.fgImageFileName!.toString()}',
-                                          //       imageUrl:
-                                          //           'https://110.5.102.154:50001/Files/Images/Product/20100294-03.jpeg',
-
-                                          //       placeholder: (context, url) =>
-                                          //           const CircularProgressIndicator(),
-                                          //       errorWidget: (context, url, error) => const Icon(
-                                          //         Icons.error,
-                                          //         color: Colors.black,
-                                          //       ),
-                                          //       fit: BoxFit.cover,
-                                          //     ),
-                                          //   ),
-                                          // )
                                         ),
                                       ),
                                     ),

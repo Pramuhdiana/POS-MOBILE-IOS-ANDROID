@@ -133,20 +133,6 @@ class ApiServices {
     Response response = await Dio().get(url,
         options: Options(headers: {"Authorization": "Bearer $token"}));
     return (response.data as List).map((customer) {
-      // CollectionReference orderRef =
-      //     FirebaseFirestore.instance.collection('allcustomer');
-      // orderRef.doc(customer['name'].toString()).set({
-      //   'id': customer['id'] ?? 0,
-      //   'name': customer['name'] ?? 'null',
-      //   'role': customer['role'] ?? '0',
-      //   'alamat': customer['alamat'] ?? 'null',
-      //   'phone': customer['phone'] ?? '0',
-      //   'user_id': customer['user_id'] ?? '0',
-      //   'type_customer': customer['type_customer'] ?? '0',
-      //   'diskon_customer': customer['diskon_customer'] ?? '1',
-      //   'customer_brand': customer['customer_brand'] ?? 0,
-      //   'score': customer['score'] ?? 0,
-      // });
       DbAllCustomer.db.createAllcustomer(ModelAllCustomer.fromJson(customer));
       print('insert to database allcustomer ');
     }).toList();
@@ -167,11 +153,6 @@ class ApiServices {
     var url = ApiConstants.baseUrl + ApiConstants.GETposTokoendpoint;
     Response response = await Dio().get(url,
         options: Options(headers: {"Authorization": "Bearer $token"}));
-    // List jsonResponse = json.decode(response.body);
-
-    //     var allData =
-    //         jsonResponse.map((data) => FormDesignerModel.fromJson(data)).toList();
-
     return (response.data as List).map((itemstoko) {
       DbAllitemsToko.db
           .createAllitemsToko(ModelAllitemsToko.fromJson(itemstoko));

@@ -3392,19 +3392,6 @@ class SearchModel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      // onTap: () {
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => ProductDetailsScreen(proList: e)));
-      // Fluttertoast.showToast(msg: "Not Available");
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (c) => ItemsDetailsScreen(
-      //               model: e.model,
-      //             )));
-      // },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
         child: Container(

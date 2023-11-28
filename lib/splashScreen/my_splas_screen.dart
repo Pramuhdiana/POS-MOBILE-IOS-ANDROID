@@ -246,20 +246,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       sharedPreferences!.setString('name', 'Failed To Load Data');
       Fluttertoast.showToast(msg: "Failed To Load Data User");
     }
-
-    // context.read<PNewNotif>().clearNotif();
-    // DbNotifDummy.db.getAllNotif(1).then((value) {
-    //   for (var i = 0; i < value.length; i++) {
-    //     context.read<PNewNotif>().addItem(
-    //           1,
-    //         );
-    //   }
-    // });
-
     await loadCartFromApiPOSSALES();
-    // wait for 2 seconds to simulate loading of data
-    // await Future.delayed(const Duration(seconds: 2));
-
     setState(() {
       isLoading = false;
     });
@@ -293,25 +280,6 @@ class _MySplashScreenState extends State<MySplashScreen> {
       // DbAllItems.db.createAllItems(AllItems.fromJson(items));
     }).toList();
   }
-
-  // _loadAllDataApi() async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-
-  //   var apiProvider = ApiServicesFirebase();
-  //   await apiProvider.getAllItems();
-  //   await apiProvider.getAllItemsToko();
-  //   await apiProvider.getAllDetailTransaksi();
-  //   // await apiProvider.getAllTransaksi();
-
-  //   // wait for 2 seconds to simulate loading of data
-  //   await Future.delayed(const Duration(seconds: 2));
-
-  //   setState(() {
-  //     isLoading = false;
-  //   });
-  // }
 
   @override
   void
@@ -543,22 +511,6 @@ class _MySplashScreenState extends State<MySplashScreen> {
                           ),
                         )
                       : const SizedBox(),
-                  // ElevatedButton(
-                  //   //if user click this button. user can upload image from camera
-                  //   onPressed: () {
-                  //     Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //             builder: (c) =>
-                  //                 const MainScreenApprovePricing()));
-                  //   },
-                  //   child: const Row(
-                  //     children: [
-                  //       Icon(Icons.price_check_sharp),
-                  //       Text('Approval Pricing'),
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -578,127 +530,3 @@ class _MySplashScreenState extends State<MySplashScreen> {
     }
   }
 }
-
-// ignore_for_file: prefer_void_to_null
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:dio/dio.dart';
-// import 'package:e_shop/api/api_constant.dart';
-// import 'package:e_shop/global/global.dart';
-
-// class EmployeeApiProvider {
-//   String token = sharedPreferences!.getString("token").toString();
-//   Future<List<Null>> getAllEmployees() async {
-//     // var url = "https://hub.dummyapis.com/employee?noofRecords=10&idStarts=1001";
-//     // Response response = await Dio().get(url);
-//     var url = "http://110.5.102.154:8080/api/indexpossales";
-//     Response response = await Dio().get(url,
-//         options: Options(headers: {"Authorization": "Bearer $token"}));
-
-//     return (response.data as List).map((employee) {
-//       // print('Inserting $employee');
-//       CollectionReference orderRef =
-//           FirebaseFirestore.instance.collection('allitems');
-//       orderRef.doc(employee['name'].toString()).set({
-//         'id': employee['id'],
-//         'name': employee['name'],
-//         'slug': employee['slug'],
-//         'image_name': employee['image_name'],
-//         'description': employee['description'],
-//         'price': employee['price'],
-//         'category_id': employee['category_id'],
-//         'posisi_id': employee['posisi_id'],
-//         'cutomer_id': employee['cutomer_id'],
-//         'kode_refrensi': employee['kode_refrensi'],
-//         'sales_id': employee['sales_id'],
-//         'brand_id': employee['brand_id'],
-//         'qty': employee['qty'],
-//         'status_titipan': employee['status_titipan'],
-//         'keterangan_barang': employee['keterangan_barang'],
-//         'created_at': employee['created_at'],
-//         'updated_at': employee['updated_at'],
-//       });
-//       // DBProvider.db.createEmployee(Employee.fromJson(employee));
-//     }).toList();
-//   }
-
-//   Future<List<Null>> getAllTransaksi() async {
-//     // var url = "https://hub.dummyapis.com/employee?noofRecords=10&idStarts=1001";
-//     // Response response = await Dio().get(url);
-//     Response response = await Dio().get(
-//         ApiConstants.baseUrl + ApiConstants.transaksiendpoint,
-//         options: Options(headers: {"Authorization": "Bearer $token"}));
-
-//     return (response.data as List).map((transaksi) {
-//       // print('Inserting $transaksi');
-
-//       CollectionReference orderRef =
-//           FirebaseFirestore.instance.collection('alltransaksi');
-//       orderRef.doc(transaksi['invoices_number'].toString()).set({
-//         'invoices_number': transaksi['invoices_number'],
-//         'user_id': transaksi['user_id'],
-//         'customer_id': transaksi['customer_id'],
-//         'customer_metier': transaksi['customer_metier'],
-//         'jenisform_id': transaksi['jenisform_id'],
-//         'sales_id': transaksi['sales_id'],
-//         'total': transaksi['total'],
-//         'total_quantity': transaksi['total_quantity'],
-//         'total_rupiah': transaksi['total_rupiah'],
-//         'created_at': transaksi['created_at'],
-//         'updated_at': transaksi['updated_at'],
-//       });
-//       // DBProvider.db.createEmployee(Employee.fromJson(employee));
-//     }).toList();
-//   }
-
-//   Future<List<Null>> getAllPosToko() async {
-//     // var url = "https://hub.dummyapis.com/employee?noofRecords=10&idStarts=1001";
-//     // Response response = await Dio().get(url);
-//     var url = "http://110.5.102.154:8080/api/indexpossales";
-//     Response response = await Dio().get(url,
-//         options: Options(headers: {"Authorization": "Bearer $token"}));
-
-//     return (response.data as List).map((itemstoko) {
-//       // print('Inserting $itemstoko');
-//       CollectionReference orderRef =
-//           FirebaseFirestore.instance.collection('allitems');
-//       orderRef.doc(itemstoko['name'].toString()).set({
-//         'id': itemstoko['id'],
-//         'name': itemstoko['name'],
-//         'slug': itemstoko['slug'],
-//         'image_name': itemstoko['image_name'],
-//         'description': itemstoko['description'],
-//         'price': itemstoko['price'],
-//         'category_id': itemstoko['category_id'],
-//         'posisi_id': itemstoko['posisi_id'],
-//         'cutomer_id': itemstoko['cutomer_id'],
-//         'kode_refrensi': itemstoko['kode_refrensi'],
-//         'sales_id': itemstoko['sales_id'],
-//         'brand_id': itemstoko['brand_id'],
-//         'qty': itemstoko['qty'],
-//         'status_titipan': itemstoko['status_titipan'],
-//         'keterangan_barang': itemstoko['keterangan_barang'],
-//         'created_at': itemstoko['created_at'],
-//         'updated_at': itemstoko['updated_at'],
-//       });
-//       // DBProvider.db.createEmployee(Employee.fromJson(employee));
-//     }).toList();
-//   }
-// }
-
-// Widget _dialogContent; // Declare this outside the method, globally in the class
-
-// // In your method:
-// _dialogContent = CircularProgressIndicator();
-// showDialog(
-//         context: context,
-//         builder: (BuildContext context) => Container(
-//           child: AlertDialog(
-//             content: _dialogContent, // The content inside the dialog
-//           )
-//         )
-//     ); // Your Dialog
-// Future.delayed(Duration(seconds: 15)); // Duration to wait
-// setState((){
-//   _dialogContent = Container(...), // Add your Button to try again and message text in this
-// })
