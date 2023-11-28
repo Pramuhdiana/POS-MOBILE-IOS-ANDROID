@@ -79,7 +79,8 @@ class HistoryModelNew extends StatelessWidget {
                                 message: "",
                               );
                             });
-                        allTransaksi.customer_id.toString() == '520'
+                        (allTransaksi.customer_id.toString() == '520' ||
+                                allTransaksi.customer_id.toString() == '522')
                             ? _createPdfHeniBerlian()
                             : _createPdf();
                         printMessageAfterDelay(
@@ -157,7 +158,8 @@ class HistoryModelNew extends StatelessWidget {
                                 message: "",
                               );
                             });
-                        allTransaksi.customer_id.toString() == '520'
+                        (allTransaksi.customer_id.toString() == '520' ||
+                                allTransaksi.customer_id.toString() == '522')
                             ? _sharePdfHeniBerlian()
                             : _sharePdf();
                         printMessageAfterDelay(
@@ -586,7 +588,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Toko',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -634,7 +636,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ],
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Alamat',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -679,7 +681,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -1067,7 +1069,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Toko',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -1115,7 +1117,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ],
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Alamat',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -1160,7 +1162,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -1675,7 +1677,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Toko',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -1723,7 +1725,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ],
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Alamat',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -1768,7 +1770,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -2155,7 +2157,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Toko',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -2203,7 +2205,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ],
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Alamat',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -2248,7 +2250,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -3119,7 +3121,7 @@ class HistoryModelNew extends StatelessWidget {
                                           fontSize: 10)),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Toko',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -3146,7 +3148,7 @@ class HistoryModelNew extends StatelessWidget {
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Alamat',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -3176,7 +3178,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -5652,7 +5654,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Toko',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -5700,7 +5702,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ],
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Alamat',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -5745,7 +5747,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -6040,15 +6042,15 @@ class HistoryModelNew extends StatelessWidget {
                                   width: 250,
                                   child: pw.Text('Jatuh Tempo               : ',
                                       style: const pw.TextStyle(fontSize: 10))),
-                              pw.SizedBox(
-                                  width: 95, child: pw.Text('Tambahan Diskon')),
-                              pw.Text(':'),
-                              pw.SizedBox(
-                                width: 100,
-                                child: pw.Text(
-                                    '${CurrencyFormat.convertToIdr(allTransaksi.addesdiskon_rupiah, 0)}',
-                                    style: const pw.TextStyle(fontSize: 10)),
-                              ),
+                              // pw.SizedBox(
+                              //     width: 95, child: pw.Text('Tambahan Diskon')),
+                              // pw.Text(':'),
+                              // pw.SizedBox(
+                              //   width: 100,
+                              //   child: pw.Text(
+                              //       '${CurrencyFormat.convertToIdr(allTransaksi.addesdiskon_rupiah, 0)}',
+                              //       style: const pw.TextStyle(fontSize: 10)),
+                              // ),
                             ],
                           ),
                           pw.Row(
@@ -6157,7 +6159,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Toko',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -6205,7 +6207,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ],
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Alamat',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -6250,7 +6252,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -6648,15 +6650,15 @@ class HistoryModelNew extends StatelessWidget {
                             width: 250,
                             child: pw.Text('Jatuh Tempo               : ',
                                 style: const pw.TextStyle(fontSize: 10))),
-                        pw.SizedBox(
-                            width: 95, child: pw.Text('Tambahan Diskon')),
-                        pw.Text(':'),
-                        pw.SizedBox(
-                          width: 100,
-                          child: pw.Text(
-                              '${CurrencyFormat.convertToIdr(allTransaksi.addesdiskon_rupiah, 0)}',
-                              style: const pw.TextStyle(fontSize: 10)),
-                        ),
+                        // pw.SizedBox(
+                        //     width: 95, child: pw.Text('Tambahan Diskon')),
+                        // pw.Text(':'),
+                        // pw.SizedBox(
+                        //   width: 100,
+                        //   child: pw.Text(
+                        //       '${CurrencyFormat.convertToIdr(allTransaksi.addesdiskon_rupiah, 0)}',
+                        //       style: const pw.TextStyle(fontSize: 10)),
+                        // ),
                       ],
                     ),
                     pw.Row(
@@ -6810,7 +6812,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Toko',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -6858,7 +6860,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ],
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Alamat',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -6903,7 +6905,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -7198,15 +7200,15 @@ class HistoryModelNew extends StatelessWidget {
                                   width: 250,
                                   child: pw.Text('Jatuh Tempo               : ',
                                       style: const pw.TextStyle(fontSize: 10))),
-                              pw.SizedBox(
-                                  width: 95, child: pw.Text('Tambahan Diskon')),
-                              pw.Text(':'),
-                              pw.SizedBox(
-                                width: 100,
-                                child: pw.Text(
-                                    '${CurrencyFormat.convertToIdr(allTransaksi.addesdiskon_rupiah, 0)}',
-                                    style: const pw.TextStyle(fontSize: 10)),
-                              ),
+                              // pw.SizedBox(
+                              //     width: 95, child: pw.Text('Tambahan Diskon')),
+                              // pw.Text(':'),
+                              // pw.SizedBox(
+                              //   width: 100,
+                              //   child: pw.Text(
+                              //       '${CurrencyFormat.convertToIdr(allTransaksi.addesdiskon_rupiah, 0)}',
+                              //       style: const pw.TextStyle(fontSize: 10)),
+                              // ),
                             ],
                           ),
                           pw.Row(
@@ -7315,7 +7317,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Toko',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -7363,7 +7365,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ],
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Alamat',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -7408,7 +7410,7 @@ class HistoryModelNew extends StatelessWidget {
                                   ),
                                 ),
                                 pw.SizedBox(
-                                  width: 35,
+                                  width: 40,
                                   child: pw.Text('Catatan',
                                       style: const pw.TextStyle(fontSize: 10)),
                                 ),
@@ -7806,15 +7808,15 @@ class HistoryModelNew extends StatelessWidget {
                             width: 250,
                             child: pw.Text('Jatuh Tempo               : ',
                                 style: const pw.TextStyle(fontSize: 10))),
-                        pw.SizedBox(
-                            width: 95, child: pw.Text('Tambahan Diskon')),
-                        pw.Text(':'),
-                        pw.SizedBox(
-                          width: 100,
-                          child: pw.Text(
-                              '${CurrencyFormat.convertToIdr(allTransaksi.addesdiskon_rupiah, 0)}',
-                              style: const pw.TextStyle(fontSize: 10)),
-                        ),
+                        // pw.SizedBox(
+                        //     width: 95, child: pw.Text('Tambahan Diskon')),
+                        // pw.Text(':'),
+                        // pw.SizedBox(
+                        //   width: 100,
+                        //   child: pw.Text(
+                        //       '${CurrencyFormat.convertToIdr(allTransaksi.addesdiskon_rupiah, 0)}',
+                        //       style: const pw.TextStyle(fontSize: 10)),
+                        // ),
                       ],
                     ),
                     pw.Row(
