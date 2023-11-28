@@ -142,132 +142,139 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
       appBar: AppbarCartToko(
         title: '$qtyProduct product ',
       ),
-      body: Column(
-        children: <Widget>[
-          if (sharedPreferences!.getString('customer_id').toString() !=
-              0.toString())
-            const Padding(
-              padding: EdgeInsets.all(8),
-              child: FakeSearchToko(),
-            ),
-          if (sharedPreferences!.getString('customer_id').toString() ==
-              0.toString())
-            const Padding(
-              padding: EdgeInsets.all(8),
-              child: FakeGlobalSearchToko(),
-            ),
-          Row(
-            children: [
-              const Padding(padding: EdgeInsets.all(4)),
-              Expanded(
-                child: sharedPreferences!.getString('role_sales_brand')! == '3'
-                    ? const SizedBox()
-                    : DropdownSearch<UserModel>(
-                        asyncItems: (String? filter) => getData(filter),
-                        popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                          searchFieldProps: const TextFieldProps(
-                              decoration: InputDecoration(
-                            labelText: "Search..",
-                            prefixIcon: Icon(Icons.search),
-                            // //* fungsi add customer
-                            // suffixIcon: InkWell(
-                            //     onTap: () {
-                            //       Navigator.pop(context);
-                            //       Navigator.push(
-                            //           context,
-                            //           MaterialPageRoute(
-                            //               builder: (c) =>
-                            //                   AddCustomerEventScreen()));
-                            //     },
-                            //     child: const Icon(
-                            //       Icons.add,
-                            //       color: Colors.black,
-                            //     )),
-                            // //! end fungsi
-                          )),
-                          showSelectedItems: true,
-                          itemBuilder: _customPopupItemBuilderExample2,
-                          showSearchBox: true,
-                        ),
-                        compareFn: (item, sItem) => item.id == sItem.id,
-                        onChanged: (item) {
+      body: isLoading == true
+          ? Center(
+              child: Container(
+                  padding: const EdgeInsets.all(0),
+                  width: 90,
+                  height: 90,
+                  child: Lottie.asset("json/loading_black.json")))
+          : Column(
+              children: <Widget>[
+                if (sharedPreferences!.getString('customer_id').toString() !=
+                    0.toString())
+                  const Padding(
+                    padding: EdgeInsets.all(8),
+                    child: FakeSearchToko(),
+                  ),
+                if (sharedPreferences!.getString('customer_id').toString() ==
+                    0.toString())
+                  const Padding(
+                    padding: EdgeInsets.all(8),
+                    child: FakeGlobalSearchToko(),
+                  ),
+                Row(
+                  children: [
+                    const Padding(padding: EdgeInsets.all(4)),
+                    Expanded(
+                      child: sharedPreferences!
+                                  .getString('role_sales_brand')! ==
+                              '3'
+                          ? const SizedBox()
+                          : DropdownSearch<UserModel>(
+                              asyncItems: (String? filter) => getData(filter),
+                              popupProps:
+                                  PopupPropsMultiSelection.modalBottomSheet(
+                                searchFieldProps: const TextFieldProps(
+                                    decoration: InputDecoration(
+                                  labelText: "Search..",
+                                  prefixIcon: Icon(Icons.search),
+                                  // //* fungsi add customer
+                                  // suffixIcon: InkWell(
+                                  //     onTap: () {
+                                  //       Navigator.pop(context);
+                                  //       Navigator.push(
+                                  //           context,
+                                  //           MaterialPageRoute(
+                                  //               builder: (c) =>
+                                  //                   AddCustomerEventScreen()));
+                                  //     },
+                                  //     child: const Icon(
+                                  //       Icons.add,
+                                  //       color: Colors.black,
+                                  //     )),
+                                  // //! end fungsi
+                                )),
+                                showSelectedItems: true,
+                                itemBuilder: _customPopupItemBuilderExample2,
+                                showSearchBox: true,
+                              ),
+                              compareFn: (item, sItem) => item.id == sItem.id,
+                              onChanged: (item) {
+                                setState(() {
+                                  context.read<PCartToko>().clearCart();
+                                  print('toko : ${item?.name}');
+                                  print('id  : ${item?.id}');
+                                  print(
+                                      'diskonnya  : ${item?.diskon_customer}');
+                                  idtoko = item?.id; // menyimpan id toko
+                                  toko = item?.name; // menyimpan nama toko
+                                  sharedPreferences!.setString(
+                                      'customer_name', toko.toString());
+                                  sharedPreferences!.setString(
+                                      'customer_id', idtoko.toString());
+                                  loadCartFromApiPOSTOKO();
+                                  DbAllitemsToko.db.getAllitemsToko(idtoko);
+                                });
+                              },
+                              dropdownDecoratorProps:
+                                  const DropDownDecoratorProps(
+                                dropdownSearchDecoration: InputDecoration(
+                                  labelText: 'Choose customer',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Padding(padding: EdgeInsets.all(4)),
+                    Expanded(
+                      child: DropdownSearch<String>(
+                        items: const ["PAMERAN", "TITIPAN"],
+                        onChanged: (jenisform) {
                           setState(() {
-                            context.read<PCartToko>().clearCart();
-                            print('toko : ${item?.name}');
-                            print('id  : ${item?.id}');
-                            print('diskonnya  : ${item?.diskon_customer}');
-                            idtoko = item?.id; // menyimpan id toko
-                            toko = item?.name; // menyimpan nama toko
-                            sharedPreferences!
-                                .setString('customer_name', toko.toString());
-                            sharedPreferences!
-                                .setString('customer_id', idtoko.toString());
-                            loadCartFromApiPOSTOKO();
-                            DbAllitemsToko.db.getAllitemsToko(idtoko);
+                            if (sharedPreferences!
+                                    .getString('role_sales_brand') ==
+                                '3') {
+                              context.read<PCartToko>().clearCart();
+                              print('toko : METIER');
+                              print('id  : 19');
+                              idtoko = 19; // menyimpan id toko
+                              toko = 'METIER'; // menyimpan nama toko
+                              sharedPreferences!
+                                  .setString('customer_name', 'METIER');
+                              sharedPreferences!.setString('customer_id', '19');
+                              loadCartFromApiPOSTOKO();
+                              DbAllitemsToko.db.getAllitemsTokoMetier(idtoko);
+                            }
+
+                            jenisform = jenisform;
+                            if (jenisform == "TITIPAN") {
+                              idform = 3;
+                              jenisform = "null";
+                            } else if (jenisform == "PAMERAN") {
+                              idform = 2;
+                              jenisform = "pameran";
+                            }
                           });
                         },
                         dropdownDecoratorProps: const DropDownDecoratorProps(
                           dropdownSearchDecoration: InputDecoration(
-                            labelText: 'Choose customer',
+                            labelText: 'Select type of form',
                             filled: true,
                             fillColor: Colors.white,
                           ),
                         ),
                       ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              const Padding(padding: EdgeInsets.all(4)),
-              Expanded(
-                child: DropdownSearch<String>(
-                  items: const ["PAMERAN", "TITIPAN"],
-                  onChanged: (jenisform) {
-                    setState(() {
-                      if (sharedPreferences!.getString('role_sales_brand') ==
-                          '3') {
-                        context.read<PCartToko>().clearCart();
-                        print('toko : METIER');
-                        print('id  : 19');
-                        idtoko = 19; // menyimpan id toko
-                        toko = 'METIER'; // menyimpan nama toko
-                        sharedPreferences!.setString('customer_name', 'METIER');
-                        sharedPreferences!.setString('customer_id', '19');
-                        loadCartFromApiPOSTOKO();
-                        DbAllitemsToko.db.getAllitemsTokoMetier(idtoko);
-                      }
-
-                      jenisform = jenisform;
-                      if (jenisform == "TITIPAN") {
-                        idform = 3;
-                        jenisform = "null";
-                      } else if (jenisform == "PAMERAN") {
-                        idform = 2;
-                        jenisform = "pameran";
-                      }
-                    });
-                  },
-                  dropdownDecoratorProps: const DropDownDecoratorProps(
-                    dropdownSearchDecoration: InputDecoration(
-                      labelText: 'Select type of form',
-                      filled: true,
-                      fillColor: Colors.white,
                     ),
-                  ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: isLoading == true
-                ? Center(
-                    child: Container(
-                        padding: const EdgeInsets.all(0),
-                        width: 90,
-                        height: 90,
-                        child: Lottie.asset("json/loading_black.json")))
-                : RefreshIndicator(
+                Expanded(
+                  child: RefreshIndicator(
                     onRefresh: refresh,
                     child: FutureBuilder(
                       future: DbAllitemsToko.db
@@ -345,9 +352,9 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                       },
                     ),
                   ),
-          ),
-        ],
-      ),
+                ),
+              ],
+            ),
       floatingActionButton: sharedPreferences!
                   .getString('customer_id')
                   .toString() ==

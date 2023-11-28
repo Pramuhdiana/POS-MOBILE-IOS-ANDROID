@@ -3,6 +3,9 @@
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
+import 'package:e_shop/api/api_services.dart';
+import 'package:e_shop/database/db_alldetailtransaksi.dart';
+import 'package:e_shop/database/db_alltransaksi_voucher.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/models/customer_metier.dart';
@@ -290,10 +293,14 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                                 padding: const EdgeInsets.only(top: 10),
                                 height: 80,
                                 child: DropdownSearch<int>(
-                                  items: sharedPreferences!
-                                              .getString('customer_id')
-                                              .toString() ==
-                                          '520'
+                                  items: (sharedPreferences!
+                                                  .getString('customer_id')
+                                                  .toString() ==
+                                              '520' ||
+                                          sharedPreferences!
+                                                  .getString('customer_id')
+                                                  .toString() ==
+                                              '522')
                                       ? const [
                                           11500,
                                           12000,
@@ -330,10 +337,14 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                                 padding: const EdgeInsets.only(top: 10),
                                 height: 80,
                                 child: DropdownSearch<double>(
-                                  items: sharedPreferences!
-                                              .getString('customer_id')
-                                              .toString() ==
-                                          '520'
+                                  items: (sharedPreferences!
+                                                  .getString('customer_id')
+                                                  .toString() ==
+                                              '520' ||
+                                          sharedPreferences!
+                                                  .getString('customer_id')
+                                                  .toString() ==
+                                              '522')
                                       ? const [60, 61, 62, 60.5, 61.5, 62.5]
                                       : const [60, 63],
                                   onChanged: (value) {
@@ -598,8 +609,22 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
       sharedPreferences!.getString('role_sales_brand') == '3'
           ? await postAPItokoMetier()
           : await postAPItoko();
-      btnController.success(); //sucses
       context.read<PCartToko>().clearCart(); //clear cart
+      await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
+      await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+      var apiProvider = ApiServices();
+      try {
+        await apiProvider.getAllTransaksiNewVoucher();
+      } catch (c) {
+        Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+      }
+      try {
+        await apiProvider.getAllDetailTransaksi();
+      } catch (c) {
+        Fluttertoast.showToast(
+            msg: "Failed To Load Data all details transaksi");
+      }
+      btnController.success(); //sucses
       Navigator.push(context,
           MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
     }

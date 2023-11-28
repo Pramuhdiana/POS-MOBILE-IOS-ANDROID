@@ -3,6 +3,9 @@
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
+import 'package:e_shop/api/api_services.dart';
+import 'package:e_shop/database/db_alldetailtransaksi.dart';
+import 'package:e_shop/database/db_alltransaksi_voucher.dart';
 import 'package:e_shop/event/add_customer_event.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
@@ -10,6 +13,7 @@ import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:e_shop/widgets/keyboard_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
@@ -74,6 +78,20 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
     } else {
       return CurrencyFormat.convertToIdr(total, 0);
     }
+  }
+
+  String get totalBasicPrice {
+    // var dpin = int.parse(dp);
+    var totalBasic =
+        ((context.read<PCart>().totalPrice2) * 11500) * (1 - (63 / 100));
+    var totalTransaksi =
+        ((context.read<PCart>().totalPrice2) * rate) * (1 - (diskon / 100)) -
+            dpp -
+            addesdiskon;
+    var result = (((totalBasic - totalTransaksi)) / totalBasic) * 100;
+    print(totalBasic);
+    print(totalTransaksi);
+    return result.toStringAsFixed(2);
   }
 
   String get totalPriceAPI {
@@ -284,7 +302,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                 padding: const EdgeInsets.only(top: 10),
                                 height: 80,
                                 child: DropdownSearch<int>(
-                                  items: idtoko == 520
+                                  items: (idtoko == 520 || idtoko == 522)
                                       ? const [
                                           11500,
                                           12000,
@@ -323,7 +341,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                 padding: const EdgeInsets.only(top: 10),
                                 height: 80,
                                 child: DropdownSearch<double>(
-                                  items: idtoko == 520
+                                  items: (idtoko == 520 || idtoko == 522)
                                       ? const [60, 61, 62, 60.5, 61.5, 62.5]
                                       : const [
                                           60,
@@ -355,37 +373,55 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                         : sharedPreferences!.getString('role_sales_brand') ==
                                 '3'
                             ? const SizedBox()
-                            : Container(
-                                padding: const EdgeInsets.only(top: 10),
-                                height: 80,
-                                child: TextFormField(
-                                  style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                  textInputAction: TextInputAction.next,
-                                  controller: addDiskon,
-                                  focusNode: numberFocusNode,
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  onChanged: (addDiskon) {
-                                    addDiskon.isEmpty
-                                        ? setState(() {
-                                            addesdiskon = 0;
-                                          })
-                                        : setState(() {
-                                            addesdiskon = int.parse(addDiskon);
-                                          });
-                                  },
-                                  decoration: InputDecoration(
-                                    labelText: "Add discount",
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0)),
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    height: 80,
+                                    child: TextFormField(
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                      textInputAction: TextInputAction.next,
+                                      controller: addDiskon,
+                                      focusNode: numberFocusNode,
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      onChanged: (addDiskon) {
+                                        addDiskon.isEmpty
+                                            ? setState(() {
+                                                addesdiskon = 0;
+                                              })
+                                            : setState(() {
+                                                addesdiskon =
+                                                    int.parse(addDiskon);
+                                              });
+                                      },
+                                      decoration: InputDecoration(
+                                        labelText: "Add discount",
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0)),
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  (addDiskon.text.isNotEmpty &&
+                                              idtoko == 520) ||
+                                          (addDiskon.text.isNotEmpty &&
+                                              idtoko == 522)
+                                      ? Text(
+                                          "$totalBasicPrice% dari 63%",
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      : SizedBox()
+                                ],
                               ),
 
                 //DP
@@ -469,8 +505,23 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
       btnController.error(); //error
     } else {
       await postAPIsales();
-      btnController.success(); //sucses
       context.read<PCart>().clearCart(); //clear cart
+      await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
+      await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+      var apiProvider = ApiServices();
+      try {
+        await apiProvider.getAllTransaksiNewVoucher();
+      } catch (c) {
+        Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+      }
+      try {
+        await apiProvider.getAllDetailTransaksi();
+      } catch (c) {
+        Fluttertoast.showToast(
+            msg: "Failed To Load Data all details transaksi");
+      }
+
+      btnController.success(); //sucses
       Navigator.push(context,
           MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
     }
@@ -584,8 +635,22 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
     print(response.statusCode);
     print(response.body);
     if (response.statusCode == 200) {
-      btnController.success(); //sucses
       context.read<PCart>().clearCart(); //clear cart
+      await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
+      await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+      var apiProvider = ApiServices();
+      try {
+        await apiProvider.getAllTransaksiNewVoucher();
+      } catch (c) {
+        Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+      }
+      try {
+        await apiProvider.getAllDetailTransaksi();
+      } catch (c) {
+        Fluttertoast.showToast(
+            msg: "Failed To Load Data all details transaksi");
+      }
+      btnController.success(); //sucses
       Navigator.push(context,
           MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
     } else {

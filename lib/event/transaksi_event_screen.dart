@@ -3,6 +3,9 @@
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
+import 'package:e_shop/api/api_services.dart';
+import 'package:e_shop/database/db_alldetailtransaksi.dart';
+import 'package:e_shop/database/db_alltransaksi_voucher.dart';
 import 'package:e_shop/event/add_customer_event.dart';
 import 'package:e_shop/event/cart_event_screen.dart';
 import 'package:e_shop/models/user_model.dart';
@@ -12,6 +15,7 @@ import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:e_shop/widgets/keyboard_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -560,8 +564,26 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                       controller: btnController,
                       onPressed: () async {
                         await postAPI();
-                        btnController.success(); //sucses
                         context.read<PCartEvent>().clearCart(); //clear cart
+                        await DbAlldetailtransaksi.db
+                            .deleteAlldetailtransaksi();
+                        await DbAlltransaksiNewVoucher.db
+                            .deleteAlltransaksiNewVoucher();
+                        var apiProvider = ApiServices();
+                        try {
+                          await apiProvider.getAllTransaksiNewVoucher();
+                        } catch (c) {
+                          Fluttertoast.showToast(
+                              msg: "Failed To Load Data all transaksi");
+                        }
+                        try {
+                          await apiProvider.getAllDetailTransaksi();
+                        } catch (c) {
+                          Fluttertoast.showToast(
+                              msg: "Failed To Load Data all details transaksi");
+                        }
+                        btnController.success(); //sucses
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(

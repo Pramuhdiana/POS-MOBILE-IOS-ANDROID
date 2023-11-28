@@ -1037,9 +1037,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        Row(
+                        const Row(
                           children: [
-                            const Padding(
+                            Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Text(
                                 'Monthly',
@@ -1051,24 +1051,24 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: Icon(
-                                    isPlaying ? Icons.pause : Icons.play_arrow,
-                                    color: AppColors.contentColorBlack,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      isPlaying = !isPlaying;
-                                      if (isPlaying) {
-                                        refreshState();
-                                      }
-                                    });
-                                  },
-                                ),
-                              ),
+                              padding: EdgeInsets.all(8),
+                              // child: Align(
+                              //   alignment: Alignment.topRight,
+                              //   child: IconButton(
+                              //     icon: Icon(
+                              //       isPlaying ? Icons.pause : Icons.play_arrow,
+                              //       color: AppColors.contentColorBlack,
+                              //     ),
+                              //     onPressed: () {
+                              //       setState(() {
+                              //         isPlaying = !isPlaying;
+                              //         if (isPlaying) {
+                              //           refreshState();
+                              //         }
+                              //       });
+                              //     },
+                              //   ),
+                              // ),
                             )
                           ],
                         ),

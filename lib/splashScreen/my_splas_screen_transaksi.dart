@@ -6,7 +6,6 @@ import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/api/api_services.dart';
-import 'package:e_shop/database/db_alltransaksi_voucher.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/provider/provider_cart.dart';
@@ -16,9 +15,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
-import '../database/db_alldetailtransaksi.dart';
 import '../database/db_allitems.dart';
-import '../database/db_allitems_toko.dart';
 
 class MySplashScreenTransaksi extends StatefulWidget {
   const MySplashScreenTransaksi({super.key});
@@ -39,39 +36,41 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
     });
 
     var apiProvider = ApiServices();
-    await DbAllitems.db.deleteAllitems();
-    await DbAllitemsToko.db.deleteAllitemsToko();
-    await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+    // await DbAllitems.db.deleteAllitems();
+    sharedPreferences!.setString('newOpenPosSales', 'true');
+    // await DbAllitemsToko.db.deleteAllitemsToko();
+    sharedPreferences!.setString('newOpenPosToko', 'true');
     // await DbAllitemsRetur.db.deleteAllitemsRetur();
+    // await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+    // await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
     await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
-    await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-    try {
-      await apiProvider.getAllItems();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all items");
-    }
-    try {
-      await apiProvider.getAllItemsToko();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all items toko");
-    }
-    try {
-      await apiProvider.getAllTransaksiNewVoucher();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
-    }
+    // try {
+    //   await apiProvider.getAllItems();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all items");
+    // }
+    // try {
+    //   await apiProvider.getAllItemsToko();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all items toko");
+    // }
     // try {
     //   await apiProvider.getAllItemsRetur();
     // } catch (c) {
     //   Fluttertoast.showToast(msg: "Failed To Load Data all items retur");
     // }
+    // try {
+    //   await apiProvider.getAllTransaksiNewVoucher();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+    // }
+    // try {
+    //   await apiProvider.getAllDetailTransaksi();
+    // } catch (c) {
+    //   Fluttertoast.showToast(msg: "Failed To Load Data all details transaksi");
+    // }
     try {
-      await apiProvider.getAllDetailTransaksi();
-    } catch (c) {
-      Fluttertoast.showToast(msg: "Failed To Load Data all details transaksi");
-    }
-    try {
-      await apiProvider.getAllKodekeluarbarang();
+      apiProvider.getAllKodekeluarbarang();
     } catch (c) {
       Fluttertoast.showToast(msg: "Failed To Load Data all code refrence");
     }
@@ -92,9 +91,6 @@ class _MySplashScreenTransaksiState extends State<MySplashScreenTransaksi>
     // } catch (c) {
     //   Fluttertoast.showToast(msg: "Failed To Load Data CRM");
     // }
-
-    // wait for 2 seconds to simulate loading of data
-    await Future.delayed(const Duration(seconds: 1));
 
     setState(() {
       isLoading = false;
