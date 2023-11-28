@@ -215,6 +215,16 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                                       'customer_id', idtoko.toString());
                                   loadCartFromApiPOSTOKO();
                                   DbAllitemsToko.db.getAllitemsToko(idtoko);
+                                  DbAllitemsToko.db
+                                      .getAllitemsToko(idtoko)
+                                      .then(
+                                    (value) {
+                                      setState(() {
+                                        qtyProduct = value.length;
+                                        print(qtyProduct);
+                                      });
+                                    },
+                                  );
                                 });
                               },
                               dropdownDecoratorProps:

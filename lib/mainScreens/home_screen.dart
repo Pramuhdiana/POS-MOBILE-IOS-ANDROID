@@ -7,6 +7,7 @@ import 'package:e_shop/database/db_allcustomer.dart';
 import 'package:e_shop/database/db_alltransaksi_voucher.dart';
 import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/database/db_notification_dummy.dart';
+import 'package:e_shop/database/model_allitems.dart';
 import 'package:e_shop/database/model_allitems_retur.dart';
 import 'package:e_shop/database/model_alltransaksi_voucher.dart';
 import 'package:e_shop/event/pos_event_screen.dart';
@@ -424,7 +425,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
 
   //get data sales
-  Future<List<ModelAllitemsRetur>> _getDataSales(token) async {
+  Future<List<ModelAllitems>> _getDataSales(token) async {
     try {
       var url = ApiConstants.baseUrl + ApiConstants.GETposSalesendpoint;
       final response = await Dio().get(url,
@@ -432,9 +433,8 @@ class _HomeScreenState extends State<HomeScreen> {
       if (response.statusCode == 200) {
         List jsonResponse = response.data;
 
-        var g = jsonResponse
-            .map((data) => ModelAllitemsRetur.fromJson(data))
-            .toList();
+        var g =
+            jsonResponse.map((data) => ModelAllitems.fromJson(data)).toList();
         setState(() {
           // sharedPreferences!.setInt('qtyProductSales', g.length);
           qtyProductSales = g.length;

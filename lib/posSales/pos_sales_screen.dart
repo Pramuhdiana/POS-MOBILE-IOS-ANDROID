@@ -71,6 +71,7 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
     if (newOpen == 'true') {
       print('harus 1x');
       _loadFromApi();
+
       setState(() {
         sharedPreferences!.setString('newOpenPosSales', 'false');
       });
@@ -147,9 +148,35 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
     } catch (c) {
       Fluttertoast.showToast(msg: "Failed To Load Data all items");
     }
+    String token = sharedPreferences!.getString("token").toString();
+    _getDataSales(token);
     setState(() {
       isLoading = false;
     });
+  }
+
+  Future<List<ModelAllitems>> _getDataSales(token) async {
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.GETposSalesendpoint;
+      final response = await Dio().get(url,
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+      if (response.statusCode == 200) {
+        List jsonResponse = response.data;
+
+        var g =
+            jsonResponse.map((data) => ModelAllitems.fromJson(data)).toList();
+        setState(() {
+          // sharedPreferences!.setInt('qtyProductSales', g.length);
+          qtyProduct = g.length;
+          print(qtyProduct);
+        });
+        return g;
+      } else {
+        throw Exception('Unexpected error occured!');
+      }
+    } catch (c) {
+      throw Exception('Unexpected error occured!');
+    }
   }
 
   Future refresh() async {
