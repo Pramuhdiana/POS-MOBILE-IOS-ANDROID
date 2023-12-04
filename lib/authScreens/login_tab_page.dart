@@ -25,6 +25,8 @@ class _LoginTabPageState extends State<LoginTabPage> {
   TextEditingController passwordTextEditingController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   Future<GetToken>? _futureGetToken;
+  // ignore: unused_field
+  final _formKey = GlobalKey<FormState>();
 
   //validasi form
   validateForm() async {
@@ -114,7 +116,106 @@ class _LoginTabPageState extends State<LoginTabPage> {
   }
 
   Future refresh() async {
-    setState(() {});
+    TextEditingController kodeAkses = TextEditingController();
+
+    setState(() {
+      // showDialog(
+      //     context: context,
+      //     builder: (BuildContext context) {
+      //       return AlertDialog(
+      //         content: Stack(
+      //           clipBehavior: Clip.none,
+      //           children: <Widget>[
+      //             Positioned(
+      //               right: -47.0,
+      //               top: -47.0,
+      //               child: InkResponse(
+      //                 onTap: () {
+      //                   Navigator.of(context).pop();
+      //                 },
+      //                 child: const CircleAvatar(
+      //                   backgroundColor: Colors.red,
+      //                   child: Icon(Icons.close),
+      //                 ),
+      //               ),
+      //             ),
+      //             SizedBox(
+      //               height: 190,
+      //               child: Form(
+      //                 key: _formKey,
+      //                 child: Column(
+      //                   mainAxisSize: MainAxisSize.min,
+      //                   children: <Widget>[
+      //                     const Padding(
+      //                       padding: EdgeInsets.only(top: 5, bottom: 10),
+      //                       child: Text('Masukan Kode Akses'),
+      //                     ),
+      //                     Padding(
+      //                       padding: const EdgeInsets.all(8.0),
+      //                       child: TextFormField(
+      //                         autofocus: true,
+      //                         obscureText: true,
+      //                         style: const TextStyle(
+      //                             fontSize: 14,
+      //                             color: Colors.black,
+      //                             fontWeight: FontWeight.bold),
+      //                         textInputAction: TextInputAction.next,
+      //                         controller: kodeAkses,
+      //                         validator: (value) {
+      //                           if (value! != '121019') {
+      //                             return 'Kode akses salah';
+      //                           }
+      //                           return null;
+      //                         },
+      //                         decoration: InputDecoration(
+      //                           labelText: "Kode Akses",
+      //                           border: OutlineInputBorder(
+      //                               borderRadius: BorderRadius.circular(5.0)),
+      //                         ),
+      //                       ),
+      //                     ),
+      //                     Container(
+      //                       width: 200,
+      //                       height: 50,
+      //                       padding: const EdgeInsets.only(top: 10),
+      //                       child: ElevatedButton(
+      //                         child: const Text("Submit"),
+      //                         onPressed: () async {
+      //                           if (_formKey.currentState!.validate()) {
+      //                             _formKey.currentState!.save();
+      //                             final response = await http.post(
+      //                               Uri.parse(ApiConstants.baseUrl +
+      //                                   ApiConstants.POSTloginendpoint),
+      //                               headers: <String, String>{
+      //                                 'Content-Type':
+      //                                     'application/json; charset=UTF-8',
+      //                               },
+      //                               body: convert.jsonEncode(<String, String>{
+      //                                 'email': 'andy@sanivokasi.com',
+      //                                 'password': 'sani2022',
+      //                               }),
+      //                             );
+
+      //                             if (response.statusCode == 200) {
+      //                               checkIfUserRecordExists(response.body);
+      //                             } else {
+      //                               Navigator.pop(context);
+      //                               Fluttertoast.showToast(
+      //                                   msg: "Email & Password Incorrect ");
+      //                             }
+      //                           } else {}
+      //                         },
+      //                       ),
+      //                     )
+      //                   ],
+      //                 ),
+      //               ),
+      //             ),
+      //           ],
+      //         ),
+      //       );
+      //     });
+    });
   }
 
   @override
