@@ -215,6 +215,10 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                 .toString()
                 .toLowerCase()
                 .contains(search.toString().toLowerCase()) ||
+            element.marketingCode!
+                .toString()
+                .toLowerCase()
+                .contains(search.toString().toLowerCase()) ||
             element.finalPrice3USD!
                 .toString()
                 .toLowerCase()

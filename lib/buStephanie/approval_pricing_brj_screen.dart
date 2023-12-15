@@ -139,7 +139,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   }
 
   Future _getDataByModel(model) async {
-    String fixModel = model.toString().substring(0, 9); //mengambil data hanya 9 character get data hanya 9 charackter
+    String fixModel = model.toString().substring(
+        0, 9); //mengambil data hanya 9 character get data hanya 9 charackter
     print(fixModel);
     bool? isDinamis = sharedPreferences!.getBool('isDinamis');
     baseUrlDinamis = sharedPreferences!.getString('urlDinamis');
@@ -200,6 +201,10 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                 .toLowerCase()
                 .contains(search.toString().toLowerCase()) ||
             element.theme!
+                .toString()
+                .toLowerCase()
+                .contains(search.toString().toLowerCase()) ||
+            element.marketingCode!
                 .toString()
                 .toLowerCase()
                 .contains(search.toString().toLowerCase()) ||

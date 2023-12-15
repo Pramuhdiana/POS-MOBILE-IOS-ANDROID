@@ -53,6 +53,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   int rate = 1;
   int diskonrequest = 90;
   int result = 0;
+  bool isGift = false;
   int diskon = 0;
   TextEditingController dp = TextEditingController();
   TextEditingController addDiskon = TextEditingController();
@@ -83,15 +84,20 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
 
   String get totalPrice3 {
     // var dpin = int.parse(dp);
+
     var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
             (1 - (diskon / 100)) -
         dpp -
         addesdiskon -
         nilaiVocher;
-    if (rate <= 2) {
-      return 'Rp. ${CurrencyFormat.convertToDollar(total, 0)}';
+    if (isGift != true) {
+      if (rate <= 2) {
+        return 'Rp. ${CurrencyFormat.convertToDollar(total, 0)}';
+      } else {
+        return CurrencyFormat.convertToIdr(total, 0);
+      }
     } else {
-      return CurrencyFormat.convertToIdr(total, 0);
+      return CurrencyFormat.convertToIdr(0, 0);
     }
   }
 
@@ -386,111 +392,224 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                     ? const SizedBox()
                     : idform == 4
                         ? const SizedBox()
-                        : Row(
-                            children: [
-                              Container(
-                                width: 225,
-                                padding:
-                                    const EdgeInsets.only(left: 0, right: 0),
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                      color: kodeVocher != null
-                                          ? Colors.black
-                                          : const Color.fromRGBO(238, 240, 235,
-                                              1), //background color of dropdown button
-                                      border: Border.all(
-                                          color: Colors.black38,
-                                          width: 3), //border of dropdown button
-                                      borderRadius: BorderRadius.circular(
-                                          50), //border raiuds of dropdown button
-                                      boxShadow: const <BoxShadow>[
-                                        //apply shadow on Dropdown button
-                                        BoxShadow(
-                                            color: Color.fromRGBO(0, 0, 0,
-                                                0.57), //shadow for button
-                                            blurRadius:
-                                                5) //blur radius of shadow
-                                      ]),
-                                  child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 20, right: 20),
-                                      child: DropdownButton(
-                                        value: kodeVocher,
-                                        items: const [
-                                          //add items in the dropdown
-                                          DropdownMenuItem(
-                                            value: "50000",
-                                            child: Text("BB50RB"),
-                                          ),
-                                          DropdownMenuItem(
-                                            value: "100000",
-                                            child: Text("BB100RB"),
-                                          ),
-                                          DropdownMenuItem(
-                                            value: "500000",
-                                            child: Text("BB500RB"),
-                                          ),
-                                        ],
-                                        hint: const Text('Select a cupon'),
-                                        onChanged: (value) {
-                                          print("You have selected $value");
-                                          setState(() {
-                                            kodeVocher = value;
-                                            nilaiVocher =
-                                                int.parse(kodeVocher!);
-                                            isClear = true;
-                                          });
-                                        },
-                                        icon: const Padding(
-                                            padding: EdgeInsets.only(left: 20),
-                                            child: Icon(
-                                                Icons.arrow_circle_down_sharp)),
-                                        iconEnabledColor: kodeVocher != null
-                                            ? Colors.white //Icon color
-                                            : Colors.black, //Icon color
-                                        style: TextStyle(
-                                            color: kodeVocher != null
-                                                ? Colors.white
-                                                : Colors.black, //Font color
-                                            fontSize:
-                                                15 //font size on dropdown button
-                                            ),
+                        : totalPrice < 5000000.00
+                            ? Row(
+                                children: [
+                                  Container(
+                                    width: 225,
+                                    padding: const EdgeInsets.only(
+                                        left: 0, right: 0),
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                          color: kodeVocher != null
+                                              ? Colors.black
+                                              : const Color.fromRGBO(
+                                                  238,
+                                                  240,
+                                                  235,
+                                                  1), //background color of dropdown button
+                                          border: Border.all(
+                                              color: Colors.black38,
+                                              width:
+                                                  3), //border of dropdown button
+                                          borderRadius: BorderRadius.circular(
+                                              50), //border raiuds of dropdown button
+                                          boxShadow: const <BoxShadow>[
+                                            //apply shadow on Dropdown button
+                                            BoxShadow(
+                                                color: Color.fromRGBO(0, 0, 0,
+                                                    0.57), //shadow for button
+                                                blurRadius:
+                                                    5) //blur radius of shadow
+                                          ]),
+                                      child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 20, right: 20),
+                                          child: DropdownButton(
+                                            value: kodeVocher,
+                                            items: const [
+                                              //add items in the dropdown
+                                              DropdownMenuItem(
+                                                value: "50000",
+                                                child: Text("BB50RB"),
+                                              ),
+                                              DropdownMenuItem(
+                                                value: "100000",
+                                                child: Text("BB100RB"),
+                                              ),
+                                            ],
+                                            hint: const Text('Select a cupon'),
+                                            onChanged: (value) {
+                                              print("You have selected $value");
+                                              setState(() {
+                                                kodeVocher = value;
+                                                nilaiVocher =
+                                                    int.parse(kodeVocher!);
+                                                isClear = true;
+                                              });
+                                            },
+                                            icon: const Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 20),
+                                                child: Icon(Icons
+                                                    .arrow_circle_down_sharp)),
+                                            iconEnabledColor: kodeVocher != null
+                                                ? Colors.white //Icon color
+                                                : Colors.black, //Icon color
+                                            style: TextStyle(
+                                                color: kodeVocher != null
+                                                    ? Colors.white
+                                                    : Colors.black, //Font color
+                                                fontSize:
+                                                    15 //font size on dropdown button
+                                                ),
 
-                                        dropdownColor: kodeVocher != null
-                                            ? Colors.black
-                                            : Colors
-                                                .white, //dropdown background color
-                                        underline:
-                                            Container(), //remove underline
-                                        isExpanded:
-                                            true, //make true to make width 100%
-                                      )),
-                                ),
+                                            dropdownColor: kodeVocher != null
+                                                ? Colors.black
+                                                : Colors
+                                                    .white, //dropdown background color
+                                            underline:
+                                                Container(), //remove underline
+                                            isExpanded:
+                                                true, //make true to make width 100%
+                                          )),
+                                    ),
+                                  ),
+                                  isClear == false
+                                      ? SizedBox(
+                                          height: 20,
+                                        )
+                                      : SizedBox(
+                                          width: 80,
+                                          child: InkResponse(
+                                            onTap: () {
+                                              setState(() {
+                                                kodeVocher = null;
+                                                nilaiVocher = 0;
+                                                isClear = false;
+                                              });
+                                            },
+                                            child: Lottie.asset(
+                                                "json/icon_delete.json"),
+                                            // child: const CircleAvatar(
+                                            //   backgroundColor: Colors.red,
+                                            //   child: Icon(Icons.close),
+                                            // ),
+                                          ),
+                                        )
+                                ],
+                              )
+                            : Row(
+                                children: [
+                                  Container(
+                                    width: 225,
+                                    padding: const EdgeInsets.only(
+                                        left: 0, right: 0),
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                          color: kodeVocher != null
+                                              ? Colors.black
+                                              : const Color.fromRGBO(
+                                                  238,
+                                                  240,
+                                                  235,
+                                                  1), //background color of dropdown button
+                                          border: Border.all(
+                                              color: Colors.black38,
+                                              width:
+                                                  3), //border of dropdown button
+                                          borderRadius: BorderRadius.circular(
+                                              50), //border raiuds of dropdown button
+                                          boxShadow: const <BoxShadow>[
+                                            //apply shadow on Dropdown button
+                                            BoxShadow(
+                                                color: Color.fromRGBO(0, 0, 0,
+                                                    0.57), //shadow for button
+                                                blurRadius:
+                                                    5) //blur radius of shadow
+                                          ]),
+                                      child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 20, right: 20),
+                                          child: DropdownButton(
+                                            value: kodeVocher,
+                                            items: const [
+                                              //add items in the dropdown
+                                              DropdownMenuItem(
+                                                value: "50000",
+                                                child: Text("BB50RB"),
+                                              ),
+                                              DropdownMenuItem(
+                                                value: "100000",
+                                                child: Text("BB100RB"),
+                                              ),
+                                              DropdownMenuItem(
+                                                value: "500000",
+                                                child: Text("BB500RB"),
+                                              ),
+                                            ],
+                                            hint: const Text('Select a cupon'),
+                                            onChanged: (value) {
+                                              print("You have selected $value");
+                                              setState(() {
+                                                kodeVocher = value;
+                                                nilaiVocher =
+                                                    int.parse(kodeVocher!);
+                                                isClear = true;
+                                              });
+                                            },
+                                            icon: const Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 20),
+                                                child: Icon(Icons
+                                                    .arrow_circle_down_sharp)),
+                                            iconEnabledColor: kodeVocher != null
+                                                ? Colors.white //Icon color
+                                                : Colors.black, //Icon color
+                                            style: TextStyle(
+                                                color: kodeVocher != null
+                                                    ? Colors.white
+                                                    : Colors.black, //Font color
+                                                fontSize:
+                                                    15 //font size on dropdown button
+                                                ),
+
+                                            dropdownColor: kodeVocher != null
+                                                ? Colors.black
+                                                : Colors
+                                                    .white, //dropdown background color
+                                            underline:
+                                                Container(), //remove underline
+                                            isExpanded:
+                                                true, //make true to make width 100%
+                                          )),
+                                    ),
+                                  ),
+                                  isClear == false
+                                      ? SizedBox(
+                                          height: 20,
+                                        )
+                                      : SizedBox(
+                                          width: 80,
+                                          child: InkResponse(
+                                            onTap: () {
+                                              setState(() {
+                                                kodeVocher = null;
+                                                nilaiVocher = 0;
+                                                isClear = false;
+                                              });
+                                            },
+                                            child: Lottie.asset(
+                                                "json/icon_delete.json"),
+                                            // child: const CircleAvatar(
+                                            //   backgroundColor: Colors.red,
+                                            //   child: Icon(Icons.close),
+                                            // ),
+                                          ),
+                                        )
+                                ],
                               ),
-                              isClear == false
-                                  ? SizedBox(
-                                      height: 20,
-                                    )
-                                  : SizedBox(
-                                      width: 80,
-                                      child: InkResponse(
-                                        onTap: () {
-                                          setState(() {
-                                            kodeVocher = null;
-                                            nilaiVocher = 0;
-                                            isClear = false;
-                                          });
-                                        },
-                                        child: Lottie.asset(
-                                            "json/icon_delete.json"),
-                                        // child: const CircleAvatar(
-                                        //   backgroundColor: Colors.red,
-                                        //   child: Icon(Icons.close),
-                                        // ),
-                                      ),
-                                    )
-                            ],
-                          ),
+
                 kodeVocher != null
                     ? Container(
                         padding: EdgeInsets.only(top: 5, left: 15),
@@ -502,42 +621,31 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                               fontStyle: FontStyle.italic),
                         ))
                     : SizedBox(),
-                //sharedPreferences!.getString('role_sales_brand') ==
-                //                 '3'
-                //             ? const SizedBox()
-                //             : Container(
-                //                 padding: const EdgeInsets.only(top: 10),
-                //                 height: 80,
-                //                 child: TextFormField(
-                //                   style: const TextStyle(
-                //                       fontSize: 14,
-                //                       color: Colors.black,
-                //                       fontWeight: FontWeight.bold),
-                //                   textInputAction: TextInputAction.next,
-                //                   controller: dp,
-                //                   focusNode: numberFocusNode2,
-                //                   keyboardType: TextInputType.number,
-                //                   inputFormatters: <TextInputFormatter>[
-                //                     FilteringTextInputFormatter.digitsOnly
-                //                   ],
-                //                   onChanged: (dp) {
-                //                     dp.isEmpty
-                //                         ? setState(() {
-                //                             dpp = 0;
-                //                           })
-                //                         : setState(() {
-                //                             dpp = int.parse(dp);
-                //                           });
-                //                   },
-                //                   decoration: InputDecoration(
-                //                     labelText: "DP",
-                //                     border: OutlineInputBorder(
-                //                         borderRadius:
-                //                             BorderRadius.circular(5.0)),
-                //                   ),
-                //                 ),
-                //               ),
+
                 const SizedBox(height: 30),
+                Container(
+                  alignment: Alignment.bottomLeft,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Gift ? ',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Checkbox(
+                        value: isGift,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isGift = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
                 const Divider(
                   color: Colors.black,
                   thickness: 5,
@@ -563,7 +671,11 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                     child: CustomLoadingButton(
                       controller: btnController,
                       onPressed: () async {
-                        await postAPI();
+                        if (isGift != true) {
+                          await postAPI();
+                        } else {
+                          await postAPIGift();
+                        }
                         context.read<PCartEvent>().clearCart(); //clear cart
                         await DbAlldetailtransaksi.db
                             .deleteAlldetailtransaksi();
@@ -652,6 +764,60 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     String totalkurangpajak = totalRp;
     String addesdiskonApi = addesdiskon.toString();
     String nilaiVoucherApi = nilaiVocher.toString();
+    print('cart_total : $cart_total');
+    print('cart_totalquantity : $cart_totalquantity');
+    print('customer_id : $customer_id');
+    print('jenisform_id : $jenisform_id');
+    print('basicdiskon : $basicdiskon');
+    print('customerbeliberlian : $customerbeliberlian');
+    print('pajak : $pajak');
+    print('total : $total');
+    print('total_potongan : $total_potongan');
+    print('totalkurangdiskon : $totalkurangdiskon');
+    print('totalkurangpajak : $totalkurangpajak');
+    print('addesdiskonApi : $addesdiskonApi');
+    Map<String, String> body = {
+      'cart_total': cart_total,
+      'cart_totalquantity': cart_totalquantity, //total item di cart
+      'customer_id': customer_id,
+      'jenisform_id': jenisform_id,
+      'basic_discount': basicdiskon,
+      'customerbeliberlian': customerbeliberlian,
+      'pajak': pajak,
+      'rate': rate,
+      'total': total,
+      'total_potongan': total_potongan,
+      'totalkurangdiskon': totalkurangdiskon,
+      'totalkurangpajak': totalkurangpajak,
+      'addesdiskon': addesdiskonApi,
+      'voucher_diskon': nilaiVoucherApi,
+    };
+    final response = await http.post(
+        Uri.parse(ApiConstants.baseUrl +
+            ApiConstants.POSTtokobeliberliancheckoutendpoint),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+        },
+        body: body);
+    print(response.body);
+  }
+
+  postAPIGift() async {
+    String token = sharedPreferences!.getString("token").toString();
+    String cart_total = '0';
+    String cart_totalquantity = context.read<PCartEvent>().count.toString();
+    String customer_id = '440'; //id beliberlian
+    String jenisform_id = '1';
+    String basicdiskon = '0';
+    String customerbeliberlian = idtoko.toString();
+    String pajak = '0';
+    String rate = '0';
+    String total = '0';
+    String total_potongan = '0';
+    String totalkurangdiskon = '0';
+    String totalkurangpajak = '0';
+    String addesdiskonApi = '0';
+    String nilaiVoucherApi = '0';
     print('cart_total : $cart_total');
     print('cart_totalquantity : $cart_totalquantity');
     print('customer_id : $customer_id');
