@@ -82,8 +82,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   }
 
   int get margin {
-    print('margin price : $valuePrice');
-    print('margin hpp : $hpp');
+    // print('margin price : $valuePrice');
+    // print('margin hpp : $hpp');
     int total;
     valuePrice == 0
         ? total = 0
@@ -1805,15 +1805,26 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                       Future.delayed(const Duration(seconds: 2)).then((value) async {
                                                                                                         setState(() {
                                                                                                           try {
+                                                                                                            postApiWeb(data);
+                                                                                                          } catch (c) {
+                                                                                                            showSimpleNotification(
+                                                                                                              Text('Msg Err POST WEB : $c'),
+                                                                                                              // subtitle: const Text('sub'),
+                                                                                                              background: Colors.red,
+                                                                                                              duration: const Duration(seconds: 10),
+                                                                                                            );
+                                                                                                          }
+                                                                                                          try {
                                                                                                             postApi(data.lotNo!);
                                                                                                           } catch (c) {
                                                                                                             showSimpleNotification(
-                                                                                                              Text('Msg Err : $c'),
+                                                                                                              Text('Msg Err Dekstop: $c'),
                                                                                                               // subtitle: const Text('sub'),
                                                                                                               background: Colors.red,
-                                                                                                              duration: const Duration(seconds: 5),
+                                                                                                              duration: const Duration(seconds: 10),
                                                                                                             );
                                                                                                           }
+
                                                                                                           notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Lot ${data.lotNo} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
                                                                                                           context.read<PApprovalBrj>().removesItem();
                                                                                                         });
@@ -1912,11 +1923,64 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                   ));
   }
 
+  postApiWeb(var data) async {
+    print('entryNo : ${data.entryNo}');
+    print('jobOrder : ${data.jobOrder}');
+    print('marketingCode : ${data.marketingCode}');
+    print('lotNo : ${data.lotNo}');
+    print('modelItem : ${data.modelItem}');
+    print('productTypeCode : ${data.productTypeCode}');
+    print('productTypeDesc : ${data.productTypeDesc}');
+    print('ringSize : ${data.ringSize}');
+    print('detailProduct : ${data.detailProduct}');
+    print('designLabourCode : ${data.designLabourCode}');
+    print('salesDefinitionCode : ${data.salesDefinitionCode}');
+    print('salesDefinitionNo : ${data.salesDefinitionNo}');
+    print('sumAddition : ${data.sumAddition}');
+    print('diamondWeight : ${data.diamondWeight}');
+    print('goldContent : ${data.goldContent}');
+    print('metalCode : ${data.metalCode}');
+    print('fgWeight : ${data.fgWeight}');
+    print('goldWeight : ${data.goldWeight}');
+    print('goldUnitCost : ${data.goldUnitCost}');
+    print('goldMF : ${data.goldMF}');
+    print('stdGoldPrice : ${data.stdGoldPrice}');
+    print('mfGoldPrice : ${data.mfGoldPrice}');
+    print('mfDiamondPrice : ${data.mfDiamondPrice}');
+    print('mfLabourPrice : ${data.mfLabourPrice}');
+    print('finalMF : ${data.finalMF}');
+    print('otherPrice : ${data.otherPrice}');
+    print('finalPrice3USD : ${data.finalPrice3USD}');
+    print('rateUSD : ${data.rateUSD}');
+    print('discountPercentage : ${data.discountPercentage}');
+    print('goldAveragePrice : ${data.goldAveragePrice}');
+    print('priceAfterDiscount : ${data.priceAfterDiscount}');
+    print('pricePerCarat : ${data.pricePerCarat}');
+    print('cadImageFileName : ${data.cadImageFileName}');
+    print('fgImageFileName : ${data.fgImageFileName}');
+    print('fgImageUrlPath : ${data.fgImageUrlPath}');
+    print('imagePath : ${data.imagePath}');
+    print('imageBaseUrl : ${data.imageBaseUrl}');
+    print('approvalStatus : ${data.approvalStatus}');
+    print('approvalPrice : ${data.approvalPrice}');
+    print('approvedNotes : ${data.approvedNotes}');
+    print('diamondQuality : ${data.diamondQuality}');
+    print('productDescription : ${data.productDescription}');
+    print('repeatBRJ : ${data.repeatBRJ}');
+    print('diamondPcs : ${data.diamondPcs}');
+    print('grandSTDDiamondPrice : ${data.grandSTDDiamondPrice}');
+    print('grandSTDLabourPrice : ${data.grandSTDLabourPrice}');
+    print('createdBy : ${data.createdBy}');
+    print('createdDate : ${data.createdDate}');
+    print('editedDate : ${data.editedDate}');
+    print('approvedBy : ${data.approvedBy}');
+    print('approvedDate : ${data.approvedDate}');
+  }
+
 //method approve pricing
   postApi(lot) async {
     bool? isDinamis = sharedPreferences!.getBool('isDinamis');
     baseUrlDinamis = sharedPreferences!.getString('urlDinamis');
-
     price.text.isEmpty
         ? awalPrice = awalPrice
         : awalPrice = double.parse(price.text);

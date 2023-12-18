@@ -65,6 +65,13 @@ class ApprovePricingModel {
   double? eticketingTargetWeight;
   double? eticketingTargetDiamond;
   String? theme;
+  String? approvedNotes;
+  String? diamondQuality;
+  String? productDescription;
+  int? repeatBRJ;
+  int? diamondPcs;
+  String? createdBy;
+  String? approvedBy;
 
   ApprovePricingModel({
     this.entryNo,
@@ -121,6 +128,13 @@ class ApprovePricingModel {
     this.eticketingTargetWeight,
     this.eticketingTargetDiamond,
     this.theme,
+    this.approvedNotes,
+    this.diamondQuality,
+    this.productDescription,
+    this.repeatBRJ,
+    this.diamondPcs,
+    this.createdBy,
+    this.approvedBy,
   });
 
   factory ApprovePricingModel.fromJson(Map<String, dynamic> json) =>
@@ -179,6 +193,13 @@ class ApprovePricingModel {
         eticketingTargetWeight: json['eticketingApprovalPrice'] ?? 0,
         eticketingTargetDiamond: json['eticketingTargetDiamond'] ?? 0,
         theme: json['theme'] ?? '',
+        approvedNotes: json['approvedNotes'] ?? '',
+        diamondQuality: json['diamondQuality'] ?? '',
+        productDescription: json['productDescription'] ?? '',
+        repeatBRJ: json['repeatBRJ'] ?? 0,
+        diamondPcs: json['diamondPcs'] ?? 0,
+        createdBy: json['createdBy'] ?? '',
+        approvedBy: json['approvedBy'] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -236,5 +257,12 @@ class ApprovePricingModel {
         "eticketingTargetWeight": eticketingTargetWeight,
         "eticketingTargetDiamond": eticketingTargetDiamond,
         "theme": theme,
+        "approvedNotes": approvedNotes,
+        "diamondQuality": diamondQuality,
+        "productDescription": productDescription,
+        "repeatBRJ": repeatBRJ,
+        "diamondPcs": diamondPcs,
+        "createdBy": createdBy,
+        "approvedBy": approvedBy,
       };
 }

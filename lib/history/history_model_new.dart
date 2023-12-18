@@ -3686,8 +3686,8 @@ class HistoryModelNew extends StatelessWidget {
     PdfDocument document = PdfDocument();
     final doc = pw.Document();
 
-    final ByteData bgByte = await rootBundle.load('images/bgBeliberlian.jpg');
-    final Uint8List bgUint2 = bgByte.buffer.asUint8List();
+    // final ByteData bgByte = await rootBundle.load('images/bgBeliberlian.jpg');
+    // final Uint8List bgUint2 = bgByte.buffer.asUint8List();
 
     final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
     final Uint8List byteList2 = bytes2.buffer.asUint8List();
@@ -3695,8 +3695,8 @@ class HistoryModelNew extends StatelessWidget {
     final ByteData getSertif = await rootBundle.load('images/sertif.png');
     final Uint8List showSertif = getSertif.buffer.asUint8List();
 
-    final imageLogo = MemoryImage(
-        (await rootBundle.load('images/kopsuratt.png')).buffer.asUint8List());
+    // final imageLogo = MemoryImage(
+    //     (await rootBundle.load('images/kopsuratt.png')).buffer.asUint8List());
 
 //new multi
     List<String> assetImages = [
@@ -3731,15 +3731,25 @@ class HistoryModelNew extends StatelessWidget {
 
     //! aritmatika
 
-    var subTotal = detailTransaksi[0].name[0].toString() == '4'
-        ? detailTransaksi[0].price
-        : detailTransaksi[0].price * 15000;
-    var diskon =
-        ((subTotal * double.parse(allTransaksi.basic_discount)) / 100) ?? 0;
-    var totalSubDis = subTotal - diskon;
-    var addDiskon = allTransaksi.addesdiskon_rupiah ?? 0;
-    var voucherDiskon = allTransaksi.voucherDiskon ?? 0;
-    var totalPayment = totalSubDis - addDiskon - voucherDiskon;
+    var subTotal = allTransaksi.nett.toString() == '0'
+        ? 0
+        : detailTransaksi[0].name[0].toString() == '4'
+            ? detailTransaksi[0].price
+            : detailTransaksi[0].price * 15000;
+    var diskon = allTransaksi.nett.toString() == '0'
+        ? 0
+        : ((subTotal * double.parse(allTransaksi.basic_discount)) / 100) ?? 0;
+    var totalSubDis =
+        allTransaksi.nett.toString() == '0' ? 0 : subTotal - diskon;
+    var addDiskon = allTransaksi.nett.toString() == '0'
+        ? 0
+        : allTransaksi.addesdiskon_rupiah ?? 0;
+    var voucherDiskon = allTransaksi.nett.toString() == '0'
+        ? 0
+        : allTransaksi.voucherDiskon ?? 0;
+    var totalPayment = allTransaksi.nett.toString() == '0'
+        ? 0
+        : totalSubDis - addDiskon - voucherDiskon;
     String kodeDiskon = voucherDiskon == 50000
         ? 'Voucher (BB50RB)'
         : voucherDiskon == 100000
@@ -4470,28 +4480,28 @@ class HistoryModelNew extends StatelessWidget {
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '2. Potongan untuk jual kembali sebesar 25%, dan potongan untuk tukar tambah sebesar 20%.',
+                                      '2. Potongan untuk jual kembali dan tukar tambah berdasarkan dari harga total payment.',
                                       style: pw.TextStyle(
                                           font: font,
                                           color: PdfColors.black,
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '3. Potongan untuk jual kembali dan tukar tambah berdasarkan dari harga total payment.',
+                                      '3. Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 5 tahun (rentang waktu bulan ke 13 - bulan ke 60) dari tanggal pembelian.',
                                       style: pw.TextStyle(
                                           font: font,
                                           color: PdfColors.black,
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '4. Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 2,5 tahun (rentang waktu bulan ke-13 - bulan ke -30) setelah tanggal pembelian.',
+                                      '4. Perhiasan dengan kategori wedding ring tidak bisa dijual kembali/tukar tambah.',
                                       style: pw.TextStyle(
                                           font: font,
                                           color: PdfColors.black,
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '5. Perhiasan dengan kategori wedding ring tidak bisa dijual kembali/tukar tambah.',
+                                      '5. Perhiasan harus diterima dalam keadaan baik dan akan diperiksa ulang untuk memenuhi kualitas standar, dan beliberlian.id berhak untuk menolak jika tidak sesuai standar (syarat dan ketentuan berlaku).',
                                       //  textAlign: pw.TextAlign.left,
                                       style: pw.TextStyle(
                                           font: font,
@@ -4499,39 +4509,41 @@ class HistoryModelNew extends StatelessWidget {
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '6. Perhiasan harus diterima dalam keadaan baik dan akan diperiksa ulang untuk memenuhi kualitas standar, dan beliberlian.id berhak untuk menolak jika tidak sesuai standar (syarat dan ketentuan berlaku).',
+                                      '6. Pembelian dengan voucher, special price, atau promo tertentu tidak dapat dijual kembali.',
                                       style: pw.TextStyle(
                                           font: font,
                                           color: PdfColors.black,
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '7. Pembelian dengan voucher, special price atau promo tertentu tidak dapat dijual kembali.',
+                                      '7. Pihak beliberlian tidak bertanggung jawab atas kehilangan barang milik pembeli.',
                                       style: pw.TextStyle(
                                           font: font,
                                           color: PdfColors.black,
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '8. Pihak beliberlian.id tidak bertanggung jawab atas kehilangan barang milik pembeli.',
+                                      '8. Peraturan bisa berubah sewaktu-waktu sesuai dengan kebijakan beliberlian.id.',
                                       style: pw.TextStyle(
                                           font: font,
                                           color: PdfColors.black,
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '9. Peraturan bisa berubah sewaktu-waktu sesuai dengan kebijakan beliberlian.id.',
+                                      '9. Perhiasan yang dibeli sudah termasuk PPN 11%.',
                                       style: pw.TextStyle(
                                           font: font,
                                           color: PdfColors.black,
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '10. Perhiasan yang dibeli sudah termasuk PPN 11%.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
+                                  totalPayment < 2000000.00
+                                      ? pw.Text(
+                                          '10. Produk yang dapat dijual kembali/tukar tambah adalah produk dengan nilai minimal Rp 2,000,000.',
+                                          style: pw.TextStyle(
+                                              font: font,
+                                              color: PdfColors.black,
+                                              fontSize: 7))
+                                      : pw.SizedBox(height: 0),
                                   pw.SizedBox(height: 10),
                                   pw.Container(
                                     padding: const pw.EdgeInsets.only(left: 12),
@@ -4664,8 +4676,8 @@ class HistoryModelNew extends StatelessWidget {
     PdfDocument document = PdfDocument();
     final doc = pw.Document();
 
-    final ByteData bgByte = await rootBundle.load('images/bgBeliberlian.jpg');
-    final Uint8List bgUint2 = bgByte.buffer.asUint8List();
+    // final ByteData bgByte = await rootBundle.load('images/bgBeliberlian.jpg');
+    // final Uint8List bgUint2 = bgByte.buffer.asUint8List();
 
     final ByteData bytes2 = await rootBundle.load('images/ilauncher.png');
     final Uint8List byteList2 = bytes2.buffer.asUint8List();
@@ -4673,8 +4685,8 @@ class HistoryModelNew extends StatelessWidget {
     final ByteData getSertif = await rootBundle.load('images/sertif.png');
     final Uint8List showSertif = getSertif.buffer.asUint8List();
 
-    final imageLogo = MemoryImage(
-        (await rootBundle.load('images/kopsuratt.png')).buffer.asUint8List());
+    // final imageLogo = MemoryImage(
+    //     (await rootBundle.load('images/kopsuratt.png')).buffer.asUint8List());
 
 //new multi
     List<String> assetImages = [
@@ -4709,15 +4721,25 @@ class HistoryModelNew extends StatelessWidget {
 
     //! aritmatika
 
-    var subTotal = detailTransaksi[0].name[0].toString() == '4'
-        ? detailTransaksi[0].price
-        : detailTransaksi[0].price * 15000;
-    var diskon =
-        ((subTotal * double.parse(allTransaksi.basic_discount)) / 100) ?? 0;
-    var totalSubDis = subTotal - diskon;
-    var addDiskon = allTransaksi.addesdiskon_rupiah ?? 0;
-    var voucherDiskon = allTransaksi.voucherDiskon ?? 0;
-    var totalPayment = totalSubDis - addDiskon - voucherDiskon;
+    var subTotal = allTransaksi.nett.toString() == '0'
+        ? 0
+        : detailTransaksi[0].name[0].toString() == '4'
+            ? detailTransaksi[0].price
+            : detailTransaksi[0].price * 15000;
+    var diskon = allTransaksi.nett.toString() == '0'
+        ? 0
+        : ((subTotal * double.parse(allTransaksi.basic_discount)) / 100) ?? 0;
+    var totalSubDis =
+        allTransaksi.nett.toString() == '0' ? 0 : subTotal - diskon;
+    var addDiskon = allTransaksi.nett.toString() == '0'
+        ? 0
+        : allTransaksi.addesdiskon_rupiah ?? 0;
+    var voucherDiskon = allTransaksi.nett.toString() == '0'
+        ? 0
+        : allTransaksi.voucherDiskon ?? 0;
+    var totalPayment = allTransaksi.nett.toString() == '0'
+        ? 0
+        : totalSubDis - addDiskon - voucherDiskon;
     String kodeDiskon = voucherDiskon == 50000
         ? 'Voucher (BB50RB)'
         : voucherDiskon == 100000
@@ -5448,28 +5470,28 @@ class HistoryModelNew extends StatelessWidget {
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '2. Potongan untuk jual kembali sebesar 25%, dan potongan untuk tukar tambah sebesar 20%.',
+                                      '2. Potongan untuk jual kembali dan tukar tambah berdasarkan dari harga total payment.',
                                       style: pw.TextStyle(
                                           font: font,
                                           color: PdfColors.black,
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '3. Potongan untuk jual kembali dan tukar tambah berdasarkan dari harga total payment.',
+                                      '3. Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 5 tahun (rentang waktu bulan ke 13 - bulan ke 60) dari tanggal pembelian.',
                                       style: pw.TextStyle(
                                           font: font,
                                           color: PdfColors.black,
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '4. Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 2,5 tahun (rentang waktu bulan ke-13 - bulan ke -30) setelah tanggal pembelian.',
+                                      '4. Perhiasan dengan kategori wedding ring tidak bisa dijual kembali/tukar tambah.',
                                       style: pw.TextStyle(
                                           font: font,
                                           color: PdfColors.black,
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '5. Perhiasan dengan kategori wedding ring tidak bisa dijual kembali/tukar tambah.',
+                                      '5. Perhiasan harus diterima dalam keadaan baik dan akan diperiksa ulang untuk memenuhi kualitas standar, dan beliberlian.id berhak untuk menolak jika tidak sesuai standar (syarat dan ketentuan berlaku).',
                                       //  textAlign: pw.TextAlign.left,
                                       style: pw.TextStyle(
                                           font: font,
@@ -5477,39 +5499,41 @@ class HistoryModelNew extends StatelessWidget {
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '6. Perhiasan harus diterima dalam keadaan baik dan akan diperiksa ulang untuk memenuhi kualitas standar, dan beliberlian.id berhak untuk menolak jika tidak sesuai standar (syarat dan ketentuan berlaku).',
+                                      '6. Pembelian dengan voucher, special price, atau promo tertentu tidak dapat dijual kembali.',
                                       style: pw.TextStyle(
                                           font: font,
                                           color: PdfColors.black,
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '7. Pembelian dengan voucher, special price atau promo tertentu tidak dapat dijual kembali.',
+                                      '7. Pihak beliberlian tidak bertanggung jawab atas kehilangan barang milik pembeli.',
                                       style: pw.TextStyle(
                                           font: font,
                                           color: PdfColors.black,
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '8. Pihak beliberlian.id tidak bertanggung jawab atas kehilangan barang milik pembeli.',
+                                      '8. Peraturan bisa berubah sewaktu-waktu sesuai dengan kebijakan beliberlian.id.',
                                       style: pw.TextStyle(
                                           font: font,
                                           color: PdfColors.black,
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
                                   pw.Text(
-                                      '9. Peraturan bisa berubah sewaktu-waktu sesuai dengan kebijakan beliberlian.id.',
+                                      '9. Perhiasan yang dibeli sudah termasuk PPN 11%.',
                                       style: pw.TextStyle(
                                           font: font,
                                           color: PdfColors.black,
                                           fontSize: 7)),
                                   pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '10. Perhiasan yang dibeli sudah termasuk PPN 11%.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
+                                  totalPayment < 2000000.00
+                                      ? pw.Text(
+                                          '10. Produk yang dapat dijual kembali/tukar tambah adalah produk dengan nilai minimal Rp 2,000,000.',
+                                          style: pw.TextStyle(
+                                              font: font,
+                                              color: PdfColors.black,
+                                              fontSize: 7))
+                                      : pw.SizedBox(height: 0),
                                   pw.SizedBox(height: 10),
                                   pw.Container(
                                     padding: const pw.EdgeInsets.only(left: 12),
