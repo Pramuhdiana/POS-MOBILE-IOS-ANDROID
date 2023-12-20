@@ -10,6 +10,7 @@ import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/models/customer_metier.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
+import 'package:e_shop/splashScreen/transaksi_gagal.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:e_shop/widgets/keyboard_overlay.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -609,24 +610,6 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
       sharedPreferences!.getString('role_sales_brand') == '3'
           ? await postAPItokoMetier()
           : await postAPItoko();
-      context.read<PCartToko>().clearCart(); //clear cart
-      await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-      await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
-      var apiProvider = ApiServices();
-      try {
-        await apiProvider.getAllTransaksiNewVoucher();
-      } catch (c) {
-        Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
-      }
-      try {
-        await apiProvider.getAllDetailTransaksi();
-      } catch (c) {
-        Fluttertoast.showToast(
-            msg: "Failed To Load Data all details transaksi");
-      }
-      btnController.success(); //sucses
-      Navigator.push(context,
-          MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
     }
   }
 
@@ -680,14 +663,46 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
       'total_potongan': total_potongan,
       'keterangan_bayar': keterangan_bayar
     };
-    print(body);
-    final response = await http.post(
-        Uri.parse(ApiConstants.baseUrl + ApiConstants.POSTtokocheckoutendpoint),
-        headers: <String, String>{
-          'Authorization': 'Bearer $token',
-        },
-        body: body);
-    print(response.body);
+    try {
+      final response = await http.post(
+          Uri.parse(
+              ApiConstants.baseUrl + ApiConstants.POSTtokocheckoutendpoint),
+          headers: <String, String>{
+            'Authorization': 'Bearer $token',
+          },
+          body: body);
+      if (response.statusCode != 200) {
+        btnController.error(); //sucses
+        btnController.reset();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (c) => TransaksiGagal(
+                      title: 'Transaksi Toko',
+                      err: '${response.body}',
+                    )));
+      } else {
+        context.read<PCartToko>().clearCart(); //clear cart
+        await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
+        await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+        var apiProvider = ApiServices();
+        await apiProvider.getAllTransaksiNewVoucher();
+        await apiProvider.getAllDetailTransaksi();
+        btnController.success(); //sucses
+        Navigator.push(context,
+            MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
+      }
+    } catch (c) {
+      btnController.error(); //sucses
+      btnController.reset();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (c) => TransaksiGagal(
+                    title: 'Transaksi Toko',
+                    err: '$c',
+                  )));
+    }
   }
 
   postAPItokoMetier() async {
@@ -722,14 +737,46 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
       'totalpembayaran': totalKurangDiskon
     };
     print(body);
-    final response = await http.post(
-        Uri.parse(
-            ApiConstants.baseUrl + ApiConstants.POSTtokometiercheckoutendpoint),
-        headers: <String, String>{
-          'Authorization': 'Bearer $token',
-        },
-        body: body);
-    print(response.body);
+    try {
+      final response = await http.post(
+          Uri.parse(ApiConstants.baseUrl +
+              ApiConstants.POSTtokometiercheckoutendpoint),
+          headers: <String, String>{
+            'Authorization': 'Bearer $token',
+          },
+          body: body);
+      if (response.statusCode != 200) {
+        btnController.error(); //sucses
+        btnController.reset();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (c) => TransaksiGagal(
+                      title: 'Transaksi Toko',
+                      err: '${response.body}',
+                    )));
+      } else {
+        context.read<PCartToko>().clearCart(); //clear cart
+        await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
+        await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+        var apiProvider = ApiServices();
+        await apiProvider.getAllTransaksiNewVoucher();
+        await apiProvider.getAllDetailTransaksi();
+        btnController.success(); //sucses
+        Navigator.push(context,
+            MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
+      }
+    } catch (c) {
+      btnController.error(); //sucses
+      btnController.reset();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (c) => TransaksiGagal(
+                    title: 'Transaksi Toko',
+                    err: '$c',
+                  )));
+    }
   }
 }
 

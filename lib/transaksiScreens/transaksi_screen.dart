@@ -9,6 +9,7 @@ import 'package:e_shop/database/db_alltransaksi_voucher.dart';
 import 'package:e_shop/event/add_customer_event.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
+import 'package:e_shop/splashScreen/transaksi_gagal.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:e_shop/widgets/keyboard_overlay.dart';
 import 'package:flutter/material.dart';
@@ -505,25 +506,6 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
       btnController.error(); //error
     } else {
       await postAPIsales();
-      context.read<PCart>().clearCart(); //clear cart
-      await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-      await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
-      var apiProvider = ApiServices();
-      try {
-        await apiProvider.getAllTransaksiNewVoucher();
-      } catch (c) {
-        Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
-      }
-      try {
-        await apiProvider.getAllDetailTransaksi();
-      } catch (c) {
-        Fluttertoast.showToast(
-            msg: "Failed To Load Data all details transaksi");
-      }
-
-      btnController.success(); //sucses
-      Navigator.push(context,
-          MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
     }
   }
 
@@ -610,7 +592,38 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
           'Authorization': 'Bearer $token',
         },
         body: body);
-    print(response.body);
+    if (response.statusCode != 200) {
+      btnController.error(); //sucses
+      btnController.reset();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (c) => TransaksiGagal(
+                    title: 'Transaksi Sales',
+                    err: '${response.body}',
+                  )));
+    } else {
+      btnController.success(); //sucses
+      context.read<PCart>().clearCart(); //clear cart
+      await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
+      await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+      var apiProvider = ApiServices();
+      try {
+        await apiProvider.getAllTransaksiNewVoucher();
+      } catch (c) {
+        Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+      }
+      try {
+        await apiProvider.getAllDetailTransaksi();
+      } catch (c) {
+        Fluttertoast.showToast(
+            msg: "Failed To Load Data all details transaksi");
+      }
+
+      btnController.success(); //sucses
+      Navigator.push(context,
+          MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
+    }
   }
 
   postAPImetier() async {
@@ -654,10 +667,14 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
       Navigator.push(context,
           MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
     } else {
-      btnController.error();
-      Future.delayed(const Duration(seconds: 1)).then((value) {
-        btnController.reset(); //reset
-      });
+      btnController.error(); //sucses
+      btnController.reset();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (c) => TransaksiGagal(
+                    err: '$c',
+                  )));
     }
   }
 }

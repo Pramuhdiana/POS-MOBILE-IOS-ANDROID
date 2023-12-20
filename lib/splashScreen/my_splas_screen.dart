@@ -41,7 +41,7 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreenState extends State<MySplashScreen> {
-  int noBuild = 21;
+  int noBuild = 22;
   String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
   int role = 0;

@@ -327,65 +327,59 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
 
                 idform == 0
                     ? const SizedBox()
-                    : idform == 4
-                        ? const SizedBox()
-                        : sharedPreferences!.getString('role_sales_brand') ==
-                                '3'
-                            ? const SizedBox()
-                            : idBarang == '4'
-                                ? const SizedBox()
-                                : Container(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    height: 80,
-                                    child: TextFormField(
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold),
-                                      textInputAction: TextInputAction.next,
-                                      controller: addDiskon,
-                                      focusNode: numberFocusNode,
-                                      keyboardType: TextInputType.number,
-                                      inputFormatters: <TextInputFormatter>[
-                                        FilteringTextInputFormatter.digitsOnly
-                                      ],
-                                      onChanged: (addDiskon) {
-                                        print(upto10);
-                                        addDiskon.isEmpty
-                                            ? setState(() {
-                                                addesdiskon = 0;
-                                              })
-                                            : setState(() {
-                                                addesdiskon =
-                                                    int.parse(addDiskon);
-                                              });
-                                        addesdiskon > upto10
-                                            ? showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8)),
-                                                    title: const Text(
-                                                      'Diskon tambahan melebihi limit',
-                                                    ),
-                                                  );
-                                                })
-                                            : print('oke');
-                                      },
-                                      decoration: InputDecoration(
-                                        labelText: "Add discount",
-                                        border: OutlineInputBorder(
+                    // : idform == 4
+                    //     ? const SizedBox()
+                    //     : sharedPreferences!.getString('role_sales_brand') ==
+                    //             '3'
+                    //         ? const SizedBox()
+                    //         : idBarang == '4'
+                    //             ? const SizedBox()
+                    : Container(
+                        padding: const EdgeInsets.only(top: 10),
+                        height: 80,
+                        child: TextFormField(
+                          style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                          textInputAction: TextInputAction.next,
+                          controller: addDiskon,
+                          focusNode: numberFocusNode,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          onChanged: (addDiskon) {
+                            print(upto10);
+                            addDiskon.isEmpty
+                                ? setState(() {
+                                    addesdiskon = 0;
+                                  })
+                                : setState(() {
+                                    addesdiskon = int.parse(addDiskon);
+                                  });
+                            addesdiskon > upto10
+                                ? showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(5.0)),
-                                      ),
-                                    ),
-                                  ),
+                                                BorderRadius.circular(8)),
+                                        title: const Text(
+                                          'Diskon tambahan melebihi limit',
+                                        ),
+                                      );
+                                    })
+                                : print('oke');
+                          },
+                          decoration: InputDecoration(
+                            labelText: "Add discount",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0)),
+                          ),
+                        ),
+                      ),
 
                 // //DP
                 idform == 0

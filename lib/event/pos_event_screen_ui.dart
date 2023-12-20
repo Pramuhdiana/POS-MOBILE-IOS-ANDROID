@@ -126,14 +126,14 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
                             placeholder: (context, url) => Center(
                                 child: Container(
                                     padding: const EdgeInsets.all(0),
-                                    width: 90,
-                                    height: 90,
+                                    width: 120,
+                                    height: 120,
                                     child: Lottie.asset(
                                         "json/loading_black.json"))),
                             errorWidget: (context, url, error) => const Icon(
                               Icons.error,
                               color: Colors.black,
-                              size: 50,
+                              size: 100,
                             ),
                             // height: 100,
                             fit: BoxFit.cover,

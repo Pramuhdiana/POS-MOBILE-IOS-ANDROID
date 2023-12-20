@@ -189,6 +189,7 @@ class _PosTokoUi extends State<PosTokoUi> {
                           );
                       setState(() {
                         postAPIcart();
+
                         DbAllitemsToko.db
                             .updateAllitemsTokoByname(widget.model?.name, 0);
                       });

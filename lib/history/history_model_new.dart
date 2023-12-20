@@ -5552,6 +5552,7 @@ class HistoryModelNew extends StatelessWidget {
                                   pw.Container(
                                     padding: const pw.EdgeInsets.only(left: 25),
                                     child: pw.Text(
+                                        // 'Hendrik Wijaya',
                                         '${sharedPreferences!.getString("name")!}',
                                         style: const pw.TextStyle(
                                             color: PdfColors.black,

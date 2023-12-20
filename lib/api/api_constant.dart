@@ -50,6 +50,7 @@ class ApiConstants {
   static String POSTcreateCustomerMetier = '/createcustomer';
   static String POSTmetiercheckout = '/possalesmetiercheckout';
   static String POSThistoryApprove = '/create_history_approve.php';
+  static String POSThargaApproved = '/createprice';
 
   static String DELETEkeranjangtokoendpoint = '/deletecartpostoko';
   static String DELETEkeranjangsalesendpoint = '/deletecartpossales';

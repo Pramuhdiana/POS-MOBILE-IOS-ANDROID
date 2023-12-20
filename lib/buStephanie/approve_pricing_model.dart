@@ -64,7 +64,6 @@ class ApprovePricingModel {
   double? eticketingApprovalPrice;
   double? eticketingTargetWeight;
   double? eticketingTargetDiamond;
-  String? theme;
   String? approvedNotes;
   String? diamondQuality;
   String? productDescription;
@@ -72,6 +71,16 @@ class ApprovePricingModel {
   int? diamondPcs;
   String? createdBy;
   String? approvedBy;
+  String? theme;
+  String? pesanan;
+  String? project;
+  String? brand;
+  String? eTicketing_id;
+  String? eTicketing_price_final;
+  String? eTicketing_carat;
+  String? eTicketing_pcs;
+  String? eTicketing_notes_sekre;
+  String? eTicketing_image_notes;
 
   ApprovePricingModel({
     this.entryNo,

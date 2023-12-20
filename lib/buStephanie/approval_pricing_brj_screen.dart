@@ -1924,57 +1924,25 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   }
 
   postApiWeb(var data) async {
-    print('entryNo : ${data.entryNo}');
-    print('jobOrder : ${data.jobOrder}');
-    print('marketingCode : ${data.marketingCode}');
-    print('lotNo : ${data.lotNo}');
-    print('modelItem : ${data.modelItem}');
-    print('productTypeCode : ${data.productTypeCode}');
-    print('productTypeDesc : ${data.productTypeDesc}');
-    print('ringSize : ${data.ringSize}');
-    print('detailProduct : ${data.detailProduct}');
-    print('designLabourCode : ${data.designLabourCode}');
-    print('salesDefinitionCode : ${data.salesDefinitionCode}');
-    print('salesDefinitionNo : ${data.salesDefinitionNo}');
-    print('sumAddition : ${data.sumAddition}');
-    print('diamondWeight : ${data.diamondWeight}');
-    print('goldContent : ${data.goldContent}');
-    print('metalCode : ${data.metalCode}');
-    print('fgWeight : ${data.fgWeight}');
-    print('goldWeight : ${data.goldWeight}');
-    print('goldUnitCost : ${data.goldUnitCost}');
-    print('goldMF : ${data.goldMF}');
-    print('stdGoldPrice : ${data.stdGoldPrice}');
-    print('mfGoldPrice : ${data.mfGoldPrice}');
-    print('mfDiamondPrice : ${data.mfDiamondPrice}');
-    print('mfLabourPrice : ${data.mfLabourPrice}');
-    print('finalMF : ${data.finalMF}');
-    print('otherPrice : ${data.otherPrice}');
-    print('finalPrice3USD : ${data.finalPrice3USD}');
-    print('rateUSD : ${data.rateUSD}');
-    print('discountPercentage : ${data.discountPercentage}');
-    print('goldAveragePrice : ${data.goldAveragePrice}');
-    print('priceAfterDiscount : ${data.priceAfterDiscount}');
-    print('pricePerCarat : ${data.pricePerCarat}');
-    print('cadImageFileName : ${data.cadImageFileName}');
-    print('fgImageFileName : ${data.fgImageFileName}');
-    print('fgImageUrlPath : ${data.fgImageUrlPath}');
-    print('imagePath : ${data.imagePath}');
-    print('imageBaseUrl : ${data.imageBaseUrl}');
-    print('approvalStatus : ${data.approvalStatus}');
-    print('approvalPrice : ${data.approvalPrice}');
-    print('approvedNotes : ${data.approvedNotes}');
-    print('diamondQuality : ${data.diamondQuality}');
-    print('productDescription : ${data.productDescription}');
-    print('repeatBRJ : ${data.repeatBRJ}');
-    print('diamondPcs : ${data.diamondPcs}');
-    print('grandSTDDiamondPrice : ${data.grandSTDDiamondPrice}');
-    print('grandSTDLabourPrice : ${data.grandSTDLabourPrice}');
-    print('createdBy : ${data.createdBy}');
-    print('createdDate : ${data.createdDate}');
-    print('editedDate : ${data.editedDate}');
-    print('approvedBy : ${data.approvedBy}');
-    print('approvedDate : ${data.approvedDate}');
+    String token = sharedPreferences!.getString("token").toString();
+    price.text.isEmpty
+        ? awalPrice = awalPrice
+        : awalPrice = double.parse(price.text);
+    Map<String, String> body = {
+      'lot': data.lotNo.toString(),
+      'kode': data.marketingCode.toString(), //total item di cart
+      'harga': awalPrice.toString(),
+      'detail': data.detailProduct.toString(),
+    };
+    final response = await http.post(
+        Uri.parse(ApiConstants.baseUrl + ApiConstants.POSThargaApproved),
+        // Uri.parse(ApiConstants.baseUrl + ApiConstants.POSThargaApproved),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+        },
+        body: body);
+    print(response.statusCode);
+    print(response.body);
   }
 
 //method approve pricing
