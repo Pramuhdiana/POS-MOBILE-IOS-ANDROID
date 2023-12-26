@@ -3,6 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cart_stepper/cart_stepper.dart';
 import 'package:collection/collection.dart';
+import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/model_allitems_retur.dart';
 import 'package:e_shop/itemsScreens/items_photo_retur.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
@@ -102,7 +103,7 @@ class _ItemsDetailsScreenReturState extends State<ItemsDetailsScreenRetur> {
                   },
                   child: CachedNetworkImage(
                     imageUrl:
-                        'https://parvabisnis.id/uploads/products/${widget.model!.image_name}',
+                        '${ApiConstants.baseImageUrl}${widget.model!.image_name}',
                   ),
                 ),
                 Padding(

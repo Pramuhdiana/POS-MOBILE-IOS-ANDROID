@@ -81,7 +81,7 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                             topRight: Radius.circular(15),
                           ),
                           // child: Image.network(
-                          //   'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+                          //   '${baseImageUrl}${widget.model!.image_name.toString()}',
                           //   // height: 100,
                           //   fit: BoxFit.fill,
                           //   //cache
@@ -117,18 +117,18 @@ class _SalesItemsUiDesign extends State<SalesItemsUiDesign> {
                             maxHeightDiskCache: 120, //default 60
                             maxWidthDiskCache: 105, //default 45
                             imageUrl:
-                                'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+                                '${ApiConstants.baseImageUrl}${widget.model!.image_name.toString()}',
                             placeholder: (context, url) => Center(
                                 child: Container(
                                     padding: const EdgeInsets.all(0),
-                                    width: 90,
-                                    height: 90,
+                                    width: 120,
+                                    height: 120,
                                     child: Lottie.asset(
                                         "json/loading_black.json"))),
                             errorWidget: (context, url, error) => const Icon(
                               Icons.error,
                               color: Colors.black,
-                              size: 50,
+                              size: 100,
                             ),
                             // height: 100,
                             fit: BoxFit.cover,

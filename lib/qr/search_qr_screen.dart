@@ -116,7 +116,7 @@ class _SearchQrScreen extends State<SearchQrScreen> {
                             width: 100,
                             child: CachedNetworkImage(
                               imageUrl:
-                                  'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+                                  '${ApiConstants.baseImageUrl}${widget.model!.image_name.toString()}',
                               placeholder: (context, url) => Center(
                                   child: Container(
                                       padding: const EdgeInsets.all(0),
@@ -225,7 +225,7 @@ class _SearchQrScreen extends State<SearchQrScreen> {
 //               maxHeightDiskCache: 100, //default 60
 //               maxWidthDiskCache: 85, //default 45
 //               imageUrl:
-//                   'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+//                   '${baseImageUrl}${widget.model!.image_name.toString()}',
 //               placeholder: (context, url) =>
 //                   const CircularProgressIndicator(),
 //               errorWidget: (context, url, error) => const Icon(
@@ -236,7 +236,7 @@ class _SearchQrScreen extends State<SearchQrScreen> {
 //               fit: BoxFit.cover,
 //             ),
 //             // child: Image.network(
-//             //   'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+//             //   '${baseImageUrl}${widget.model!.image_name.toString()}',
 //             // ),
 //           ),
 //           Text(

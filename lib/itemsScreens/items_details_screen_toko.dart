@@ -2,6 +2,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cart_stepper/cart_stepper.dart';
+import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/model_allitems_toko.dart';
 import 'package:e_shop/itemsScreens/items_photo_toko.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
@@ -100,10 +101,13 @@ class _ItemsDetailsScreenTokoState extends State<ItemsDetailsScreenToko> {
                   },
                   child: CachedNetworkImage(
                     imageUrl:
-                        'https://parvabisnis.id/uploads/products/${widget.model!.image_name}',
-                    errorWidget: (context, url, error) => const Icon(
-                      Icons.error,
-                      color: Colors.black,
+                        '${ApiConstants.baseImageUrl}${widget.model!.image_name}',
+                    errorWidget: (context, url, error) => Center(
+                      child: const Icon(
+                        Icons.error,
+                        color: Colors.black,
+                        size: 100,
+                      ),
                     ),
                   ),
                 ),

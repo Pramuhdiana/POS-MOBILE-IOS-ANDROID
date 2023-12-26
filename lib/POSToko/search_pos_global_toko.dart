@@ -91,7 +91,7 @@ class _SearchPosGlobalToko extends State<SearchPosGlobalToko> {
                         child: SizedBox(
                           child: CachedNetworkImage(
                             imageUrl:
-                                'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+                                '${ApiConstants.baseImageUrl}${widget.model!.image_name.toString()}',
                             placeholder: (context, url) => Center(
                                 child: Container(
                                     padding: const EdgeInsets.all(0),

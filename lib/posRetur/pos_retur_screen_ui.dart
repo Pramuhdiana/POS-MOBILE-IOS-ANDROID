@@ -73,18 +73,18 @@ class _PosReturUi extends State<PosReturUi> {
                             maxHeightDiskCache: 120, //default 60
                             maxWidthDiskCache: 105, //default 45
                             imageUrl:
-                                'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+                                '${ApiConstants.baseImageUrl}${widget.model!.image_name.toString()}',
                             placeholder: (context, url) => Center(
                                 child: Container(
                                     padding: const EdgeInsets.all(0),
-                                    width: 90,
-                                    height: 90,
+                                    width: 120,
+                                    height: 120,
                                     child: Lottie.asset(
                                         "json/loading_black.json"))),
                             errorWidget: (context, url, error) => const Icon(
                               Icons.error,
                               color: Colors.black,
-                              size: 50,
+                              size: 100,
                             ),
                             // height: 100,
                             fit: BoxFit.cover,
@@ -92,7 +92,7 @@ class _PosReturUi extends State<PosReturUi> {
                         ),
 //  setState(() async {
 //                                   http.Response r = await http.head(Uri.parse(
-//                                       'https://parvabisnis.id/uploads/products/${dataSnapshot.data[index].image_name.toString()}'));
+//                                       '${baseImageUrl}${dataSnapshot.data[index].image_name.toString()}'));
 //                                   print(r.headers[
 //                                       "content-length"]); //545621 means 546 KB
 //                                 });

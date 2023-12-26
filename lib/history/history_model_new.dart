@@ -496,8 +496,7 @@ class HistoryModelNew extends StatelessWidget {
     //new multi
     List<String> assetImages = [
       for (var i = 0; i < allTransaksi.total_quantity; i++)
-        'https://parvabisnis.id/uploads/products/' +
-            detailTransaksi[i].image_name
+        '${ApiConstants.baseImageUrl}' + detailTransaksi[i].image_name
     ];
 
     for (String image in assetImages)
@@ -1586,8 +1585,7 @@ class HistoryModelNew extends StatelessWidget {
     //new multi
     List<String> assetImages = [
       for (var i = 0; i < allTransaksi.total_quantity; i++)
-        'https://parvabisnis.id/uploads/products/' +
-            detailTransaksi[i].image_name
+        '${ApiConstants.baseImageUrl}' + detailTransaksi[i].image_name
     ];
 
     for (String image in assetImages)
@@ -2673,8 +2671,7 @@ class HistoryModelNew extends StatelessWidget {
     //new multi
     List<String> assetImages = [
       for (var i = 0; i < allTransaksi.total_quantity; i++)
-        'https://parvabisnis.id/uploads/products/' +
-            detailTransaksi[i].image_name
+        '${ApiConstants.baseImageUrl}' + detailTransaksi[i].image_name
     ];
     for (String image in assetImages)
       await getImageBytes(image, assetImages.length);
@@ -3598,7 +3595,7 @@ class HistoryModelNew extends StatelessWidget {
   void _createPdfBeliBerlian() async {
     //! start compress image
     Response responseGambar = await http.get(Uri.parse(
-        'https://parvabisnis.id/uploads/products/${detailTransaksi[0].image_name}'));
+        '${ApiConstants.baseImageUrl}${detailTransaksi[0].image_name}'));
     if (responseGambar.statusCode != 200) {
       throw ArgumentError(
           'Failed to download image from. Status code: ${responseGambar.statusCode}');
@@ -3701,8 +3698,7 @@ class HistoryModelNew extends StatelessWidget {
 //new multi
     List<String> assetImages = [
       for (var i = 0; i < allTransaksi.total_quantity; i++)
-        'https://parvabisnis.id/uploads/products/' +
-            detailTransaksi[i].image_name
+        '${ApiConstants.baseImageUrl}' + detailTransaksi[i].image_name
     ];
 
     for (String image in assetImages)
@@ -4588,7 +4584,7 @@ class HistoryModelNew extends StatelessWidget {
   void _sharePdfBeliberlian() async {
     //! nanti hhapus kalo gagal
     Response responseGambar = await http.get(Uri.parse(
-        'https://parvabisnis.id/uploads/products/${detailTransaksi[0].image_name}'));
+        '${ApiConstants.baseImageUrl}${detailTransaksi[0].image_name}'));
     if (responseGambar.statusCode != 200) {
       throw ArgumentError(
           'Failed to download image from. Status code: ${responseGambar.statusCode}');
@@ -4691,8 +4687,7 @@ class HistoryModelNew extends StatelessWidget {
 //new multi
     List<String> assetImages = [
       for (var i = 0; i < allTransaksi.total_quantity; i++)
-        'https://parvabisnis.id/uploads/products/' +
-            detailTransaksi[i].image_name
+        '${ApiConstants.baseImageUrl}' + detailTransaksi[i].image_name
     ];
 
     for (String image in assetImages)
@@ -5589,8 +5584,7 @@ class HistoryModelNew extends StatelessWidget {
     //new multi
     List<String> assetImages = [
       for (var i = 0; i < allTransaksi.total_quantity; i++)
-        'https://parvabisnis.id/uploads/products/' +
-            detailTransaksi[i].image_name
+        '${ApiConstants.baseImageUrl}' + detailTransaksi[i].image_name
     ];
 
     for (String image in assetImages)
@@ -6747,8 +6741,7 @@ class HistoryModelNew extends StatelessWidget {
     //new multi
     List<String> assetImages = [
       for (var i = 0; i < allTransaksi.total_quantity; i++)
-        'https://parvabisnis.id/uploads/products/' +
-            detailTransaksi[i].image_name
+        '${ApiConstants.baseImageUrl}' + detailTransaksi[i].image_name
     ];
 
     for (String image in assetImages)

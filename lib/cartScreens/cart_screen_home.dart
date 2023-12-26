@@ -292,7 +292,7 @@ class CartItems extends StatelessWidget {
                                   // maxHeightDiskCache: 100, //default 60
                                   // maxWidthDiskCache: 85, //default 45
                                   imageUrl:
-                                      'https://parvabisnis.id/uploads/products/${product.imageUrl.toString()}',
+                                      '${ApiConstants.baseImageUrl}${product.imageUrl.toString()}',
                                   placeholder: (context, url) => Center(
                                       child: Container(
                                           padding: const EdgeInsets.all(0),

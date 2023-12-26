@@ -74,7 +74,7 @@ class _SearchPosRetur extends State<SearchPosRetur> {
                             width: 100,
                             child: CachedNetworkImage(
                               imageUrl:
-                                  'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+                                  '${ApiConstants.baseImageUrl}${widget.model!.image_name.toString()}',
                               placeholder: (context, url) => Center(
                                   child: Container(
                                       padding: const EdgeInsets.all(0),

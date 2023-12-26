@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/model_allitems_retur.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
@@ -77,7 +78,7 @@ class _ItemsPhotoRetur extends State<ItemsPhotoRetur> {
             color: Colors.white,
           ),
           imageProvider: CachedNetworkImageProvider(
-            'https://parvabisnis.id/uploads/products/${widget.model!.image_name}',
+            '${ApiConstants.baseImageUrl}${widget.model!.image_name}',
           ),
           enableRotation: true,
           minScale: PhotoViewComputedScale.covered * 0.2,

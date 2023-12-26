@@ -131,10 +131,13 @@ class _ItemsDetailsScreenState extends State<ItemsDetailsScreen> {
                   },
                   child: CachedNetworkImage(
                     imageUrl:
-                        'https://parvabisnis.id/uploads/products/${widget.model!.image_name}',
-                    errorWidget: (context, url, error) => const Icon(
-                      Icons.error,
-                      color: Colors.black,
+                        '${ApiConstants.baseImageUrl}{widget.model!.image_name}',
+                    errorWidget: (context, url, error) => Center(
+                      child: const Icon(
+                        Icons.error,
+                        color: Colors.black,
+                        size: 100,
+                      ),
                     ),
                   ),
                 ),

@@ -3410,7 +3410,7 @@ class SearchModel extends StatelessWidget {
                     width: 100,
                     child: CachedNetworkImage(
                       imageUrl:
-                          'https://parvabisnis.id/uploads/products/${e['image_name'].toString()}',
+                          '${ApiConstants.baseImageUrl}${e['image_name'].toString()}',
                       placeholder: (context, url) => Center(
                           child: Container(
                               padding: const EdgeInsets.all(0),

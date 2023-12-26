@@ -79,8 +79,8 @@ class _ItemsPhotoPricing extends State<ItemsPhotoPricing> {
             color: Colors.white,
           ),
           imageProvider: CachedNetworkImageProvider(
-            // 'https://parvabisnis.id/uploads/products/EG003230080.jpg}',
-            // 'https://parvabisnis.id/uploads/products/${widget.model!.marketingCode}',
+            // '${baseImageUrl}EG003230080.jpg}',
+            // '${baseImageUrl}${widget.model!.marketingCode}',
             'https://110.5.102.154:50001/Files/Images/Product/${widget.model!.fgImageFileName!.toString()}',
           ),
           enableRotation: true,

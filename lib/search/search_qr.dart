@@ -134,7 +134,7 @@
 //                     width: 100,
 //                     child: CachedNetworkImage(
 //                       imageUrl:
-//                           'https://parvabisnis.id/uploads/products/${e['image_name'].toString()}',
+//                           '${baseImageUrl}${e['image_name'].toString()}',
 //                       placeholder: (context, url) =>
 //                           const CircularProgressIndicator(),
 //                       errorWidget: (context, url, error) => Image.asset(

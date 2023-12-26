@@ -6,6 +6,7 @@ class ApiConstants {
   static String baseUrlPricing = 'http://110.5.102.154:4000/approvals';
   static String baseUrlImageMdbc =
       'https://110.5.102.154:50001/Files/Images/Product/';
+  static String baseImageUrl = 'http://54.179.58.215:7000/uploads/products/';
 
   static String baseUrlPricingWeb = 'http://110.5.102.154:8000/api';
 

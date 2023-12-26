@@ -86,7 +86,7 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
                             topRight: Radius.circular(15),
                           ),
                           // child: Image.network(
-                          //   'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+                          //   '${baseImageUrl}${widget.model!.image_name.toString()}',
                           //   // height: 100,
                           //   fit: BoxFit.fill,
                           //   //cache
@@ -122,7 +122,7 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
                             maxHeightDiskCache: 120, //default 60
                             maxWidthDiskCache: 105, //default 45
                             imageUrl:
-                                'https://parvabisnis.id/uploads/products/${widget.model!.image_name.toString()}',
+                                '${ApiConstants.baseImageUrl}${widget.model!.image_name.toString()}',
                             placeholder: (context, url) => Center(
                                 child: Container(
                                     padding: const EdgeInsets.all(0),
