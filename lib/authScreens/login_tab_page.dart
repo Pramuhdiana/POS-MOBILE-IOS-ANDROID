@@ -25,6 +25,7 @@ class _LoginTabPageState extends State<LoginTabPage> {
   TextEditingController passwordTextEditingController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   Future<GetToken>? _futureGetToken;
+  String? pilihEmail;
   // ignore: unused_field
   final _formKey = GlobalKey<FormState>();
 
@@ -34,6 +35,7 @@ class _LoginTabPageState extends State<LoginTabPage> {
         passwordTextEditingController.text.isNotEmpty) {
       //allow user to login
       try {
+        await sharedPreferences?.setBool('dbDummy', false);
         await loginNow();
       } catch (c) {
         print('err saat login : $c');
@@ -45,6 +47,7 @@ class _LoginTabPageState extends State<LoginTabPage> {
 
 //login dengan API
   loginNow() async {
+    bool? dbDummy = sharedPreferences?.getBool('dbDummy');
     showDialog(
         context: context,
         builder: (c) {
@@ -54,6 +57,7 @@ class _LoginTabPageState extends State<LoginTabPage> {
         });
 
     // User? currentUser;
+
     String email = emailTextEditingController.text;
     String password = passwordTextEditingController.text;
     final response = await http.post(
@@ -120,105 +124,249 @@ class _LoginTabPageState extends State<LoginTabPage> {
   }
 
   Future refresh() async {
+    await sharedPreferences?.setBool('dbDummy', false);
+
     TextEditingController kodeAkses = TextEditingController();
 
     setState(() {
-      // showDialog(
-      //     context: context,
-      //     builder: (BuildContext context) {
-      //       return AlertDialog(
-      //         content: Stack(
-      //           clipBehavior: Clip.none,
-      //           children: <Widget>[
-      //             Positioned(
-      //               right: -47.0,
-      //               top: -47.0,
-      //               child: InkResponse(
-      //                 onTap: () {
-      //                   Navigator.of(context).pop();
-      //                 },
-      //                 child: const CircleAvatar(
-      //                   backgroundColor: Colors.red,
-      //                   child: Icon(Icons.close),
-      //                 ),
-      //               ),
-      //             ),
-      //             SizedBox(
-      //               height: 190,
-      //               child: Form(
-      //                 key: _formKey,
-      //                 child: Column(
-      //                   mainAxisSize: MainAxisSize.min,
-      //                   children: <Widget>[
-      //                     const Padding(
-      //                       padding: EdgeInsets.only(top: 5, bottom: 10),
-      //                       child: Text('Masukan Kode Akses'),
-      //                     ),
-      //                     Padding(
-      //                       padding: const EdgeInsets.all(8.0),
-      //                       child: TextFormField(
-      //                         autofocus: true,
-      //                         obscureText: true,
-      //                         style: const TextStyle(
-      //                             fontSize: 14,
-      //                             color: Colors.black,
-      //                             fontWeight: FontWeight.bold),
-      //                         textInputAction: TextInputAction.next,
-      //                         controller: kodeAkses,
-      //                         validator: (value) {
-      //                           if (value! != '121019') {
-      //                             return 'Kode akses salah';
-      //                           }
-      //                           return null;
-      //                         },
-      //                         decoration: InputDecoration(
-      //                           labelText: "Kode Akses",
-      //                           border: OutlineInputBorder(
-      //                               borderRadius: BorderRadius.circular(5.0)),
-      //                         ),
-      //                       ),
-      //                     ),
-      //                     Container(
-      //                       width: 200,
-      //                       height: 50,
-      //                       padding: const EdgeInsets.only(top: 10),
-      //                       child: ElevatedButton(
-      //                         child: const Text("Submit"),
-      //                         onPressed: () async {
-      //                           if (_formKey.currentState!.validate()) {
-      //                             _formKey.currentState!.save();
-      //                             final response = await http.post(
-      //                               Uri.parse(ApiConstants.baseUrl +
-      //                                   ApiConstants.POSTloginendpoint),
-      //                               headers: <String, String>{
-      //                                 'Content-Type':
-      //                                     'application/json; charset=UTF-8',
-      //                               },
-      //                               body: convert.jsonEncode(<String, String>{
-      //                                 'email': 'andy@sanivokasi.com',
-      //                                 'password': 'sani2022',
-      //                               }),
-      //                             );
+      showGeneralDialog(
+          pageBuilder: (context, animation1, animation2) {
+            return const Text('');
+          },
+          context: context,
+          transitionDuration: const Duration(milliseconds: 200),
+          barrierDismissible: true,
+          barrierLabel: '',
+          transitionBuilder: (context, a1, a2, widget) => Transform.scale(
+              scale: a1.value,
+              child: Opacity(
+                  opacity: a1.value,
+                  child: StatefulBuilder(
+                      builder: (context, setState) => AlertDialog(
+                            content: Stack(
+                              clipBehavior: Clip.none,
+                              children: <Widget>[
+                                Positioned(
+                                  right: -47.0,
+                                  top: -47.0,
+                                  child: InkResponse(
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const CircleAvatar(
+                                      backgroundColor: Colors.red,
+                                      child: Icon(Icons.close),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  child: Form(
+                                    key: _formKey,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        const Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 5, bottom: 10),
+                                          child: Text(
+                                              'Masukan Kode Akses Untuk Login Ke Database Dummy'),
+                                        ),
+                                        // Container(
+                                        //   alignment: Alignment.bottomLeft,
+                                        //   child: Row(
+                                        //     mainAxisAlignment:
+                                        //         MainAxisAlignment.start,
+                                        //     children: [
+                                        //       const Text(
+                                        //         'Dummy Database ? ',
+                                        //         style: TextStyle(
+                                        //             color: Colors.black,
+                                        //             fontSize: 12,
+                                        //             fontWeight:
+                                        //                 FontWeight.bold),
+                                        //       ),
+                                        //       Checkbox(
+                                        //         value: dbDummy,
+                                        //         onChanged: (bool? value) {
+                                        //           dbDummy = value!;
+                                        //           setState(() => dbDummy);
+                                        //           print(dbDummy);
+                                        //         },
+                                        //       ),
+                                        //     ],
+                                        //   ),
+                                        // ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: DecoratedBox(
+                                              decoration: BoxDecoration(
+                                                  color: const Color.fromRGBO(
+                                                      238,
+                                                      240,
+                                                      235,
+                                                      1), //background color of dropdown button
+                                                  border: Border.all(
+                                                      color: Colors.black38,
+                                                      width:
+                                                          3), //border of dropdown button
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50), //border raiuds of dropdown button
+                                                  boxShadow: const <BoxShadow>[
+                                                    //apply shadow on Dropdown button
+                                                    BoxShadow(
+                                                        color: Color.fromRGBO(
+                                                            0,
+                                                            0,
+                                                            0,
+                                                            0.57), //shadow for button
+                                                        blurRadius:
+                                                            5) //blur radius of shadow
+                                                  ]),
+                                              child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 20, right: 20),
+                                                  child: DropdownButton(
+                                                    value: pilihEmail,
+                                                    items: const [
+                                                      //add items in the dropdown
+                                                      DropdownMenuItem(
+                                                        value:
+                                                            "andy@sanivokasi.com",
+                                                        child: Text(
+                                                            "andy@sanivokasi.com"),
+                                                      ),
+                                                      DropdownMenuItem(
+                                                        value:
+                                                            "andhika@sanivokasi.com",
+                                                        child: Text(
+                                                            "andhika@sanivokasi.com"),
+                                                      ),
+                                                      DropdownMenuItem(
+                                                        value:
+                                                            "erick@sanivokasi.com",
+                                                        child: Text(
+                                                            "erick@sanivokasi.com"),
+                                                      ),
+                                                      DropdownMenuItem(
+                                                        value:
+                                                            "hendrik@sanivokasi.com",
+                                                        child: Text(
+                                                            "hendrik@sanivokasi.com"),
+                                                      ),
+                                                      DropdownMenuItem(
+                                                        value:
+                                                            "jonathan@sanivokasi.com",
+                                                        child: Text(
+                                                            "jonathan@sanivokasi.com"),
+                                                      )
+                                                    ],
+                                                    hint: const Text(
+                                                        'Select account'),
+                                                    onChanged: (value) {
+                                                      print(
+                                                          "You have selected $value");
+                                                      setState(() {
+                                                        pilihEmail = value;
+                                                        emailTextEditingController
+                                                            .text = value ?? '';
+                                                      });
+                                                    },
+                                                    icon: const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 20),
+                                                        child: Icon(Icons
+                                                            .arrow_circle_down_sharp)),
+                                                    iconEnabledColor: Colors
+                                                        .black, //Icon color
+                                                    style: const TextStyle(
+                                                        color: Colors
+                                                            .black, //Font color
+                                                        fontSize:
+                                                            15 //font size on dropdown button
+                                                        ),
 
-      //                             if (response.statusCode == 200) {
-      //                               checkIfUserRecordExists(response.body);
-      //                             } else {
-      //                               Navigator.pop(context);
-      //                               Fluttertoast.showToast(
-      //                                   msg: "Email & Password Incorrect ");
-      //                             }
-      //                           } else {}
-      //                         },
-      //                       ),
-      //                     )
-      //                   ],
-      //                 ),
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       );
-      //     });
+                                                    dropdownColor: Colors
+                                                        .white, //dropdown background color
+                                                    underline:
+                                                        Container(), //remove underline
+                                                    isExpanded:
+                                                        true, //make true to make width 100%
+                                                  ))),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextFormField(
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            controller:
+                                                passwordTextEditingController,
+                                            decoration: InputDecoration(
+                                              labelText: "Password",
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0)),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextFormField(
+                                            obscureText: true,
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            controller: kodeAkses,
+                                            validator: (value) {
+                                              if (value! != '121019') {
+                                                return 'Kode akses salah';
+                                              }
+                                              return null;
+                                            },
+                                            decoration: InputDecoration(
+                                              labelText: "Kode Akses",
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0)),
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 200,
+                                          height: 50,
+                                          padding:
+                                              const EdgeInsets.only(top: 10),
+                                          child: ElevatedButton(
+                                            child: const Text("Submit"),
+                                            onPressed: () async {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                _formKey.currentState!.save();
+                                                await sharedPreferences
+                                                    ?.setBool('dbDummy', true);
+                                                await loginNow();
+                                              } else {}
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )))));
     });
   }
 
@@ -226,6 +374,7 @@ class _LoginTabPageState extends State<LoginTabPage> {
   void initState() {
     super.initState();
     print('No Version : $noBuild');
+    print(ApiConstants.baseUrl);
   }
 
   @override

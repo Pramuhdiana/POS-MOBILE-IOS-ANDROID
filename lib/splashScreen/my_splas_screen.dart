@@ -14,7 +14,7 @@ import 'package:e_shop/database/db_alldetailtransaksi.dart';
 import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/db_allitems_retur.dart';
 import 'package:e_shop/database/db_allitems_toko.dart';
-import 'package:e_shop/database/db_alltransaksi_voucher.dart';
+import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
@@ -41,7 +41,7 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreenState extends State<MySplashScreen> {
-  int noBuild = 22;
+  int noBuild = 23;
   String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
   int role = 0;
@@ -93,13 +93,14 @@ class _MySplashScreenState extends State<MySplashScreen> {
           }
         } catch (c) {
           Fluttertoast.showToast(msg: "Failed To Load user data");
+          sharedPreferences?.setBool('dbDummy', false);
           Navigator.push(
               context, MaterialPageRoute(builder: (c) => const AuthScreen()));
         }
       } else //user is NOT already Logged-in
       {
         Fluttertoast.showToast(msg: "Failed To Load All Data");
-
+        sharedPreferences?.setBool('dbDummy', false);
         Navigator.push(
             context, MaterialPageRoute(builder: (c) => const AuthScreen()));
       }
@@ -172,7 +173,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     var apiProvider = ApiServices();
     await DbAllitems.db.deleteAllitems();
     await DbAllitemsToko.db.deleteAllitemsToko();
-    await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+    await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
     await DbAllCustomer.db.deleteAllcustomer();
     await DbAllitemsRetur.db.deleteAllitemsRetur();
     await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
@@ -197,7 +198,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     // }
     try {
       print('in function all transaksi');
-      await apiProvider.getAllTransaksiNewVoucher();
+      await apiProvider.getAllTransaksiBaru();
     } catch (c) {
       print('Error all transaksi : $c');
       throw Exception('error : $c');
@@ -291,6 +292,9 @@ class _MySplashScreenState extends State<MySplashScreen> {
     context.read<PApprovalBrj>().clearNotif(); //clear cart
     context.read<PApprovalEticketing>().clearNotif(); //clear cart
     print('No Version : $noBuild');
+    print('url : ${ApiConstants.baseUrl}');
+    print('bool : ${sharedPreferences?.getBool('dbDummy')}');
+
     try {
       getVersion();
     } catch (c) {

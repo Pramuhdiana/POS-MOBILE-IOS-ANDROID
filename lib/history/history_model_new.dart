@@ -21,6 +21,7 @@ import 'package:http/http.dart' show get;
 import 'package:http/http.dart' as http;
 import 'package:image/image.dart' as img;
 import 'package:lottie/lottie.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:path/path.dart' as path;
 
 import 'package:pdf/pdf.dart';
@@ -31,7 +32,7 @@ import 'package:url_launcher/url_launcher.dart';
 class HistoryModelNew extends StatelessWidget {
   //Read an image data from website/webspace
   String urlBase = 'http://54.179.58.215:8080';
-  // String urlBase = 'http://54.179.58.215:7000';
+  // String urlBase = 'http://54.179.58.215:7060';
   String pdfFile = '';
   var pdf = pw.Document();
 
@@ -79,12 +80,14 @@ class HistoryModelNew extends StatelessWidget {
                                 message: "",
                               );
                             });
+                        Fluttertoast.showToast(
+                            msg: "Please wait this may take a few minutes ...");
                         (allTransaksi.customer_id.toString() == '520' ||
                                 allTransaksi.customer_id.toString() == '522')
-                            ? _createPdfHeniBerlian()
-                            : _createPdf();
+                            ? await _createPdfHeniBerlian()
+                            : await _createPdf();
                         printMessageAfterDelay(
-                            const Duration(seconds: 2), 'Delayed loading');
+                            const Duration(seconds: 0), 'Delayed loading');
                       },
                       child: const Row(
                         children: [
@@ -106,10 +109,11 @@ class HistoryModelNew extends StatelessWidget {
                                 message: "",
                               );
                             });
-
-                        _createPdfBeliBerlian();
+                        Fluttertoast.showToast(
+                            msg: "Please wait this may take a few minutes ...");
+                        await _createPdfBeliBerlian();
                         printMessageAfterDelay(
-                            const Duration(seconds: 4), 'Delayed loading');
+                            const Duration(seconds: 0), 'Delayed loading');
                       },
                       child: const Row(
                         children: [
@@ -158,12 +162,14 @@ class HistoryModelNew extends StatelessWidget {
                                 message: "",
                               );
                             });
+                        Fluttertoast.showToast(
+                            msg: "Please wait this may take a few minutes ...");
                         (allTransaksi.customer_id.toString() == '520' ||
                                 allTransaksi.customer_id.toString() == '522')
-                            ? _sharePdfHeniBerlian()
-                            : _sharePdf();
+                            ? await _sharePdfHeniBerlian()
+                            : await _sharePdf();
                         printMessageAfterDelay(
-                            const Duration(seconds: 6), 'Delayed loading');
+                            const Duration(seconds: 0), 'Delayed loading');
                       },
                       child: const Row(
                         children: [
@@ -185,10 +191,12 @@ class HistoryModelNew extends StatelessWidget {
                                 message: "",
                               );
                             });
-
-                        _sharePdfBeliberlian();
+                        // 201320252
+                        Fluttertoast.showToast(
+                            msg: "Please wait this may take a few minutes ...");
+                        await _sharePdfBeliberlian();
                         printMessageAfterDelay(
-                            const Duration(seconds: 4), 'Delayed loading');
+                            const Duration(seconds: 0), 'Delayed loading');
                       },
                       child: const Row(
                         children: [
@@ -447,9 +455,12 @@ class HistoryModelNew extends StatelessWidget {
   getImageBytes(String assetImage, int total) async {
     if (iCount < total) {
       iCount++;
-      Fluttertoast.showToast(
-          msg: "Please wait this may take a few minutes ...");
-      // msg: "Please wait this may take a few minutes $iCount of $total");
+      showSimpleNotification(
+        const Text('Almost Done..'),
+        // subtitle: const Text('sub'),
+        background: Colors.green,
+        duration: const Duration(seconds: 5),
+      );
     } else {}
     Response responseGambar = await get(
       Uri.parse(assetImage),
@@ -484,7 +495,7 @@ class HistoryModelNew extends StatelessWidget {
     }
   }
 
-  void _sharePdf() async {
+  _sharePdf() async {
     PdfDocument document = PdfDocument();
     final doc = pw.Document();
     final ByteData bytes = await rootBundle.load('images/splashLogo.png');
@@ -1572,7 +1583,7 @@ class HistoryModelNew extends StatelessWidget {
         filename: '${allTransaksi.invoices_number}.pdf');
   }
 
-  void _createPdf() async {
+  _createPdf() async {
     PdfDocument document = PdfDocument();
     final doc = pw.Document();
     final ByteData bytes = await rootBundle.load('images/splashLogo.png');
@@ -2659,7 +2670,7 @@ class HistoryModelNew extends StatelessWidget {
   }
 
 //pdf metier
-  void _createPdfMetier() async {
+  _createPdfMetier() async {
     PdfDocument document = PdfDocument();
     final doc = pw.Document();
     final ByteData bytes = await rootBundle.load('images/splashLogo.png');
@@ -3592,14 +3603,19 @@ class HistoryModelNew extends StatelessWidget {
   }
 
 //pdf beli berlian
-  void _createPdfBeliBerlian() async {
+  _createPdfBeliBerlian() async {
+    print('pdf beli berlian on');
     //! start compress image
     Response responseGambar = await http.get(Uri.parse(
         '${ApiConstants.baseImageUrl}${detailTransaksi[0].image_name}'));
+    print(responseGambar.statusCode);
     if (responseGambar.statusCode != 200) {
+      print(
+          'Failed to download image from. Status code: ${responseGambar.statusCode}');
       throw ArgumentError(
           'Failed to download image from. Status code: ${responseGambar.statusCode}');
     }
+    print('gambar BB oke');
     Uint8List imageData = responseGambar.bodyBytes;
     //? Compress the image
     ui.Image originalUiImage = await decodeImageFromList(imageData);
@@ -3714,6 +3730,7 @@ class HistoryModelNew extends StatelessWidget {
           fit: pw.BoxFit.scaleDown,
         );
       } catch (c) {
+        print('error get image');
         return pw.Image(
           pw.MemoryImage(
             byteList2,
@@ -3740,12 +3757,15 @@ class HistoryModelNew extends StatelessWidget {
     var addDiskon = allTransaksi.nett.toString() == '0'
         ? 0
         : allTransaksi.addesdiskon_rupiah ?? 0;
+    var addDiskon2 = allTransaksi.nett.toString() == '0'
+        ? 0
+        : allTransaksi.addaddesdiskon_rupiah2 ?? 0;
     var voucherDiskon = allTransaksi.nett.toString() == '0'
         ? 0
         : allTransaksi.voucherDiskon ?? 0;
     var totalPayment = allTransaksi.nett.toString() == '0'
         ? 0
-        : totalSubDis - addDiskon - voucherDiskon;
+        : totalSubDis - addDiskon - voucherDiskon - addDiskon2;
     String kodeDiskon = voucherDiskon == 50000
         ? 'Voucher (BB50RB)'
         : voucherDiskon == 100000
@@ -4112,7 +4132,7 @@ class HistoryModelNew extends StatelessWidget {
                                                   style: const pw.TextStyle(
                                                       fontSize: 11.5)),
                                               pw.Text(
-                                                  '${CurrencyFormat.convertToDollar(addDiskon, 0)}',
+                                                  '${CurrencyFormat.convertToDollar(addDiskon + addDiskon2, 0)}',
                                                   style: const pw.TextStyle(
                                                       fontSize: 11.5)),
                                             ],
@@ -4581,7 +4601,7 @@ class HistoryModelNew extends StatelessWidget {
   }
 
 //pdf beli berlian
-  void _sharePdfBeliberlian() async {
+  _sharePdfBeliberlian() async {
     //! nanti hhapus kalo gagal
     Response responseGambar = await http.get(Uri.parse(
         '${ApiConstants.baseImageUrl}${detailTransaksi[0].image_name}'));
@@ -4729,12 +4749,15 @@ class HistoryModelNew extends StatelessWidget {
     var addDiskon = allTransaksi.nett.toString() == '0'
         ? 0
         : allTransaksi.addesdiskon_rupiah ?? 0;
+    var addDiskon2 = allTransaksi.nett.toString() == '0'
+        ? 0
+        : allTransaksi.addaddesdiskon_rupiah2 ?? 0;
     var voucherDiskon = allTransaksi.nett.toString() == '0'
         ? 0
         : allTransaksi.voucherDiskon ?? 0;
     var totalPayment = allTransaksi.nett.toString() == '0'
         ? 0
-        : totalSubDis - addDiskon - voucherDiskon;
+        : totalSubDis - addDiskon - voucherDiskon - addDiskon2;
     String kodeDiskon = voucherDiskon == 50000
         ? 'Voucher (BB50RB)'
         : voucherDiskon == 100000
@@ -5101,7 +5124,7 @@ class HistoryModelNew extends StatelessWidget {
                                                   style: const pw.TextStyle(
                                                       fontSize: 11.5)),
                                               pw.Text(
-                                                  '${CurrencyFormat.convertToDollar(addDiskon, 0)}',
+                                                  '${CurrencyFormat.convertToDollar(addDiskon + addDiskon2, 0)}',
                                                   style: const pw.TextStyle(
                                                       fontSize: 11.5)),
                                             ],
@@ -5571,7 +5594,7 @@ class HistoryModelNew extends StatelessWidget {
         filename: '${allTransaksi.invoices_number}.pdf');
   }
 
-  void _sharePdfHeniBerlian() async {
+  _sharePdfHeniBerlian() async {
     PdfDocument document = PdfDocument();
     final doc = pw.Document();
     final ByteData bytes = await rootBundle.load('images/splashLogo.png');
@@ -6728,7 +6751,7 @@ class HistoryModelNew extends StatelessWidget {
         filename: '${allTransaksi.invoices_number}.pdf');
   }
 
-  void _createPdfHeniBerlian() async {
+  _createPdfHeniBerlian() async {
     PdfDocument document = PdfDocument();
     final doc = pw.Document();
     final ByteData bytes = await rootBundle.load('images/splashLogo.png');

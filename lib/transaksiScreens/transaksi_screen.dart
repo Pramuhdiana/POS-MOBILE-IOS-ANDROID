@@ -5,7 +5,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_alldetailtransaksi.dart';
-import 'package:e_shop/database/db_alltransaksi_voucher.dart';
+import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/event/add_customer_event.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
@@ -606,10 +606,10 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
       btnController.success(); //sucses
       context.read<PCart>().clearCart(); //clear cart
       await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-      await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+      await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
       var apiProvider = ApiServices();
       try {
-        await apiProvider.getAllTransaksiNewVoucher();
+        await apiProvider.getAllTransaksiBaru();
       } catch (c) {
         Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
       }
@@ -650,10 +650,10 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
     if (response.statusCode == 200) {
       context.read<PCart>().clearCart(); //clear cart
       await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-      await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+      await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
       var apiProvider = ApiServices();
       try {
-        await apiProvider.getAllTransaksiNewVoucher();
+        await apiProvider.getAllTransaksiBaru();
       } catch (c) {
         Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
       }

@@ -5,7 +5,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_alldetailtransaksi.dart';
-import 'package:e_shop/database/db_alltransaksi_voucher.dart';
+import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/event/add_customer_event.dart';
 import 'package:e_shop/event/cart_event_screen.dart';
 import 'package:e_shop/models/user_model.dart';
@@ -41,6 +41,8 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   String? kodeVocher;
   int nilaiVocher = 0;
   bool isClear = false;
+  int getLimitAddDis1 = 0;
+  int getLimitAddDis2 = 0;
 
   String qty = '';
   String orderId = DateTime.now().second.toString();
@@ -57,8 +59,10 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   int diskon = 0;
   TextEditingController dp = TextEditingController();
   TextEditingController addDiskon = TextEditingController();
+  TextEditingController addDiskon2 = TextEditingController();
   int dpp = 0;
   int addesdiskon = 0;
+  int addesdiskon2 = 0;
   String? idBarang = '';
 
   final _formKey = GlobalKey<FormState>();
@@ -68,18 +72,49 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
             (1 - (diskon / 100)) -
         dpp -
-        addesdiskon;
+        addesdiskon -
+        addesdiskon2;
     return total;
   }
 
-  double get upto10 {
+  double get limitDis1 {
     // var dpin = int.parse(dp);
     var totalAwal = ((context.read<PCartEvent>().totalPrice2) * rate) *
         (1 - (diskon / 100));
     var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
         (1 - (diskon / 100));
-    var max10 = totalAwal - (total * (1 - (10 / 100)));
+    var max10 = totalAwal - (total * (1 - (getLimitAddDis1 / 100)));
     return max10;
+  }
+
+  double get limitDis2 {
+    // var dpin = int.parse(dp);
+    var totalAwal = ((context.read<PCartEvent>().totalPrice2) * rate) *
+            (1 - (diskon / 100)) -
+        addesdiskon;
+    var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
+            (1 - (diskon / 100)) -
+        addesdiskon;
+    var max10 = totalAwal - (total * (1 - (getLimitAddDis2 / 100)));
+    return max10;
+  }
+
+  double get disAdd1 {
+    var totalAwal = ((context.read<PCartEvent>().totalPrice2) * rate) *
+        (1 - (diskon / 100));
+    var addDis1 = addesdiskon;
+    var result = (addDis1 / totalAwal) * 100;
+    return result;
+  }
+
+  double get disAdd2 {
+    var totalAwal = ((context.read<PCartEvent>().totalPrice2) * rate) *
+            (1 - (diskon / 100)) -
+        addesdiskon;
+    var addDis2 = addesdiskon2;
+    var result = (addDis2 / totalAwal) * 100;
+
+    return addDiskon.text.isEmpty ? 0 : result;
   }
 
   String get totalPrice3 {
@@ -89,7 +124,8 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
             (1 - (diskon / 100)) -
         dpp -
         addesdiskon -
-        nilaiVocher;
+        nilaiVocher -
+        addesdiskon2;
     if (isGift != true) {
       if (rate <= 2) {
         return 'Rp. ${CurrencyFormat.convertToDollar(total, 0)}';
@@ -106,7 +142,8 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
             (1 - (diskon / 100)) -
         dpp -
-        addesdiskon;
+        addesdiskon -
+        addesdiskon2;
     return total.toString();
   }
 
@@ -115,7 +152,8 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     var total1 = ((context.read<PCartEvent>().totalPrice2) * rate) *
             (1 - (diskon / 100)) -
         dpp -
-        addesdiskon;
+        addesdiskon -
+        addesdiskon2;
     var total = ((context.read<PCartEvent>().totalPrice2) * rate);
     var result = total - total1;
 
@@ -136,6 +174,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   @override
   void initState() {
     super.initState();
+    getLimitDiskon();
     idBarang = sharedPreferences!.getString('idBarang');
     idBarang == '4' ? rate = 1 : rate = 15000;
     print(idBarang);
@@ -158,6 +197,17 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
         KeyboardOverlay.removeOverlay();
       }
     });
+  }
+
+  getLimitDiskon() async {
+    String token = sharedPreferences!.getString("token").toString();
+    var url = ApiConstants.baseUrl + ApiConstants.GETlimitdiskon;
+    Response response = await Dio().get(url,
+        options: Options(headers: {"Authorization": "Bearer $token"}));
+    print(response.data[0]['addiskon']);
+    print(response.data[0]['addiskon2']);
+    getLimitAddDis1 = int.parse(response.data[0]['addiskon'] ?? '0');
+    getLimitAddDis2 = int.parse(response.data[0]['addiskon2'] ?? '0');
   }
 
   @override
@@ -334,53 +384,155 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                     //         ? const SizedBox()
                     //         : idBarang == '4'
                     //             ? const SizedBox()
-                    : Container(
-                        padding: const EdgeInsets.only(top: 10),
-                        height: 80,
-                        child: TextFormField(
-                          style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                          textInputAction: TextInputAction.next,
-                          controller: addDiskon,
-                          focusNode: numberFocusNode,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          onChanged: (addDiskon) {
-                            print(upto10);
-                            addDiskon.isEmpty
-                                ? setState(() {
-                                    addesdiskon = 0;
-                                  })
-                                : setState(() {
-                                    addesdiskon = int.parse(addDiskon);
-                                  });
-                            addesdiskon > upto10
-                                ? showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8)),
-                                        title: const Text(
-                                          'Diskon tambahan melebihi limit',
-                                        ),
-                                      );
-                                    })
-                                : print('oke');
-                          },
-                          decoration: InputDecoration(
-                            labelText: "Add discount",
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0)),
+                    : Stack(clipBehavior: Clip.none, children: [
+                        Positioned(
+                          right: 2,
+                          bottom: 15,
+                          child: Text(
+                            '${disAdd1.toStringAsFixed(2)}%',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
-                      ),
+                        Positioned(
+                          left: 2,
+                          bottom: 15,
+                          child: Text(
+                            'Limit ${getLimitAddDis1.toStringAsFixed(2)}%',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 10),
+                          height: 80,
+                          child: TextFormField(
+                            style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                            textInputAction: TextInputAction.next,
+                            controller: addDiskon,
+                            focusNode: numberFocusNode,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            onChanged: (addDiskon) {
+                              print(limitDis1);
+                              addDiskon.isEmpty
+                                  ? setState(() {
+                                      addesdiskon = 0;
+                                      addesdiskon2 = 0;
+                                      addDiskon2.clear();
+                                    })
+                                  : setState(() {
+                                      addesdiskon = int.parse(addDiskon);
+                                    });
+                              addesdiskon > limitDis1
+                                  ? showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8)),
+                                          title: const Text(
+                                            'Diskon tambahan melebihi limit',
+                                          ),
+                                        );
+                                      })
+                                  : print('oke');
+                            },
+                            decoration: InputDecoration(
+                              labelText: "Add discount 1",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0)),
+                            ),
+                          ),
+                        ),
+                      ]),
 
+                idform == 0
+                    ? const SizedBox()
+                    : addDiskon.text.isEmpty
+                        ? const SizedBox()
+                        : Stack(clipBehavior: Clip.none, children: [
+                            Positioned(
+                              right: 2,
+                              bottom: 15,
+                              child: Text(
+                                addDiskon.text.isEmpty
+                                    ? '0'
+                                    : '${disAdd2.toStringAsFixed(2)}%',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Positioned(
+                              left: 2,
+                              bottom: 15,
+                              child: Text(
+                                'Limit ${getLimitAddDis2.toStringAsFixed(2)}%',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(top: 10),
+                              height: 80,
+                              child: TextFormField(
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                                textInputAction: TextInputAction.next,
+                                controller: addDiskon2,
+                                focusNode: numberFocusNode2,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                onChanged: (addDiskon2) {
+                                  print(limitDis2);
+                                  addDiskon2.isEmpty
+                                      ? setState(() {
+                                          addesdiskon2 = 0;
+                                        })
+                                      : setState(() {
+                                          addesdiskon2 = int.parse(addDiskon2);
+                                        });
+                                  addesdiskon2 > limitDis2
+                                      ? showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8)),
+                                              title: const Text(
+                                                'Diskon tambahan melebihi limit',
+                                              ),
+                                            );
+                                          })
+                                      : print('oke');
+                                },
+                                decoration: InputDecoration(
+                                  labelText: "Add discount 2",
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0)),
+                                ),
+                              ),
+                            ),
+                          ]),
                 // //DP
                 idform == 0
                     ? const SizedBox()
@@ -658,7 +810,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
         ),
         bottomNavigationBar: idform == 0
             ? const SizedBox()
-            : addesdiskon > upto10
+            : addesdiskon > limitDis1 || addesdiskon2 > limitDis2
                 ? SizedBox()
                 : Padding(
                     padding: const EdgeInsets.only(bottom: 40),
@@ -673,11 +825,10 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                         context.read<PCartEvent>().clearCart(); //clear cart
                         await DbAlldetailtransaksi.db
                             .deleteAlldetailtransaksi();
-                        await DbAlltransaksiNewVoucher.db
-                            .deleteAlltransaksiNewVoucher();
+                        await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
                         var apiProvider = ApiServices();
                         try {
-                          await apiProvider.getAllTransaksiNewVoucher();
+                          await apiProvider.getAllTransaksiBaru();
                         } catch (c) {
                           Fluttertoast.showToast(
                               msg: "Failed To Load Data all transaksi");
@@ -757,6 +908,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     String totalkurangdiskon = totalPriceAPI;
     String totalkurangpajak = totalRp;
     String addesdiskonApi = addesdiskon.toString();
+    String addesdiskonApi2 = addesdiskon2.toString();
     String nilaiVoucherApi = nilaiVocher.toString();
     print('cart_total : $cart_total');
     print('cart_totalquantity : $cart_totalquantity');
@@ -784,6 +936,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
       'totalkurangdiskon': totalkurangdiskon,
       'totalkurangpajak': totalkurangpajak,
       'addesdiskon': addesdiskonApi,
+      'addesdiskon2': addesdiskonApi2,
       'voucher_diskon': nilaiVoucherApi,
     };
     final response = await http.post(

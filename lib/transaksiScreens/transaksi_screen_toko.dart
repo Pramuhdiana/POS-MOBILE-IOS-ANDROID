@@ -5,7 +5,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_alldetailtransaksi.dart';
-import 'package:e_shop/database/db_alltransaksi_voucher.dart';
+import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/models/customer_metier.dart';
@@ -684,9 +684,9 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
       } else {
         context.read<PCartToko>().clearCart(); //clear cart
         await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-        await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+        await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
         var apiProvider = ApiServices();
-        await apiProvider.getAllTransaksiNewVoucher();
+        await apiProvider.getAllTransaksiBaru();
         await apiProvider.getAllDetailTransaksi();
         btnController.success(); //sucses
         Navigator.push(context,
@@ -758,9 +758,9 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
       } else {
         context.read<PCartToko>().clearCart(); //clear cart
         await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-        await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+        await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
         var apiProvider = ApiServices();
-        await apiProvider.getAllTransaksiNewVoucher();
+        await apiProvider.getAllTransaksiBaru();
         await apiProvider.getAllDetailTransaksi();
         btnController.success(); //sucses
         Navigator.push(context,

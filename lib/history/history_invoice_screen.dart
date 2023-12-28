@@ -4,9 +4,9 @@ import 'dart:convert';
 
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_alldetailtransaksi.dart';
-import 'package:e_shop/database/db_alltransaksi_voucher.dart';
+import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/database/model_alldetailtransaksi.dart';
-import 'package:e_shop/database/model_alltransaksi_voucher.dart';
+import 'package:e_shop/database/model_alltransaksi_baru.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/history/history_model_new.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +19,9 @@ class HistoryInvoiceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var errorMsg;
-    List<ModelAlltransaksiNewVoucher>? filterList;
+    List<ModelAlltransaksiBaru>? filterList;
 
-    Future<List<ModelAlltransaksiNewVoucher>> _getData(jenisId) async {
+    Future<List<ModelAlltransaksiBaru>> _getData(jenisId) async {
       String token = sharedPreferences!.getString("token").toString();
 
       final response = await http.get(
@@ -37,7 +37,7 @@ class HistoryInvoiceScreen extends StatelessWidget {
         var g;
         try {
           g = jsonResponse
-              .map((data) => ModelAlltransaksiNewVoucher.fromJson(data))
+              .map((data) => ModelAlltransaksiBaru.fromJson(data))
               .toList();
         } catch (c) {
           errorMsg = 'Error Prosses get data all data transaksi $c';
@@ -88,7 +88,7 @@ class HistoryInvoiceScreen extends StatelessWidget {
 
     return FutureBuilder(
         // future: DbAlltransaksi.db.getAlltransaksi(1),
-        future: DbAlltransaksiNewVoucher.db.getAlltransaksiNewVoucher(1),
+        future: DbAlltransaksiBaru.db.getAlltransaksiBaru(1),
         // future: _getData(1),
         //kembali barang 4
         // inv 1

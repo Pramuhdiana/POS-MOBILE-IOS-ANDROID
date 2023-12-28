@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_import, implementation_imports, avoid_print
 
 import 'package:e_shop/database/db_alldetailtransaksi.dart';
-import 'package:e_shop/database/db_alltransaksi_voucher.dart';
+import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/history/history_model_new.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -14,7 +14,7 @@ class HistoryTitipanScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: DbAlltransaksiNewVoucher.db.getAlltransaksiNewVoucher(2),
+        future: DbAlltransaksiBaru.db.getAlltransaksiBaru(2),
         //kembali barang 4
         // inv 1
         // ttp 2

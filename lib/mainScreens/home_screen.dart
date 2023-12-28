@@ -4,11 +4,11 @@ import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_allcustomer.dart';
-import 'package:e_shop/database/db_alltransaksi_voucher.dart';
+import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/database/db_notification_dummy.dart';
 import 'package:e_shop/database/model_allitems.dart';
-import 'package:e_shop/database/model_alltransaksi_voucher.dart';
+import 'package:e_shop/database/model_alltransaksi_baru.dart';
 import 'package:e_shop/event/pos_event_screen.dart';
 import 'package:e_shop/models/customer_metier.dart';
 import 'package:e_shop/provider/provider_notification.dart';
@@ -181,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //   });
       // });
 
-      DbAlltransaksiNewVoucher.db.getAllHistoryNewVoucher().then((value) {
+      DbAlltransaksiBaru.db.getAllHistoryBaru().then((value) {
         setState(() {
           qtyProductHistory = value.length;
         });
@@ -209,8 +209,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
       year = DateFormat('y').format(DateTime.now());
       //jan
-      DbAlltransaksiNewVoucher.db
-          .getAlltransaksiNominalByMonthNewVoucher('1', year)
+      DbAlltransaksiBaru.db
+          .getAlltransaksiNominalByMonthBaru('1', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
           barJan += value[i].nett!; //menjumlahkan ke list
@@ -220,8 +220,8 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //feb
-      DbAlltransaksiNewVoucher.db
-          .getAlltransaksiNominalByMonthNewVoucher('2', year)
+      DbAlltransaksiBaru.db
+          .getAlltransaksiNominalByMonthBaru('2', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
           barFeb += value[i].nett!; //menjumlahkan ke list
@@ -231,8 +231,8 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //mar
-      DbAlltransaksiNewVoucher.db
-          .getAlltransaksiNominalByMonthNewVoucher('3', year)
+      DbAlltransaksiBaru.db
+          .getAlltransaksiNominalByMonthBaru('3', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
           barMar += value[i].nett!; //menjumlahkan ke list
@@ -242,8 +242,8 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //apr
-      DbAlltransaksiNewVoucher.db
-          .getAlltransaksiNominalByMonthNewVoucher('4', year)
+      DbAlltransaksiBaru.db
+          .getAlltransaksiNominalByMonthBaru('4', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
           barApr += value[i].nett!; //menjumlahkan ke list
@@ -253,8 +253,8 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //may
-      DbAlltransaksiNewVoucher.db
-          .getAlltransaksiNominalByMonthNewVoucher('5', year)
+      DbAlltransaksiBaru.db
+          .getAlltransaksiNominalByMonthBaru('5', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
           barMay += value[i].nett!; //menjumlahkan ke list
@@ -264,8 +264,8 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //jun
-      DbAlltransaksiNewVoucher.db
-          .getAlltransaksiNominalByMonthNewVoucher('6', year)
+      DbAlltransaksiBaru.db
+          .getAlltransaksiNominalByMonthBaru('6', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
           barJun += value[i].nett!; //menjumlahkan ke list
@@ -275,8 +275,8 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //jul
-      DbAlltransaksiNewVoucher.db
-          .getAlltransaksiNominalByMonthNewVoucher('7', year)
+      DbAlltransaksiBaru.db
+          .getAlltransaksiNominalByMonthBaru('7', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
           barJul += value[i].nett!; //menjumlahkan ke list
@@ -286,8 +286,8 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //agus
-      DbAlltransaksiNewVoucher.db
-          .getAlltransaksiNominalByMonthNewVoucher('8', year)
+      DbAlltransaksiBaru.db
+          .getAlltransaksiNominalByMonthBaru('8', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
           barAug += value[i].nett!; //menjumlahkan ke list
@@ -297,8 +297,8 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //sept
-      DbAlltransaksiNewVoucher.db
-          .getAlltransaksiNominalByMonthNewVoucher('9', year)
+      DbAlltransaksiBaru.db
+          .getAlltransaksiNominalByMonthBaru('9', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
           barSep += value[i].nett!; //menjumlahkan ke list
@@ -308,8 +308,8 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //okt
-      DbAlltransaksiNewVoucher.db
-          .getAlltransaksiNominalByMonthNewVoucher('10', year)
+      DbAlltransaksiBaru.db
+          .getAlltransaksiNominalByMonthBaru('10', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
           barOct += value[i].nett!; //menjumlahkan ke list
@@ -319,8 +319,8 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //nov
-      DbAlltransaksiNewVoucher.db
-          .getAlltransaksiNominalByMonthNewVoucher('11', year)
+      DbAlltransaksiBaru.db
+          .getAlltransaksiNominalByMonthBaru('11', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
           barNov += value[i].nett!; //menjumlahkan ke list
@@ -330,8 +330,8 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //desc
-      DbAlltransaksiNewVoucher.db
-          .getAlltransaksiNominalByMonthNewVoucher('12', year)
+      DbAlltransaksiBaru.db
+          .getAlltransaksiNominalByMonthBaru('12', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
           barDec += value[i].nett!; //menjumlahkan ke list
@@ -341,9 +341,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
 
-      DbAlltransaksiNewVoucher.db
-          .getAlltransaksiNominalNewVoucher(year)
-          .then((value) {
+      DbAlltransaksiBaru.db.getAlltransaksiNominalBaru(year).then((value) {
         for (var i = 0; i < value.length; i++) {
           list += value[i].nett!; //menjumlahkan ke list
           listNominal.add(value[i].nett); //memasukan ke list
@@ -450,8 +448,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //get data history
   // ignore: unused_element
-  Future<List<ModelAlltransaksiNewVoucher>> _getDataHistoryNewVoucher(
-      token) async {
+  Future<List<ModelAlltransaksiBaru>> _getDataHistoryBaru(token) async {
     try {
       var url = ApiConstants.baseUrl + ApiConstants.GETtransaksiendpoint;
       final response = await Dio().get(url,
@@ -460,7 +457,7 @@ class _HomeScreenState extends State<HomeScreen> {
         List jsonResponse = response.data;
 
         var g = jsonResponse
-            .map((data) => ModelAlltransaksiNewVoucher.fromJson(data))
+            .map((data) => ModelAlltransaksiBaru.fromJson(data))
             .toList();
         setState(() {
           // sharedPreferences!.setInt('qtyProductHistory', g.length);
@@ -519,11 +516,11 @@ class _HomeScreenState extends State<HomeScreen> {
     sharedPreferences!.setString('newOpenPosSales', 'true');
     sharedPreferences!.setString('newOpenPosToko', 'true');
     sharedPreferences!.setString('newOpenPosRetur', 'true');
-    await DbAlltransaksiNewVoucher.db.deleteAlltransaksiNewVoucher();
+    await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
     await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
     var apiProvider = ApiServices();
     try {
-      await apiProvider.getAllTransaksiNewVoucher();
+      await apiProvider.getAllTransaksiBaru();
     } catch (c) {
       Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
     }
@@ -532,7 +529,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (c) {
       Fluttertoast.showToast(msg: "Failed To Load Data all details transaksi");
     }
-    await DbAlltransaksiNewVoucher.db.getAllHistoryNewVoucher().then((value) {
+    await DbAlltransaksiBaru.db.getAllHistoryBaru().then((value) {
       setState(() {
         qtyProductHistory = value.length;
       });
@@ -865,6 +862,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (c) => const MySplashScreen()));
+                              await sharedPreferences?.setBool(
+                                  'dbDummy', false);
                             });
                       },
                       icon: Image.asset(
@@ -2243,7 +2242,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // });
 
     //initial qty history
-    DbAlltransaksiNewVoucher.db.getAllHistoryNewVoucher().then((value) {
+    DbAlltransaksiBaru.db.getAllHistoryBaru().then((value) {
       print('masuk get history');
       setState(() {
         qtyProductHistory = value.length;
@@ -2270,8 +2269,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     year = DateFormat('y').format(DateTime.now());
     //jan
-    DbAlltransaksiNewVoucher.db
-        .getAlltransaksiNominalByMonthNewVoucher('1', year)
+    DbAlltransaksiBaru.db
+        .getAlltransaksiNominalByMonthBaru('1', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
         barJan += value[i].nett!; //menjumlahkan ke list
@@ -2281,8 +2280,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //feb
-    DbAlltransaksiNewVoucher.db
-        .getAlltransaksiNominalByMonthNewVoucher('2', year)
+    DbAlltransaksiBaru.db
+        .getAlltransaksiNominalByMonthBaru('2', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
         barFeb += value[i].nett!; //menjumlahkan ke list
@@ -2292,8 +2291,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //mar
-    DbAlltransaksiNewVoucher.db
-        .getAlltransaksiNominalByMonthNewVoucher('3', year)
+    DbAlltransaksiBaru.db
+        .getAlltransaksiNominalByMonthBaru('3', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
         barMar += value[i].nett!; //menjumlahkan ke list
@@ -2303,8 +2302,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //apr
-    DbAlltransaksiNewVoucher.db
-        .getAlltransaksiNominalByMonthNewVoucher('4', year)
+    DbAlltransaksiBaru.db
+        .getAlltransaksiNominalByMonthBaru('4', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
         barApr += value[i].nett!; //menjumlahkan ke list
@@ -2314,8 +2313,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //may
-    DbAlltransaksiNewVoucher.db
-        .getAlltransaksiNominalByMonthNewVoucher('5', year)
+    DbAlltransaksiBaru.db
+        .getAlltransaksiNominalByMonthBaru('5', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
         barMay += value[i].nett!; //menjumlahkan ke list
@@ -2325,8 +2324,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //jun
-    DbAlltransaksiNewVoucher.db
-        .getAlltransaksiNominalByMonthNewVoucher('6', year)
+    DbAlltransaksiBaru.db
+        .getAlltransaksiNominalByMonthBaru('6', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
         barJun += value[i].nett!; //menjumlahkan ke list
@@ -2336,8 +2335,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //jul
-    DbAlltransaksiNewVoucher.db
-        .getAlltransaksiNominalByMonthNewVoucher('7', year)
+    DbAlltransaksiBaru.db
+        .getAlltransaksiNominalByMonthBaru('7', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
         barJul += value[i].nett!; //menjumlahkan ke list
@@ -2347,8 +2346,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //agus
-    DbAlltransaksiNewVoucher.db
-        .getAlltransaksiNominalByMonthNewVoucher('8', year)
+    DbAlltransaksiBaru.db
+        .getAlltransaksiNominalByMonthBaru('8', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
         barAug += value[i].nett!; //menjumlahkan ke list
@@ -2358,8 +2357,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //sept
-    DbAlltransaksiNewVoucher.db
-        .getAlltransaksiNominalByMonthNewVoucher('9', year)
+    DbAlltransaksiBaru.db
+        .getAlltransaksiNominalByMonthBaru('9', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
         barSep += value[i].nett!; //menjumlahkan ke list
@@ -2369,8 +2368,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //okt
-    DbAlltransaksiNewVoucher.db
-        .getAlltransaksiNominalByMonthNewVoucher('10', year)
+    DbAlltransaksiBaru.db
+        .getAlltransaksiNominalByMonthBaru('10', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
         barOct += value[i].nett!; //menjumlahkan ke list
@@ -2380,8 +2379,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //nov
-    DbAlltransaksiNewVoucher.db
-        .getAlltransaksiNominalByMonthNewVoucher('11', year)
+    DbAlltransaksiBaru.db
+        .getAlltransaksiNominalByMonthBaru('11', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
         barNov += value[i].nett!; //menjumlahkan ke list
@@ -2391,8 +2390,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //desc
-    DbAlltransaksiNewVoucher.db
-        .getAlltransaksiNominalByMonthNewVoucher('12', year)
+    DbAlltransaksiBaru.db
+        .getAlltransaksiNominalByMonthBaru('12', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
         barDec += value[i].nett!; //menjumlahkan ke list
@@ -2402,9 +2401,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
 
-    DbAlltransaksiNewVoucher.db
-        .getAlltransaksiNominalNewVoucher(year)
-        .then((value) {
+    DbAlltransaksiBaru.db.getAlltransaksiNominalBaru(year).then((value) {
       for (var i = 0; i < value.length; i++) {
         list += value[i].nett!; //menjumlahkan ke list
         listNominal.add(value[i].nett); //memasukan ke list

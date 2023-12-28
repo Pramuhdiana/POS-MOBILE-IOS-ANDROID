@@ -9,6 +9,7 @@ import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/db_allitems_retur.dart';
 import 'package:e_shop/database/db_allitems_toko.dart';
 import 'package:e_shop/database/db_alltransaksi.dart';
+import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/database/db_alltransaksi_new.dart';
 import 'package:e_shop/database/db_alltransaksi_voucher.dart';
 import 'package:e_shop/database/db_crm.dart';
@@ -18,6 +19,7 @@ import 'package:e_shop/database/model_allitems.dart';
 import 'package:e_shop/database/model_allitems_retur.dart';
 import 'package:e_shop/database/model_allitems_toko.dart';
 import 'package:e_shop/database/model_alltransaksi.dart';
+import 'package:e_shop/database/model_alltransaksi_baru.dart';
 import 'package:e_shop/database/model_alltransaksi_new.dart';
 import 'package:e_shop/database/model_alltransaksi_voucher.dart';
 import 'package:e_shop/global/global.dart';
@@ -69,39 +71,50 @@ class ApiServices {
     print('Inserting Users to lokal berhasil');
   }
 
-  Future<List<Null>> getAllTransaksi() async {
-    Response response = await Dio().get(
-        ApiConstants.baseUrl + ApiConstants.GETtransaksiendpoint,
-        options: Options(headers: {"Authorization": "Bearer $token"}));
+  // Future<List<Null>> getAllTransaksi() async {
+  //   Response response = await Dio().get(
+  //       ApiConstants.baseUrl + ApiConstants.GETtransaksiendpoint,
+  //       options: Options(headers: {"Authorization": "Bearer $token"}));
 
-    return (response.data as List).map((transaksi) {
-      DbAlltransaksi.db
-          .createAlltransaksi(ModelAlltransaksi.fromJson(transaksi));
-      print('Inserting transaksi berhasil');
-    }).toList();
-  }
+  //   return (response.data as List).map((transaksi) {
+  //     DbAlltransaksi.db
+  //         .createAlltransaksi(ModelAlltransaksi.fromJson(transaksi));
+  //     print('Inserting transaksi berhasil');
+  //   }).toList();
+  // }
 
-  Future<List<Null>> getAllTransaksiNew() async {
+  // Future<List<Null>> getAllTransaksiNew() async {
+  //   Response response = await Dio().get(
+  //       ApiConstants.baseUrl + ApiConstants.GETtransaksiendpoint,
+  //       options: Options(headers: {"Authorization": "Bearer $token"}));
+  //   print('status ${response.statusCode}');
+  //   print('body ${response.data}');
+  //   return (response.data as List).map((transaksi) {
+  //     DbAlltransaksiNew.db
+  //         .createAlltransaksiNew(ModelAlltransaksiNew.fromJson(transaksi));
+  //   }).toList();
+  // }
+
+  // Future<List<Null>> getAllTransaksiNewVoucher() async {
+  //   Response response = await Dio().get(
+  //       ApiConstants.baseUrl + ApiConstants.GETtransaksiendpoint,
+  //       options: Options(headers: {"Authorization": "Bearer $token"}));
+  //   print('status ${response.statusCode}');
+  //   print('body ${response.data}');
+  //   return (response.data as List).map((transaksi) {
+  //     DbAlltransaksiNewVoucher.db.createAlltransaksiNewVoucher(
+  //         ModelAlltransaksiNewVoucher.fromJson(transaksi));
+  //   }).toList();
+  // }
+  Future<List<Null>> getAllTransaksiBaru() async {
     Response response = await Dio().get(
         ApiConstants.baseUrl + ApiConstants.GETtransaksiendpoint,
         options: Options(headers: {"Authorization": "Bearer $token"}));
     print('status ${response.statusCode}');
     print('body ${response.data}');
     return (response.data as List).map((transaksi) {
-      DbAlltransaksiNew.db
-          .createAlltransaksiNew(ModelAlltransaksiNew.fromJson(transaksi));
-    }).toList();
-  }
-
-  Future<List<Null>> getAllTransaksiNewVoucher() async {
-    Response response = await Dio().get(
-        ApiConstants.baseUrl + ApiConstants.GETtransaksiendpoint,
-        options: Options(headers: {"Authorization": "Bearer $token"}));
-    print('status ${response.statusCode}');
-    print('body ${response.data}');
-    return (response.data as List).map((transaksi) {
-      DbAlltransaksiNewVoucher.db.createAlltransaksiNewVoucher(
-          ModelAlltransaksiNewVoucher.fromJson(transaksi));
+      DbAlltransaksiBaru.db
+          .createAlltransaksiBaru(ModelAlltransaksiBaru.fromJson(transaksi));
     }).toList();
   }
 
