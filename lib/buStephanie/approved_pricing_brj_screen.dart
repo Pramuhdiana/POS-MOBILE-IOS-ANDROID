@@ -1481,16 +1481,36 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                             MainAxisAlignment
                                                                 .spaceBetween,
                                                         children: [
-                                                          Text(
-                                                            '\$ ${CurrencyFormat.convertToDollar(data.approvalPrice, 0)}',
-                                                            style: const TextStyle(
-                                                                fontSize: 22,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .black),
-                                                          ),
+                                                          int.parse(data.approvalPrice
+                                                                          .round()
+                                                                          .toString())
+                                                                      .bitLength >
+                                                                  17
+                                                              ? Text(
+                                                                  CurrencyFormat
+                                                                      .convertToIdr(
+                                                                          data.approvalPrice!,
+                                                                          0),
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          22,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .black),
+                                                                )
+                                                              : Text(
+                                                                  '\$ ${CurrencyFormat.convertToDollar(data.approvalPrice, 0)}',
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          22,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .black),
+                                                                ),
                                                           // ),
                                                         ],
                                                       ),

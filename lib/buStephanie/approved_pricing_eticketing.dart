@@ -3166,7 +3166,10 @@ class _SearchScreenState extends State<ApprovedPricingEticketingScreen> {
                                                                               Colors.black),
                                                                     )
                                                                   : Text(
-                                                                      'Rp. ${CurrencyFormat.convertToDollar(data.approvalHarga, 0)}',
+                                                                      CurrencyFormat
+                                                                          .convertToIdr(
+                                                                              data.approvalHarga,
+                                                                              0),
                                                                       style: const TextStyle(
                                                                           fontSize:
                                                                               22,
