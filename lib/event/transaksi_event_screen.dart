@@ -174,9 +174,14 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   @override
   void initState() {
     super.initState();
+    print('ini bit:${sharedPreferences!.getInt('panjangHarga')}');
     getLimitDiskon();
     idBarang = sharedPreferences!.getString('idBarang');
-    idBarang == '4' ? rate = 1 : rate = 15000;
+    sharedPreferences!.getInt('panjangHarga')! > 17
+        ? rate = 1
+        : idBarang == '4'
+            ? rate = 1
+            : rate = 15000;
     print(idBarang);
     sharedPreferences!.getString('role_sales_brand') == '3'
         ? idform = 2

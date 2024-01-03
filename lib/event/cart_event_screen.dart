@@ -351,8 +351,9 @@ class CartItems extends StatelessWidget {
                                       Expanded(
                                         child: Text(
                                           sharedPreferences!.getString(
-                                                      'role_sales_brand') ==
-                                                  '3'
+                                                          'role_sales_brand') ==
+                                                      '3' ||
+                                                  product.price.bitLength > 17
                                               ? 'Rp. ${CurrencyFormat.convertToTitik(product.price, 0)}'
                                               : '\$${CurrencyFormat.convertToTitik(product.price, 0)}',
                                           maxLines: 1,

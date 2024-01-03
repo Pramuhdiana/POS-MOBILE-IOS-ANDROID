@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/model_allitems.dart';
+import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -116,12 +117,19 @@ class _SearchPosSales extends State<SearchPosSales> {
                               Row(
                                 children: [
                                   Text(
-                                    '\$ ${widget.model!.price}',
-                                    overflow: TextOverflow.ellipsis,
-                                    // maxLines: 2,
+                                    sharedPreferences!.getString(
+                                                    'role_sales_brand') ==
+                                                '3' ||
+                                            widget.model!.price!.bitLength > 17
+                                        ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
+                                        : widget.model!.name![0].toString() ==
+                                                '4'
+                                            ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
+                                            : "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
                                     style: const TextStyle(
-                                      fontSize: 15,
                                       color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
                                     ),
                                   ),
                                 ],

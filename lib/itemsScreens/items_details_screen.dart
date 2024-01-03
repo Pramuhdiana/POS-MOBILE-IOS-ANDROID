@@ -11,6 +11,7 @@ import 'package:e_shop/provider/provider_cart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:collection/collection.dart';
@@ -131,14 +132,18 @@ class _ItemsDetailsScreenState extends State<ItemsDetailsScreen> {
                   },
                   child: CachedNetworkImage(
                     imageUrl:
-                        '${ApiConstants.baseImageUrl}{widget.model!.image_name}',
-                    errorWidget: (context, url, error) => Center(
-                      child: const Icon(
-                        Icons.error,
-                        color: Colors.black,
-                        size: 100,
-                      ),
+                        '${ApiConstants.baseImageUrl}${widget.model!.image_name.toString()}',
+                    placeholder: (context, url) => Center(
+                        child: Container(
+                            padding: const EdgeInsets.all(0),
+                            child: Lottie.asset("json/loading_black.json"))),
+                    errorWidget: (context, url, error) => const Icon(
+                      Icons.error,
+                      color: Colors.black,
+                      size: 100,
                     ),
+                    // height: 100,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 Padding(

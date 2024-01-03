@@ -3746,9 +3746,11 @@ class HistoryModelNew extends StatelessWidget {
 
     var subTotal = allTransaksi.nett.toString() == '0'
         ? 0
-        : detailTransaksi[0].name[0].toString() == '4'
+        : int.parse(detailTransaksi[0].price.toString()).bitLength > 17
             ? detailTransaksi[0].price
-            : detailTransaksi[0].price * 15000;
+            : detailTransaksi[0].name[0].toString() == '4'
+                ? detailTransaksi[0].price
+                : detailTransaksi[0].price * 15000;
     var diskon = allTransaksi.nett.toString() == '0'
         ? 0
         : ((subTotal * double.parse(allTransaksi.basic_discount)) / 100) ?? 0;

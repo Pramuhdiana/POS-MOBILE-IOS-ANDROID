@@ -7,6 +7,7 @@ import 'package:e_shop/database/model_allitems.dart';
 import 'package:e_shop/event/transaksi_event_screen.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
+import 'package:e_shop/itemsScreens/items_details_event.dart';
 import 'package:e_shop/provider/provider_cart_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -51,7 +52,7 @@ class _SearchPosEvent extends State<SearchPosEvent> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (c) => ItemsDetailsScreen(
+                      builder: (c) => ItemsDetailsEventScreen(
                             model: widget.model,
                           )));
             },
@@ -118,17 +119,18 @@ class _SearchPosEvent extends State<SearchPosEvent> {
                                 children: [
                                   Text(
                                     sharedPreferences!.getString(
-                                                'role_sales_brand') ==
-                                            '3'
+                                                    'role_sales_brand') ==
+                                                '3' ||
+                                            widget.model!.price!.bitLength > 17
                                         ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
                                         : widget.model!.name![0].toString() ==
                                                 '4'
                                             ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
                                             : "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
                                     style: const TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.red,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                                      fontSize: 15,
                                     ),
                                   ),
                                 ],
@@ -160,6 +162,9 @@ class _SearchPosEvent extends State<SearchPosEvent> {
                               setState(() {
                                 sharedPreferences!.setString(
                                     'idBarang', widget.model!.name![0]);
+                                sharedPreferences!.setInt('panjangHarga',
+                                    widget.model!.price!.bitLength);
+
                                 postAPIcart();
                               });
                               Navigator.push(

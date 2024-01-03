@@ -388,7 +388,12 @@ class CartItems extends StatelessWidget {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          '\$ ${CurrencyFormat.convertToTitik(product.price, 0)}',
+                                          sharedPreferences!.getString(
+                                                          'role_sales_brand') ==
+                                                      '3' ||
+                                                  product.price.bitLength > 17
+                                              ? 'Rp. ${CurrencyFormat.convertToTitik(product.price, 0)}'
+                                              : '\$${CurrencyFormat.convertToTitik(product.price, 0)}',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(

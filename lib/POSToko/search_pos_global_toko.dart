@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_allitems_toko.dart';
 import 'package:e_shop/database/model_allitems_toko.dart';
+import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/itemsScreens/items_details_screen_toko.dart';
 import 'package:e_shop/provider/provider_cart_toko.dart';
@@ -130,12 +131,18 @@ class _SearchPosGlobalToko extends State<SearchPosGlobalToko> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '\$ ${widget.model!.price}',
-                                  overflow: TextOverflow.ellipsis,
-                                  // maxLines: 2,
+                                  sharedPreferences!.getString(
+                                                  'role_sales_brand') ==
+                                              '3' ||
+                                          widget.model!.price!.bitLength > 17
+                                      ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
+                                      : widget.model!.name![0].toString() == '4'
+                                          ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
+                                          : "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
                                   style: const TextStyle(
-                                    fontSize: 15,
                                     color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
                                   ),
                                 ),
                               ],

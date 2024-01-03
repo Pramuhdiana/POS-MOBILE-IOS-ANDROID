@@ -152,7 +152,8 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
                         ),
                         Text(
                           sharedPreferences!.getString('role_sales_brand') ==
-                                  '3'
+                                      '3' ||
+                                  widget.model!.price!.bitLength > 17
                               ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
                               : widget.model!.name![0].toString() == '4'
                                   ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
@@ -195,6 +196,8 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
                       setState(() {
                         sharedPreferences!
                             .setString('idBarang', widget.model!.name![0]);
+                        sharedPreferences!.setInt(
+                            'panjangHarga', widget.model!.price!.bitLength);
                         postAPIcart();
                       });
                       Navigator.push(

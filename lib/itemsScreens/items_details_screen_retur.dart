@@ -5,12 +5,15 @@ import 'package:cart_stepper/cart_stepper.dart';
 import 'package:collection/collection.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/model_allitems_retur.dart';
+import 'package:e_shop/global/currency_format.dart';
+import 'package:e_shop/global/global.dart';
 import 'package:e_shop/itemsScreens/items_photo_retur.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/widgets/appbar_cart_pos_retur.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class ItemsDetailsScreenRetur extends StatefulWidget {
@@ -103,7 +106,18 @@ class _ItemsDetailsScreenReturState extends State<ItemsDetailsScreenRetur> {
                   },
                   child: CachedNetworkImage(
                     imageUrl:
-                        '${ApiConstants.baseImageUrl}${widget.model!.image_name}',
+                        '${ApiConstants.baseImageUrl}${widget.model!.image_name.toString()}',
+                    placeholder: (context, url) => Center(
+                        child: Container(
+                            padding: const EdgeInsets.all(0),
+                            child: Lottie.asset("json/loading_black.json"))),
+                    errorWidget: (context, url, error) => const Icon(
+                      Icons.error,
+                      color: Colors.black,
+                      size: 100,
+                    ),
+                    // height: 100,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 Padding(
@@ -165,8 +179,12 @@ class _ItemsDetailsScreenReturState extends State<ItemsDetailsScreenRetur> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
-                    "\$ ${widget.model!.price}",
-                    textAlign: TextAlign.justify,
+                    sharedPreferences!.getString('role_sales_brand') == '3' ||
+                            widget.model!.price!.bitLength > 17
+                        ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
+                        : widget.model!.name![0].toString() == '4'
+                            ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
+                            : "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
