@@ -209,10 +209,13 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     var url = ApiConstants.baseUrl + ApiConstants.GETlimitdiskon;
     Response response = await Dio().get(url,
         options: Options(headers: {"Authorization": "Bearer $token"}));
-    print(response.data[0]['addiskon']);
-    print(response.data[0]['addiskon2']);
-    getLimitAddDis1 = int.parse(response.data[0]['addiskon'] ?? '0');
-    getLimitAddDis2 = int.parse(response.data[0]['addiskon2'] ?? '0');
+
+    getLimitAddDis1 = sharedPreferences!.getInt('panjangHarga')! > 17
+        ? int.parse(response.data[1]['addiskon'] ?? '0')
+        : int.parse(response.data[0]['addiskon'] ?? '0');
+    getLimitAddDis2 = sharedPreferences!.getInt('panjangHarga')! > 17
+        ? int.parse(response.data[1]['addiskon2'] ?? '0')
+        : int.parse(response.data[0]['addiskon2'] ?? '0');
   }
 
   @override
@@ -389,102 +392,29 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                     //         ? const SizedBox()
                     //         : idBarang == '4'
                     //             ? const SizedBox()
-                    : Stack(clipBehavior: Clip.none, children: [
-                        Positioned(
-                          right: 2,
-                          bottom: 15,
-                          child: Text(
-                            '${disAdd1.toStringAsFixed(2)}%',
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Positioned(
-                          left: 2,
-                          bottom: 15,
-                          child: Text(
-                            'Limit ${getLimitAddDis1.toStringAsFixed(2)}%',
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(top: 10),
-                          height: 80,
-                          child: TextFormField(
-                            style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                            textInputAction: TextInputAction.next,
-                            controller: addDiskon,
-                            focusNode: numberFocusNode,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            onChanged: (addDiskon) {
-                              print(limitDis1);
-                              addDiskon.isEmpty
-                                  ? setState(() {
-                                      addesdiskon = 0;
-                                      addesdiskon2 = 0;
-                                      addDiskon2.clear();
-                                    })
-                                  : setState(() {
-                                      addesdiskon = int.parse(addDiskon);
-                                    });
-                              addesdiskon > limitDis1
-                                  ? showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8)),
-                                          title: const Text(
-                                            'Diskon tambahan melebihi limit',
-                                          ),
-                                        );
-                                      })
-                                  : print('oke');
-                            },
-                            decoration: InputDecoration(
-                              labelText: "Add discount 1",
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
-                            ),
-                          ),
-                        ),
-                      ]),
-
-                idform == 0
-                    ? const SizedBox()
-                    : addDiskon.text.isEmpty
-                        ? const SizedBox()
+                    : getLimitAddDis1 == 0
+                        ? SizedBox()
                         : Stack(clipBehavior: Clip.none, children: [
-                            Positioned(
-                              right: 2,
-                              bottom: 15,
-                              child: Text(
-                                addDiskon.text.isEmpty
-                                    ? '0'
-                                    : '${disAdd2.toStringAsFixed(2)}%',
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
+                            getLimitAddDis1.toStringAsFixed(2).length > 6
+                                ? SizedBox()
+                                : Positioned(
+                                    right: 2,
+                                    bottom: 15,
+                                    child: Text(
+                                      '${disAdd1.toStringAsFixed(2)}%',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
                             Positioned(
                               left: 2,
                               bottom: 15,
                               child: Text(
-                                'Limit ${getLimitAddDis2.toStringAsFixed(2)}%',
+                                getLimitAddDis1.toStringAsFixed(2).length > 6
+                                    ? 'Limit ${CurrencyFormat.convertToIdr(getLimitAddDis1, 0)}'
+                                    : 'Limit ${getLimitAddDis1.toStringAsFixed(2)}%',
                                 style: TextStyle(
                                     color: Colors.red,
                                     fontSize: 10,
@@ -500,44 +430,151 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
                                 textInputAction: TextInputAction.next,
-                                controller: addDiskon2,
-                                focusNode: numberFocusNode2,
+                                controller: addDiskon,
+                                focusNode: numberFocusNode,
                                 keyboardType: TextInputType.number,
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
-                                onChanged: (addDiskon2) {
-                                  print(limitDis2);
-                                  addDiskon2.isEmpty
+                                onChanged: (addDiskon) {
+                                  print(limitDis1);
+                                  addDiskon.isEmpty
                                       ? setState(() {
+                                          addesdiskon = 0;
                                           addesdiskon2 = 0;
+                                          addDiskon2.clear();
                                         })
                                       : setState(() {
-                                          addesdiskon2 = int.parse(addDiskon2);
+                                          addesdiskon = int.parse(addDiskon);
                                         });
-                                  addesdiskon2 > limitDis2
-                                      ? showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8)),
-                                              title: const Text(
-                                                'Diskon tambahan melebihi limit',
-                                              ),
-                                            );
-                                          })
-                                      : print('oke');
+
+                                  if (getLimitAddDis1
+                                          .toStringAsFixed(2)
+                                          .length >
+                                      6) {
+                                    addesdiskon > getLimitAddDis1
+                                        ? showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8)),
+                                                title: const Text(
+                                                  'Diskon tambahan melebihi limit',
+                                                ),
+                                              );
+                                            })
+                                        : print('oke');
+                                  } else {
+                                    addesdiskon > limitDis1
+                                        ? showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8)),
+                                                title: const Text(
+                                                  'Diskon tambahan melebihi limit',
+                                                ),
+                                              );
+                                            })
+                                        : print('oke');
+                                  }
                                 },
                                 decoration: InputDecoration(
-                                  labelText: "Add discount 2",
+                                  labelText: "Add discount 1",
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0)),
                                 ),
                               ),
                             ),
                           ]),
+
+                idform == 0
+                    ? const SizedBox()
+                    : addDiskon.text.isEmpty
+                        ? const SizedBox()
+                        : getLimitAddDis2 == 0
+                            ? SizedBox()
+                            : Stack(clipBehavior: Clip.none, children: [
+                                Positioned(
+                                  right: 2,
+                                  bottom: 15,
+                                  child: Text(
+                                    addDiskon.text.isEmpty
+                                        ? '0'
+                                        : '${disAdd2.toStringAsFixed(2)}%',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Positioned(
+                                  left: 2,
+                                  bottom: 15,
+                                  child: Text(
+                                    'Limit ${getLimitAddDis2.toStringAsFixed(2)}%',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  height: 80,
+                                  child: TextFormField(
+                                    style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                    textInputAction: TextInputAction.next,
+                                    controller: addDiskon2,
+                                    focusNode: numberFocusNode2,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    onChanged: (addDiskon2) {
+                                      print(limitDis2);
+                                      addDiskon2.isEmpty
+                                          ? setState(() {
+                                              addesdiskon2 = 0;
+                                            })
+                                          : setState(() {
+                                              addesdiskon2 =
+                                                  int.parse(addDiskon2);
+                                            });
+                                      addesdiskon2 > limitDis2
+                                          ? showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8)),
+                                                  title: const Text(
+                                                    'Diskon tambahan melebihi limit',
+                                                  ),
+                                                );
+                                              })
+                                          : print('oke');
+                                    },
+                                    decoration: InputDecoration(
+                                      labelText: "Add discount 2",
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0)),
+                                    ),
+                                  ),
+                                ),
+                              ]),
                 // //DP
                 idform == 0
                     ? const SizedBox()
