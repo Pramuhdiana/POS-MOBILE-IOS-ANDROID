@@ -625,6 +625,10 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                                                 value: "100000",
                                                 child: Text("BB100RB"),
                                               ),
+                                              // DropdownMenuItem(
+                                              //   value: "500000",
+                                              //   child: Text("BB500RB"),
+                                              // ),
                                             ],
                                             hint: const Text('Select a cupon'),
                                             onChanged: (value) {
