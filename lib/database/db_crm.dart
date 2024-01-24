@@ -49,6 +49,16 @@ class DbCRM {
     });
   }
 
+  Future<List<ModelCRM>> getAll() async {
+    final db = await database;
+    final res = await db.rawQuery("SELECT * FROM allcrm");
+
+    List<ModelCRM> list =
+        res.isNotEmpty ? res.map((c) => ModelCRM.fromJson(c)).toList() : [];
+    print('get date oke');
+    return list;
+  }
+
   createAllcrm(ModelCRM newCrm) async {
     final db = await database;
     final res = await db.insert('allcrm', newCrm.toJson());

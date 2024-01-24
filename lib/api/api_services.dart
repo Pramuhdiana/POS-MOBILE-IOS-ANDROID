@@ -33,15 +33,32 @@ class ApiServices {
   late BuildContext context;
   String token = sharedPreferences!.getString("token").toString();
 
-  Future<List<Null>> getAllItems() async {
+  Future<List<Null>?> getAllItems() async {
+    int? lengthIdSqlLite;
+
+await DbAllitems.db.getAll().then((value) {
+  lengthIdSqlLite = value.length;
+
+});
+
+  
     var url = ApiConstants.baseUrl + ApiConstants.GETposSalesendpoint;
     Response response = await Dio().get(url,
         options: Options(headers: {"Authorization": "Bearer $token"}));
+    int? lengthIdApi =response.data.length;
 
-    return (response.data as List).map((items) {
+    if(lengthIdSqlLite != lengthIdApi){
+    await DbAllitems.db.deleteAllitems();
+
+  return (response.data as List).map((items) {
       DbAllitems.db.createAllitems(ModelAllitems.fromJson(items));
       print('insert to database allitems sales');
     }).toList();
+    } else {
+      print('database tidak ada perubahan (item sales)');
+      return null;
+    }
+      
   }
 
   getUsers() async {
@@ -106,16 +123,31 @@ class ApiServices {
   //         ModelAlltransaksiNewVoucher.fromJson(transaksi));
   //   }).toList();
   // }
-  Future<List<Null>> getAllTransaksiBaru() async {
+  Future<List<Null>?> getAllTransaksiBaru() async {
+     int? lengthIdSqlLite;
+
+await DbAlltransaksiBaru.db.getAll().then((value) {
+  lengthIdSqlLite = value.length;
+
+});
     Response response = await Dio().get(
         ApiConstants.baseUrl + ApiConstants.GETtransaksiendpoint,
         options: Options(headers: {"Authorization": "Bearer $token"}));
-    print('status ${response.statusCode}');
-    print('body ${response.data}');
-    return (response.data as List).map((transaksi) {
+    int? lengthIdApi =response.data.length;
+    if(lengthIdSqlLite != lengthIdApi){
+    await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
+
+ return (response.data as List).map((transaksi) {
       DbAlltransaksiBaru.db
           .createAlltransaksiBaru(ModelAlltransaksiBaru.fromJson(transaksi));
     }).toList();
+    }else{
+  print('database tidak ada perubahan (all transaksi)');
+      return null;
+    }
+
+    
+   
   }
 
   Future<List<Null>> getAllKodekeluarbarang() async {
@@ -130,25 +162,58 @@ class ApiServices {
     }).toList();
   }
 
-  Future<List<Null>> getAllDetailTransaksi() async {
+  Future<List<Null>?> getAllDetailTransaksi() async {
+
+
+    int? lengthIdSqlLite;
+
+await DbAlldetailtransaksi.db.getAll().then((value) {
+  lengthIdSqlLite = value.length;
+
+});
     Response response = await Dio().get(
         ApiConstants.baseUrl + ApiConstants.GETdetailtransaksiendpoint,
         options: Options(headers: {"Authorization": "Bearer $token"}));
+    int? lengthIdApi =response.data.length;
+    if(lengthIdSqlLite != lengthIdApi){
+    await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
+
     return (response.data as List).map((detailtransaksi) {
       DbAlldetailtransaksi.db.createAlldetailtransaksi(
           ModelAlldetailtransaksi.fromJson(detailtransaksi));
       print('Inserting detail transaksi berhasil');
     }).toList();
+    } else {
+print('database tidak ada perubahan (detail transaksi)');
+      return null;
+    }
+
+   
   }
 
-  Future<List<Null>> getAllCustomer() async {
+  Future<List<Null>?> getAllCustomer() async {
+     int? lengthIdSqlLite;
+
+await DbAllCustomer.db.getAll().then((value) {
+  lengthIdSqlLite = value.length;
+
+});
     var url = ApiConstants.baseUrl + ApiConstants.GETcustomerendpoint;
     Response response = await Dio().get(url,
         options: Options(headers: {"Authorization": "Bearer $token"}));
-    return (response.data as List).map((customer) {
+    int? lengthIdApi =response.data.length;
+ if(lengthIdSqlLite != lengthIdApi){
+    await DbAllCustomer.db.deleteAllcustomer();
+     return (response.data as List).map((customer) {
       DbAllCustomer.db.createAllcustomer(ModelAllCustomer.fromJson(customer));
       print('insert to database allcustomer ');
     }).toList();
+    } else {
+  print('database tidak ada perubahan (all customer)');
+      return null;
+    }
+
+   
   }
 
   Future<List<Null>> getAllItemsToko() async {
@@ -184,11 +249,19 @@ class ApiServices {
     }).toList();
   }
 
-  Future<List<Null>> getAllTCRM() async {
+  Future<List<Null>?> getAllTCRM() async {
+     int? lengthIdSqlLite;
+
+await DbCRM.db.getAll().then((value) {
+  lengthIdSqlLite = value.length;
+
+});
     Response response = await Dio().get(
         ApiConstants.baseUrl + ApiConstants.GETcrmendpoint,
         options: Options(headers: {"Authorization": "Bearer $token"}));
-
+    int? lengthIdApi =response.data.length;
+if(lengthIdSqlLite != lengthIdApi){
+    await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
     return (response.data as List).map((crm) {
       DbAllCustomer.db.getNameCustomer(crm['customer_id']).then((value) {
         DbCRM.db.createAllcrm(ModelCRM(
@@ -208,6 +281,12 @@ class ApiServices {
       // DbCRM.db.createAllcrm(ModelCRM.fromJson(crm));
       print('Inserting CRM berhasil');
     }).toList();
+} else {
+ 
+     print('database tidak ada perubahan (crm)');
+      return null;
+}
+   
   }
 }
 

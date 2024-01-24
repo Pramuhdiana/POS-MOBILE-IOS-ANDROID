@@ -46,6 +46,17 @@ class DbAllCustomer {
     });
   }
 
+  Future<List<ModelAllCustomer>> getAll() async {
+    final db = await database;
+    final res = await db.rawQuery("SELECT * FROM allcustomer");
+
+    List<ModelAllCustomer> list = res.isNotEmpty
+        ? res.map((c) => ModelAllCustomer.fromJson(c)).toList()
+        : [];
+
+    return list;
+  }
+
   // id INTEGER PRIMARY KEY,
 
   createAllcustomer(ModelAllCustomer newAllcustomer) async {

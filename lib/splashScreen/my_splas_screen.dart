@@ -9,12 +9,9 @@ import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/authScreens/auth_screen.dart';
 import 'package:e_shop/buStephanie/main_screen_approve_pricing.dart';
-import 'package:e_shop/database/db_allcustomer.dart';
-import 'package:e_shop/database/db_alldetailtransaksi.dart';
 import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/db_allitems_retur.dart';
 import 'package:e_shop/database/db_allitems_toko.dart';
-import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
@@ -41,7 +38,7 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreenState extends State<MySplashScreen> {
-  int noBuild = 25;
+  int noBuild = 26;
   String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
   int role = 0;
@@ -171,13 +168,13 @@ class _MySplashScreenState extends State<MySplashScreen> {
     // context.read<PCartToko>().clearCart();
     // context.read<PCartRetur>().clearCart();
     var apiProvider = ApiServices();
-    await DbAllitems.db.deleteAllitems();
+    // await DbAllitems.db.deleteAllitems();
     await DbAllitemsToko.db.deleteAllitemsToko();
-    await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
-    await DbAllCustomer.db.deleteAllcustomer();
+    // await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
+    // await DbAllCustomer.db.deleteAllcustomer();
     await DbAllitemsRetur.db.deleteAllitemsRetur();
     await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
-    await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
+    // await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
     await DbCRM.db.deleteAllcrm();
 
     try {
@@ -324,7 +321,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
 
   Future<List<VersionModel>> getVersion() async {
     final response = await http.get(
-        Uri.parse('http://110.5.102.154:1212/Api_flutter/spk/get_version.php'));
+        Uri.parse('${ApiConstants.baseUrlsandy}/get_version.php'));
     print('No Version DB : ${response.body}');
 
     if (response.statusCode == 200) {

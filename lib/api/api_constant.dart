@@ -1,17 +1,18 @@
 // ignore_for_file: non_constant_identifier_names
 // http://110.5.102.154:1212/Api_Flutter/spk/get_estimasi_pricing_by_status.php?status_approval=1
+  var ipPublic = '203.174.11.254'; //? before Ip 110.5.102.154
 
 class ApiConstants {
   static String baseUrl = 'http://54.179.58.215:8080/api';
   // static String baseUrl = 'http://54.179.58.215:7060/api'; //! Dummy
-  static String baseUrlPricing = 'http://110.5.102.154:4000/approvals';
+  static String baseUrlPricing = 'http://$ipPublic:4000/approvals';
   static String baseUrlImageMdbc =
-      'https://110.5.102.154:50001/Files/Images/Product/';
+      'https://$ipPublic:50001/Files/Images/Product/';
   static String baseImageUrl = 'http://54.179.58.215:7000/uploads/products/';
 
-  static String baseUrlPricingWeb = 'http://110.5.102.154:8000/api';
+  static String baseUrlPricingWeb = 'http://$ipPublic:8000/api';
 
-  static String baseUrlsandy = 'http://110.5.102.154:1212/Api_Flutter/spk';
+  static String baseUrlsandy = 'http://$ipPublic:1212/Api_Flutter/spk';
   static String GETPricingEticketing = '/get_estimasi_pricing.php';
   static String GETapprovelPricingEticketing =
       '/get_estimasi_pricing_by_status.php';

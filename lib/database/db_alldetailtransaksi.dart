@@ -46,6 +46,18 @@ class DbAlldetailtransaksi {
     });
   }
 
+Future<List<ModelAlldetailtransaksi>> getAll() async {
+    final db = await database;
+    final res = await db.rawQuery(
+        'SELECT * FROM alldetailtransaksi',);
+
+    List<ModelAlldetailtransaksi> list = res.isNotEmpty
+        ? res.map((c) => ModelAlldetailtransaksi.fromJson(c)).toList()
+        : [];
+
+    return list;
+  }
+
   createAlldetailtransaksi(
       ModelAlldetailtransaksi newAlldetailtransaksi) async {
     final db = await database;

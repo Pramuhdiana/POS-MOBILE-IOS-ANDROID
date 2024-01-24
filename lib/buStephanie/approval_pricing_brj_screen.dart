@@ -2040,7 +2040,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
                                     hintText:
-                                        "http://110.5.102.154:4000/approvals",
+                                        ApiConstants.baseUrlPricing,
                                     labelText: "Url Dinamis",
                                     border: OutlineInputBorder(
                                         borderRadius:
@@ -2048,9 +2048,9 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                   ),
                                 ),
                               ),
-                              const Text(
-                                'Example :\n http://110.5.102.154:4000/approvals',
-                                style: TextStyle(fontSize: 12),
+                               Text(
+                                'Example :\n ${ApiConstants.baseUrlPricing}',
+                                style: const TextStyle(fontSize: 12),
                               ),
                               Column(
                                 children: [

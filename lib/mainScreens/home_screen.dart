@@ -114,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int barOct = 0;
   int barNov = 0;
   int barDec = 0;
-  int targetByMonth = 10000000;
+  int targetByMonth = 1;
   int targetByYear = 10000000000;
   //end chart color
 
@@ -215,9 +215,12 @@ class _HomeScreenState extends State<HomeScreen> {
         for (var i = 0; i < value.length; i++) {
           barJan += value[i].nett!; //menjumlahkan ke list
         }
+        
         setState(() {
           barJan = (barJan / targetByMonth).round();
         });
+        print('ini januari : $barJan');
+
       });
       //feb
       DbAlltransaksiBaru.db
@@ -226,6 +229,8 @@ class _HomeScreenState extends State<HomeScreen> {
         for (var i = 0; i < value.length; i++) {
           barFeb += value[i].nett!; //menjumlahkan ke list
         }
+        print(barFeb);
+
         setState(() {
           barFeb = (barFeb / targetByMonth).round();
         });
@@ -2278,6 +2283,8 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         barJan = (barJan / targetByMonth).round();
       });
+        print('ini januari 2: $barJan');
+
     });
     //feb
     DbAlltransaksiBaru.db

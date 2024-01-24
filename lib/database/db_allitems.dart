@@ -86,6 +86,20 @@ class DbAllitems {
     return result;
   }
 
+  Future<List<ModelAllitems>> getAll() async {
+    print('masuk sqlite');
+    final db = await database;
+    final res = await db.rawQuery(
+        'SELECT * FROM allitems');
+
+    List<ModelAllitems> list = res.isNotEmpty
+        ? res.map((c) => ModelAllitems.fromJson(c)).toList()
+        // ? res.map((c) => ModelAllitems.fromMap(c)).toList()
+        : [];
+
+    return list;
+  }
+
   Future<List<ModelAllitems>> getAllitems() async {
     final db = await database;
     final res = await db.rawQuery(

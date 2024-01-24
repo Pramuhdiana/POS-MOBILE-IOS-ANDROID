@@ -78,7 +78,7 @@ class ModelAlltransaksiBaru {
           total_quantity: json["total_quantity"] ?? 0,
           total_rupiah: json["total_rupiah"] ?? '0',
           basic_discount: (json["basic_discount"] ?? 0).toString(),
-          addesdiskon_rupiah: json["addesdiskon_rupiah"] ?? 0,
+          addesdiskon_rupiah: (json["addesdiskon_rupiah"] ?? 0) + (json["surprise"] ?? 0),
           addaddesdiskon_rupiah2: json["addaddesdiskon_rupiah2"] ?? 0,
           rate: json["rate"] ?? 0,
           nett: json["nett"] ?? 0,

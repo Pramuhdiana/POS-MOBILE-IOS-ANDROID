@@ -3765,9 +3765,15 @@ class HistoryModelNew extends StatelessWidget {
     var voucherDiskon = allTransaksi.nett.toString() == '0'
         ? 0
         : allTransaksi.voucherDiskon ?? 0;
+
+        // var addDiskonSurprise = allTransaksi.nett.toString() == '0'
+        // ? 0
+        // : allTransaksi.surprise ?? 0;
+
     var totalPayment = allTransaksi.nett.toString() == '0'
         ? 0
-        : totalSubDis - addDiskon - voucherDiskon - addDiskon2;
+        // : totalSubDis - addDiskon - voucherDiskon - addDiskon2; //! before
+        :allTransaksi.nett;
     String kodeDiskon = voucherDiskon == 50000
         ? 'Voucher (BB50RB)'
         : voucherDiskon == 100000
@@ -4120,7 +4126,7 @@ class HistoryModelNew extends StatelessWidget {
                                                   fontSize: 11.5)),
                                         ],
                                       )),
-                                  addDiskon == 0
+                                  addDiskon == 0 && addDiskon2 == 0
                                       ? pw.SizedBox(height: 15)
                                       : pw.Container(
                                           padding: const pw.EdgeInsets.only(

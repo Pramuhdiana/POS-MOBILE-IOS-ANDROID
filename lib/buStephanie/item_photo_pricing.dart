@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/model_allitems.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
@@ -81,7 +82,7 @@ class _ItemsPhotoPricing extends State<ItemsPhotoPricing> {
           imageProvider: CachedNetworkImageProvider(
             // '${baseImageUrl}EG003230080.jpg}',
             // '${baseImageUrl}${widget.model!.marketingCode}',
-            'https://110.5.102.154:50001/Files/Images/Product/${widget.model!.fgImageFileName!.toString()}',
+            '${ApiConstants.baseUrlImageMdbc}${widget.model!.fgImageFileName!.toString()}',
           ),
           enableRotation: true,
           minScale: PhotoViewComputedScale.covered * 0.2,

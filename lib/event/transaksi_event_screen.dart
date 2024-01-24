@@ -33,6 +33,7 @@ class TransaksiScreenEvent extends StatefulWidget {
 }
 
 class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
+  FocusNode numberFocusNodeSurprise = FocusNode();
   FocusNode numberFocusNode = FocusNode();
   FocusNode numberFocusNode2 = FocusNode();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -41,8 +42,11 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   String? kodeVocher;
   int nilaiVocher = 0;
   bool isClear = false;
+  bool isSurprise = false;
   int getLimitAddDis1 = 0;
   int getLimitAddDis2 = 0;
+  int getLimitSurprise = 0;
+  List<String> listTanggalSurprise = [];
 
   String qty = '';
   String orderId = DateTime.now().second.toString();
@@ -58,11 +62,14 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   bool isGift = false;
   int diskon = 0;
   TextEditingController dp = TextEditingController();
+  TextEditingController addSurprise= TextEditingController();
   TextEditingController addDiskon = TextEditingController();
   TextEditingController addDiskon2 = TextEditingController();
+  String tanggalNow ='';
   int dpp = 0;
   int addesdiskon = 0;
   int addesdiskon2 = 0;
+  int surpriseApi = 0;
   String? idBarang = '';
 
   final _formKey = GlobalKey<FormState>();
@@ -71,18 +78,28 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     // var dpin = int.parse(dp);
     var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
             (1 - (diskon / 100)) -
-        dpp -
+        dpp - surpriseApi -
         addesdiskon -
         addesdiskon2;
     return total;
   }
 
-  double get limitDis1 {
+double get limitDisSurprise {
     // var dpin = int.parse(dp);
     var totalAwal = ((context.read<PCartEvent>().totalPrice2) * rate) *
         (1 - (diskon / 100));
     var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
         (1 - (diskon / 100));
+    var max = totalAwal - (total * (1 - (getLimitSurprise / 100)));
+    return max;
+  }
+
+  double get limitDis1 {
+    // var dpin = int.parse(dp);
+    var totalAwal = ((context.read<PCartEvent>().totalPrice2) * rate) *
+        (1 - (diskon / 100)) - surpriseApi;
+    var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
+        (1 - (diskon / 100)) - surpriseApi;
     var max10 = totalAwal - (total * (1 - (getLimitAddDis1 / 100)));
     return max10;
   }
@@ -90,16 +107,16 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   double get limitDis2 {
     // var dpin = int.parse(dp);
     var totalAwal = ((context.read<PCartEvent>().totalPrice2) * rate) *
-            (1 - (diskon / 100)) -
+            (1 - (diskon / 100)) - surpriseApi -
         addesdiskon;
     var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
-            (1 - (diskon / 100)) -
+            (1 - (diskon / 100)) - surpriseApi -
         addesdiskon;
     var max10 = totalAwal - (total * (1 - (getLimitAddDis2 / 100)));
     return max10;
   }
 
-  double get disAdd1 {
+double get disSurprise {
     var totalAwal = ((context.read<PCartEvent>().totalPrice2) * rate) *
         (1 - (diskon / 100));
     var addDis1 = addesdiskon;
@@ -107,9 +124,18 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     return result;
   }
 
+
+  double get disAdd1 {
+    var totalAwal = ((context.read<PCartEvent>().totalPrice2) * rate) *
+        (1 - (diskon / 100)) - surpriseApi;
+    var addDis1 = addesdiskon;
+    var result = (addDis1 / totalAwal) * 100;
+    return result;
+  }
+
   double get disAdd2 {
     var totalAwal = ((context.read<PCartEvent>().totalPrice2) * rate) *
-            (1 - (diskon / 100)) -
+            (1 - (diskon / 100))- surpriseApi -
         addesdiskon;
     var addDis2 = addesdiskon2;
     var result = (addDis2 / totalAwal) * 100;
@@ -122,7 +148,8 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
 
     var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
             (1 - (diskon / 100)) -
-        dpp -
+        dpp - surpriseApi -
+        
         addesdiskon -
         nilaiVocher -
         addesdiskon2;
@@ -141,7 +168,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     // var dpin = int.parse(dp);
     var total = ((context.read<PCartEvent>().totalPrice2) * rate) *
             (1 - (diskon / 100)) -
-        dpp -
+        dpp - surpriseApi -
         addesdiskon -
         addesdiskon2;
     return total.toString();
@@ -151,7 +178,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     // var dpin = int.parse(dp);
     var total1 = ((context.read<PCartEvent>().totalPrice2) * rate) *
             (1 - (diskon / 100)) -
-        dpp -
+        dpp - surpriseApi -
         addesdiskon -
         addesdiskon2;
     var total = ((context.read<PCartEvent>().totalPrice2) * rate);
@@ -175,6 +202,9 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   void initState() {
     super.initState();
     print('ini bit:${sharedPreferences!.getInt('panjangHarga')}');
+    DateTime today = DateTime.now();
+    tanggalNow = today.day.toString();
+    print(tanggalNow);
     getLimitDiskon();
     idBarang = sharedPreferences!.getString('idBarang');
     sharedPreferences!.getInt('panjangHarga')! > 17
@@ -202,6 +232,14 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
         KeyboardOverlay.removeOverlay();
       }
     });
+     numberFocusNodeSurprise.addListener(() {
+      bool hasFocus = numberFocusNodeSurprise.hasFocus;
+      if (hasFocus) {
+        KeyboardOverlay.showOverlay(context);
+      } else {
+        KeyboardOverlay.removeOverlay();
+      }
+    });
   }
 
   getLimitDiskon() async {
@@ -216,6 +254,29 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     getLimitAddDis2 = sharedPreferences!.getInt('panjangHarga')! > 17
         ? int.parse(response.data[1]['addiskon2'] ?? '0')
         : int.parse(response.data[0]['addiskon2'] ?? '0');
+    getLimitSurprise = sharedPreferences!.getInt('panjangHarga')! > 17
+        ? int.parse(response.data[1]['surprise'] ?? '0')
+        : int.parse(response.data[0]['surprise'] ?? '0');
+    var getTanggalSurprise = sharedPreferences!.getInt('panjangHarga')! > 17
+        ? response.data[1]['tanggal_surprise'] ?? '0'
+        : response.data[0]['tanggal_surprise'] ?? '0';
+
+    print(getTanggalSurprise);
+  //! cara memisahkan data dengan koma menjadi data int
+  listTanggalSurprise = getTanggalSurprise.split(',');
+  //? looping lebih simple
+  for(var item in listTanggalSurprise){
+    if(item == tanggalNow){
+      setState(() {
+        isSurprise = true;
+      });
+    } else {
+      print('tanggal beda');
+    }
+  }
+
+  isSurprise == false ? getLimitAddDis2 -= getLimitAddDis1 : null;
+  
   }
 
   @override
@@ -381,33 +442,142 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                                       ),
                                     ),
                                   ),
-//addesdiskon
 
+                                  //? surprise diskon
                 idform == 0
                     ? const SizedBox()
-                    // : idform == 4
-                    //     ? const SizedBox()
-                    //     : sharedPreferences!.getString('role_sales_brand') ==
-                    //             '3'
-                    //         ? const SizedBox()
-                    //         : idBarang == '4'
-                    //             ? const SizedBox()
-                    : getLimitAddDis1 == 0
+                   : isSurprise == false
+                        ? const SizedBox()
+                    : getLimitSurprise == 0
                         ? SizedBox()
                         : Stack(clipBehavior: Clip.none, children: [
-                            getLimitAddDis1.toStringAsFixed(2).length > 6
-                                ? SizedBox()
-                                : Positioned(
-                                    right: 2,
-                                    bottom: 15,
-                                    child: Text(
-                                      '${disAdd1.toStringAsFixed(2)}%',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
+                            // getLimitSurprise.toStringAsFixed(2).length > 6
+                                // ? 
+                                SizedBox(),
+                                // : Positioned(
+                                //     right: 2,
+                                //     bottom: 15,
+                                //     child: Text(
+                                //       '${disSurprise.toStringAsFixed(2)}%',
+                                //       style: TextStyle(
+                                //           color: Colors.red,
+                                //           fontSize: 30,
+                                //           fontWeight: FontWeight.bold),
+                                //     ),
+                                //   ),
+                            Positioned(
+                              left: 2,
+                              bottom: 15,
+                              child: Text(
+                                getLimitSurprise.toStringAsFixed(2).length > 6
+                                    ? 'Limit ${CurrencyFormat.convertToIdr(getLimitSurprise, 0)}'
+                                    : 'Limit ${getLimitSurprise.toStringAsFixed(2)}%',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(top: 10),
+                              height: 80,
+                              child: TextFormField(
+                                enabled: isSurprise == true ? true : false,
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                                textInputAction: TextInputAction.next,
+                                controller: addSurprise,
+                                focusNode: numberFocusNodeSurprise,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                onChanged: (addSurprise) {
+                                  print(limitDisSurprise);
+                                  addSurprise.isEmpty
+                                      ? setState(() {
+                                          surpriseApi = 0;
+                                          addesdiskon = 0;
+                                          addesdiskon2 = 0;
+                                          addDiskon.clear();
+                                          addDiskon2.clear();
+                                        })
+                                      : setState(() {
+                                          surpriseApi = int.parse(addSurprise);
+                                        });
+
+                                  if (getLimitSurprise
+                                          .toStringAsFixed(2)
+                                          .length >
+                                      6) {
+                                    surpriseApi > getLimitSurprise
+                                        ? showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8)),
+                                                title: const Text(
+                                                  'Surprise diskon melebihi limit',
+                                                ),
+                                              );
+                                            })
+                                        : print('oke');
+                                  } else {
+                                    surpriseApi > limitDisSurprise
+                                        ? showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8)),
+                                                title: const Text(
+                                                  'Surprise diskon melebihi limit',
+                                                ),
+                                              );
+                                            })
+                                        : print('oke');
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                  labelText: "Surprise discount",
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0)),
+                                ),
+                              ),
+                            ),
+                          ]),
+
+
+              //addesdiskon
+                idform == 0
+                    ? const SizedBox()
+                  // : isSurprise == false
+                  //       ? const SizedBox()
+                    : 
+                    getLimitAddDis1 == 0
+                        ? SizedBox()
+                        : Stack(clipBehavior: Clip.none, children: [
+                            // getLimitAddDis1.toStringAsFixed(2).length > 6
+                            //     ? 
+                                SizedBox(),
+                                // : Positioned(
+                                //     right: 2,
+                                //     bottom: 15,
+                                //     child: Text(
+                                //       '${disAdd1.toStringAsFixed(2)}%',
+                                //       style: TextStyle(
+                                //           color: Colors.red,
+                                //           fontSize: 30,
+                                //           fontWeight: FontWeight.bold),
+                                //     ),
+                                //   ),
                             Positioned(
                               left: 2,
                               bottom: 15,
@@ -425,6 +595,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                               padding: const EdgeInsets.only(top: 10),
                               height: 80,
                               child: TextFormField(
+                                enabled: isSurprise == true ? false : true,
                                 style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
@@ -496,24 +667,24 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
 
                 idform == 0
                     ? const SizedBox()
-                    : addDiskon.text.isEmpty
-                        ? const SizedBox()
+                    // : addSurprise.text.isEmpty
+                    //     ? const SizedBox()
                         : getLimitAddDis2 == 0
                             ? SizedBox()
                             : Stack(clipBehavior: Clip.none, children: [
-                                Positioned(
-                                  right: 2,
-                                  bottom: 15,
-                                  child: Text(
-                                    addDiskon.text.isEmpty
-                                        ? '0'
-                                        : '${disAdd2.toStringAsFixed(2)}%',
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
+                                // Positioned(
+                                //   right: 2,
+                                //   bottom: 15,
+                                //   child: Text(
+                                //     addDiskon.text.isEmpty
+                                //         ? '0'
+                                //         : '${disAdd2.toStringAsFixed(2)}%',
+                                //     style: TextStyle(
+                                //         color: Colors.red,
+                                //         fontSize: 30,
+                                //         fontWeight: FontWeight.bold),
+                                //   ),
+                                // ),
                                 Positioned(
                                   left: 2,
                                   bottom: 15,
@@ -952,6 +1123,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     String addesdiskonApi = addesdiskon.toString();
     String addesdiskonApi2 = addesdiskon2.toString();
     String nilaiVoucherApi = nilaiVocher.toString();
+    String surprise = surpriseApi.toString();
     print('cart_total : $cart_total');
     print('cart_totalquantity : $cart_totalquantity');
     print('customer_id : $customer_id');
@@ -980,6 +1152,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
       'addesdiskon': addesdiskonApi,
       'addesdiskon2': addesdiskonApi2,
       'voucher_diskon': nilaiVoucherApi,
+      'surprise': surprise,
     };
     final response = await http.post(
         Uri.parse(ApiConstants.baseUrl +

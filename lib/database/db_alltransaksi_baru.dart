@@ -96,6 +96,17 @@ class DbAlltransaksiBaru {
   //   return res;
   // }
 
+Future<List<ModelAlltransaksiBaru>> getAll() async {
+    final db = await database;
+    final res = await db.rawQuery(
+        'SELECT * FROM alltransaksibaru');
+
+    List<ModelAlltransaksiBaru> list = res.isNotEmpty
+        ? res.map((c) => ModelAlltransaksiBaru.fromJson(c)).toList()
+        : [];
+
+    return list;
+  }
   Future<List<ModelAlltransaksiBaru>> getAlltransaksiBaru(jenis_id) async {
     final db = await database;
     final res = await db.rawQuery(

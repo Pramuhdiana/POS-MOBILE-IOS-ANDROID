@@ -14,6 +14,7 @@ import 'package:e_shop/widgets/appbar_cart_pos_sales.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
@@ -238,6 +239,14 @@ class _PosSalesScreenState extends State<PosSalesScreen> {
                 },
                 items: list,
               ),
+              ElevatedButton(onPressed: (() {
+                 showSimpleNotification(
+        const Text('Almost Done..'),
+        // subtitle: const Text('sub'),
+        background: Colors.green,
+        duration: const Duration(seconds: 5),
+      );
+              }), child: const Text('Send all to ...')),
               Container(
                 height: 50,
                 padding: const EdgeInsets.only(),
