@@ -1950,6 +1950,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
       'kode': data.marketingCode.toString(), //total item di cart
       'harga': awalPrice.toString(),
       'detail': data.detailProduct.toString(),
+      'ringSize': data.ringSize.toString(),
+      'diamondQuality': data.diamondQuality.toString(),
     };
     final response = await http.post(
         Uri.parse(ApiConstants.baseUrl + ApiConstants.POSThargaApproved),
