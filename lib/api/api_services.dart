@@ -261,7 +261,7 @@ await DbCRM.db.getAll().then((value) {
         options: Options(headers: {"Authorization": "Bearer $token"}));
     int? lengthIdApi =response.data.length;
 if(lengthIdSqlLite != lengthIdApi){
-    await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
+    await DbCRM.db.deleteAllcrm();
     return (response.data as List).map((crm) {
       DbAllCustomer.db.getNameCustomer(crm['customer_id']).then((value) {
         DbCRM.db.createAllcrm(ModelCRM(

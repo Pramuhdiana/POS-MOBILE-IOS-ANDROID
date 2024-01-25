@@ -12,7 +12,6 @@ import 'package:e_shop/buStephanie/main_screen_approve_pricing.dart';
 import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/db_allitems_retur.dart';
 import 'package:e_shop/database/db_allitems_toko.dart';
-import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/models/version_model.dart';
@@ -51,12 +50,43 @@ class _MySplashScreenState extends State<MySplashScreen> {
       print('token $token');
       if (sharedPreferences!.getString("token").toString() != "null") {
         await requestPermission();
-
+            if (version != noBuild.toString()) {
+              dialogBoxVersion();
+            } else 
+        {
         try {
+            print('in function get user');
+            await ApiServices().getUsers();
+            setState(() {
+              role = int.parse(sharedPreferences!.getString('role_sales_brand')!);
+              print('Role user : $role');
+            });
+          } catch (c) {
+            print('Error ambil user : $c');
+            sharedPreferences!.setString('name', 'Failed To Load Data');
+            Fluttertoast.showToast(msg: "Failed To Load Data User");
+          }
+    
+     if( role == 15)
+     {
+        try {
+          loadListBRJ(); //ambil data cart
+        } catch (c) {
+          throw Fluttertoast.showToast(msg: "Database Off");
+        }
+        try {
+          loadListEticketing(); //ambil data cart
+        } catch (c) {
+          throw Fluttertoast.showToast(msg: "Database Off");
+        }
+        dialogBox();
+     } else 
+     {
+       try {
           await _loadFromApi();
+          //? get token
           try {
             sharedPreferences?.setBool('isDinamis', false);
-
             sharedPreferences!.setString('newOpen', 'true');
             sharedPreferences!.setString('newOpenHome', 'true');
             sharedPreferences!.setString('newOpenPosSales', 'true');
@@ -67,14 +97,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
             sharedPreferences!.setString('total_product_sales', '0');
             print('wait token');
             getToken();
-            if (version != noBuild.toString()) {
-              dialogBoxVersion();
-            } else {
-              role == 15
-                  ? dialogBox()
-                  : Navigator.push(context,
+             Navigator.push(context,
                       MaterialPageRoute(builder: (c) => const MainScreen()));
-            }
           } catch (c) {
             sharedPreferences!.setString('newOpen', 'true');
             sharedPreferences?.setBool('loading', true);
@@ -83,17 +107,19 @@ class _MySplashScreenState extends State<MySplashScreen> {
             sharedPreferences!.setString('newOpenPosToko', 'true');
             sharedPreferences!.setString('newOpenPosRetur', 'true');
             sharedPreferences!.setString('total_product_sales', '0');
-            role == 15
-                ? dialogBox()
-                : Navigator.push(context,
+         Navigator.push(context,
                     MaterialPageRoute(builder: (c) => const MainScreen()));
           }
-        } catch (c) {
-          Fluttertoast.showToast(msg: "Failed To Load user data");
+          } catch (c) {
+          Fluttertoast.showToast(msg: "Failed To Load user data $c");
           sharedPreferences?.setBool('dbDummy', false);
           Navigator.push(
               context, MaterialPageRoute(builder: (c) => const AuthScreen()));
         }
+      }
+         
+}
+        
       } else //user is NOT already Logged-in
       {
         Fluttertoast.showToast(msg: "Failed To Load All Data");
@@ -102,7 +128,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
             context, MaterialPageRoute(builder: (c) => const AuthScreen()));
       }
     });
-  }
+}
 
 //get token
   getToken() async {
@@ -175,7 +201,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     await DbAllitemsRetur.db.deleteAllitemsRetur();
     await DbAllKodekeluarbarang.db.deleteAllkeluarbarang();
     // await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-    await DbCRM.db.deleteAllcrm();
+    // await DbCRM.db.deleteAllcrm();
 
     try {
       apiProvider.getAllItems();
@@ -232,18 +258,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       throw Exception('error : $c');
     }
 
-    try {
-      print('in function get user');
-      await apiProvider.getUsers();
-      setState(() {
-        role = int.parse(sharedPreferences!.getString('role_sales_brand')!);
-        print('Role user : $role');
-      });
-    } catch (c) {
-      print('Error ambil user : $c');
-      sharedPreferences!.setString('name', 'Failed To Load Data');
-      Fluttertoast.showToast(msg: "Failed To Load Data User");
-    }
+   
     await loadCartFromApiPOSSALES();
     setState(() {
       isLoading = false;
@@ -305,16 +320,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       });
       throw Fluttertoast.showToast(msg: "Database Off");
     }
-    try {
-      loadListBRJ(); //ambil data cart
-    } catch (c) {
-      throw Fluttertoast.showToast(msg: "Database Off");
-    }
-    try {
-      loadListEticketing(); //ambil data cart
-    } catch (c) {
-      throw Fluttertoast.showToast(msg: "Database Off");
-    }
+  
 
     splashScreenTimer();
   }
@@ -431,11 +437,42 @@ class _MySplashScreenState extends State<MySplashScreen> {
                 children: [
                   ElevatedButton(
                     //if user click this button, user can upload image from gallery
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (c) => const MainScreen()));
+                    onPressed: () async {
+                      
+                   try {
+          await _loadFromApi();
+          //? get token
+          try {
+            sharedPreferences?.setBool('isDinamis', false);
+            sharedPreferences!.setString('newOpen', 'true');
+            sharedPreferences!.setString('newOpenHome', 'true');
+            sharedPreferences!.setString('newOpenPosSales', 'true');
+            sharedPreferences!.setString('newOpenPosToko', 'true');
+            sharedPreferences!.setString('newOpenPosRetur', 'true');
+            sharedPreferences?.setBool('loading', true);
+            // sharedPreferences!.setString('newOpenHistory', 'true');
+            sharedPreferences!.setString('total_product_sales', '0');
+            print('wait token');
+            getToken();
+             Navigator.push(context,
+                      MaterialPageRoute(builder: (c) => const MainScreen()));
+          } catch (c) {
+            sharedPreferences!.setString('newOpen', 'true');
+            sharedPreferences?.setBool('loading', true);
+            sharedPreferences!.setString('newOpenHome', 'true');
+            sharedPreferences!.setString('newOpenPosSales', 'true');
+            sharedPreferences!.setString('newOpenPosToko', 'true');
+            sharedPreferences!.setString('newOpenPosRetur', 'true');
+            sharedPreferences!.setString('total_product_sales', '0');
+         Navigator.push(context,
+                    MaterialPageRoute(builder: (c) => const MainScreen()));
+          }
+          } catch (c) {
+          Fluttertoast.showToast(msg: "Failed To Load user data $c");
+          sharedPreferences?.setBool('dbDummy', false);
+          Navigator.push(
+              context, MaterialPageRoute(builder: (c) => const AuthScreen()));
+        } 
                     },
                     child: const Row(
                       children: [
