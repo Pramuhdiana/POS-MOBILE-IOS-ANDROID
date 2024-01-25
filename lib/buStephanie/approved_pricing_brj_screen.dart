@@ -693,7 +693,92 @@ class _SearchScreenState extends State<ApprovedPricingBrjScreen> {
                                                                                 height: 90,
                                                                                 child: Lottie.asset("json/loading_black.json"))),
                                                                       ),
-                                                                    )
+                                                                    ),
+                                                                      Container(
+                                                                      decoration: BoxDecoration(
+                                                                          border: Border.all(
+                                                                              width: 2.5,
+                                                                              color: Colors.black)),
+                                                                      padding:
+                                                                          const EdgeInsets
+                                                                              .all(
+                                                                              5),
+                                                                      child:
+                                                                          Column(
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              const Text(
+                                                                                'Labour',
+                                                                                textAlign: TextAlign.left,
+                                                                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                              ),
+                                                                              Text(
+                                                                                'Rp.${CurrencyFormat.convertToDollar(int.parse(data.grandSTDLabourPrice!.round().toString()), 0)}',
+                                                                                textAlign: TextAlign.left,
+                                                                                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              const Text(
+                                                                                'Emas',
+                                                                                textAlign: TextAlign.left,
+                                                                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                              ),
+                                                                              Text(
+                                                                                'Rp.${CurrencyFormat.convertToDollar(int.parse(data.stdGoldPrice!.round().toString()), 0)}',
+                                                                                textAlign: TextAlign.left,
+                                                                                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              const Text(
+                                                                                'Diamond',
+                                                                                textAlign: TextAlign.left,
+                                                                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                              ),
+                                                                              Text(
+                                                                                'Rp.${CurrencyFormat.convertToDollar(int.parse(data.grandSTDDiamondPrice!.round().toString()), 0)}',
+                                                                                textAlign: TextAlign.left,
+                                                                                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          const Divider(
+                                                                            thickness:
+                                                                                3,
+                                                                            color:
+                                                                                Colors.black,
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              const Text(
+                                                                                'HPP',
+                                                                                textAlign: TextAlign.left,
+                                                                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.blue),
+                                                                              ),
+                                                                              Text(
+                                                                                'Rp.${CurrencyFormat.convertToDollar(hpp, 0)}',
+                                                                                textAlign: TextAlign.left,
+                                                                                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.blue),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               );
