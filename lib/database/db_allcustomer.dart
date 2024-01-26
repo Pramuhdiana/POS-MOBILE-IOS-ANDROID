@@ -117,18 +117,25 @@ class DbAllCustomer {
   }
 
   Future<String?> getNameCustomer(idcustomer) async {
+    var nama = 'toko';
     final db = await database;
     final res =
         await db.rawQuery('SELECT * FROM allcustomer WHERE id=?', [idcustomer]);
     // final res = await db.query('allitems', where: '"sales_id" = $id');
     // final res = await db.rawQuery("SELECT * FROM allitems");
 
-    List<ModelAllCustomer> list = res.isNotEmpty
-        ? res.map((c) => ModelAllCustomer.fromJson(c)).toList()
-        // ? res.map((c) => ModelAllitems.fromMap(c)).toList()
-        : [];
+    // List<ModelAllCustomer> list = res.isNotEmpty
+    //     ? res.map((c) => ModelAllCustomer.fromJson(c)).toList()
+    //     // ? res.map((c) => ModelAllitems.fromMap(c)).toList()
+    //     : [];
 
-    return list.first.name;
+    if (res.isNotEmpty) {
+      List<ModelAllCustomer> list =
+          res.map((c) => ModelAllCustomer.fromJson(c)).toList();
+      return list.first.name;
+    } else {
+      return nama;
+    }
   }
 
   Future<Object> getCustomerById(idcustomer) async {

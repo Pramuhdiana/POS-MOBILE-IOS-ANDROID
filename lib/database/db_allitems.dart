@@ -89,8 +89,7 @@ class DbAllitems {
   Future<List<ModelAllitems>> getAll() async {
     print('masuk sqlite');
     final db = await database;
-    final res = await db.rawQuery(
-        'SELECT * FROM allitems');
+    final res = await db.rawQuery('SELECT * FROM allitems');
 
     List<ModelAllitems> list = res.isNotEmpty
         ? res.map((c) => ModelAllitems.fromJson(c)).toList()
@@ -204,11 +203,13 @@ class DbAllKodekeluarbarang {
     });
   }
 
-  createAllkodekeluarbarang(
-      ModelAllKodekeluarbarang newAllkodekeluarbarang) async {
+  createAllkodekeluarbarang(String kdRef) async {
+    Map<String, String> body = {'kode_refrensi': kdRef};
     final db = await database;
-    final res =
-        await db.insert('allkodekeluarbarang', newAllkodekeluarbarang.toJson());
+    final res = await db.insert(
+      'allkodekeluarbarang',
+      body,
+    );
     return res;
   }
 

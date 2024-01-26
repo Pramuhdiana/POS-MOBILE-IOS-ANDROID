@@ -16,6 +16,7 @@ import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/models/version_model.dart';
 import 'package:e_shop/provider/provider_cart.dart';
+import 'package:e_shop/widgets/loading_widget.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -46,19 +47,34 @@ class _MySplashScreenState extends State<MySplashScreen> {
   var isLoading = true;
   splashScreenTimer() {
     Timer(const Duration(seconds: 0), () async {
+      //! ambil versi
+      try {
+        await getVersion();
+      } catch (c) {
+        print('No Version DB : $noBuild');
+        setState(() {
+          version = noBuild.toString();
+          sharedPreferences!.setString('version', noBuild.toString());
+          // notif.sendNotificationTo(fcmTokensandy, 'Error Version',
+          //     'version database dan mobile tidak');
+          print('No Version DB : $noBuild');
+        });
+        throw Fluttertoast.showToast(msg: "Database Off");
+      }
+
       //user sudah login
       print('token $token');
       if (sharedPreferences!.getString("token").toString() != "null") {
         await requestPermission();
-            if (version != noBuild.toString()) {
-              dialogBoxVersion();
-            } else 
-        {
-        try {
+        if (version != noBuild.toString()) {
+          dialogBoxVersion();
+        } else {
+          try {
             print('in function get user');
             await ApiServices().getUsers();
             setState(() {
-              role = int.parse(sharedPreferences!.getString('role_sales_brand')!);
+              role =
+                  int.parse(sharedPreferences!.getString('role_sales_brand')!);
               print('Role user : $role');
             });
           } catch (c) {
@@ -66,60 +82,56 @@ class _MySplashScreenState extends State<MySplashScreen> {
             sharedPreferences!.setString('name', 'Failed To Load Data');
             Fluttertoast.showToast(msg: "Failed To Load Data User");
           }
-    
-     if( role == 15)
-     {
-        try {
-          loadListBRJ(); //ambil data cart
-        } catch (c) {
-          throw Fluttertoast.showToast(msg: "Database Off");
-        }
-        try {
-          loadListEticketing(); //ambil data cart
-        } catch (c) {
-          throw Fluttertoast.showToast(msg: "Database Off");
-        }
-        dialogBox();
-     } else 
-     {
-       try {
-          await _loadFromApi();
-          //? get token
-          try {
-            sharedPreferences?.setBool('isDinamis', false);
-            sharedPreferences!.setString('newOpen', 'true');
-            sharedPreferences!.setString('newOpenHome', 'true');
-            sharedPreferences!.setString('newOpenPosSales', 'true');
-            sharedPreferences!.setString('newOpenPosToko', 'true');
-            sharedPreferences!.setString('newOpenPosRetur', 'true');
-            sharedPreferences?.setBool('loading', true);
-            // sharedPreferences!.setString('newOpenHistory', 'true');
-            sharedPreferences!.setString('total_product_sales', '0');
-            print('wait token');
-            getToken();
-             Navigator.push(context,
-                      MaterialPageRoute(builder: (c) => const MainScreen()));
-          } catch (c) {
-            sharedPreferences!.setString('newOpen', 'true');
-            sharedPreferences?.setBool('loading', true);
-            sharedPreferences!.setString('newOpenHome', 'true');
-            sharedPreferences!.setString('newOpenPosSales', 'true');
-            sharedPreferences!.setString('newOpenPosToko', 'true');
-            sharedPreferences!.setString('newOpenPosRetur', 'true');
-            sharedPreferences!.setString('total_product_sales', '0');
-         Navigator.push(context,
+
+          if (role == 15) {
+            try {
+              loadListBRJ(); //ambil data cart
+            } catch (c) {
+              throw Fluttertoast.showToast(msg: "Database Off");
+            }
+            try {
+              loadListEticketing(); //ambil data cart
+            } catch (c) {
+              throw Fluttertoast.showToast(msg: "Database Off");
+            }
+            dialogBox();
+          } else {
+            try {
+              await _loadFromApi();
+              //? get token
+              try {
+                sharedPreferences?.setBool('isDinamis', false);
+                sharedPreferences!.setString('newOpen', 'true');
+                sharedPreferences!.setString('newOpenHome', 'true');
+                sharedPreferences!.setString('newOpenPosSales', 'true');
+                sharedPreferences!.setString('newOpenPosToko', 'true');
+                sharedPreferences!.setString('newOpenPosRetur', 'true');
+                sharedPreferences?.setBool('loading', true);
+                // sharedPreferences!.setString('newOpenHistory', 'true');
+                sharedPreferences!.setString('total_product_sales', '0');
+                print('wait token');
+                getToken();
+                Navigator.push(context,
                     MaterialPageRoute(builder: (c) => const MainScreen()));
+              } catch (c) {
+                sharedPreferences!.setString('newOpen', 'true');
+                sharedPreferences?.setBool('loading', true);
+                sharedPreferences!.setString('newOpenHome', 'true');
+                sharedPreferences!.setString('newOpenPosSales', 'true');
+                sharedPreferences!.setString('newOpenPosToko', 'true');
+                sharedPreferences!.setString('newOpenPosRetur', 'true');
+                sharedPreferences!.setString('total_product_sales', '0');
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (c) => const MainScreen()));
+              }
+            } catch (c) {
+              Fluttertoast.showToast(msg: "Failed To Load user data $c");
+              sharedPreferences?.setBool('dbDummy', false);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (c) => const AuthScreen()));
+            }
           }
-          } catch (c) {
-          Fluttertoast.showToast(msg: "Failed To Load user data $c");
-          sharedPreferences?.setBool('dbDummy', false);
-          Navigator.push(
-              context, MaterialPageRoute(builder: (c) => const AuthScreen()));
         }
-      }
-         
-}
-        
       } else //user is NOT already Logged-in
       {
         Fluttertoast.showToast(msg: "Failed To Load All Data");
@@ -128,7 +140,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
             context, MaterialPageRoute(builder: (c) => const AuthScreen()));
       }
     });
-}
+  }
 
 //get token
   getToken() async {
@@ -234,7 +246,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       throw Exception('error : $c');
     }
     try {
-      await apiProvider.getAllKodekeluarbarang();
+      apiProvider.getAllKodekeluarbarang();
     } catch (c) {
       print('Error all kode keluar barang : $c');
       throw Exception('error : $c');
@@ -246,20 +258,19 @@ class _MySplashScreenState extends State<MySplashScreen> {
     //   throw Exception('error : $c');
     // }
     try {
-      await apiProvider.getAllCustomer();
+      apiProvider.getAllCustomer();
     } catch (c) {
       print('Error gett all customer : $c');
       throw Exception('error : $c');
     }
     try {
-      await apiProvider.getAllTCRM();
+      apiProvider.getAllTCRM();
     } catch (c) {
       print('Error all crm : $c');
       throw Exception('error : $c');
     }
 
-   
-    await loadCartFromApiPOSSALES();
+    loadCartFromApiPOSSALES();
     setState(() {
       isLoading = false;
     });
@@ -307,27 +318,12 @@ class _MySplashScreenState extends State<MySplashScreen> {
     print('url : ${ApiConstants.baseUrl}');
     print('bool : ${sharedPreferences?.getBool('dbDummy')}');
 
-    try {
-      getVersion();
-    } catch (c) {
-      print('No Version DB : $noBuild');
-      setState(() {
-        version = noBuild.toString();
-        sharedPreferences!.setString('version', noBuild.toString());
-        // notif.sendNotificationTo(fcmTokensandy, 'Error Version',
-        //     'version database dan mobile tidak');
-        print('No Version DB : $noBuild');
-      });
-      throw Fluttertoast.showToast(msg: "Database Off");
-    }
-  
-
     splashScreenTimer();
   }
 
   Future<List<VersionModel>> getVersion() async {
-    final response = await http.get(
-        Uri.parse('${ApiConstants.baseUrlsandy}/get_version.php'));
+    final response = await http
+        .get(Uri.parse('${ApiConstants.baseUrlsandy}/get_version.php'));
     print('No Version DB : ${response.body}');
 
     if (response.statusCode == 200) {
@@ -438,41 +434,63 @@ class _MySplashScreenState extends State<MySplashScreen> {
                   ElevatedButton(
                     //if user click this button, user can upload image from gallery
                     onPressed: () async {
-                      
-                   try {
-          await _loadFromApi();
-          //? get token
-          try {
-            sharedPreferences?.setBool('isDinamis', false);
-            sharedPreferences!.setString('newOpen', 'true');
-            sharedPreferences!.setString('newOpenHome', 'true');
-            sharedPreferences!.setString('newOpenPosSales', 'true');
-            sharedPreferences!.setString('newOpenPosToko', 'true');
-            sharedPreferences!.setString('newOpenPosRetur', 'true');
-            sharedPreferences?.setBool('loading', true);
-            // sharedPreferences!.setString('newOpenHistory', 'true');
-            sharedPreferences!.setString('total_product_sales', '0');
-            print('wait token');
-            getToken();
-             Navigator.push(context,
-                      MaterialPageRoute(builder: (c) => const MainScreen()));
-          } catch (c) {
-            sharedPreferences!.setString('newOpen', 'true');
-            sharedPreferences?.setBool('loading', true);
-            sharedPreferences!.setString('newOpenHome', 'true');
-            sharedPreferences!.setString('newOpenPosSales', 'true');
-            sharedPreferences!.setString('newOpenPosToko', 'true');
-            sharedPreferences!.setString('newOpenPosRetur', 'true');
-            sharedPreferences!.setString('total_product_sales', '0');
-         Navigator.push(context,
-                    MaterialPageRoute(builder: (c) => const MainScreen()));
-          }
-          } catch (c) {
-          Fluttertoast.showToast(msg: "Failed To Load user data $c");
-          sharedPreferences?.setBool('dbDummy', false);
-          Navigator.push(
-              context, MaterialPageRoute(builder: (c) => const AuthScreen()));
-        } 
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (c) {
+                            return const LoadingDialogWidget(
+                              message: "",
+                            );
+                          });
+                      try {
+                        await _loadFromApi();
+                        //? get token
+                        try {
+                          sharedPreferences?.setBool('isDinamis', false);
+                          sharedPreferences!.setString('newOpen', 'true');
+                          sharedPreferences!.setString('newOpenHome', 'true');
+                          sharedPreferences!
+                              .setString('newOpenPosSales', 'true');
+                          sharedPreferences!
+                              .setString('newOpenPosToko', 'true');
+                          sharedPreferences!
+                              .setString('newOpenPosRetur', 'true');
+                          sharedPreferences?.setBool('loading', true);
+                          // sharedPreferences!.setString('newOpenHistory', 'true');
+                          sharedPreferences!
+                              .setString('total_product_sales', '0');
+                          print('wait token');
+                          getToken();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (c) => const MainScreen()));
+                        } catch (c) {
+                          sharedPreferences!.setString('newOpen', 'true');
+                          sharedPreferences?.setBool('loading', true);
+                          sharedPreferences!.setString('newOpenHome', 'true');
+                          sharedPreferences!
+                              .setString('newOpenPosSales', 'true');
+                          sharedPreferences!
+                              .setString('newOpenPosToko', 'true');
+                          sharedPreferences!
+                              .setString('newOpenPosRetur', 'true');
+                          sharedPreferences!
+                              .setString('total_product_sales', '0');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (c) => const MainScreen()));
+                        }
+                      } catch (c) {
+                        Fluttertoast.showToast(
+                            msg: "Failed To Load user data $c");
+                        sharedPreferences?.setBool('dbDummy', false);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (c) => const AuthScreen()));
+                      }
                     },
                     child: const Row(
                       children: [

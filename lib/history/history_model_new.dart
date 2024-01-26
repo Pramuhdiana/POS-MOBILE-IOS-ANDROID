@@ -3750,37 +3750,44 @@ class HistoryModelNew extends StatelessWidget {
             ? detailTransaksi[0].price
             : detailTransaksi[0].name[0].toString() == '4'
                 ? detailTransaksi[0].price
-                : detailTransaksi[0].price * 15000;
-    var diskon = allTransaksi.nett.toString() == '0'
-        ? 0
-        : ((subTotal * double.parse(allTransaksi.basic_discount)) / 100) ?? 0;
-    var totalSubDis =
-        allTransaksi.nett.toString() == '0' ? 0 : subTotal - diskon;
+                : detailTransaksi[0].price * 16000;
     var addDiskon = allTransaksi.nett.toString() == '0'
         ? 0
         : allTransaksi.addesdiskon_rupiah ?? 0;
     var addDiskon2 = allTransaksi.nett.toString() == '0'
         ? 0
         : allTransaksi.addaddesdiskon_rupiah2 ?? 0;
+
+    var diskon = allTransaksi.nett.toString() == '0'
+        ? 0
+        : ((subTotal * double.parse(allTransaksi.basic_discount)) / 100) +
+                addDiskon +
+                addDiskon2 ??
+            0;
+    var totalSubDis =
+        allTransaksi.nett.toString() == '0' ? 0 : subTotal - diskon;
+
     var voucherDiskon = allTransaksi.nett.toString() == '0'
         ? 0
         : allTransaksi.voucherDiskon ?? 0;
 
-        // var addDiskonSurprise = allTransaksi.nett.toString() == '0'
-        // ? 0
-        // : allTransaksi.surprise ?? 0;
+    // var addDiskonSurprise = allTransaksi.nett.toString() == '0'
+    // ? 0
+    // : allTransaksi.surprise ?? 0;
 
     var totalPayment = allTransaksi.nett.toString() == '0'
         ? 0
         // : totalSubDis - addDiskon - voucherDiskon - addDiskon2; //! before
-        :allTransaksi.nett;
+        : allTransaksi.nett - voucherDiskon;
     String kodeDiskon = voucherDiskon == 50000
         ? 'Voucher (BB50RB)'
         : voucherDiskon == 100000
             ? 'Voucher (BB100RB)'
-            : voucherDiskon == 500000
-                ? 'Voucher (BB500RB)'
-                : '-';
+            : voucherDiskon == 250000
+                ? 'Voucher (BB250RB)'
+                : voucherDiskon == 500000
+                    ? 'Voucher (BB500RB)'
+                    : '-';
     String noHP = '0';
     String namaCustomer = '-';
     String? tokens = sharedPreferences!.getString('token');
@@ -4100,51 +4107,51 @@ class HistoryModelNew extends StatelessWidget {
                                                       fontSize: 11.5)),
                                             ],
                                           )),
-                                  //? garis
-                                  pw.Container(
-                                    width: 230,
-                                    child: pw.Divider(
-                                      color: PdfColor.fromHex('#6595b5'),
-                                      // color: PdfColors.blue,
-                                      thickness: 1,
-                                    ),
-                                  ),
-                                  pw.Container(
-                                      padding: const pw.EdgeInsets.only(
-                                          left: 5, top: 1),
-                                      width: 238,
-                                      child: pw.Row(
-                                        mainAxisAlignment:
-                                            pw.MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          pw.Text('Total',
-                                              style: const pw.TextStyle(
-                                                  fontSize: 11.5)),
-                                          pw.Text(
-                                              '${CurrencyFormat.convertToDollar(totalSubDis, 0)}',
-                                              style: const pw.TextStyle(
-                                                  fontSize: 11.5)),
-                                        ],
-                                      )),
-                                  addDiskon == 0 && addDiskon2 == 0
-                                      ? pw.SizedBox(height: 15)
-                                      : pw.Container(
-                                          padding: const pw.EdgeInsets.only(
-                                              left: 5, top: 5),
-                                          width: 238,
-                                          child: pw.Row(
-                                            mainAxisAlignment: pw
-                                                .MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              pw.Text('Tambahan Discount',
-                                                  style: const pw.TextStyle(
-                                                      fontSize: 11.5)),
-                                              pw.Text(
-                                                  '${CurrencyFormat.convertToDollar(addDiskon + addDiskon2, 0)}',
-                                                  style: const pw.TextStyle(
-                                                      fontSize: 11.5)),
-                                            ],
-                                          )),
+                                  // //? garis
+                                  // pw.Container(
+                                  //   width: 230,
+                                  //   child: pw.Divider(
+                                  //     color: PdfColor.fromHex('#6595b5'),
+                                  //     // color: PdfColors.blue,
+                                  //     thickness: 1,
+                                  //   ),
+                                  // ),
+                                  // pw.Container(
+                                  //     padding: const pw.EdgeInsets.only(
+                                  //         left: 5, top: 1),
+                                  //     width: 238,
+                                  //     child: pw.Row(
+                                  //       mainAxisAlignment:
+                                  //           pw.MainAxisAlignment.spaceBetween,
+                                  //       children: [
+                                  //         pw.Text('Total',
+                                  //             style: const pw.TextStyle(
+                                  //                 fontSize: 11.5)),
+                                  //         pw.Text(
+                                  //             '${CurrencyFormat.convertToDollar(totalSubDis, 0)}',
+                                  //             style: const pw.TextStyle(
+                                  //                 fontSize: 11.5)),
+                                  //       ],
+                                  //     )),
+                                  // addDiskon == 0 && addDiskon2 == 0
+                                  //     ? pw.SizedBox(height: 15)
+                                  //     : pw.Container(
+                                  //         padding: const pw.EdgeInsets.only(
+                                  //             left: 5, top: 5),
+                                  //         width: 238,
+                                  //         child: pw.Row(
+                                  //           mainAxisAlignment: pw
+                                  //               .MainAxisAlignment.spaceBetween,
+                                  //           children: [
+                                  //             pw.Text('Tambahan Discount',
+                                  //                 style: const pw.TextStyle(
+                                  //                     fontSize: 11.5)),
+                                  //             pw.Text(
+                                  //                 '${CurrencyFormat.convertToDollar(addDiskon + addDiskon2, 0)}',
+                                  //                 style: const pw.TextStyle(
+                                  //                     fontSize: 11.5)),
+                                  //           ],
+                                  //         )),
                                   voucherDiskon == 0
                                       ? pw.SizedBox(height: 15)
                                       : pw.Container(
@@ -4748,18 +4755,23 @@ class HistoryModelNew extends StatelessWidget {
         ? 0
         : detailTransaksi[0].name[0].toString() == '4'
             ? detailTransaksi[0].price
-            : detailTransaksi[0].price * 15000;
-    var diskon = allTransaksi.nett.toString() == '0'
-        ? 0
-        : ((subTotal * double.parse(allTransaksi.basic_discount)) / 100) ?? 0;
-    var totalSubDis =
-        allTransaksi.nett.toString() == '0' ? 0 : subTotal - diskon;
+            : detailTransaksi[0].price * 16000;
+
     var addDiskon = allTransaksi.nett.toString() == '0'
         ? 0
         : allTransaksi.addesdiskon_rupiah ?? 0;
     var addDiskon2 = allTransaksi.nett.toString() == '0'
         ? 0
         : allTransaksi.addaddesdiskon_rupiah2 ?? 0;
+
+    var diskon = allTransaksi.nett.toString() == '0'
+        ? 0
+        : ((subTotal * double.parse(allTransaksi.basic_discount)) / 100) +
+                addDiskon +
+                addDiskon2 ??
+            0;
+    var totalSubDis =
+        allTransaksi.nett.toString() == '0' ? 0 : subTotal - diskon;
     var voucherDiskon = allTransaksi.nett.toString() == '0'
         ? 0
         : allTransaksi.voucherDiskon ?? 0;
@@ -4770,9 +4782,11 @@ class HistoryModelNew extends StatelessWidget {
         ? 'Voucher (BB50RB)'
         : voucherDiskon == 100000
             ? 'Voucher (BB100RB)'
-            : voucherDiskon == 500000
-                ? 'Voucher (BB500RB)'
-                : '-';
+            : voucherDiskon == 250000
+                ? 'Voucher (BB250RB)'
+                : voucherDiskon == 500000
+                    ? 'Voucher (BB500RB)'
+                    : '-';
     String noHP = '0';
     String namaCustomer = '-';
     String? tokens = sharedPreferences!.getString('token');
@@ -5092,51 +5106,51 @@ class HistoryModelNew extends StatelessWidget {
                                                       fontSize: 11.5)),
                                             ],
                                           )),
-                                  //? garis
-                                  pw.Container(
-                                    width: 230,
-                                    child: pw.Divider(
-                                      color: PdfColor.fromHex('#6595b5'),
-                                      // color: PdfColors.blue,
-                                      thickness: 1,
-                                    ),
-                                  ),
-                                  pw.Container(
-                                      padding: const pw.EdgeInsets.only(
-                                          left: 5, top: 1),
-                                      width: 238,
-                                      child: pw.Row(
-                                        mainAxisAlignment:
-                                            pw.MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          pw.Text('Total',
-                                              style: const pw.TextStyle(
-                                                  fontSize: 11.5)),
-                                          pw.Text(
-                                              '${CurrencyFormat.convertToDollar(totalSubDis, 0)}',
-                                              style: const pw.TextStyle(
-                                                  fontSize: 11.5)),
-                                        ],
-                                      )),
-                                  addDiskon == 0
-                                      ? pw.SizedBox(height: 15)
-                                      : pw.Container(
-                                          padding: const pw.EdgeInsets.only(
-                                              left: 5, top: 5),
-                                          width: 238,
-                                          child: pw.Row(
-                                            mainAxisAlignment: pw
-                                                .MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              pw.Text('Tambahan Discount',
-                                                  style: const pw.TextStyle(
-                                                      fontSize: 11.5)),
-                                              pw.Text(
-                                                  '${CurrencyFormat.convertToDollar(addDiskon + addDiskon2, 0)}',
-                                                  style: const pw.TextStyle(
-                                                      fontSize: 11.5)),
-                                            ],
-                                          )),
+                                  // //? garis
+                                  // pw.Container(
+                                  //   width: 230,
+                                  //   child: pw.Divider(
+                                  //     color: PdfColor.fromHex('#6595b5'),
+                                  //     // color: PdfColors.blue,
+                                  //     thickness: 1,
+                                  //   ),
+                                  // ),
+                                  // pw.Container(
+                                  //     padding: const pw.EdgeInsets.only(
+                                  //         left: 5, top: 1),
+                                  //     width: 238,
+                                  //     child: pw.Row(
+                                  //       mainAxisAlignment:
+                                  //           pw.MainAxisAlignment.spaceBetween,
+                                  //       children: [
+                                  //         pw.Text('Total',
+                                  //             style: const pw.TextStyle(
+                                  //                 fontSize: 11.5)),
+                                  //         pw.Text(
+                                  //             '${CurrencyFormat.convertToDollar(totalSubDis, 0)}',
+                                  //             style: const pw.TextStyle(
+                                  //                 fontSize: 11.5)),
+                                  //       ],
+                                  //     )),
+                                  // addDiskon == 0
+                                  //     ? pw.SizedBox(height: 15)
+                                  //     : pw.Container(
+                                  //         padding: const pw.EdgeInsets.only(
+                                  //             left: 5, top: 5),
+                                  //         width: 238,
+                                  //         child: pw.Row(
+                                  //           mainAxisAlignment: pw
+                                  //               .MainAxisAlignment.spaceBetween,
+                                  //           children: [
+                                  //             pw.Text('Tambahan Discount',
+                                  //                 style: const pw.TextStyle(
+                                  //                     fontSize: 11.5)),
+                                  //             pw.Text(
+                                  //                 '${CurrencyFormat.convertToDollar(addDiskon + addDiskon2, 0)}',
+                                  //                 style: const pw.TextStyle(
+                                  //                     fontSize: 11.5)),
+                                  //           ],
+                                  //         )),
                                   voucherDiskon == 0
                                       ? pw.SizedBox(height: 15)
                                       : pw.Container(

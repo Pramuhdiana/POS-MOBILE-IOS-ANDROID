@@ -36,29 +36,26 @@ class ApiServices {
   Future<List<Null>?> getAllItems() async {
     int? lengthIdSqlLite;
 
-await DbAllitems.db.getAll().then((value) {
-  lengthIdSqlLite = value.length;
+    await DbAllitems.db.getAll().then((value) {
+      lengthIdSqlLite = value.length;
+    });
 
-});
-
-  
     var url = ApiConstants.baseUrl + ApiConstants.GETposSalesendpoint;
     Response response = await Dio().get(url,
         options: Options(headers: {"Authorization": "Bearer $token"}));
-    int? lengthIdApi =response.data.length;
+    int? lengthIdApi = response.data.length;
 
-    if(lengthIdSqlLite != lengthIdApi){
-    await DbAllitems.db.deleteAllitems();
+    if (lengthIdSqlLite != lengthIdApi) {
+      await DbAllitems.db.deleteAllitems();
 
-  return (response.data as List).map((items) {
-      DbAllitems.db.createAllitems(ModelAllitems.fromJson(items));
-      print('insert to database allitems sales');
-    }).toList();
+      return (response.data as List).map((items) {
+        DbAllitems.db.createAllitems(ModelAllitems.fromJson(items));
+        print('insert to database allitems sales');
+      }).toList();
     } else {
       print('database tidak ada perubahan (item sales)');
       return null;
     }
-      
   }
 
   getUsers() async {
@@ -124,96 +121,100 @@ await DbAllitems.db.getAll().then((value) {
   //   }).toList();
   // }
   Future<List<Null>?> getAllTransaksiBaru() async {
-     int? lengthIdSqlLite;
+    int? lengthIdSqlLite;
 
-await DbAlltransaksiBaru.db.getAll().then((value) {
-  lengthIdSqlLite = value.length;
-
-});
+    await DbAlltransaksiBaru.db.getAll().then((value) {
+      lengthIdSqlLite = value.length;
+    });
     Response response = await Dio().get(
         ApiConstants.baseUrl + ApiConstants.GETtransaksiendpoint,
         options: Options(headers: {"Authorization": "Bearer $token"}));
-    int? lengthIdApi =response.data.length;
-    if(lengthIdSqlLite != lengthIdApi){
-    await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
+    int? lengthIdApi = response.data.length;
+    if (lengthIdSqlLite != lengthIdApi) {
+      await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
 
- return (response.data as List).map((transaksi) {
-      DbAlltransaksiBaru.db
-          .createAlltransaksiBaru(ModelAlltransaksiBaru.fromJson(transaksi));
-    }).toList();
-    }else{
-  print('database tidak ada perubahan (all transaksi)');
+      return (response.data as List).map((transaksi) {
+        DbAlltransaksiBaru.db
+            .createAlltransaksiBaru(ModelAlltransaksiBaru.fromJson(transaksi));
+      }).toList();
+    } else {
+      print('database tidak ada perubahan (all transaksi)');
       return null;
     }
-
-    
-   
   }
 
-  Future<List<Null>> getAllKodekeluarbarang() async {
+  List<dynamic> removeDuplicates(List<dynamic> items) {
+    List<dynamic> uniqueItems = []; // uniqueList
+    var uniqueNames = items
+        .map((e) => e.kode_refrensi)
+        .toSet(); //list if UniqueID to remove duplicates
+    for (var e in uniqueNames) {
+      uniqueItems.add(items.firstWhere((i) => i.kode_refrensi == e));
+    } // populate uniqueItems with equivalent original Batch items
+    return uniqueItems; //send back the unique items list
+  }
+
+  getAllKodekeluarbarang() async {
+    List<String> kdRef = [];
     Response response = await Dio().get(
         ApiConstants.baseUrl + ApiConstants.GETposSalesendpoint,
         options: Options(headers: {"Authorization": "Bearer $token"}));
-
-    return (response.data as List).map((transaksi) {
-      DbAllKodekeluarbarang.db.createAllkodekeluarbarang(
-          ModelAllKodekeluarbarang.fromJson(transaksi));
-      print('Inserting kode refrensi berhasil');
-    }).toList();
+    for (var i = 0; i < response.data.length; i++) {
+      kdRef.add(response.data[i]['kode_refrensi']);
+    }
+    kdRef =
+        kdRef.toSet().toList(); //! remove duplicate dengan toset dan to list
+    kdRef.removeWhere((value) => value == '');
+    for (var i = 0; i < kdRef.length; i++) {
+      print('kod : ${kdRef[i]}');
+      DbAllKodekeluarbarang.db.createAllkodekeluarbarang(kdRef[i]);
+    }
   }
 
   Future<List<Null>?> getAllDetailTransaksi() async {
-
-
     int? lengthIdSqlLite;
 
-await DbAlldetailtransaksi.db.getAll().then((value) {
-  lengthIdSqlLite = value.length;
-
-});
+    await DbAlldetailtransaksi.db.getAll().then((value) {
+      lengthIdSqlLite = value.length;
+    });
     Response response = await Dio().get(
         ApiConstants.baseUrl + ApiConstants.GETdetailtransaksiendpoint,
         options: Options(headers: {"Authorization": "Bearer $token"}));
-    int? lengthIdApi =response.data.length;
-    if(lengthIdSqlLite != lengthIdApi){
-    await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
+    int? lengthIdApi = response.data.length;
+    if (lengthIdSqlLite != lengthIdApi) {
+      await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
 
-    return (response.data as List).map((detailtransaksi) {
-      DbAlldetailtransaksi.db.createAlldetailtransaksi(
-          ModelAlldetailtransaksi.fromJson(detailtransaksi));
-      print('Inserting detail transaksi berhasil');
-    }).toList();
+      return (response.data as List).map((detailtransaksi) {
+        DbAlldetailtransaksi.db.createAlldetailtransaksi(
+            ModelAlldetailtransaksi.fromJson(detailtransaksi));
+        print('Inserting detail transaksi berhasil');
+      }).toList();
     } else {
-print('database tidak ada perubahan (detail transaksi)');
+      print('database tidak ada perubahan (detail transaksi)');
       return null;
     }
-
-   
   }
 
   Future<List<Null>?> getAllCustomer() async {
-     int? lengthIdSqlLite;
+    int? lengthIdSqlLite;
 
-await DbAllCustomer.db.getAll().then((value) {
-  lengthIdSqlLite = value.length;
-
-});
+    await DbAllCustomer.db.getAll().then((value) {
+      lengthIdSqlLite = value.length;
+    });
     var url = ApiConstants.baseUrl + ApiConstants.GETcustomerendpoint;
     Response response = await Dio().get(url,
         options: Options(headers: {"Authorization": "Bearer $token"}));
-    int? lengthIdApi =response.data.length;
- if(lengthIdSqlLite != lengthIdApi){
-    await DbAllCustomer.db.deleteAllcustomer();
-     return (response.data as List).map((customer) {
-      DbAllCustomer.db.createAllcustomer(ModelAllCustomer.fromJson(customer));
-      print('insert to database allcustomer ');
-    }).toList();
+    int? lengthIdApi = response.data.length;
+    if (lengthIdSqlLite != lengthIdApi) {
+      await DbAllCustomer.db.deleteAllcustomer();
+      return (response.data as List).map((customer) {
+        DbAllCustomer.db.createAllcustomer(ModelAllCustomer.fromJson(customer));
+        print('insert to database allcustomer ');
+      }).toList();
     } else {
-  print('database tidak ada perubahan (all customer)');
+      print('database tidak ada perubahan (all customer)');
       return null;
     }
-
-   
   }
 
   Future<List<Null>> getAllItemsToko() async {
@@ -249,44 +250,65 @@ await DbAllCustomer.db.getAll().then((value) {
     }).toList();
   }
 
+  handelErr(var crm) {
+    print('errorrr');
+    DbCRM.db.createAllcrm(ModelCRM(
+      user_id: crm['user_id'],
+      customer_id: crm['customer_id'],
+      aktivitas_id: crm['aktivitas_id'],
+      visit_id: crm['visit_id'],
+      hasil_aktivitas: crm['hasil_aktivitas'],
+      nominal_hasil: crm['nominal_hasil'],
+      nomor_invoice: crm['nomor_invoice'],
+      detail: crm['detail'],
+      tanggal_aktivitas: crm['tanggal_aktivitas'],
+      created_at: crm['created_at'],
+      nama_toko: 'toko',
+    ));
+  }
+
   Future<List<Null>?> getAllTCRM() async {
-     int? lengthIdSqlLite;
+    int? lengthIdSqlLite;
 
-await DbCRM.db.getAll().then((value) {
-  lengthIdSqlLite = value.length;
-
-});
+    await DbCRM.db.getAll().then((value) {
+      lengthIdSqlLite = value.length;
+    });
     Response response = await Dio().get(
         ApiConstants.baseUrl + ApiConstants.GETcrmendpoint,
         options: Options(headers: {"Authorization": "Bearer $token"}));
-    int? lengthIdApi =response.data.length;
-if(lengthIdSqlLite != lengthIdApi){
-    await DbCRM.db.deleteAllcrm();
-    return (response.data as List).map((crm) {
-      DbAllCustomer.db.getNameCustomer(crm['customer_id']).then((value) {
-        DbCRM.db.createAllcrm(ModelCRM(
-          user_id: crm['user_id'],
-          customer_id: crm['customer_id'],
-          aktivitas_id: crm['aktivitas_id'],
-          visit_id: crm['visit_id'],
-          hasil_aktivitas: crm['hasil_aktivitas'],
-          nominal_hasil: crm['nominal_hasil'],
-          nomor_invoice: crm['nomor_invoice'],
-          detail: crm['detail'],
-          tanggal_aktivitas: crm['tanggal_aktivitas'],
-          created_at: crm['created_at'],
-          nama_toko: value,
-        ));
-      });
-      // DbCRM.db.createAllcrm(ModelCRM.fromJson(crm));
-      print('Inserting CRM berhasil');
-    }).toList();
-} else {
- 
-     print('database tidak ada perubahan (crm)');
+    int? lengthIdApi = response.data.length;
+    print(lengthIdSqlLite);
+    print('====');
+    print(lengthIdApi);
+    if (lengthIdSqlLite != lengthIdApi) {
+      await DbCRM.db.deleteAllcrm();
+      return (response.data as List).map((crm) {
+        DbAllCustomer.db.getNameCustomer(crm['customer_id']).then(
+          (value) {
+            DbCRM.db.createAllcrm(ModelCRM(
+              user_id: crm['user_id'],
+              customer_id: crm['customer_id'],
+              aktivitas_id: crm['aktivitas_id'],
+              visit_id: crm['visit_id'],
+              hasil_aktivitas: crm['hasil_aktivitas'],
+              nominal_hasil: crm['nominal_hasil'],
+              nomor_invoice: crm['nomor_invoice'],
+              detail: crm['detail'],
+              tanggal_aktivitas: crm['tanggal_aktivitas'],
+              created_at: crm['created_at'],
+              nama_toko: value,
+            ));
+          },
+          // onError: handelErr(crm)
+        );
+
+        // DbCRM.db.createAllcrm(ModelCRM.fromJson(crm));
+        print('Inserting CRM berhasil');
+      }).toList();
+    } else {
+      print('database tidak ada perubahan (crm)');
       return null;
-}
-   
+    }
   }
 }
 

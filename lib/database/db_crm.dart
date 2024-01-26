@@ -60,9 +60,9 @@ class DbCRM {
   }
 
   createAllcrm(ModelCRM newCrm) async {
+    print('nama toko ${newCrm.nama_toko}');
     final db = await database;
     final res = await db.insert('allcrm', newCrm.toJson());
-    print('crm masuk database');
     return res;
   }
 

@@ -678,7 +678,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
             context,
             MaterialPageRoute(
                 builder: (c) => TransaksiGagal(
-                      title: 'Transaksi Toko',
+                      title: 'Transaksi Toko gagal',
                       err: '${response.body}',
                     )));
       } else {
@@ -699,7 +699,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
           context,
           MaterialPageRoute(
               builder: (c) => TransaksiGagal(
-                    title: 'Transaksi Toko',
+                    title: 'Transaksi Toko gagal',
                     err: '$c',
                   )));
     }
@@ -752,7 +752,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
             context,
             MaterialPageRoute(
                 builder: (c) => TransaksiGagal(
-                      title: 'Transaksi Toko',
+                      title: 'Transaksi Toko gagal',
                       err: '${response.body}',
                     )));
       } else {
@@ -773,7 +773,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
           context,
           MaterialPageRoute(
               builder: (c) => TransaksiGagal(
-                    title: 'Transaksi Toko',
+                    title: 'Transaksi Toko gagal',
                     err: '$c',
                   )));
     }
