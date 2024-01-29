@@ -75,8 +75,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
       }
     });
     // _getData();
-    // context.read<PApprovalBrj>().clearNotif(); //clear cart
-    // loadListBRJ(); //ambil data cart
+    context.read<PApprovalBrj>().clearNotif(); //clear cart
+    loadListBRJ(); //ambil data cart
     context.read<PApprovalEticketing>().clearNotif(); //clear cart
     loadListEticketing(); //ambil data cart
     PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();

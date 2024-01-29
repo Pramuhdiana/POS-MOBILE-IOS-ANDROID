@@ -89,11 +89,11 @@ class _MySplashScreenState extends State<MySplashScreen> {
           }
 
           if (role == 15) {
-            try {
-              loadListBRJ(); //ambil data cart
-            } catch (c) {
-              throw Fluttertoast.showToast(msg: "Database Off");
-            }
+            // try {
+            //   loadListBRJ(); //ambil data cart
+            // } catch (c) {
+            //   throw Fluttertoast.showToast(msg: "Database Off");
+            // }
             try {
               loadListHistoryPrice(); //ambil data history price
             } catch (c) {
