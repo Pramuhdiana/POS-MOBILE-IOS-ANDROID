@@ -1,5 +1,6 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, avoid_print
 
+import 'package:e_shop/buStephanie/approve_pricing_model.dart';
 import 'package:e_shop/provider/provider_waiting_brj.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +16,9 @@ import 'approved_pricing_brj_screen.dart';
 import 'approved_pricing_eticketing.dart';
 
 class MainScreenApprovePricing extends StatefulWidget {
-  const MainScreenApprovePricing({Key? key}) : super(key: key);
+  final List<ApprovePricingModel>? dataApproved;
+
+  const MainScreenApprovePricing({super.key, this.dataApproved});
 
   @override
   _MainScreenApprovePricingState createState() =>
@@ -25,13 +28,31 @@ class MainScreenApprovePricing extends StatefulWidget {
 class _MainScreenApprovePricingState extends State<MainScreenApprovePricing> {
   int _selectedIndex = 0;
   DateTime backPressedTime = DateTime.now();
+  List<ApprovePricingModel>? getApprovedBRJ;
+  List<Widget> _tabs = [];
 
-  final List<Widget> _tabs = [
-    ApprovalPricingBrjScreen(),
-    ApprovedPricingBrjScreen(),
-    ApprovalPricingEticketingScreen(),
-    ApprovedPricingEticketingScreen(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    getApprovedBRJ = widget.dataApproved;
+    _tabs = [
+      ApprovalPricingBrjScreen(
+        dataApproved: getApprovedBRJ,
+      ),
+      ApprovedPricingBrjScreen(),
+      ApprovalPricingEticketingScreen(),
+      ApprovedPricingEticketingScreen(),
+    ];
+  }
+
+  //  final List<Widget> _tabs = [
+  //   ApprovalPricingBrjScreen(
+  //     dataApproved: getApprovedBRJ,
+  //   ),
+  //   ApprovedPricingBrjScreen(),
+  //   ApprovalPricingEticketingScreen(),
+  //   ApprovedPricingEticketingScreen(),
+  // ];
 
   @override
   Widget build(BuildContext context) {

@@ -4488,119 +4488,187 @@ class HistoryModelNew extends StatelessWidget {
                                 ),
                               ),
                             ]),
-                            pw.Container(
-                              padding: const pw.EdgeInsets.only(left: 15),
-                              height: 390,
-                              width: 276,
-                              child: pw.Column(
-                                mainAxisAlignment: pw.MainAxisAlignment.start,
-                                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                                children: [
-                                  pw.SizedBox(height: 10),
-                                  pw.Text('Syarat dan Ketentuan',
-                                      style: pw.TextStyle(
-                                          color: PdfColors.black,
-                                          fontWeight: pw.FontWeight.bold,
-                                          fontSize: 12)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '1. Jual kembali dan tukar tambah hanya dapat dilakukan jika disertai invoice pembelian asli dengan stempel asli.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '2. Potongan untuk jual kembali dan tukar tambah berdasarkan dari harga total payment.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '3. Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 5 tahun (rentang waktu bulan ke 13 - bulan ke 60) dari tanggal pembelian.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '4. Perhiasan dengan kategori wedding ring tidak bisa dijual kembali/tukar tambah.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '5. Perhiasan harus diterima dalam keadaan baik dan akan diperiksa ulang untuk memenuhi kualitas standar, dan beliberlian.id berhak untuk menolak jika tidak sesuai standar (syarat dan ketentuan berlaku).',
-                                      //  textAlign: pw.TextAlign.left,
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '6. Pembelian dengan voucher, special price, atau promo tertentu tidak dapat dijual kembali.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '7. Pihak beliberlian tidak bertanggung jawab atas kehilangan barang milik pembeli.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '8. Peraturan bisa berubah sewaktu-waktu sesuai dengan kebijakan beliberlian.id.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '9. Perhiasan yang dibeli sudah termasuk PPN 11%.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  totalPayment < 2000000.00
-                                      ? pw.Text(
-                                          '10. Produk yang dapat dijual kembali/tukar tambah adalah produk dengan nilai minimal Rp 2,000,000.',
-                                          style: pw.TextStyle(
-                                              font: font,
-                                              color: PdfColors.black,
-                                              fontSize: 7))
-                                      : pw.SizedBox(height: 0),
-                                  pw.SizedBox(height: 10),
-                                  pw.Container(
-                                    padding: const pw.EdgeInsets.only(left: 12),
-                                    child: pw.Text('Hormat Kami,',
-                                        style: pw.TextStyle(
-                                            color: PdfColors.black,
-                                            fontSize: 16,
-                                            fontWeight: pw.FontWeight.bold)),
-                                  ),
-                                  pw.SizedBox(height: 80),
-                                  pw.Container(
-                                      padding:
-                                          const pw.EdgeInsets.only(left: 5),
-                                      width: 130,
-                                      child: pw.Divider(thickness: 1)),
-                                  pw.Container(
-                                    padding: const pw.EdgeInsets.only(left: 25),
-                                    child: pw.Text(
-                                        '${sharedPreferences!.getString("name")!}',
-                                        style: const pw.TextStyle(
-                                            color: PdfColors.black,
-                                            fontSize: 11.5)),
-                                  ),
-                                ],
-                              ),
-                            )
+                            totalPayment < 2000000.00
+                                ?
+                                //! untuk invoice dibawah 2 juta
+                                pw.Container(
+                                    padding: const pw.EdgeInsets.only(left: 15),
+                                    height: 390,
+                                    width: 276,
+                                    child: pw.Column(
+                                      mainAxisAlignment:
+                                          pw.MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          pw.CrossAxisAlignment.start,
+                                      children: [
+                                        pw.SizedBox(height: 10),
+                                        pw.Text('Syarat dan Ketentuan',
+                                            style: pw.TextStyle(
+                                                color: PdfColors.black,
+                                                fontWeight: pw.FontWeight.bold,
+                                                fontSize: 12)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '1. Produk yang dapat dijual kembali/tukar tambah adalah produk dengan nilai minimal Rp 2,000,000.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '2. Pihak beliberlian tidak bertanggung jawab atas kehilangan barang milik pembeli.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '3. Peraturan bisa berubah sewaktu-waktu sesuai dengan kebijakan beliberlian.id..',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '4. Perhiasan yang dibeli sudah termasuk PPN 11%.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 160),
+                                        pw.Container(
+                                          padding: const pw.EdgeInsets.only(
+                                              left: 12),
+                                          child: pw.Text('Hormat Kami,',
+                                              style: pw.TextStyle(
+                                                  color: PdfColors.black,
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                      pw.FontWeight.bold)),
+                                        ),
+                                        pw.SizedBox(height: 80),
+                                        pw.Container(
+                                            padding: const pw.EdgeInsets.only(
+                                                left: 5),
+                                            width: 130,
+                                            child: pw.Divider(thickness: 1)),
+                                        pw.Container(
+                                          padding: const pw.EdgeInsets.only(
+                                              left: 25),
+                                          child: pw.Text(
+                                              '${sharedPreferences!.getString("name")!}',
+                                              style: const pw.TextStyle(
+                                                  color: PdfColors.black,
+                                                  fontSize: 11.5)),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                :
+                                //? invoice untuk yang lebih dari 2 juta
+
+                                pw.Container(
+                                    padding: const pw.EdgeInsets.only(left: 15),
+                                    height: 390,
+                                    width: 276,
+                                    child: pw.Column(
+                                      mainAxisAlignment:
+                                          pw.MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          pw.CrossAxisAlignment.start,
+                                      children: [
+                                        pw.SizedBox(height: 10),
+                                        pw.Text('Syarat dan Ketentuan',
+                                            style: pw.TextStyle(
+                                                color: PdfColors.black,
+                                                fontWeight: pw.FontWeight.bold,
+                                                fontSize: 12)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '1. Jual kembali atau tukar tambah hanya dapat dilakukan jika disertai invoice pembelian asli dengan stempel asli.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '2. Potongan untuk jual kembali atau tukar tambah berdasarkan dari harga total payment.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '3. Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 5 tahun (rentang waktu bulan ke 13 - bulan ke 60) dari tanggal pembelian. Nilai jual kembali atau tukar tambah mulai dari 25% - 35%* (*S&K berlaku).',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '4. Perhiasan dengan kategori wedding ring tidak bisa dijual kembali/tukar tambah.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '5. Perhiasan harus diterima dalam keadaan baik dan akan diperiksa ulang untuk memenuhi kualitas standar, dan beliberlian.id berhak untuk menolak jika tidak sesuai standar (syarat dan ketentuan berlaku).',
+                                            //  textAlign: pw.TextAlign.left,
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '6. Pihak beliberlian tidak bertanggung jawab atas kehilangan barang milik pembeli.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '7. Peraturan bisa berubah sewaktu-waktu sesuai dengan kebijakan beliberlian.id.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '8. Perhiasan yang dibeli sudah termasuk PPN 11%.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 40),
+                                        pw.Container(
+                                          padding: const pw.EdgeInsets.only(
+                                              left: 12),
+                                          child: pw.Text('Hormat Kami,',
+                                              style: pw.TextStyle(
+                                                  color: PdfColors.black,
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                      pw.FontWeight.bold)),
+                                        ),
+                                        pw.SizedBox(height: 80),
+                                        pw.Container(
+                                            padding: const pw.EdgeInsets.only(
+                                                left: 5),
+                                            width: 130,
+                                            child: pw.Divider(thickness: 1)),
+                                        pw.Container(
+                                          padding: const pw.EdgeInsets.only(
+                                              left: 25),
+                                          child: pw.Text(
+                                              '${sharedPreferences!.getString("name")!}',
+                                              style: const pw.TextStyle(
+                                                  color: PdfColors.black,
+                                                  fontSize: 11.5)),
+                                        ),
+                                      ],
+                                    ),
+                                  )
                           ],
                         )
                       ]),
@@ -5487,120 +5555,187 @@ class HistoryModelNew extends StatelessWidget {
                                 ),
                               ),
                             ]),
-                            pw.Container(
-                              padding: const pw.EdgeInsets.only(left: 15),
-                              height: 390,
-                              width: 276,
-                              child: pw.Column(
-                                mainAxisAlignment: pw.MainAxisAlignment.start,
-                                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                                children: [
-                                  pw.SizedBox(height: 10),
-                                  pw.Text('Syarat dan Ketentuan',
-                                      style: pw.TextStyle(
-                                          color: PdfColors.black,
-                                          fontWeight: pw.FontWeight.bold,
-                                          fontSize: 12)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '1. Jual kembali dan tukar tambah hanya dapat dilakukan jika disertai invoice pembelian asli dengan stempel asli.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '2. Potongan untuk jual kembali dan tukar tambah berdasarkan dari harga total payment.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '3. Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 5 tahun (rentang waktu bulan ke 13 - bulan ke 60) dari tanggal pembelian.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '4. Perhiasan dengan kategori wedding ring tidak bisa dijual kembali/tukar tambah.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '5. Perhiasan harus diterima dalam keadaan baik dan akan diperiksa ulang untuk memenuhi kualitas standar, dan beliberlian.id berhak untuk menolak jika tidak sesuai standar (syarat dan ketentuan berlaku).',
-                                      //  textAlign: pw.TextAlign.left,
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '6. Pembelian dengan voucher, special price, atau promo tertentu tidak dapat dijual kembali.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '7. Pihak beliberlian tidak bertanggung jawab atas kehilangan barang milik pembeli.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '8. Peraturan bisa berubah sewaktu-waktu sesuai dengan kebijakan beliberlian.id.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  pw.Text(
-                                      '9. Perhiasan yang dibeli sudah termasuk PPN 11%.',
-                                      style: pw.TextStyle(
-                                          font: font,
-                                          color: PdfColors.black,
-                                          fontSize: 7)),
-                                  pw.SizedBox(height: 2),
-                                  totalPayment < 2000000.00
-                                      ? pw.Text(
-                                          '10. Produk yang dapat dijual kembali/tukar tambah adalah produk dengan nilai minimal Rp 2,000,000.',
-                                          style: pw.TextStyle(
-                                              font: font,
-                                              color: PdfColors.black,
-                                              fontSize: 7))
-                                      : pw.SizedBox(height: 0),
-                                  pw.SizedBox(height: 10),
-                                  pw.Container(
-                                    padding: const pw.EdgeInsets.only(left: 12),
-                                    child: pw.Text('Hormat Kami,',
-                                        style: pw.TextStyle(
-                                            color: PdfColors.black,
-                                            fontSize: 16,
-                                            fontWeight: pw.FontWeight.bold)),
-                                  ),
-                                  pw.SizedBox(height: 80),
-                                  pw.Container(
-                                      padding:
-                                          const pw.EdgeInsets.only(left: 5),
-                                      width: 130,
-                                      child: pw.Divider(thickness: 1)),
-                                  pw.Container(
-                                    padding: const pw.EdgeInsets.only(left: 25),
-                                    child: pw.Text(
-                                        // 'Hendrik Wijaya',
-                                        '${sharedPreferences!.getString("name")!}',
-                                        style: const pw.TextStyle(
-                                            color: PdfColors.black,
-                                            fontSize: 11.5)),
-                                  ),
-                                ],
-                              ),
-                            )
+                            totalPayment < 2000000.00
+                                ?
+                                //! untuk invoice dibawah 2 juta
+                                pw.Container(
+                                    padding: const pw.EdgeInsets.only(left: 15),
+                                    height: 390,
+                                    width: 276,
+                                    child: pw.Column(
+                                      mainAxisAlignment:
+                                          pw.MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          pw.CrossAxisAlignment.start,
+                                      children: [
+                                        pw.SizedBox(height: 10),
+                                        pw.Text('Syarat dan Ketentuan',
+                                            style: pw.TextStyle(
+                                                color: PdfColors.black,
+                                                fontWeight: pw.FontWeight.bold,
+                                                fontSize: 12)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '1. Produk yang dapat dijual kembali/tukar tambah adalah produk dengan nilai minimal Rp 2,000,000.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '2. Pihak beliberlian tidak bertanggung jawab atas kehilangan barang milik pembeli.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '3. Peraturan bisa berubah sewaktu-waktu sesuai dengan kebijakan beliberlian.id..',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '4. Perhiasan yang dibeli sudah termasuk PPN 11%.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 160),
+                                        pw.Container(
+                                          padding: const pw.EdgeInsets.only(
+                                              left: 12),
+                                          child: pw.Text('Hormat Kami,',
+                                              style: pw.TextStyle(
+                                                  color: PdfColors.black,
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                      pw.FontWeight.bold)),
+                                        ),
+                                        pw.SizedBox(height: 80),
+                                        pw.Container(
+                                            padding: const pw.EdgeInsets.only(
+                                                left: 5),
+                                            width: 130,
+                                            child: pw.Divider(thickness: 1)),
+                                        pw.Container(
+                                          padding: const pw.EdgeInsets.only(
+                                              left: 25),
+                                          child: pw.Text(
+                                              '${sharedPreferences!.getString("name")!}',
+                                              style: const pw.TextStyle(
+                                                  color: PdfColors.black,
+                                                  fontSize: 11.5)),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                :
+                                //? invoice untuk yang lebih dari 2 juta
+
+                                pw.Container(
+                                    padding: const pw.EdgeInsets.only(left: 15),
+                                    height: 390,
+                                    width: 276,
+                                    child: pw.Column(
+                                      mainAxisAlignment:
+                                          pw.MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          pw.CrossAxisAlignment.start,
+                                      children: [
+                                        pw.SizedBox(height: 10),
+                                        pw.Text('Syarat dan Ketentuan',
+                                            style: pw.TextStyle(
+                                                color: PdfColors.black,
+                                                fontWeight: pw.FontWeight.bold,
+                                                fontSize: 12)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '1. Jual kembali atau tukar tambah hanya dapat dilakukan jika disertai invoice pembelian asli dengan stempel asli.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '2. Potongan untuk jual kembali atau tukar tambah berdasarkan dari harga total payment.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '3. Perhiasan yang akan dijual kembali atau tukar tambah hanya bisa diproses setelah pembelian minimal 1 tahun dan maksimal 5 tahun (rentang waktu bulan ke 13 - bulan ke 60) dari tanggal pembelian. Nilai jual kembali atau tukar tambah mulai dari 25% - 35%* (*S&K berlaku).',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '4. Perhiasan dengan kategori wedding ring tidak bisa dijual kembali/tukar tambah.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '5. Perhiasan harus diterima dalam keadaan baik dan akan diperiksa ulang untuk memenuhi kualitas standar, dan beliberlian.id berhak untuk menolak jika tidak sesuai standar (syarat dan ketentuan berlaku).',
+                                            //  textAlign: pw.TextAlign.left,
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '6. Pihak beliberlian tidak bertanggung jawab atas kehilangan barang milik pembeli.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '7. Peraturan bisa berubah sewaktu-waktu sesuai dengan kebijakan beliberlian.id.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 2),
+                                        pw.Text(
+                                            '8. Perhiasan yang dibeli sudah termasuk PPN 11%.',
+                                            style: pw.TextStyle(
+                                                font: font,
+                                                color: PdfColors.black,
+                                                fontSize: 7)),
+                                        pw.SizedBox(height: 40),
+                                        pw.Container(
+                                          padding: const pw.EdgeInsets.only(
+                                              left: 12),
+                                          child: pw.Text('Hormat Kami,',
+                                              style: pw.TextStyle(
+                                                  color: PdfColors.black,
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                      pw.FontWeight.bold)),
+                                        ),
+                                        pw.SizedBox(height: 80),
+                                        pw.Container(
+                                            padding: const pw.EdgeInsets.only(
+                                                left: 5),
+                                            width: 130,
+                                            child: pw.Divider(thickness: 1)),
+                                        pw.Container(
+                                          padding: const pw.EdgeInsets.only(
+                                              left: 25),
+                                          child: pw.Text(
+                                              '${sharedPreferences!.getString("name")!}',
+                                              style: const pw.TextStyle(
+                                                  color: PdfColors.black,
+                                                  fontSize: 11.5)),
+                                        ),
+                                      ],
+                                    ),
+                                  )
                           ],
                         )
                       ]),

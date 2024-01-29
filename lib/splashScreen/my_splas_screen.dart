@@ -8,6 +8,7 @@ import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/authScreens/auth_screen.dart';
+import 'package:e_shop/buStephanie/approve_pricing_model.dart';
 import 'package:e_shop/buStephanie/main_screen_approve_pricing.dart';
 import 'package:e_shop/database/db_allitems.dart';
 import 'package:e_shop/database/db_allitems_retur.dart';
@@ -38,11 +39,15 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreenState extends State<MySplashScreen> {
+  late Stopwatch stopwatch; //untuk mengukur berapa lama ambil datanya
+  late Timer timer; //? timer
+  int elapsedTimeInSeconds = 0;
   int noBuild = 26;
   String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
   int role = 0;
   String? version = '';
+  List<ApprovePricingModel>? dataApprovedBRJ;
 
   var isLoading = true;
   splashScreenTimer() {
@@ -90,7 +95,17 @@ class _MySplashScreenState extends State<MySplashScreen> {
               throw Fluttertoast.showToast(msg: "Database Off");
             }
             try {
+              loadListHistoryPrice(); //ambil data history price
+            } catch (c) {
+              throw Fluttertoast.showToast(msg: "Database Off");
+            }
+            try {
               loadListEticketing(); //ambil data cart
+            } catch (c) {
+              throw Fluttertoast.showToast(msg: "Database Off");
+            }
+            try {
+              await loadListHistoryPrice(); //get data approved
             } catch (c) {
               throw Fluttertoast.showToast(msg: "Database Off");
             }
@@ -308,8 +323,11 @@ class _MySplashScreenState extends State<MySplashScreen> {
   @override
   void
       initState() //called automatically when user comes here to this splash screen
+
   {
     super.initState();
+    stopwatch = Stopwatch();
+
     PushNotificationsSystem pushNotificationsSystem = PushNotificationsSystem();
     pushNotificationsSystem.whenNotificationReceivedInPricing(context);
     context.read<PApprovalBrj>().clearNotif(); //clear cart
@@ -317,7 +335,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     print('No Version : $noBuild');
     print('url : ${ApiConstants.baseUrl}');
     print('bool : ${sharedPreferences?.getBool('dbDummy')}');
-
+    startTimer();
     splashScreenTimer();
   }
 
@@ -378,6 +396,38 @@ class _MySplashScreenState extends State<MySplashScreen> {
     }).toList();
   }
 
+  //? fungsi menghitung waktu loading
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        elapsedTimeInSeconds = stopwatch.elapsedMilliseconds ~/ 1000;
+      });
+    });
+  }
+
+  loadListHistoryPrice() async {
+    stopwatch.start(); //! mulai waktu penghitungan
+    try {
+      final response = await http.get(Uri.parse(ApiConstants.baseUrlPricing +
+          ApiConstants.GETapprovelPricingApproved));
+      if (response.statusCode == 200) {
+        List jsonResponse = json.decode(response.body);
+
+        dataApprovedBRJ = jsonResponse
+            .map((data) => ApprovePricingModel.fromJson(data))
+            .toList();
+      } else {
+        throw Exception('err');
+      }
+    } catch (c) {
+      print('err :$c');
+    }
+    stopwatch.stop(); //! hentikan waktu dan print hasilnya
+    timer.cancel();
+    print(
+        'Waktu mengambil data approved: ${stopwatch.elapsedMilliseconds ~/ 1000} detik');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -410,6 +460,9 @@ class _MySplashScreenState extends State<MySplashScreen> {
                             // height: 250,
                             fit: BoxFit.cover,
                           )),
+
+                      // Text(
+                      //     'Data loaded in $elapsedTimeInSeconds seconds'), // Menampilkan waktu yang diperlukan untuk mengambil data
                     ],
                   ),
                 )
@@ -501,12 +554,45 @@ class _MySplashScreenState extends State<MySplashScreen> {
                   ),
                   ElevatedButton(
                     //if user click this button. user can upload image from camera
-                    onPressed: () {
+                    onPressed: () async {
+                      // showDialog(
+                      //     barrierDismissible: false,
+                      //     context: context,
+                      //     builder: (c) {
+                      //       return const LoadingDialogWidget(
+                      //         message: "",
+                      //       );
+                      //     });
+                      // try {
+                      //   await loadListHistoryPrice(); //ambil data cart
+                      // } catch (c) {
+                      //   throw Fluttertoast.showToast(msg: "Database Off");
+                      // }
+                      // try {
+                      //   final response = await http.get(Uri.parse(
+                      //       ApiConstants.baseUrlPricing +
+                      //           ApiConstants.GETapprovelPricingApproved));
+                      //   if (response.statusCode == 200) {
+                      //     List jsonResponse = json.decode(response.body);
+
+                      //     setState(() {
+                      //       dataApprovedBRJ = jsonResponse
+                      //           .map((data) =>
+                      //               ApprovePricingModel.fromJson(data))
+                      //           .toList();
+                      //     });
+                      //   } else {
+                      //     throw Exception('err');
+                      //   }
+                      // } catch (c) {
+                      //   print('err :$c');
+                      // }
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (c) =>
-                                  const MainScreenApprovePricing()));
+                              builder: (c) => MainScreenApprovePricing(
+                                    dataApproved: dataApprovedBRJ,
+                                  )));
                     },
                     child: const Row(
                       children: [
