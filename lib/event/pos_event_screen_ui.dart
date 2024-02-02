@@ -203,7 +203,9 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (c) => const TransaksiScreenEvent()));
+                              builder: (c) => TransaksiScreenEvent(
+                                    lotNumber: widget.model!.name.toString(),
+                                  )));
                     } else {
                       Fluttertoast.showToast(
                           msg: "Barang Sudah Ada Di Keranjang");

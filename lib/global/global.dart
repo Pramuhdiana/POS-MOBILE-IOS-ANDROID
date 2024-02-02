@@ -20,6 +20,6 @@ int revisiKecil =
     1; //perubahan kecil                                    (MINOR)
 int rilisPerbaikanbug =
     0; //perbaikan bug                                      (PATCH)
-int noBuild = 27; //nobuild                                      (PATCH)
+int noBuild = 28; //nobuild                                      (PATCH)
 
 String version = 'v$revisiBesar.$revisiKecil.$rilisPerbaikanbug ($noBuild)';

@@ -148,8 +148,12 @@ class _CartEventScreenState extends State<CartEventScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (c) =>
-                                      const TransaksiScreenEvent()));
+                                  builder: (c) => TransaksiScreenEvent(
+                                      lotNumber: context
+                                          .watch<PCartEvent>()
+                                          .getItems[0]
+                                          .name
+                                          .toString())));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,8 +168,12 @@ class _CartEventScreenState extends State<CartEventScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (c) =>
-                                            const TransaksiScreenEvent()));
+                                        builder: (c) => TransaksiScreenEvent(
+                                            lotNumber: context
+                                                .watch<PCartEvent>()
+                                                .getItems[0]
+                                                .name
+                                                .toString())));
                               },
                               icon: Image.asset(
                                 "assets/arrow (1).png",

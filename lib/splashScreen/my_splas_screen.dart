@@ -42,7 +42,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   late Stopwatch stopwatch; //untuk mengukur berapa lama ambil datanya
   late Timer timer; //? timer
   int elapsedTimeInSeconds = 0;
-  int noBuild = 27;
+  int noBuild = 28;
   String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
   int role = 0;

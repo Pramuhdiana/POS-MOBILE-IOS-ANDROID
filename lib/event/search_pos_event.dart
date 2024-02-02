@@ -170,8 +170,9 @@ class _SearchPosEvent extends State<SearchPosEvent> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (c) =>
-                                          const TransaksiScreenEvent()));
+                                      builder: (c) => TransaksiScreenEvent(
+                                          lotNumber:
+                                              widget.model!.name.toString())));
                             } else {
                               Fluttertoast.showToast(
                                   msg: "Barang Sudah Ada Di Keranjang");

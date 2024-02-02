@@ -27,8 +27,10 @@ import 'package:http/http.dart' as http;
 import '../global/currency_format.dart';
 import '../global/global.dart';
 
+// ignore: must_be_immutable
 class TransaksiScreenEvent extends StatefulWidget {
-  const TransaksiScreenEvent({super.key});
+  String lotNumber = '';
+  TransaksiScreenEvent({super.key, required this.lotNumber});
 
   @override
   _TransaksiScreenEventState createState() => _TransaksiScreenEventState();
@@ -43,6 +45,17 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   RoundedLoadingButtonController btnController =
       RoundedLoadingButtonController();
+  List<String> listBlacklistLot = [
+    "401320001",
+    "401320002",
+    "401320007",
+    "401320000",
+    "401320003",
+    "401320004",
+    "411320005",
+    "411320006",
+  ];
+  bool isBlaclist = false;
   String? kodeVocher;
   int nilaiVocher = 0;
   List<String> gimmick = [];
@@ -234,7 +247,9 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   @override
   void initState() {
     super.initState();
-    print('ini bit:${sharedPreferences!.getInt('panjangHarga')}');
+    isBlaclist = listBlacklistLot.contains(
+        widget.lotNumber); //! hint : cara cek item di daftar list item
+    print('isBlaclist : $isBlaclist');
     DateTime today = DateTime.now();
     // tanggalNow = '1';
     tanggalNow = today.day.toString();
@@ -274,6 +289,18 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
         KeyboardOverlay.removeOverlay();
       }
     });
+  }
+
+  cekBlacklist() async {
+    // Cek apakah 'Banana' ada dalam daftar items
+    isBlaclist = listBlacklistLot.contains(widget.lotNumber);
+    // for(var i =0; i < listBlacklistLot.length;i++){
+    //   if(widget.lotNumber == listBlacklistLot[i]){
+    //   setState(() {
+    //     isBlaclist == true;
+    //   });
+    //   }
+    // }
   }
 
   getLimitDiskon() async {
@@ -654,7 +681,11 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                               padding: const EdgeInsets.only(top: 10),
                               height: 80,
                               child: TextFormField(
-                                enabled: isSurprise == true ? false : true,
+                                enabled: isBlaclist == true
+                                    ? false
+                                    : isSurprise == true
+                                        ? false
+                                        : true,
                                 style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
@@ -774,6 +805,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                               padding: const EdgeInsets.only(top: 10),
                               height: 80,
                               child: TextFormField(
+                                enabled: isBlaclist == true ? false : true,
                                 style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
@@ -871,47 +903,10 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                                               left: 20, right: 20),
                                           child: DropdownButton(
                                             value: kodeVocher,
-                                            items: totalPrice < 2500000.00
-                                                ? const [
-                                                    //add items in the dropdown
-                                                    DropdownMenuItem(
-                                                      value: "50000",
-                                                      child: Text("BB50RB"),
-                                                    ),
-                                                    DropdownMenuItem(
-                                                      value: "100000",
-                                                      child: Text("BB100RB"),
-                                                    ),
-                                                    // DropdownMenuItem(
-                                                    //   value: "250000",
-                                                    //   child: Text("BB250RB"),
-                                                    // ),
-                                                    // DropdownMenuItem(
-                                                    //   value: "500000",
-                                                    //   child: Text("BB500RB"),
-                                                    // ),
-                                                  ]
-                                                : totalPrice < 1000000.00
+                                            items: isBlaclist == true
+                                                ? null
+                                                : totalPrice < 2500000.00
                                                     ? const [
-                                                        //add items in the dropdown
-                                                        DropdownMenuItem(
-                                                          value: "50000",
-                                                          child: Text("BB50RB"),
-                                                        ),
-                                                        // DropdownMenuItem(
-                                                        //   value: "100000",
-                                                        //   child: Text("BB100RB"),
-                                                        // ),
-                                                        // DropdownMenuItem(
-                                                        //   value: "250000",
-                                                        //   child: Text("BB250RB"),
-                                                        // ),
-                                                        // DropdownMenuItem(
-                                                        //   value: "500000",
-                                                        //   child: Text("BB500RB"),
-                                                        // ),
-                                                      ]
-                                                    : const [
                                                         //add items in the dropdown
                                                         DropdownMenuItem(
                                                           value: "50000",
@@ -922,18 +917,60 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                                                           child:
                                                               Text("BB100RB"),
                                                         ),
-                                                        DropdownMenuItem(
-                                                          value: "250000",
-                                                          child:
-                                                              Text("BB250RB"),
-                                                        ),
+                                                        // DropdownMenuItem(
+                                                        //   value: "250000",
+                                                        //   child: Text("BB250RB"),
+                                                        // ),
                                                         // DropdownMenuItem(
                                                         //   value: "500000",
                                                         //   child: Text("BB500RB"),
                                                         // ),
-                                                      ],
+                                                      ]
+                                                    : totalPrice < 1000000.00
+                                                        ? const [
+                                                            //add items in the dropdown
+                                                            DropdownMenuItem(
+                                                              value: "50000",
+                                                              child: Text(
+                                                                  "BB50RB"),
+                                                            ),
+                                                            // DropdownMenuItem(
+                                                            //   value: "100000",
+                                                            //   child: Text("BB100RB"),
+                                                            // ),
+                                                            // DropdownMenuItem(
+                                                            //   value: "250000",
+                                                            //   child: Text("BB250RB"),
+                                                            // ),
+                                                            // DropdownMenuItem(
+                                                            //   value: "500000",
+                                                            //   child: Text("BB500RB"),
+                                                            // ),
+                                                          ]
+                                                        : const [
+                                                            //add items in the dropdown
+                                                            DropdownMenuItem(
+                                                              value: "50000",
+                                                              child: Text(
+                                                                  "BB50RB"),
+                                                            ),
+                                                            DropdownMenuItem(
+                                                              value: "100000",
+                                                              child: Text(
+                                                                  "BB100RB"),
+                                                            ),
+                                                            DropdownMenuItem(
+                                                              value: "250000",
+                                                              child: Text(
+                                                                  "BB250RB"),
+                                                            ),
+                                                            // DropdownMenuItem(
+                                                            //   value: "500000",
+                                                            //   child: Text("BB500RB"),
+                                                            // ),
+                                                          ],
                                             hint: const Text('Select a cupon'),
-                                            onChanged: (value) {
+                                            onChanged: (String? value) {
                                               print("You have selected $value");
                                               setState(() {
                                                 kodeVocher = value;
@@ -1027,25 +1064,27 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                                               left: 20, right: 20),
                                           child: DropdownButton(
                                             value: kodeVocher,
-                                            items: const [
-                                              //add items in the dropdown
-                                              DropdownMenuItem(
-                                                value: "50000",
-                                                child: Text("BB50RB"),
-                                              ),
-                                              DropdownMenuItem(
-                                                value: "100000",
-                                                child: Text("BB100RB"),
-                                              ),
-                                              DropdownMenuItem(
-                                                value: "250000",
-                                                child: Text("BB250RB"),
-                                              ),
-                                              DropdownMenuItem(
-                                                value: "500000",
-                                                child: Text("BB500RB"),
-                                              ),
-                                            ],
+                                            items: isBlaclist == true
+                                                ? null
+                                                : const [
+                                                    //add items in the dropdown
+                                                    DropdownMenuItem(
+                                                      value: "50000",
+                                                      child: Text("BB50RB"),
+                                                    ),
+                                                    DropdownMenuItem(
+                                                      value: "100000",
+                                                      child: Text("BB100RB"),
+                                                    ),
+                                                    DropdownMenuItem(
+                                                      value: "250000",
+                                                      child: Text("BB250RB"),
+                                                    ),
+                                                    DropdownMenuItem(
+                                                      value: "500000",
+                                                      child: Text("BB500RB"),
+                                                    ),
+                                                  ],
                                             hint: const Text('Select a cupon'),
                                             onChanged: (value) {
                                               print("You have selected $value");

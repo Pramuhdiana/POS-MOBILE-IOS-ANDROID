@@ -112,7 +112,8 @@ class _ItemsDetailsEventScreenState extends State<ItemsDetailsEventScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (c) => const TransaksiScreenEvent()));
+                          builder: (c) => TransaksiScreenEvent(
+                              lotNumber: widget.model!.name.toString())));
                 });
               } else {
                 showSnackBar();
