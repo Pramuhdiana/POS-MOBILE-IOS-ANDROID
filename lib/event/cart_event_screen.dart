@@ -149,6 +149,11 @@ class _CartEventScreenState extends State<CartEventScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (c) => TransaksiScreenEvent(
+                                      pricePerBarang: context
+                                          .watch<PCartEvent>()
+                                          .getItems[0]
+                                          .price
+                                          .toString(),
                                       lotNumber: context
                                           .watch<PCartEvent>()
                                           .getItems[0]
@@ -169,6 +174,11 @@ class _CartEventScreenState extends State<CartEventScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (c) => TransaksiScreenEvent(
+                                            pricePerBarang: context
+                                                .watch<PCartEvent>()
+                                                .getItems[0]
+                                                .price
+                                                .toString(),
                                             lotNumber: context
                                                 .watch<PCartEvent>()
                                                 .getItems[0]

@@ -30,7 +30,10 @@ import '../global/global.dart';
 // ignore: must_be_immutable
 class TransaksiScreenEvent extends StatefulWidget {
   String lotNumber = '';
-  TransaksiScreenEvent({super.key, required this.lotNumber});
+  String pricePerBarang = '';
+
+  TransaksiScreenEvent(
+      {super.key, required this.lotNumber, required this.pricePerBarang});
 
   @override
   _TransaksiScreenEventState createState() => _TransaksiScreenEventState();
@@ -249,7 +252,10 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     super.initState();
     isBlaclist = listBlacklistLot.contains(
         widget.lotNumber); //! hint : cara cek item di daftar list item
-    print('isBlaclist : $isBlaclist');
+
+    if (int.parse(widget.pricePerBarang) <= 2000000) {
+      isBlaclist = true;
+    }
     DateTime today = DateTime.now();
     // tanggalNow = '1';
     tanggalNow = today.day.toString();
@@ -315,9 +321,11 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     getLimitAddDis2 = sharedPreferences!.getInt('panjangHarga')! > 17
         ? int.parse(response.data[1]['addiskon2'] ?? '0')
         : int.parse(response.data[0]['addiskon2'] ?? '0');
-    getLimitSurprise = sharedPreferences!.getInt('panjangHarga')! > 17
-        ? int.parse(response.data[1]['surprise'] ?? '0')
-        : int.parse(response.data[0]['surprise'] ?? '0');
+    getLimitSurprise = isBlaclist == true
+        ? 0
+        : sharedPreferences!.getInt('panjangHarga')! > 17
+            ? int.parse(response.data[1]['surprise'] ?? '0')
+            : int.parse(response.data[0]['surprise'] ?? '0');
     var getTanggalSurprise = sharedPreferences!.getInt('panjangHarga')! > 17
         ? response.data[1]['tanggal_surprise'] ?? '0'
         : response.data[0]['tanggal_surprise'] ?? '0';
@@ -903,9 +911,11 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                                               left: 20, right: 20),
                                           child: DropdownButton(
                                             value: kodeVocher,
-                                            items: isBlaclist == true
-                                                ? null
-                                                : totalPrice < 2500000.00
+                                            items:
+                                                // isBlaclist == true
+                                                //     ? null
+                                                //     :
+                                                totalPrice < 2500000.00
                                                     ? const [
                                                         //add items in the dropdown
                                                         DropdownMenuItem(
@@ -1064,27 +1074,29 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                                               left: 20, right: 20),
                                           child: DropdownButton(
                                             value: kodeVocher,
-                                            items: isBlaclist == true
-                                                ? null
-                                                : const [
-                                                    //add items in the dropdown
-                                                    DropdownMenuItem(
-                                                      value: "50000",
-                                                      child: Text("BB50RB"),
-                                                    ),
-                                                    DropdownMenuItem(
-                                                      value: "100000",
-                                                      child: Text("BB100RB"),
-                                                    ),
-                                                    DropdownMenuItem(
-                                                      value: "250000",
-                                                      child: Text("BB250RB"),
-                                                    ),
-                                                    DropdownMenuItem(
-                                                      value: "500000",
-                                                      child: Text("BB500RB"),
-                                                    ),
-                                                  ],
+                                            items:
+                                                // isBlaclist == true
+                                                //     ? null
+                                                //     :
+                                                const [
+                                              //add items in the dropdown
+                                              DropdownMenuItem(
+                                                value: "50000",
+                                                child: Text("BB50RB"),
+                                              ),
+                                              DropdownMenuItem(
+                                                value: "100000",
+                                                child: Text("BB100RB"),
+                                              ),
+                                              DropdownMenuItem(
+                                                value: "250000",
+                                                child: Text("BB250RB"),
+                                              ),
+                                              DropdownMenuItem(
+                                                value: "500000",
+                                                child: Text("BB500RB"),
+                                              ),
+                                            ],
                                             hint: const Text('Select a cupon'),
                                             onChanged: (value) {
                                               print("You have selected $value");

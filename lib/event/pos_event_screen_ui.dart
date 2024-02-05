@@ -204,6 +204,8 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
                           context,
                           MaterialPageRoute(
                               builder: (c) => TransaksiScreenEvent(
+                                    pricePerBarang:
+                                        widget.model!.price.toString(),
                                     lotNumber: widget.model!.name.toString(),
                                   )));
                     } else {
