@@ -253,9 +253,6 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     isBlaclist = listBlacklistLot.contains(
         widget.lotNumber); //! hint : cara cek item di daftar list item
 
-    if (int.parse(widget.pricePerBarang) <= 2000000) {
-      isBlaclist = true;
-    }
     DateTime today = DateTime.now();
     // tanggalNow = '1';
     tanggalNow = today.day.toString();
@@ -295,6 +292,8 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
         KeyboardOverlay.removeOverlay();
       }
     });
+    print(isBlaclist);
+    print(isSurprise);
   }
 
   cekBlacklist() async {
@@ -441,7 +440,10 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
                                 surpriseApi = 0;
                                 valueSurprise = '0';
                               }
-
+                              if (totalPrice <= 2000000) {
+                                isBlaclist = true;
+                              }
+                              print(isBlaclist);
                               print('value sur: $valueSurprise');
                             });
                           },

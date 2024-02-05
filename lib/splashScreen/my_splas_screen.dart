@@ -42,7 +42,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   late Stopwatch stopwatch; //untuk mengukur berapa lama ambil datanya
   late Timer timer; //? timer
   int elapsedTimeInSeconds = 0;
-  int noBuild = 28;
+  int noBuild = 29;
   String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
   int role = 0;
@@ -97,11 +97,14 @@ class _MySplashScreenState extends State<MySplashScreen> {
             try {
               loadListHistoryPrice(); //ambil data history price
             } catch (c) {
+              print('err : load history price ($c)');
               throw Fluttertoast.showToast(msg: "Database Off");
             }
             try {
               loadListEticketing(); //ambil data cart
             } catch (c) {
+              print('err : load listEticketing ($c)');
+
               throw Fluttertoast.showToast(msg: "Database Off");
             }
             try {
@@ -406,6 +409,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   }
 
   loadListHistoryPrice() async {
+    print('masuk');
     stopwatch.start(); //! mulai waktu penghitungan
     try {
       final response = await http.get(Uri.parse(ApiConstants.baseUrlPricing +
