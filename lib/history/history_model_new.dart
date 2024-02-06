@@ -3778,7 +3778,7 @@ class HistoryModelNew extends StatelessWidget {
     var totalPayment = allTransaksi.nett.toString() == '0'
         ? 0
         // : totalSubDis - addDiskon - voucherDiskon - addDiskon2; //! before
-        : allTransaksi.nett - voucherDiskon;
+        : allTransaksi.nett;
     String kodeDiskon = voucherDiskon == 50000
         ? 'Voucher (BB50RB)'
         : voucherDiskon == 100000
@@ -4845,7 +4845,7 @@ class HistoryModelNew extends StatelessWidget {
         : allTransaksi.voucherDiskon ?? 0;
     var totalPayment = allTransaksi.nett.toString() == '0'
         ? 0
-        : totalSubDis - addDiskon - voucherDiskon - addDiskon2;
+        : totalSubDis - addDiskon - addDiskon2;
     String kodeDiskon = voucherDiskon == 50000
         ? 'Voucher (BB50RB)'
         : voucherDiskon == 100000

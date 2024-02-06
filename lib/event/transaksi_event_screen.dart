@@ -114,6 +114,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
             (1 - (surpriseApi / 100)) -
         dpp -
         addesdiskon -
+        nilaiVocher -
         addesdiskon2;
     return total;
   }
@@ -218,6 +219,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
             (1 - (surpriseApi / 100)) -
         dpp -
         addesdiskon -
+        nilaiVocher -
         addesdiskon2;
     return total.toString();
   }
@@ -229,6 +231,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
             (1 - (surpriseApi / 100)) -
         dpp -
         addesdiskon -
+        nilaiVocher -
         addesdiskon2;
     var total = ((context.read<PCartEvent>().totalPrice2) * rate);
     var result = total - total1;
@@ -1586,8 +1589,8 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     String pajak = '0';
     String rate = '16000';
     String total = totalRp;
-    String total_potongan = totalDiskonRp;
-    String totalkurangdiskon = totalPriceAPI;
+    String total_potongan = totalDiskonRp; //? total
+    String totalkurangdiskon = totalPriceAPI; //? ini net
     String totalkurangpajak = totalRp;
     String addesdiskonApi = addesdiskon.toString();
     String addesdiskonApi2 = addesdiskon2.toString();
