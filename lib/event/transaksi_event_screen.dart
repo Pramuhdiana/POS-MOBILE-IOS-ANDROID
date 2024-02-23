@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, use_build_context_synchronously, unused_local_variable, unused_element, prefer_const_constructors, unnecessary_new, prefer_collection_literals, non_constant_identifier_names
 
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
@@ -8,6 +10,7 @@ import 'package:e_shop/database/db_alldetailtransaksi.dart';
 import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/event/add_customer_event.dart';
 import 'package:e_shop/event/cart_event_screen.dart';
+import 'package:e_shop/models/blacklist_model.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/provider/provider_cart_event.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
@@ -48,16 +51,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   RoundedLoadingButtonController btnController =
       RoundedLoadingButtonController();
-  List<String> listBlacklistLot = [
-    "401320001",
-    "401320002",
-    "401320007",
-    "401320000",
-    "401320003",
-    "401320004",
-    "411320005",
-    "411320006",
-  ];
+  List<String> listBlacklistLot = [];
   bool isBlaclist = false;
   String? kodeVocher;
   int nilaiVocher = 0;
@@ -253,24 +247,9 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   @override
   void initState() {
     super.initState();
-    isBlaclist = listBlacklistLot.contains(
-        widget.lotNumber); //! hint : cara cek item di daftar list item
-
     DateTime today = DateTime.now();
     // tanggalNow = '1';
     tanggalNow = today.day.toString();
-    print(tanggalNow);
-    getLimitDiskon();
-    idBarang = sharedPreferences!.getString('idBarang');
-    sharedPreferences!.getInt('panjangHarga')! > 17
-        ? rate = 1
-        : idBarang == '4'
-            ? rate = 1
-            : rate = 16000;
-    print(idBarang);
-    sharedPreferences!.getString('role_sales_brand') == '3'
-        ? idform = 2
-        : idform = 0;
     numberFocusNode.addListener(() {
       bool hasFocus = numberFocusNode.hasFocus;
       if (hasFocus) {
@@ -295,20 +274,51 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
         KeyboardOverlay.removeOverlay();
       }
     });
-    print(isBlaclist);
-    print(isSurprise);
+    loadData();
+  }
+
+  loadData() async {
+    await cekBlacklist();
+    await getLimitDiskon();
+    idBarang = sharedPreferences!.getString('idBarang');
+    sharedPreferences!.getInt('panjangHarga')! > 17
+        ? rate = 1
+        : idBarang == '4'
+            ? rate = 1
+            : rate = 16000;
+    sharedPreferences!.getString('role_sales_brand') == '3'
+        ? idform = 2
+        : idform = 0;
+    setState(() {
+      print(isBlaclist);
+      print(isSurprise);
+    });
   }
 
   cekBlacklist() async {
-    // Cek apakah 'Banana' ada dalam daftar items
-    isBlaclist = listBlacklistLot.contains(widget.lotNumber);
-    // for(var i =0; i < listBlacklistLot.length;i++){
-    //   if(widget.lotNumber == listBlacklistLot[i]){
-    //   setState(() {
-    //     isBlaclist == true;
-    //   });
-    //   }
-    // }
+    listBlacklistLot = [];
+    try {
+      final response = await http.get(Uri.parse(
+          '${ApiConstants.baseUrlsandy}${ApiConstants.GETblackList}'));
+      // if response successful
+      if (response.statusCode == 200) {
+        List jsonResponse = json.decode(response.body);
+
+        var allData =
+            jsonResponse.map((data) => BlacklistModel.fromJson(data)).toList();
+        for (var i = 0; i < allData.length; i++) {
+          listBlacklistLot.add(allData[i].lot); //! nanti ganti dengan theme
+        }
+        isBlaclist = listBlacklistLot.contains(
+            widget.lotNumber); //! hints : cara cek item di daftar list item
+        print('210420074 = ${listBlacklistLot.contains('210420074')}');
+      } else {
+        throw Exception('Unexpected error occured!');
+      }
+    } catch (c) {
+      print('Err msg get data : $c');
+      return throw Exception(c);
+    }
   }
 
   getLimitDiskon() async {
@@ -355,6 +365,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     // Clean up the focus node
     numberFocusNode.dispose();
     numberFocusNode2.dispose();
+    numberFocusNodeSurprise.dispose();
     super.dispose();
   }
 

@@ -28,6 +28,7 @@ class ApiConstants {
   static String PUTapprovelPricing = '/lot/';
 
   static String GETlimitdiskon = '/indexbbaddiskon';
+  static String GETblackList = '/rest_api_mobile.php?type=blacklList';
 
   static String POSTloginendpoint = '/login';
   static String GETprofileendpoint = '/profile';

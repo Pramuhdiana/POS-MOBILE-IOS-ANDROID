@@ -308,8 +308,9 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                           11500,
                                           12000,
                                           12500,
+                                          14500,
                                         ]
-                                      : const [11500, 11900, 13000],
+                                      : const [11500, 11900, 13000, 14500],
                                   onChanged: (value) {
                                     setState(() {
                                       rate = value!;
@@ -343,8 +344,19 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                 height: 80,
                                 child: DropdownSearch<double>(
                                   items: (idtoko == 520 || idtoko == 522)
-                                      ? const [60, 61, 62, 60.5, 61.5, 62.5]
+                                      ? const [
+                                          53,
+                                          55,
+                                          60,
+                                          61,
+                                          62,
+                                          60.5,
+                                          61.5,
+                                          62.5
+                                        ]
                                       : const [
+                                          53,
+                                          55,
                                           60,
                                           63,
                                         ],
