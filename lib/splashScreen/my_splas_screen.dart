@@ -42,7 +42,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   late Stopwatch stopwatch; //untuk mengukur berapa lama ambil datanya
   late Timer timer; //? timer
   int elapsedTimeInSeconds = 0;
-  int noBuild = 31;
+  int noBuild = 32;
   String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
   int role = 0;
@@ -56,22 +56,20 @@ class _MySplashScreenState extends State<MySplashScreen> {
       try {
         await getVersion();
       } catch (c) {
-        print('No Version DB : $noBuild');
         setState(() {
           version = noBuild.toString();
           sharedPreferences!.setString('version', noBuild.toString());
-          // notif.sendNotificationTo(fcmTokensandy, 'Error Version',
-          //     'version database dan mobile tidak');
-          print('No Version DB : $noBuild');
+          print('No Build DB : $noBuild (gagal)=> $c');
+          print('No version DB : $version (gagal)');
         });
-        throw Fluttertoast.showToast(msg: "Database Off");
+        Fluttertoast.showToast(msg: "get version gagal");
       }
 
       //user sudah login
       print('token $token');
       if (sharedPreferences!.getString("token").toString() != "null") {
         await requestPermission();
-        if (version != noBuild.toString()) {
+        if (int.parse(version!) > noBuild) {
           dialogBoxVersion();
         } else {
           try {
@@ -98,19 +96,19 @@ class _MySplashScreenState extends State<MySplashScreen> {
               loadListHistoryPrice(); //ambil data history price
             } catch (c) {
               print('err : load history price ($c)');
-              throw Fluttertoast.showToast(msg: "Database Off");
+              throw Fluttertoast.showToast(msg: "get history gagal");
             }
             try {
               loadListEticketing(); //ambil data cart
             } catch (c) {
               print('err : load listEticketing ($c)');
 
-              throw Fluttertoast.showToast(msg: "Database Off");
+              throw Fluttertoast.showToast(msg: "get list e ticket gagal");
             }
             try {
               await loadListHistoryPrice(); //get data approved
             } catch (c) {
-              throw Fluttertoast.showToast(msg: "Database Off");
+              throw Fluttertoast.showToast(msg: "get history price gagal");
             }
             dialogBox();
           } else {
@@ -336,18 +334,20 @@ class _MySplashScreenState extends State<MySplashScreen> {
     context.read<PApprovalBrj>().clearNotif(); //clear cart
     context.read<PApprovalEticketing>().clearNotif(); //clear cart
     print('No Version : $noBuild');
-    print('url : ${ApiConstants.baseUrl}');
-    print('bool : ${sharedPreferences?.getBool('dbDummy')}');
-    startTimer();
+    // startTimer();
     splashScreenTimer();
   }
 
   Future<List<VersionModel>> getVersion() async {
+    print('get version on');
     final response = await http
         .get(Uri.parse('${ApiConstants.baseUrlsandy}/get_version.php'));
-    print('No Version DB : ${response.body}');
+
+    print('No Version DB : ${response.statusCode} berhasil ');
+    print('No Version DB : ${response.body} berhasil ');
 
     if (response.statusCode == 200) {
+      print('get version oke 200');
       List jsonResponse = json.decode(response.body);
       var allData =
           jsonResponse.map((data) => VersionModel.fromJson(data)).toList();
@@ -362,9 +362,9 @@ class _MySplashScreenState extends State<MySplashScreen> {
         sharedPreferences!.setString('version', noBuild.toString());
         notif.sendNotificationTo(fcmTokensandy, 'Error Version',
             'version database dan mobile tidak');
-        print('No Version DB : $noBuild');
+        print('No Version DB : $noBuild statu error');
       });
-      throw Fluttertoast.showToast(msg: "Database Off");
+      throw Fluttertoast.showToast(msg: "Gagal mengambil version");
     }
   }
 
@@ -376,7 +376,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     );
     print(response.statusCode);
     if (response.statusCode != 200) {
-      throw Fluttertoast.showToast(msg: "Database Off");
+      throw Fluttertoast.showToast(msg: "get list brj gagal");
     } else {
       return (response.data as List).map((cart) {
         context.read<PApprovalBrj>().addItem(
@@ -400,13 +400,13 @@ class _MySplashScreenState extends State<MySplashScreen> {
   }
 
   //? fungsi menghitung waktu loading
-  void startTimer() {
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        elapsedTimeInSeconds = stopwatch.elapsedMilliseconds ~/ 1000;
-      });
-    });
-  }
+  // void startTimer() {
+  //   timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+  //     setState(() {
+  //       elapsedTimeInSeconds = stopwatch.elapsedMilliseconds ~/ 1000;
+  //     });
+  //   });
+  // }
 
   loadListHistoryPrice() async {
     print('masuk');
@@ -426,10 +426,10 @@ class _MySplashScreenState extends State<MySplashScreen> {
     } catch (c) {
       print('err :$c');
     }
-    stopwatch.stop(); //! hentikan waktu dan print hasilnya
-    timer.cancel();
-    print(
-        'Waktu mengambil data approved: ${stopwatch.elapsedMilliseconds ~/ 1000} detik');
+    // stopwatch.stop(); //! hentikan waktu dan print hasilnya
+    // timer.cancel();
+    // print(
+    //     'Waktu mengambil data approved: ${stopwatch.elapsedMilliseconds ~/ 1000} detik');
   }
 
   @override
