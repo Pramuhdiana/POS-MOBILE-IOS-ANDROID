@@ -96,19 +96,19 @@ class _MySplashScreenState extends State<MySplashScreen> {
               loadListHistoryPrice(); //ambil data history price
             } catch (c) {
               print('err : load history price ($c)');
-              throw Fluttertoast.showToast(msg: "get history gagal");
+              Fluttertoast.showToast(msg: "get history gagal");
             }
             try {
               loadListEticketing(); //ambil data cart
             } catch (c) {
               print('err : load listEticketing ($c)');
 
-              throw Fluttertoast.showToast(msg: "get list e ticket gagal");
+              Fluttertoast.showToast(msg: "get list e ticket gagal");
             }
             try {
               await loadListHistoryPrice(); //get data approved
             } catch (c) {
-              throw Fluttertoast.showToast(msg: "get history price gagal");
+              Fluttertoast.showToast(msg: "get history price gagal");
             }
             dialogBox();
           } else {
@@ -235,12 +235,12 @@ class _MySplashScreenState extends State<MySplashScreen> {
       apiProvider.getAllItems();
     } catch (c) {
       print('Error all transaksi : $c');
-      throw Exception('error : $c');
+      Exception('error : $c');
     }
     // try {
     //   apiProvider.getAllItemsToko();
     // } catch (c) {
-    //   throw Exception('Unexpected error occured!');
+    //    Exception('Unexpected error occured!');
     // }
     // try {
     //   apiProvider.getAllItemsRetur();
@@ -252,38 +252,38 @@ class _MySplashScreenState extends State<MySplashScreen> {
       await apiProvider.getAllTransaksiBaru();
     } catch (c) {
       print('Error all transaksi : $c');
-      throw Exception('error : $c');
+      Exception('error : $c');
     }
     try {
       print('in function detail transaksi');
       await apiProvider.getAllDetailTransaksi();
     } catch (c) {
       print('Error detail transaksi : $c');
-      throw Exception('error : $c');
+      Exception('error : $c');
     }
     try {
       apiProvider.getAllKodekeluarbarang();
     } catch (c) {
       print('Error all kode keluar barang : $c');
-      throw Exception('error : $c');
+      Exception('error : $c');
     }
     // try {
     //   await apiProvider.getAllCustomer();
     // } catch (c) {
     //   print('Error gett all customer : $c');
-    //   throw Exception('error : $c');
+    //    Exception('error : $c');
     // }
     try {
       apiProvider.getAllCustomer();
     } catch (c) {
       print('Error gett all customer : $c');
-      throw Exception('error : $c');
+      Exception('error : $c');
     }
     try {
       apiProvider.getAllTCRM();
     } catch (c) {
       print('Error all crm : $c');
-      throw Exception('error : $c');
+      Exception('error : $c');
     }
 
     loadCartFromApiPOSSALES();
@@ -364,7 +364,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
             'version database dan mobile tidak');
         print('No Version DB : $noBuild statu error');
       });
-      throw Fluttertoast.showToast(msg: "Gagal mengambil version");
+      Fluttertoast.showToast(msg: "Gagal mengambil version");
+      return [];
     }
   }
 
@@ -376,7 +377,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     );
     print(response.statusCode);
     if (response.statusCode != 200) {
-      throw Fluttertoast.showToast(msg: "get list brj gagal");
+      Fluttertoast.showToast(msg: "get list brj gagal");
     } else {
       return (response.data as List).map((cart) {
         context.read<PApprovalBrj>().addItem(
@@ -421,7 +422,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
             .map((data) => ApprovePricingModel.fromJson(data))
             .toList();
       } else {
-        throw Exception('err');
+        Exception('err');
       }
     } catch (c) {
       print('err :$c');
@@ -570,7 +571,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
                       // try {
                       //   await loadListHistoryPrice(); //ambil data cart
                       // } catch (c) {
-                      //   throw Fluttertoast.showToast(msg: "Database Off");
+                      //    Fluttertoast.showToast(msg: "Database Off");
                       // }
                       // try {
                       //   final response = await http.get(Uri.parse(
@@ -586,7 +587,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
                       //           .toList();
                       //     });
                       //   } else {
-                      //     throw Exception('err');
+                      //      Exception('err');
                       //   }
                       // } catch (c) {
                       //   print('err :$c');
@@ -672,7 +673,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       // ignore: deprecated_member_use
       await launch(url, forceSafariVC: true, forceWebView: true);
     } else {
-      throw 'Could not launch $url';
+      'Could not launch $url';
     }
   }
 }
