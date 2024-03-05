@@ -345,6 +345,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                 child: DropdownSearch<double>(
                                   items: (idtoko == 520 || idtoko == 522)
                                       ? const [
+                                        50,
                                           53,
                                           55,
                                           60,
@@ -352,14 +353,10 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                           62,
                                           60.5,
                                           61.5,
-                                          62.5
+                                          62.5,
+                                          63
                                         ]
-                                      : const [
-                                          53,
-                                          55,
-                                          60,
-                                          63,
-                                        ],
+                                      : const [50,60, 61, 62,63],
                                   onChanged: (value) {
                                     setState(() {
                                       diskon = value!;

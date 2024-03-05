@@ -346,8 +346,8 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                                                   .getString('customer_id')
                                                   .toString() ==
                                               '522')
-                                      ? const [60, 61, 62, 60.5, 61.5, 62.5]
-                                      : const [60, 63],
+                                      ? const [50,53,55,60, 61, 62, 60.5, 61.5, 62.5,63]
+                                      : const [50,60, 61, 62,63],
                                   onChanged: (value) {
                                     setState(() {
                                       diskon = value!;
