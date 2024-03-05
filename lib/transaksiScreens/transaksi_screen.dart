@@ -149,6 +149,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
         KeyboardOverlay.removeOverlay();
       }
     });
+    // getDiskon();
   }
 
   @override
@@ -157,6 +158,14 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
     numberFocusNode.dispose();
     numberFocusNode2.dispose();
     super.dispose();
+  }
+
+  getDiskon() async {
+    String token = sharedPreferences!.getString("token").toString();
+    var url = ApiConstants.baseUrl + ApiConstants.GETlistdiskon;
+    Response response = await Dio().get(url,
+        options: Options(headers: {"Authorization": "Bearer $token"}));
+    var data = response.data;
   }
 
   @override
@@ -345,7 +354,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                 child: DropdownSearch<double>(
                                   items: (idtoko == 520 || idtoko == 522)
                                       ? const [
-                                        50,
+                                          50,
                                           53,
                                           55,
                                           60,
@@ -356,7 +365,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                           62.5,
                                           63
                                         ]
-                                      : const [50,60, 61, 62,63],
+                                      : const [50, 60, 61, 62, 63],
                                   onChanged: (value) {
                                     setState(() {
                                       diskon = value!;
