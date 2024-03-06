@@ -55,6 +55,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
   TextEditingController addDiskon = TextEditingController();
   // int DPP = int.parse(dp);
   List<double> listDiskon = [];
+  List<int> listRate = [];
 
   final _formKey = GlobalKey<FormState>();
 
@@ -178,6 +179,8 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
   }
 
   getDiskon() async {
+    listDiskon = [];
+    listRate = [];
     String token = sharedPreferences!.getString("token").toString();
     try {
       var url = ApiConstants.baseUrl + ApiConstants.GETlistdiskon;
@@ -189,6 +192,20 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
       }
       setState(() {
         print(listDiskon);
+      });
+    } catch (e) {
+      print("Error fetching diskon: $e");
+    }
+    try {
+      var urlRate = ApiConstants.baseUrl + ApiConstants.GETlistrate;
+      Response response = await Dio().get(urlRate,
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+      var dataRate = response.data;
+      for (var i = 0; i < dataRate.length; i++) {
+        listRate.add(int.parse(dataRate[i]['rate']));
+      }
+      setState(() {
+        print(listRate);
       });
     } catch (e) {
       print("Error fetching diskon: $e");
@@ -314,20 +331,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                                 padding: const EdgeInsets.only(top: 10),
                                 height: 80,
                                 child: DropdownSearch<int>(
-                                  items: (sharedPreferences!
-                                                  .getString('customer_id')
-                                                  .toString() ==
-                                              '520' ||
-                                          sharedPreferences!
-                                                  .getString('customer_id')
-                                                  .toString() ==
-                                              '522')
-                                      ? const [
-                                          11500,
-                                          12000,
-                                          12500,
-                                        ]
-                                      : const [11500, 11900, 13000],
+                                  items: listRate,
                                   onChanged: (value) {
                                     setState(() {
                                       rate = value!;

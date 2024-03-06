@@ -55,6 +55,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
   int dpp = 0;
   int addesdiskon = 0;
   List<double> listDiskon = [];
+  List<int> listRate = [];
 
   final _formKey = GlobalKey<FormState>();
 
@@ -161,6 +162,9 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
   }
 
   getDiskon() async {
+    listDiskon = [];
+    listRate = [];
+
     String token = sharedPreferences!.getString("token").toString();
     try {
       var url = ApiConstants.baseUrl + ApiConstants.GETlistdiskon;
@@ -172,6 +176,21 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
       }
       setState(() {
         print(listDiskon);
+      });
+    } catch (e) {
+      print("Error fetching diskon: $e");
+    }
+
+    try {
+      var urlRate = ApiConstants.baseUrl + ApiConstants.GETlistrate;
+      Response response = await Dio().get(urlRate,
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+      var dataRate = response.data;
+      for (var i = 0; i < dataRate.length; i++) {
+        listRate.add(int.parse(dataRate[i]['rate']));
+      }
+      setState(() {
+        print(listRate);
       });
     } catch (e) {
       print("Error fetching diskon: $e");
@@ -323,14 +342,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                 padding: const EdgeInsets.only(top: 10),
                                 height: 80,
                                 child: DropdownSearch<int>(
-                                  items: (idtoko == 520 || idtoko == 522)
-                                      ? const [
-                                          11500,
-                                          12000,
-                                          12500,
-                                          14500,
-                                        ]
-                                      : const [11500, 11900, 13000, 14500],
+                                  items: listRate,
                                   onChanged: (value) {
                                     setState(() {
                                       rate = value!;
