@@ -29,6 +29,7 @@ class ApiConstants {
 
   static String GETlimitdiskon = '/indexbbaddiskon';
   static String GETlistdiskon = '/indexdiskon';
+  static String GETblackListM = '/indexlotbacklist';
   static String GETblackList = '/rest_api_mobile.php?type=blacklList';
 
   static String POSTloginendpoint = '/login';

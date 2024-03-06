@@ -1,7 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, use_build_context_synchronously, unused_local_variable, unused_element, prefer_const_constructors, unnecessary_new, prefer_collection_literals, non_constant_identifier_names
 
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
@@ -10,7 +8,6 @@ import 'package:e_shop/database/db_alldetailtransaksi.dart';
 import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/event/add_customer_event.dart';
 import 'package:e_shop/event/cart_event_screen.dart';
-import 'package:e_shop/models/blacklist_model.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/provider/provider_cart_event.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
@@ -296,29 +293,49 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   }
 
   cekBlacklist() async {
+    print('blaclist on');
     listBlacklistLot = [];
+    String token = sharedPreferences!.getString("token").toString();
     try {
-      final response = await http.get(Uri.parse(
-          '${ApiConstants.baseUrlsandy}${ApiConstants.GETblackList}'));
-      // if response successful
-      if (response.statusCode == 200) {
-        List jsonResponse = json.decode(response.body);
-
-        var allData =
-            jsonResponse.map((data) => BlacklistModel.fromJson(data)).toList();
-        for (var i = 0; i < allData.length; i++) {
-          listBlacklistLot.add(allData[i].lot); //! nanti ganti dengan theme
-        }
-        isBlaclist = listBlacklistLot.contains(
-            widget.lotNumber); //! hints : cara cek item di daftar list item
-        print('210420074 = ${listBlacklistLot.contains('210420074')}');
-      } else {
-        throw Exception('Unexpected error occured!');
+      var url = ApiConstants.baseUrl + ApiConstants.GETblackListM;
+      Response response = await Dio().get(url,
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+      var data = response.data;
+      for (var i = 0; i < data.length; i++) {
+        listBlacklistLot.add(data[i]['lot']);
       }
-    } catch (c) {
-      print('Err msg get data : $c');
-      return throw Exception(c);
+      isBlaclist = listBlacklistLot.contains(
+          widget.lotNumber); //! hints : cara cek item di daftar list item
+      print('401320001 = ${listBlacklistLot.contains('401320001')}');
+
+      setState(() {
+        print(listBlacklistLot);
+      });
+    } catch (e) {
+      print("Error fetching get blaclist: $e");
     }
+    // try {
+    //   final response = await http.get(Uri.parse(
+    //       '${ApiConstants.baseUrlsandy}${ApiConstants.GETblackListM}'));
+    //   // if response successful
+    //   if (response.statusCode == 200) {
+    //     List jsonResponse = json.decode(response.body);
+
+    //     var allData =
+    //         jsonResponse.map((data) => BlacklistModel.fromJson(data)).toList();
+    //     for (var i = 0; i < allData.length; i++) {
+    //       listBlacklistLot.add(allData[i].lot); //! nanti ganti dengan theme
+    //     }
+    //     isBlaclist = listBlacklistLot.contains(
+    //         widget.lotNumber); //! hints : cara cek item di daftar list item
+    //     print('210420074 = ${listBlacklistLot.contains('210420074')}');
+    //   } else {
+    //     throw Exception('Unexpected error occured!');
+    //   }
+    // } catch (c) {
+    //   print('Err msg get data : $c');
+    //   return throw Exception(c);
+    // }
   }
 
   getLimitDiskon() async {

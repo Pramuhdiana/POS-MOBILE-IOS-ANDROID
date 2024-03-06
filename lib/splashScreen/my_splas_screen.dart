@@ -42,7 +42,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   late Stopwatch stopwatch; //untuk mengukur berapa lama ambil datanya
   late Timer timer; //? timer
   int elapsedTimeInSeconds = 0;
-  int noBuild = 33;
+  int noBuild = 34;
   String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
   int role = 0;
@@ -70,6 +70,24 @@ class _MySplashScreenState extends State<MySplashScreen> {
       if (sharedPreferences!.getString("token").toString() != "null") {
         await requestPermission();
         if (int.parse(version!) > noBuild) {
+          try {
+            loadListHistoryPrice(); //ambil data history price
+          } catch (c) {
+            print('err : load history price ($c)');
+            Fluttertoast.showToast(msg: "get history gagal");
+          }
+          try {
+            loadListEticketing(); //ambil data cart
+          } catch (c) {
+            print('err : load listEticketing ($c)');
+
+            Fluttertoast.showToast(msg: "get list e ticket gagal");
+          }
+          try {
+            await loadListHistoryPrice(); //get data approved
+          } catch (c) {
+            Fluttertoast.showToast(msg: "get history price gagal");
+          }
           dialogBoxVersion();
         } else {
           try {
@@ -352,6 +370,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       var allData =
           jsonResponse.map((data) => VersionModel.fromJson(data)).toList();
       setState(() {
+        // version = '40';
         version = allData.first.version;
         sharedPreferences!.setString('version', version!);
       });

@@ -54,6 +54,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
   TextEditingController addDiskon = TextEditingController();
   int dpp = 0;
   int addesdiskon = 0;
+  List<double> listDiskon = [];
 
   final _formKey = GlobalKey<FormState>();
 
@@ -149,7 +150,6 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
         KeyboardOverlay.removeOverlay();
       }
     });
-    // getDiskon();
   }
 
   @override
@@ -162,10 +162,20 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
 
   getDiskon() async {
     String token = sharedPreferences!.getString("token").toString();
-    var url = ApiConstants.baseUrl + ApiConstants.GETlistdiskon;
-    Response response = await Dio().get(url,
-        options: Options(headers: {"Authorization": "Bearer $token"}));
-    var data = response.data;
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.GETlistdiskon;
+      Response response = await Dio().get(url,
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+      var data = response.data;
+      for (var i = 0; i < data.length; i++) {
+        listDiskon.add(double.parse(data[i]['diskonpersen']));
+      }
+      setState(() {
+        print(listDiskon);
+      });
+    } catch (e) {
+      print("Error fetching diskon: $e");
+    }
   }
 
   @override
@@ -286,6 +296,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
 
                                 print(idform);
                               }
+                              getDiskon();
                             });
                           },
                           dropdownDecoratorProps: DropDownDecoratorProps(
@@ -365,7 +376,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                                           62.5,
                                           63
                                         ]
-                                      : const [50, 60, 61, 62, 63],
+                                      : listDiskon,
                                   onChanged: (value) {
                                     setState(() {
                                       diskon = value!;

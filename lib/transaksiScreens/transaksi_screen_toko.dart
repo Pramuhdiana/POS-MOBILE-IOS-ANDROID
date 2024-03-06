@@ -54,6 +54,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
   TextEditingController customerMetier = TextEditingController();
   TextEditingController addDiskon = TextEditingController();
   // int DPP = int.parse(dp);
+  List<double> listDiskon = [];
 
   final _formKey = GlobalKey<FormState>();
 
@@ -176,6 +177,24 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
     super.dispose();
   }
 
+  getDiskon() async {
+    String token = sharedPreferences!.getString("token").toString();
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.GETlistdiskon;
+      Response response = await Dio().get(url,
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+      var data = response.data;
+      for (var i = 0; i < data.length; i++) {
+        listDiskon.add(double.parse(data[i]['diskonpersen']));
+      }
+      setState(() {
+        print(listDiskon);
+      });
+    } catch (e) {
+      print("Error fetching diskon: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -231,6 +250,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                             .length
                             .toString();
                         print(sharedPreferences!.getString("toko"));
+                        getDiskon();
                       });
                     },
                     dropdownDecoratorProps: DropDownDecoratorProps(
@@ -346,8 +366,19 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                                                   .getString('customer_id')
                                                   .toString() ==
                                               '522')
-                                      ? const [50,53,55,60, 61, 62, 60.5, 61.5, 62.5,63]
-                                      : const [50,60, 61, 62,63],
+                                      ? const [
+                                          50,
+                                          53,
+                                          55,
+                                          60,
+                                          61,
+                                          62,
+                                          60.5,
+                                          61.5,
+                                          62.5,
+                                          63
+                                        ]
+                                      : listDiskon,
                                   onChanged: (value) {
                                     setState(() {
                                       diskon = value!;
