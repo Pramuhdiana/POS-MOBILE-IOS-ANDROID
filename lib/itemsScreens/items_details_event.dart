@@ -221,9 +221,7 @@ class _ItemsDetailsEventScreenState extends State<ItemsDetailsEventScreen> {
                     sharedPreferences!.getString('role_sales_brand') == '3' ||
                             widget.model!.price!.bitLength > 17
                         ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
-                        : widget.model!.name![0].toString() == '4'
-                            ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
-                            : "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
+                        : "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,

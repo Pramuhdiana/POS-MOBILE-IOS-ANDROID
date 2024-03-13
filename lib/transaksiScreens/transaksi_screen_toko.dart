@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, use_build_context_synchronously, non_constant_identifier_names
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
@@ -11,6 +12,7 @@ import 'package:e_shop/global/global.dart';
 import 'package:e_shop/models/customer_metier.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
 import 'package:e_shop/splashScreen/transaksi_gagal.dart';
+import 'package:e_shop/widgets/custom_dialog.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:e_shop/widgets/keyboard_overlay.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -168,6 +170,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
         KeyboardOverlay.removeOverlay();
       }
     });
+    getDiskon();
   }
 
   @override
@@ -194,7 +197,13 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
         print(listDiskon);
       });
     } catch (e) {
-      print("Error fetching diskon: $e");
+      //*HINTS Panggil fungsi showCustomDialog
+      showCustomDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'GET Diskon',
+        description: '$e',
+      );
     }
     try {
       var urlRate = ApiConstants.baseUrl + ApiConstants.GETlistrate;
@@ -208,7 +217,13 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
         print(listRate);
       });
     } catch (e) {
-      print("Error fetching diskon: $e");
+      //*HINTS Panggil fungsi showCustomDialog
+      showCustomDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'GET Rate',
+        description: '$e',
+      );
     }
   }
 
@@ -267,7 +282,6 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                             .length
                             .toString();
                         print(sharedPreferences!.getString("toko"));
-                        getDiskon();
                       });
                     },
                     dropdownDecoratorProps: DropDownDecoratorProps(

@@ -8,6 +8,7 @@ import 'package:e_shop/global/global.dart';
 import 'package:e_shop/itemsScreens/items_photo_retur.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
+import 'package:e_shop/splashScreen/transaksi_gagal.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -153,16 +154,17 @@ class _CartScreenReturState extends State<CartScreenRetur> {
                             IconButton(
                               onPressed: () async {
                                 showProgress();
-                                await postAPIRetur();
-
-                                //kembali barang
-                                print("kembali barang dari Retur");
-                                context.read<PCartRetur>().clearCart();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (c) =>
-                                            const MySplashScreenTransaksi()));
+                                try {
+                                  await postAPIRetur();
+                                } catch (c) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (c) => TransaksiGagal(
+                                                title: 'Transaksi Retur gagal',
+                                                err: '$c',
+                                              )));
+                                }
                               },
                               icon: Image.asset(
                                 "assets/arrow (1).png",
@@ -215,7 +217,7 @@ class _CartScreenReturState extends State<CartScreenRetur> {
       'total_potongan': total_potongan,
       'keterangan_bayar': keterangan_bayar
     };
-    print(body);
+
     final response = await http.post(
         Uri.parse(
             ApiConstants.baseUrl + ApiConstants.POSTreturcheckoutendpoint),
@@ -224,6 +226,22 @@ class _CartScreenReturState extends State<CartScreenRetur> {
         },
         body: body);
     print(response.body);
+    if (response.statusCode == 200) {
+      //kembali barang
+      print("kembali barang dari Retur");
+      context.read<PCartRetur>().clearCart();
+      Navigator.push(context,
+          MaterialPageRoute(builder: (c) => const MySplashScreenTransaksi()));
+    } else {
+      Navigator.pop(context);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (c) => TransaksiGagal(
+                    title: 'Transaksi Retur gagal',
+                    err: response.body,
+                  )));
+    }
   }
 }
 

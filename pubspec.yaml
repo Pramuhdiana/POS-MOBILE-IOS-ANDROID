@@ -33,6 +33,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   api_cache_manager: ^1.0.2
   auto_reload: ^1.1.0
+  awesome_dialog: ^3.2.0
   badges: ^3.0.3
   cached_network_image: ^3.2.3
   carousel_slider: ^4.2.1

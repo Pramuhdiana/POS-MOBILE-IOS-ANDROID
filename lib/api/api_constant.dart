@@ -3,8 +3,8 @@
 var ipPublic = '203.174.11.254'; //? before Ip 110.5.102.154
 
 class ApiConstants {
-  static String baseUrl = 'http://54.179.58.215:8080/api';
-  // static String baseUrl = 'http://54.179.58.215:7060/api'; //! Dummy
+  // static String baseUrl = 'http://54.179.58.215:8080/api';
+  static String baseUrl = 'http://54.179.58.215:7060/api'; //! Dummy
   static String baseUrlPricing = 'http://$ipPublic:4000/approvals';
   static String baseUrlImageMdbc =
       'https://$ipPublic:50001/Files/Images/Product/';
@@ -32,6 +32,7 @@ class ApiConstants {
   static String GETlistrate = '/indexrate';
   static String GETblackListM = '/indexlotbacklist';
   static String GETblackList = '/rest_api_mobile.php?type=blacklList';
+  static String GETVocherBB = '/indexbbvoucher';
 
   static String POSTloginendpoint = '/login';
   static String GETprofileendpoint = '/profile';
@@ -60,6 +61,8 @@ class ApiConstants {
   static String POSTmetiercheckout = '/possalesmetiercheckout';
   static String POSThistoryApprove = '/create_history_approve.php';
   static String POSThargaApproved = '/createprice';
+  static String UPDATEdiskon = '/updatebbdiskon';
+  static String UPDATEvocher = '/updateditbbvoucher';
 
   static String DELETEkeranjangtokoendpoint = '/deletecartpostoko';
   static String DELETEkeranjangsalesendpoint = '/deletecartpossales';

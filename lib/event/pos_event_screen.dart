@@ -8,13 +8,13 @@ import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/event/appbar_cart_event.dart';
 import 'package:e_shop/event/pos_event_screen_ui.dart';
 import 'package:e_shop/provider/provider_cart_event.dart';
+import 'package:e_shop/splashScreen/transaksi_gagal.dart';
 import 'package:http/http.dart' as http;
 import 'package:e_shop/database/model_allitems.dart';
 import 'package:e_shop/event/event_search.dart';
 import 'package:e_shop/mainScreens/profile_screen.dart';
 import 'package:e_shop/mainScreens/notification_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
@@ -109,7 +109,14 @@ class _PosEventScreenState extends State<PosEventScreen> {
       });
       return allData;
     } else {
-      throw Fluttertoast.showToast(msg: "Database Off");
+      // ignore: use_build_context_synchronously
+      throw Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (c) => TransaksiGagal(
+                    title: 'Error get data event',
+                    err: '$c',
+                  )));
     }
   }
 

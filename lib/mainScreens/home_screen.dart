@@ -13,6 +13,7 @@ import 'package:e_shop/event/pos_event_screen.dart';
 import 'package:e_shop/models/customer_metier.dart';
 import 'package:e_shop/provider/provider_notification.dart';
 import 'package:e_shop/search/new_search.dart';
+import 'package:e_shop/setDiskon/set_diskon.dart';
 import 'package:e_shop/toko/add_customer_metier.dart';
 import 'package:e_shop/widgets/app_colors.dart';
 import 'package:e_shop/widgets/color_extensions.dart';
@@ -2044,6 +2045,52 @@ class _HomeScreenState extends State<HomeScreen> {
                                       textAlign: TextAlign.right,
                                       style: const TextStyle(fontSize: 11),
                                       maxLines: 2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        //SET DISKON
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: 50,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                                // side: BorderSide(color: Colors.grey.shade200)
+                              ))),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => SetDiskonScreen()));
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Image.asset(
+                                      "images/discount2.png",
+                                      color: Colors.white,
+                                      width: 25,
+                                      height: 25,
+                                    ),
+                                  ),
+                                  const Expanded(
+                                    child: Text(
+                                      'SET Discount',
+                                      style: TextStyle(fontSize: 16),
+                                      maxLines: 1,
                                     ),
                                   ),
                                 ],

@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
@@ -10,6 +11,7 @@ import 'package:e_shop/buStephanie/main_screen_approve_pricing.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/provider/provider_waiting_brj.dart';
 import 'package:e_shop/provider/provider_waiting_eticketing.dart';
+import 'package:e_shop/widgets/custom_dialog.dart';
 import 'package:e_shop/widgets/keyboard_overlay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -174,10 +176,20 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
         // }
         return g;
       } else {
-        throw Exception('Unexpected error occured!');
+        showCustomDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Get All Data',
+          description: response.body,
+        );
       }
-    } catch (c) {
-      return throw Exception(c);
+    } catch (e) {
+      return showCustomDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'Error Get All Data',
+        description: '$e',
+      );
     }
   }
 
@@ -258,8 +270,13 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
       } else {
         throw Exception('Unexpected error occured!');
       }
-    } catch (c) {
-      return throw Exception(c);
+    } catch (e) {
+      return showCustomDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'Error Get All Data',
+        description: '$e',
+      );
     }
   }
 
@@ -1769,22 +1786,22 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                         setState(() {
                                                                                                           try {
                                                                                                             postApiWeb(data);
-                                                                                                          } catch (c) {
-                                                                                                            showSimpleNotification(
-                                                                                                              Text('Msg Err POST WEB : $c'),
-                                                                                                              // subtitle: const Text('sub'),
-                                                                                                              background: Colors.red,
-                                                                                                              duration: const Duration(seconds: 10),
+                                                                                                          } catch (e) {
+                                                                                                            showCustomDialog(
+                                                                                                              context: context,
+                                                                                                              dialogType: DialogType.error,
+                                                                                                              title: 'Error Send data Web',
+                                                                                                              description: '$e',
                                                                                                             );
                                                                                                           }
                                                                                                           try {
                                                                                                             postApi(data.lotNo!);
-                                                                                                          } catch (c) {
-                                                                                                            showSimpleNotification(
-                                                                                                              Text('Msg Err Dekstop: $c'),
-                                                                                                              // subtitle: const Text('sub'),
-                                                                                                              background: Colors.red,
-                                                                                                              duration: const Duration(seconds: 10),
+                                                                                                          } catch (e) {
+                                                                                                            showCustomDialog(
+                                                                                                              context: context,
+                                                                                                              dialogType: DialogType.error,
+                                                                                                              title: 'Error Send data Dekstop',
+                                                                                                              description: '$e',
                                                                                                             );
                                                                                                           }
 
@@ -1897,7 +1914,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
           'Authorization': 'Bearer $token',
         },
         body: body);
-    print(response.statusCode);
+
     print(response.body);
   }
 
@@ -1925,7 +1942,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
     final response = await http.put(Uri.parse(url),
         headers: headersAPI, body: jsonEncode(bodyApi));
 
-    print(response.statusCode);
     print(response.body);
   }
 

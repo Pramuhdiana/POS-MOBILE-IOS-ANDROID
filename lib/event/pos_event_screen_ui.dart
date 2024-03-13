@@ -155,9 +155,7 @@ class _EventItemsUiDesign extends State<EventItemsUiDesign> {
                                       '3' ||
                                   widget.model!.price!.bitLength > 17
                               ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
-                              : widget.model!.name![0].toString() == '4'
-                                  ? "Rp.${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}"
-                                  : "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
+                              : "\$${CurrencyFormat.convertToTitik(widget.model!.price!, 0).toString()}",
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,

@@ -31,8 +31,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class HistoryModelNew extends StatelessWidget {
   //Read an image data from website/webspace
-  String urlBase = 'http://54.179.58.215:8080';
-  // String urlBase = 'http://54.179.58.215:7060';
+  // String urlBase = 'http://54.179.58.215:8080';
+  String urlBase = 'http://54.179.58.215:7060';
   String pdfFile = '';
   var pdf = pw.Document();
 

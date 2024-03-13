@@ -2,10 +2,12 @@
 
 import 'dart:convert' as convert;
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/home_screen.dart';
 import 'package:e_shop/splashScreen/my_splas_screen.dart';
+import 'package:e_shop/widgets/custom_dialog.dart';
 import 'package:e_shop/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -37,11 +39,21 @@ class _LoginTabPageState extends State<LoginTabPage> {
       try {
         await sharedPreferences?.setBool('dbDummy', false);
         await loginNow();
-      } catch (c) {
-        print('err saat login : $c');
+      } catch (e) {
+        showCustomDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Login',
+          description: "$e",
+        );
       }
     } else {
-      Fluttertoast.showToast(msg: "Please provide email and password.");
+      showCustomDialog(
+        context: context,
+        dialogType: DialogType.info,
+        title: 'Info',
+        description: "Please provide email and password.",
+      );
     }
   }
 
@@ -75,7 +87,12 @@ class _LoginTabPageState extends State<LoginTabPage> {
       checkIfUserRecordExists(response.body);
     } else {
       Navigator.pop(context);
-      Fluttertoast.showToast(msg: "Email & Password Incorrect ");
+      showCustomDialog(
+        context: context,
+        dialogType: DialogType.info,
+        title: 'Info',
+        description: 'Email & Password Incorrect',
+      );
     }
   }
 

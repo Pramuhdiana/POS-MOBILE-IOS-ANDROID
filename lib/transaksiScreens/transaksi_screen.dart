@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, use_build_context_synchronously, unused_local_variable, unused_element, prefer_const_constructors, unnecessary_new, prefer_collection_literals, non_constant_identifier_names
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
@@ -10,6 +11,7 @@ import 'package:e_shop/event/add_customer_event.dart';
 import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/splashScreen/my_splas_screen_transaksi.dart';
 import 'package:e_shop/splashScreen/transaksi_gagal.dart';
+import 'package:e_shop/widgets/custom_dialog.dart';
 import 'package:e_shop/widgets/custom_loading.dart';
 import 'package:e_shop/widgets/keyboard_overlay.dart';
 import 'package:flutter/material.dart';
@@ -151,6 +153,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
         KeyboardOverlay.removeOverlay();
       }
     });
+    getDiskon();
   }
 
   @override
@@ -178,7 +181,13 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
         print(listDiskon);
       });
     } catch (e) {
-      print("Error fetching diskon: $e");
+      //*HINTS Panggil fungsi showCustomDialog
+      showCustomDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'Error Get Discount',
+        description: '$e',
+      );
     }
 
     try {
@@ -193,7 +202,13 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
         print(listRate);
       });
     } catch (e) {
-      print("Error fetching diskon: $e");
+      //*HINTS Panggil fungsi showCustomDialog
+      showCustomDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'Error Get Rate',
+        description: '$e',
+      );
     }
   }
 
@@ -285,50 +300,59 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                       ),
 
                 //jenis form
-                sharedPreferences!.getString('role_sales_brand') == '3'
-                    ? SizedBox()
-                    : Container(
-                        padding: const EdgeInsets.only(top: 10),
-                        height: 80,
-                        child: DropdownSearch<String>(
-                          items: const ["INVOICE", "TITIPAN", "PAMERAN"],
-                          onChanged: (text) {
-                            setState(() {
-                              form = text;
-                              if (form == "INVOICE") {
-                                idform = 1;
-                                idformAPI = 1;
-                                print(idform);
-                              } else if (form == "TITIPAN") {
-                                idform = 2;
-                                idformAPI = 2;
+                // sharedPreferences!.getString('role_sales_brand') == '3'
+                //     ? SizedBox()
+                //     :
+                Container(
+                  padding: const EdgeInsets.only(top: 10),
+                  height: 80,
+                  child: DropdownSearch<String>(
+                    items: const [
+                      "INVOICE",
+                      "TITIPAN",
+                      "PAMERAN",
+                      "TITIPAN SEMENTARA"
+                    ],
+                    onChanged: (text) {
+                      setState(() {
+                        form = text;
+                        if (form == "INVOICE") {
+                          idform = 1;
+                          idformAPI = 1;
+                          print(idform);
+                        } else if (form == "TITIPAN") {
+                          idform = 2;
+                          idformAPI = 2;
 
-                                print(idform);
-                              } else if (form == "PAMERAN") {
-                                idform = 3;
-                                idformAPI = 2;
+                          print(idform);
+                        } else if (form == "PAMERAN") {
+                          idform = 3;
+                          idformAPI = 2;
 
-                                print(idform);
-                              } else {
-                                idform = 0;
-                                idformAPI = 0;
+                          print(idform);
+                        } else if (form == "TITIPAN SEMENTARA") {
+                          idform = 3;
+                          idformAPI = 2;
 
-                                print(idform);
-                              }
-                              getDiskon();
-                            });
-                          },
-                          dropdownDecoratorProps: DropDownDecoratorProps(
-                            dropdownSearchDecoration: InputDecoration(
-                              labelText: "Select type of form",
-                              filled: true,
-                              fillColor: Theme.of(context)
-                                  .inputDecorationTheme
-                                  .fillColor,
-                            ),
-                          ),
-                        ),
+                          print(idform);
+                        } else {
+                          idform = 0;
+                          idformAPI = 0;
+
+                          print(idform);
+                        }
+                      });
+                    },
+                    dropdownDecoratorProps: DropDownDecoratorProps(
+                      dropdownSearchDecoration: InputDecoration(
+                        labelText: "Select type of form",
+                        filled: true,
+                        fillColor:
+                            Theme.of(context).inputDecorationTheme.fillColor,
                       ),
+                    ),
+                  ),
+                ),
 
                 //Rate
                 idform == 0
@@ -545,6 +569,15 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
   formValidation() async {
     if (toko == null) {
       btnController.error(); //error
+      //*HINTS Panggil fungsi showCustomDialog
+      showCustomDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'Choose customer',
+        description: '',
+      );
+
+      btnController.reset();
     } else {
       await postAPIsales();
     }
@@ -609,7 +642,6 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
     String addesdiskon_rupiahApi = addesdiskon.toString();
     String total_potongan = totalDiskonRp;
     String keterangan_bayar = 'null';
-    print(basicdiskon);
     Map<String, String> body = {
       'cart_total': cart_total,
       'cart_totalquantity': cart_totalquantity, //total item di cart
@@ -651,14 +683,25 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
       var apiProvider = ApiServices();
       try {
         await apiProvider.getAllTransaksiBaru();
-      } catch (c) {
-        Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+      } catch (e) {
+        //*HINTS Panggil fungsi showCustomDialog
+        showCustomDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Get All Transaction',
+          description: '$e',
+        );
       }
       try {
         await apiProvider.getAllDetailTransaksi();
-      } catch (c) {
-        Fluttertoast.showToast(
-            msg: "Failed To Load Data all details transaksi");
+      } catch (e) {
+        //*HINTS Panggil fungsi showCustomDialog
+        showCustomDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Get Detail Transaction',
+          description: '$e',
+        );
       }
 
       btnController.success(); //sucses
@@ -695,14 +738,25 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
       var apiProvider = ApiServices();
       try {
         await apiProvider.getAllTransaksiBaru();
-      } catch (c) {
-        Fluttertoast.showToast(msg: "Failed To Load Data all transaksi");
+      } catch (e) {
+        //*HINTS Panggil fungsi showCustomDialog
+        showCustomDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Get All Transaction',
+          description: '$e',
+        );
       }
       try {
         await apiProvider.getAllDetailTransaksi();
-      } catch (c) {
-        Fluttertoast.showToast(
-            msg: "Failed To Load Data all details transaksi");
+      } catch (e) {
+        //*HINTS Panggil fungsi showCustomDialog
+        showCustomDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Get Detail Transaction',
+          description: '$e',
+        );
       }
       btnController.success(); //sucses
       Navigator.push(context,
