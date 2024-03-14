@@ -84,7 +84,7 @@ class _SetDiskonScreenState extends State<SetDiskonScreen> {
     String tanggal_diskon4 = tanggalDiskonDollar[3].join(',');
 
     Map<String, String> body = {
-      "id": '5',
+      "id": '1',
       "name": "diskon_dollar",
       "type": "diskon_dollar",
       "diskon1": listDiskonDollar[0],
@@ -146,7 +146,7 @@ class _SetDiskonScreenState extends State<SetDiskonScreen> {
     String tanggal_diskon4 = tanggalDiskonRupiah[3].join(',');
 
     Map<String, String> body = {
-      "id": '6',
+      "id": '2',
       "name": "diskon_rupiah",
       "type": "diskon_rupiah",
       "diskon1": listDiskonRupiah[0],
@@ -257,34 +257,34 @@ class _SetDiskonScreenState extends State<SetDiskonScreen> {
       isLoading = true;
     });
     await getDiskon();
-    for (int i = 0; i < tanggalDiskonDollar.length; i++) {
-      for (int j = 0; j < tanggalDiskonDollar[i].length; j++) {
-        List<int> tanggalList = tanggalDiskonDollar[i][j]
-            .split(",")
-            .map((str) => int.parse(str))
-            .toList();
+    // for (int i = 0; i < tanggalDiskonDollar.length; i++) {
+    //   for (int j = 0; j < tanggalDiskonDollar[i].length; j++) {
+    //     List<int> tanggalList = tanggalDiskonDollar[i][j]
+    //         .split(",")
+    //         .map((str) => int.parse(str))
+    //         .toList();
 
-        // Lakukan sesuatu dengan tanggalList di sini
-        // Tandai tanggal yang ada dalam daftar tanggal
-        for (int tanggal in tanggalList) {
-          selectedLists[i][tanggal - 1] = true;
-        }
-      }
-    }
-    for (int i = 0; i < tanggalDiskonRupiah.length; i++) {
-      for (int j = 0; j < tanggalDiskonRupiah[i].length; j++) {
-        List<int> tanggalListRupiah = tanggalDiskonRupiah[i][j]
-            .split(",")
-            .map((str) => int.parse(str))
-            .toList();
+    //     // Lakukan sesuatu dengan tanggalList di sini
+    //     // Tandai tanggal yang ada dalam daftar tanggal
+    //     for (int tanggal in tanggalList) {
+    //       selectedLists[i][tanggal - 1] = true;
+    //     }
+    //   }
+    // }
+    // for (int i = 0; i < tanggalDiskonRupiah.length; i++) {
+    //   for (int j = 0; j < tanggalDiskonRupiah[i].length; j++) {
+    //     List<int> tanggalListRupiah = tanggalDiskonRupiah[i][j]
+    //         .split(",")
+    //         .map((str) => int.parse(str))
+    //         .toList();
 
-        // Lakukan sesuatu dengan tanggalList di sini
-        // Tandai tanggal yang ada dalam daftar tanggal
-        for (int tanggal in tanggalListRupiah) {
-          selectedListsRupiah[i][tanggal - 1] = true;
-        }
-      }
-    }
+    //     // Lakukan sesuatu dengan tanggalList di sini
+    //     // Tandai tanggal yang ada dalam daftar tanggal
+    //     for (int tanggal in tanggalListRupiah) {
+    //       selectedListsRupiah[i][tanggal - 1] = true;
+    //     }
+    //   }
+    // }
     await getVocher();
 
     setState(() {
@@ -320,14 +320,22 @@ class _SetDiskonScreenState extends State<SetDiskonScreen> {
       listNamaDiskonRupiah.add(dataRupiah['name_diskon2'].toString());
       listNamaDiskonRupiah.add(dataRupiah['name_diskon3'].toString());
       listNamaDiskonRupiah.add(dataRupiah['name_diskon4'].toString());
-      tanggalDiskonDollar.add([dataDollar['tanggal_diskon1'].toString()]);
-      tanggalDiskonDollar.add([dataDollar['tanggal_diskon2'].toString()]);
-      tanggalDiskonDollar.add([dataDollar['tanggal_diskon3'].toString()]);
-      tanggalDiskonDollar.add([dataDollar['tanggal_diskon4'].toString()]);
-      tanggalDiskonRupiah.add([dataRupiah['tanggal_diskon1'].toString()]);
-      tanggalDiskonRupiah.add([dataRupiah['tanggal_diskon2'].toString()]);
-      tanggalDiskonRupiah.add([dataRupiah['tanggal_diskon3'].toString()]);
-      tanggalDiskonRupiah.add([dataRupiah['tanggal_diskon4'].toString()]);
+      tanggalDiskonDollar
+          .add([(dataDollar['tanggal_diskon1'] ?? '').toString()]);
+      tanggalDiskonDollar
+          .add([(dataDollar['tanggal_diskon2'] ?? '').toString()]);
+      tanggalDiskonDollar
+          .add([(dataDollar['tanggal_diskon3'] ?? '').toString()]);
+      tanggalDiskonDollar
+          .add([(dataDollar['tanggal_diskon4'] ?? '').toString()]);
+      tanggalDiskonRupiah
+          .add([(dataRupiah['tanggal_diskon1'] ?? '').toString()]);
+      tanggalDiskonRupiah
+          .add([(dataRupiah['tanggal_diskon2'] ?? '').toString()]);
+      tanggalDiskonRupiah
+          .add([(dataRupiah['tanggal_diskon3'] ?? '').toString()]);
+      tanggalDiskonRupiah
+          .add([(dataRupiah['tanggal_diskon4'] ?? '').toString()]);
       setState(() {
         print(tanggalDiskonDollar);
         print(tanggalDiskonRupiah);
@@ -360,7 +368,7 @@ class _SetDiskonScreenState extends State<SetDiskonScreen> {
           context,
           MaterialPageRoute(
               builder: (c) => TransaksiGagal(
-                    title: 'Error Get blacklist',
+                    title: 'Error Get rate',
                     err: '$e',
                   )));
     }
@@ -394,7 +402,7 @@ class _SetDiskonScreenState extends State<SetDiskonScreen> {
           context,
           MaterialPageRoute(
               builder: (c) => TransaksiGagal(
-                    title: 'Error Get blacklist',
+                    title: 'Error Get Voucher',
                     err: '$e',
                   )));
     }

@@ -137,6 +137,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int? qtyProductTicketing = 0;
   String token = sharedPreferences!.getString("token").toString();
   String newOpen = '';
+  String rolePos = '0';
+
   // @override
   // void didChangeDependencies() {
   //   super.didChangeDependencies();
@@ -152,6 +154,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    rolePos = sharedPreferences!.getString("role_pos").toString();
+
+    print('role pos : $rolePos');
     super.initState();
     context.read<PCart>().clearCart(); //clear cart
     loadCartFromApiPOSSALES(); //ambil data cart
@@ -2054,50 +2059,54 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
 
                         //SET DISKON
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 1,
-                            height: 50,
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50.0),
-                                // side: BorderSide(color: Colors.grey.shade200)
-                              ))),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (c) => SetDiskonScreen()));
-                              },
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5),
-                                    child: Image.asset(
-                                      "images/discount2.png",
-                                      color: Colors.white,
-                                      width: 25,
-                                      height: 25,
+                        rolePos != '1'
+                            ? const SizedBox()
+                            : Padding(
+                                padding: const EdgeInsets.only(top: 15),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width * 1,
+                                  height: 50,
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                      // side: BorderSide(color: Colors.grey.shade200)
+                                    ))),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (c) =>
+                                                  SetDiskonScreen()));
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 5),
+                                          child: Image.asset(
+                                            "images/discount2.png",
+                                            color: Colors.white,
+                                            width: 25,
+                                            height: 25,
+                                          ),
+                                        ),
+                                        const Expanded(
+                                          child: Text(
+                                            'SET Discount',
+                                            style: TextStyle(fontSize: 16),
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  const Expanded(
-                                    child: Text(
-                                      'SET Discount',
-                                      style: TextStyle(fontSize: 16),
-                                      maxLines: 1,
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),

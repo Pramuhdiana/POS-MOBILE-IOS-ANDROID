@@ -82,6 +82,7 @@ class ApiServices {
     prefs.setString('updated_at', response.data['updated_at'].toString());
     prefs.setString('personal_access_tokens',
         response.data['personal_access_tokens'].toString());
+    prefs.setString('role_pos', (response.data['role_pos'] ?? 0).toString());
     print('Inserting Users to lokal berhasil');
   }
 

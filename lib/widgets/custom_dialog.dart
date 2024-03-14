@@ -6,6 +6,7 @@ void showCustomDialog({
   required DialogType dialogType,
   required String title,
   required String description,
+  bool dismiss = true,
 }) {
   AwesomeDialog(
           context: context,
@@ -18,8 +19,8 @@ void showCustomDialog({
           buttonsBorderRadius: const BorderRadius.all(
             Radius.circular(2),
           ),
-          dismissOnTouchOutside: true,
-          dismissOnBackKeyPress: true,
+          dismissOnTouchOutside: dismiss,
+          dismissOnBackKeyPress: dismiss,
           headerAnimationLoop: true,
           animType: AnimType.bottomSlide,
           title: title,

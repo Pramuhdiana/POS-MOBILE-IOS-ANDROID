@@ -44,7 +44,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   late Stopwatch stopwatch; //untuk mengukur berapa lama ambil datanya
   late Timer timer; //? timer
   int elapsedTimeInSeconds = 0;
-  int noBuild = 34;
+  int noBuild = 35;
   String? mtoken = " ";
   String token = sharedPreferences!.getString("token").toString();
   int role = 0;
@@ -62,6 +62,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
         showCustomDialog(
           context: context,
           dialogType: DialogType.error,
+          dismiss: false,
           title: 'Error Get Version',
           description: '$e',
         );
@@ -79,6 +80,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
             showCustomDialog(
               context: context,
               dialogType: DialogType.error,
+              dismiss: false,
               title: 'Error Get History Price',
               description: '$e',
             );
@@ -90,6 +92,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
             showCustomDialog(
               context: context,
               dialogType: DialogType.error,
+              dismiss: false,
               title: 'Error Get List E-ticket',
               description: '$e',
             );
@@ -101,6 +104,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
             showCustomDialog(
               context: context,
               dialogType: DialogType.error,
+              dismiss: false,
               title: 'Error Get History Price',
               description: '$e',
             );
@@ -120,9 +124,12 @@ class _MySplashScreenState extends State<MySplashScreen> {
             showCustomDialog(
               context: context,
               dialogType: DialogType.error,
+              dismiss: false,
               title: 'Error Get User',
               description: '$e',
             );
+            throw Navigator.push(
+                context, MaterialPageRoute(builder: (c) => const AuthScreen()));
           }
 
           if (role == 15) {
@@ -132,6 +139,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
               showCustomDialog(
                 context: context,
                 dialogType: DialogType.error,
+                dismiss: false,
                 title: 'Error Get History Price',
                 description: '$e',
               );
@@ -142,6 +150,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
               showCustomDialog(
                 context: context,
                 dialogType: DialogType.error,
+                dismiss: false,
                 title: 'Error Get List E-Ticket',
                 description: '$e',
               );
@@ -174,6 +183,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
                 showCustomDialog(
                   context: context,
                   dialogType: DialogType.error,
+                  dismiss: false,
                   title: 'Something Went Wrong',
                   description: '$e',
                 );
@@ -191,6 +201,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
               showCustomDialog(
                 context: context,
                 dialogType: DialogType.error,
+                dismiss: false,
                 title: 'Info',
                 description: 'Please Login',
               );
@@ -205,6 +216,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
         showCustomDialog(
           context: context,
           dialogType: DialogType.error,
+          dismiss: false,
           title: 'Info',
           description: 'Please Login',
         );
@@ -294,6 +306,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       showCustomDialog(
         context: context,
         dialogType: DialogType.error,
+        dismiss: false,
         title: 'Error Get All Items',
         description: '$e',
       );
@@ -315,6 +328,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       showCustomDialog(
         context: context,
         dialogType: DialogType.error,
+        dismiss: false,
         title: 'Error Get All Transaksi',
         description: '$e',
       );
@@ -326,6 +340,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       showCustomDialog(
         context: context,
         dialogType: DialogType.error,
+        dismiss: false,
         title: 'Error Get Detail Transaksi',
         description: '$e',
       );
@@ -336,6 +351,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       showCustomDialog(
         context: context,
         dialogType: DialogType.error,
+        dismiss: false,
         title: 'Error Get Kode Barang',
         description: '$e',
       );
@@ -352,6 +368,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       showCustomDialog(
         context: context,
         dialogType: DialogType.error,
+        dismiss: false,
         title: 'Error Get Customer',
         description: '$e',
       );
@@ -362,6 +379,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       showCustomDialog(
         context: context,
         dialogType: DialogType.error,
+        dismiss: false,
         title: 'Error Get Crm',
         description: '$e',
       );
