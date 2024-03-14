@@ -3,8 +3,8 @@
 var ipPublic = '203.174.11.254'; //? before Ip 110.5.102.154
 
 class ApiConstants {
-  // static String baseUrl = 'http://54.179.58.215:8080/api';
-  static String baseUrl = 'http://54.179.58.215:7060/api'; //! Dummy
+  static String baseUrl = 'http://54.179.58.215:8080/api';
+  // static String baseUrl = 'http://54.179.58.215:7060/api'; //! Dummy
   static String baseUrlPricing = 'http://$ipPublic:4000/approvals';
   static String baseUrlImageMdbc =
       'https://$ipPublic:50001/Files/Images/Product/';

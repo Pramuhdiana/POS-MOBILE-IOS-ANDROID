@@ -36,6 +36,7 @@ class ModelAlltransaksiBaru {
   String? year;
   String? status;
   int? addaddesdiskon_rupiah2;
+  int? surprise;
 
   ModelAlltransaksiBaru({
     this.invoices_number,
@@ -63,6 +64,7 @@ class ModelAlltransaksiBaru {
     this.year,
     this.status,
     this.addaddesdiskon_rupiah2,
+    this.surprise,
   });
 
   factory ModelAlltransaksiBaru.fromJson(Map<String, dynamic> json) =>
@@ -78,8 +80,10 @@ class ModelAlltransaksiBaru {
           total_quantity: json["total_quantity"] ?? 0,
           total_rupiah: json["total_rupiah"] ?? '0',
           basic_discount: (json["basic_discount"] ?? 0).toString(),
-          addesdiskon_rupiah: (json["addesdiskon_rupiah"] ?? 0) + (json["surprise"] ?? 0),
+          addesdiskon_rupiah:
+              (json["addesdiskon_rupiah"] ?? 0) + (json["surprise"] ?? 0),
           addaddesdiskon_rupiah2: json["addaddesdiskon_rupiah2"] ?? 0,
+          surprise: json["surprise"] ?? 0,
           rate: json["rate"] ?? 0,
           nett: json["nett"] ?? 0,
           created_at: json["created_at"],
@@ -109,6 +113,7 @@ class ModelAlltransaksiBaru {
         "basic_discount": basic_discount,
         "addesdiskon_rupiah": addesdiskon_rupiah,
         "addaddesdiskon_rupiah2": addaddesdiskon_rupiah2,
+        "surprise": surprise,
         "rate": rate,
         "nett": nett,
         "created_at": created_at,

@@ -23,6 +23,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     DateTime tempDate = DateFormat("yyyy-MM-dd")
         .parse(sharedPreferences!.getString("created_at")!);
     since.text = DateFormat('dd-MM-yyyy').format(tempDate);
+    String token = sharedPreferences!.getString("token").toString();
+
+    // ignore: avoid_print
+    print(token);
   }
 
   @override

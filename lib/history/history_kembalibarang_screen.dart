@@ -1,6 +1,7 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unused_import
 
 import 'package:e_shop/database/db_alldetailtransaksi.dart';
+import 'package:e_shop/database/db_alltransaksi.dart';
 import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/history/history_model_new.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class HistoryKembalibarangScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: DbAlltransaksiBaru.db.getAlltransaksiBaru(4),
+        future: DbAlltransaksi.db.getAlltransaksiBaru(4),
         //kembali barang 4
         // inv 1
         // ttp 2

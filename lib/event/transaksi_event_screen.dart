@@ -1,10 +1,11 @@
-// ignore_for_file: library_private_types_in_public_api, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, use_build_context_synchronously, unused_local_variable, unused_element, prefer_const_constructors, unnecessary_new, prefer_collection_literals, non_constant_identifier_names
+// ignore_for_file: library_private_types_in_public_api, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, use_build_context_synchronously, unused_local_variable, unused_element, prefer_const_constructors, unnecessary_new, prefer_collection_literals, non_constant_identifier_names, unused_import
 
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_alldetailtransaksi.dart';
+import 'package:e_shop/database/db_alltransaksi.dart';
 import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/event/add_customer_event.dart';
 import 'package:e_shop/event/cart_event_screen.dart';
@@ -1716,7 +1717,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     String addesdiskonApi = addesdiskon.toString();
     String addesdiskonApi2 = addesdiskon2.toString();
     String nilaiVoucherApi = nilaiVocher.toString();
-    String surprise = surpriseApi.toString();
+    String surprise = addesdiskon3.toString();
 
     Map<String, String> body = {
       'cart_total': cart_total,
@@ -1761,7 +1762,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
       } else {
         context.read<PCartEvent>().clearCart(); //clear cart
         await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-        await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
+        await DbAlltransaksi.db.deleteAlltransaksiBaru();
         var apiProvider = ApiServices();
         try {
           await apiProvider.getAllTransaksiBaru();

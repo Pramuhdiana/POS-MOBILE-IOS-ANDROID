@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, use_build_context_synchronously, unused_local_variable, unused_element, prefer_const_constructors, unnecessary_new, prefer_collection_literals, non_constant_identifier_names
+// ignore_for_file: library_private_types_in_public_api, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, use_build_context_synchronously, unused_local_variable, unused_element, prefer_const_constructors, unnecessary_new, prefer_collection_literals, non_constant_identifier_names, unused_import
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
@@ -6,6 +6,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_alldetailtransaksi.dart';
+import 'package:e_shop/database/db_alltransaksi.dart';
 import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/event/add_customer_event.dart';
 import 'package:e_shop/models/user_model.dart';
@@ -48,6 +49,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
   int? idtoko = 0;
   int idform = 0;
   int idformAPI = 0;
+  int idstatusAPI = 0;
   int rate = 1;
   int diskonrequest = 90;
   int result = 0;
@@ -319,21 +321,23 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                         if (form == "INVOICE") {
                           idform = 1;
                           idformAPI = 1;
+                          idstatusAPI = 0;
                           print(idform);
                         } else if (form == "TITIPAN") {
                           idform = 2;
                           idformAPI = 2;
+                          idstatusAPI = 3;
 
                           print(idform);
                         } else if (form == "PAMERAN") {
                           idform = 3;
                           idformAPI = 2;
-
+                          idstatusAPI = 1;
                           print(idform);
                         } else if (form == "TITIPAN SEMENTARA") {
                           idform = 3;
                           idformAPI = 2;
-
+                          idstatusAPI = 2;
                           print(idform);
                         } else {
                           idform = 0;
@@ -633,6 +637,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
     String bayar = dpp.toString();
     String customer_id = idtoko.toString();
     String jenisform_id = idformAPI.toString();
+    String statusTitipan = idstatusAPI.toString();
     String basicdiskon = diskon.toString();
     String addesdiskonApi = addesdiskon.toString();
     String basicrate = rate.toString();
@@ -656,7 +661,8 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
       'diskon_rupiah': diskon_rupiah,
       'addesdiskon_rupiah': addesdiskon_rupiahApi,
       'total_potongan': total_potongan,
-      'keterangan_bayar': keterangan_bayar
+      'keterangan_bayar': keterangan_bayar,
+      'status_titipan': statusTitipan,
     };
     final response = await http.post(
         Uri.parse(
@@ -676,10 +682,12 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                     err: '${response.body}',
                   )));
     } else {
+      print(body);
+      print(response.body);
       btnController.success(); //sucses
       context.read<PCart>().clearCart(); //clear cart
       await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-      await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
+      await DbAlltransaksi.db.deleteAlltransaksiBaru();
       var apiProvider = ApiServices();
       try {
         await apiProvider.getAllTransaksiBaru();
@@ -734,7 +742,7 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
     if (response.statusCode == 200) {
       context.read<PCart>().clearCart(); //clear cart
       await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-      await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
+      await DbAlltransaksi.db.deleteAlltransaksiBaru();
       var apiProvider = ApiServices();
       try {
         await apiProvider.getAllTransaksiBaru();

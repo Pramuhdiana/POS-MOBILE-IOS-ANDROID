@@ -160,6 +160,22 @@ class DbAllitemsToko {
     return list;
   }
 
+  //gett all items toko BY page
+  Future<List<ModelAllitemsToko>> getAllitemsTokoByForm(
+      idtoko, page, limit, statusTitipan) async {
+    final db = await database;
+    final res = await db.rawQuery(
+        'SELECT * FROM allitemstoko WHERE customer_id=? and qty=? and status_titipan=?  LIMIT $limit OFFSET $page',
+        [idtoko, 1, statusTitipan]);
+    // final res = await db.rawQuery("SELECT * FROM allitemstoko");
+
+    List<ModelAllitemsToko> list = res.isNotEmpty
+        ? res.map((c) => ModelAllitemsToko.fromJson(c)).toList()
+        : [];
+
+    return list;
+  }
+
   //gett all items toko
   Future<List<ModelAllitemsToko>> getAllitems(name) async {
     final db = await database;

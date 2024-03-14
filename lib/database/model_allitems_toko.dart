@@ -59,7 +59,7 @@ class ModelAllitemsToko {
         sales_id: json["sales_id"],
         brand_id: json["brand_id"] ?? 0,
         qty: json["qty"],
-        status_titipan: json["status_titipan"] ?? 0,
+        status_titipan: json["status_titipan"] ?? 3,
         keterangan_barang: json["keterangan_barang"],
       );
 

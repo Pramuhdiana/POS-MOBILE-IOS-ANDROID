@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, unused_local_variable, no_leading_underscores_for_local_identifiers, unused_element
+// ignore_for_file: prefer_typing_uninitialized_variables, unused_local_variable, no_leading_underscores_for_local_identifiers, unused_element, unused_import
 
 import 'dart:convert';
 
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/db_alldetailtransaksi.dart';
+import 'package:e_shop/database/db_alltransaksi.dart';
 import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/database/model_alldetailtransaksi.dart';
 import 'package:e_shop/database/model_alltransaksi_baru.dart';
@@ -88,7 +89,7 @@ class HistoryInvoiceScreen extends StatelessWidget {
 
     return FutureBuilder(
         // future: DbAlltransaksi.db.getAlltransaksi(1),
-        future: DbAlltransaksiBaru.db.getAlltransaksiBaru(1),
+        future: DbAlltransaksi.db.getAlltransaksiBaru(1),
         // future: _getData(1),
         //kembali barang 4
         // inv 1

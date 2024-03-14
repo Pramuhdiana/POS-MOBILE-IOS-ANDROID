@@ -31,8 +31,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class HistoryModelNew extends StatelessWidget {
   //Read an image data from website/webspace
-  // String urlBase = 'http://54.179.58.215:8080';
-  String urlBase = 'http://54.179.58.215:7060';
+  String urlBase = 'http://54.179.58.215:8080';
+  // String urlBase = 'http://54.179.58.215:7060';
   String pdfFile = '';
   var pdf = pw.Document();
 
@@ -347,7 +347,7 @@ class HistoryModelNew extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        'Total price    : ${CurrencyFormat.convertToIdr(allTransaksi.nett - allTransaksi.voucherDiskon, 0)}',
+                        'Total price    : ${CurrencyFormat.convertToIdr(allTransaksi.nett, 0)}',
                         style: const TextStyle(fontSize: 15),
                       ),
                     ),
@@ -3616,6 +3616,7 @@ class HistoryModelNew extends StatelessWidget {
           'Failed to download image from. Status code: ${responseGambar.statusCode}');
     }
     print('gambar BB oke');
+    print(allTransaksi.surprise);
     Uint8List imageData = responseGambar.bodyBytes;
     //? Compress the image
     ui.Image originalUiImage = await decodeImageFromList(imageData);
@@ -3757,11 +3758,14 @@ class HistoryModelNew extends StatelessWidget {
     var addDiskon2 = allTransaksi.nett.toString() == '0'
         ? 0
         : allTransaksi.addaddesdiskon_rupiah2 ?? 0;
+    var addDiskonSurprise =
+        allTransaksi.nett.toString() == '0' ? 0 : allTransaksi.surprise ?? 0;
 
     var diskon = allTransaksi.nett.toString() == '0'
         ? 0
         : ((subTotal * double.parse(allTransaksi.basic_discount)) / 100) +
                 addDiskon +
+                addDiskonSurprise +
                 addDiskon2 ??
             0;
     var totalSubDis =
@@ -3771,23 +3775,20 @@ class HistoryModelNew extends StatelessWidget {
         ? 0
         : allTransaksi.voucherDiskon ?? 0;
 
-    // var addDiskonSurprise = allTransaksi.nett.toString() == '0'
-    // ? 0
-    // : allTransaksi.surprise ?? 0;
-
     var totalPayment = allTransaksi.nett.toString() == '0'
         ? 0
         // : totalSubDis - addDiskon - voucherDiskon - addDiskon2; //! before
         : allTransaksi.nett;
-    String kodeDiskon = voucherDiskon == 50000
-        ? 'Voucher (BB50RB)'
-        : voucherDiskon == 100000
-            ? 'Voucher (BB100RB)'
-            : voucherDiskon == 250000
-                ? 'Voucher (BB250RB)'
-                : voucherDiskon == 500000
-                    ? 'Voucher (BB500RB)'
-                    : '-';
+    String kodeDiskon = 'Voucher';
+    // voucherDiskon == 50000
+    // ? 'Voucher (BB50RB)'
+    // : voucherDiskon == 100000
+    //     ? 'Voucher (BB100RB)'
+    //     : voucherDiskon == 250000
+    //         ? 'Voucher (BB250RB)'
+    //         : voucherDiskon == 500000
+    //             ? 'Voucher (BB500RB)'
+    //             : '-';
     String noHP = '0';
     String namaCustomer = '-';
     String? tokens = sharedPreferences!.getString('token');
@@ -4832,10 +4833,14 @@ class HistoryModelNew extends StatelessWidget {
         ? 0
         : allTransaksi.addaddesdiskon_rupiah2 ?? 0;
 
+    var addDiskonSurprise =
+        allTransaksi.nett.toString() == '0' ? 0 : allTransaksi.surprise ?? 0;
+
     var diskon = allTransaksi.nett.toString() == '0'
         ? 0
         : ((subTotal * double.parse(allTransaksi.basic_discount)) / 100) +
                 addDiskon +
+                addDiskonSurprise +
                 addDiskon2 ??
             0;
     var totalSubDis =
@@ -4846,15 +4851,17 @@ class HistoryModelNew extends StatelessWidget {
     var totalPayment = allTransaksi.nett.toString() == '0'
         ? 0
         : totalSubDis - addDiskon - addDiskon2;
-    String kodeDiskon = voucherDiskon == 50000
-        ? 'Voucher (BB50RB)'
-        : voucherDiskon == 100000
-            ? 'Voucher (BB100RB)'
-            : voucherDiskon == 250000
-                ? 'Voucher (BB250RB)'
-                : voucherDiskon == 500000
-                    ? 'Voucher (BB500RB)'
-                    : '-';
+    String kodeDiskon = 'Voucher';
+
+    // String kodeDiskon = voucherDiskon == 50000
+    //     ? 'Voucher (BB50RB)'
+    //     : voucherDiskon == 100000
+    //         ? 'Voucher (BB100RB)'
+    //         : voucherDiskon == 250000
+    //             ? 'Voucher (BB250RB)'
+    //             : voucherDiskon == 500000
+    //                 ? 'Voucher (BB500RB)'
+    //                 : '-';
     String noHP = '0';
     String namaCustomer = '-';
     String? tokens = sharedPreferences!.getString('token');

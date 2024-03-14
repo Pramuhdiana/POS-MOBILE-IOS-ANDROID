@@ -52,10 +52,10 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
   int qtyProduct = 0;
   int page = 0;
   int limit = 10;
+  int statusForm = 0;
   bool isLoading = false;
   ScrollController scrollController = ScrollController();
   String newOpen = sharedPreferences!.getString("newOpenPosToko").toString();
-
   @override
   void initState() {
     super.initState();
@@ -75,11 +75,23 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
           // on bottom scroll API Call until last page
           setState(() {
             limit += 5;
-            DbAllitemsToko.db.getAllitemsTokoByPage(idtoko, page, limit);
+            DbAllitemsToko.db
+                .getAllitemsTokoByForm(idtoko, page, limit, statusForm);
             print('masuk');
           });
         }
       }
+    });
+  }
+
+  loadData(idToko, page, limit, statusForm) async {
+    setState(() {
+      isLoading = true;
+    });
+    await DbAllitemsToko.db
+        .getAllitemsTokoByForm(idtoko, page, limit, statusForm);
+    setState(() {
+      isLoading = false;
     });
   }
 
@@ -214,17 +226,17 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                                   sharedPreferences!.setString(
                                       'customer_id', idtoko.toString());
                                   loadCartFromApiPOSTOKO();
-                                  DbAllitemsToko.db.getAllitemsToko(idtoko);
-                                  DbAllitemsToko.db
-                                      .getAllitemsToko(idtoko)
-                                      .then(
-                                    (value) {
-                                      setState(() {
-                                        qtyProduct = value.length;
-                                        print(qtyProduct);
-                                      });
-                                    },
-                                  );
+                                  // DbAllitemsToko.db.getAllitemsToko(idtoko);
+                                  // DbAllitemsToko.db
+                                  //     .getAllitemsToko(idtoko)
+                                  //     .then(
+                                  //   (value) {
+                                  //     setState(() {
+                                  //       qtyProduct = value.length;
+                                  //       print(qtyProduct);
+                                  //     });
+                                  //   },
+                                  // );
                                 });
                               },
                               dropdownDecoratorProps:
@@ -244,7 +256,11 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                     const Padding(padding: EdgeInsets.all(4)),
                     Expanded(
                       child: DropdownSearch<String>(
-                        items: const ["PAMERAN", "TITIPAN"],
+                        items: const [
+                          "PAMERAN",
+                          "TITIPAN",
+                          "TITIPAN SEMENTARA"
+                        ],
                         onChanged: (jenisform) {
                           setState(() {
                             if (sharedPreferences!
@@ -259,16 +275,26 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                                   .setString('customer_name', 'METIER');
                               sharedPreferences!.setString('customer_id', '19');
                               loadCartFromApiPOSTOKO();
+
                               DbAllitemsToko.db.getAllitemsTokoMetier(idtoko);
                             }
 
                             jenisform = jenisform;
-                            if (jenisform == "TITIPAN") {
+                            if (jenisform == "TITIPAN SEMENTARA") {
                               idform = 3;
                               jenisform = "null";
+                              // loadData(idtoko, page, limit, 2);
+                              statusForm = 2;
                             } else if (jenisform == "PAMERAN") {
                               idform = 2;
                               jenisform = "pameran";
+                              // loadData(idtoko, page, limit, 1);
+                              statusForm = 1;
+                            } else {
+                              idform = 3;
+                              jenisform = "null";
+                              // loadData(idtoko, page, limit, 3);
+                              statusForm = 3;
                             }
                           });
                         },
@@ -287,8 +313,8 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                   child: RefreshIndicator(
                     onRefresh: refresh,
                     child: FutureBuilder(
-                      future: DbAllitemsToko.db
-                          .getAllitemsTokoByPage(idtoko, page, limit),
+                      future: DbAllitemsToko.db.getAllitemsTokoByForm(
+                          idtoko, page, limit, statusForm),
                       builder: (context, AsyncSnapshot dataSnapshot) {
                         if (dataSnapshot.hasData) //if brands exists
                         {
@@ -302,10 +328,18 @@ class _PosTokoScreenState extends State<PosTokoScreen> {
                             });
                           } else {
                             DbAllitemsToko.db
-                                .getAllitemsToko(idtoko)
+                                .getAllitemsTokoByForm(
+                                    idtoko, page, limit, statusForm)
                                 .then((value) {
-                              qtyProduct = value.length;
+                              setState(() {
+                                qtyProduct = value.length;
+                              });
                             });
+                            // DbAllitemsToko.db
+                            //     .getAllitemsToko(idtoko)
+                            //     .then((value) {
+                            //   qtyProduct = value.length;
+                            // });
                           }
 
                           return SingleChildScrollView(

@@ -1,9 +1,10 @@
-// ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously, avoid_print
+// ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously, avoid_print, unused_import
 
 import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_allcustomer.dart';
+import 'package:e_shop/database/db_alltransaksi.dart';
 import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/database/db_crm.dart';
 import 'package:e_shop/database/db_notification_dummy.dart';
@@ -51,7 +52,6 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../database/db_alldetailtransaksi.dart';
 import '../database/db_allitems.dart';
-// ignore: unused_import
 import '../database/db_allitems_retur.dart';
 import '../database/db_allitems_toko.dart';
 import '../database/model_allitems_toko.dart';
@@ -182,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //   });
       // });
 
-      DbAlltransaksiBaru.db.getAllHistoryBaru().then((value) {
+      DbAlltransaksi.db.getAllHistoryBaru().then((value) {
         setState(() {
           qtyProductHistory = value.length;
         });
@@ -210,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       year = DateFormat('y').format(DateTime.now());
       //jan
-      DbAlltransaksiBaru.db
+      DbAlltransaksi.db
           .getAlltransaksiNominalByMonthBaru('1', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
@@ -223,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
         print('ini januari : $barJan');
       });
       //feb
-      DbAlltransaksiBaru.db
+      DbAlltransaksi.db
           .getAlltransaksiNominalByMonthBaru('2', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
@@ -236,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //mar
-      DbAlltransaksiBaru.db
+      DbAlltransaksi.db
           .getAlltransaksiNominalByMonthBaru('3', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
@@ -247,7 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //apr
-      DbAlltransaksiBaru.db
+      DbAlltransaksi.db
           .getAlltransaksiNominalByMonthBaru('4', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
@@ -258,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //may
-      DbAlltransaksiBaru.db
+      DbAlltransaksi.db
           .getAlltransaksiNominalByMonthBaru('5', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
@@ -269,7 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //jun
-      DbAlltransaksiBaru.db
+      DbAlltransaksi.db
           .getAlltransaksiNominalByMonthBaru('6', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
@@ -280,7 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //jul
-      DbAlltransaksiBaru.db
+      DbAlltransaksi.db
           .getAlltransaksiNominalByMonthBaru('7', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
@@ -291,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //agus
-      DbAlltransaksiBaru.db
+      DbAlltransaksi.db
           .getAlltransaksiNominalByMonthBaru('8', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
@@ -302,7 +302,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //sept
-      DbAlltransaksiBaru.db
+      DbAlltransaksi.db
           .getAlltransaksiNominalByMonthBaru('9', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
@@ -313,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //okt
-      DbAlltransaksiBaru.db
+      DbAlltransaksi.db
           .getAlltransaksiNominalByMonthBaru('10', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
@@ -324,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //nov
-      DbAlltransaksiBaru.db
+      DbAlltransaksi.db
           .getAlltransaksiNominalByMonthBaru('11', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
@@ -335,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
       //desc
-      DbAlltransaksiBaru.db
+      DbAlltransaksi.db
           .getAlltransaksiNominalByMonthBaru('12', year)
           .then((value) {
         for (var i = 0; i < value.length; i++) {
@@ -346,7 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
 
-      DbAlltransaksiBaru.db.getAlltransaksiNominalBaru(year).then((value) {
+      DbAlltransaksi.db.getAlltransaksiNominalBaru(year).then((value) {
         for (var i = 0; i < value.length; i++) {
           list += value[i].nett!; //menjumlahkan ke list
           listNominal.add(value[i].nett); //memasukan ke list
@@ -521,7 +521,7 @@ class _HomeScreenState extends State<HomeScreen> {
     sharedPreferences!.setString('newOpenPosSales', 'true');
     sharedPreferences!.setString('newOpenPosToko', 'true');
     sharedPreferences!.setString('newOpenPosRetur', 'true');
-    await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
+    await DbAlltransaksi.db.deleteAlltransaksiBaru();
     await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
     var apiProvider = ApiServices();
     try {
@@ -534,7 +534,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (c) {
       Fluttertoast.showToast(msg: "Failed To Load Data all details transaksi");
     }
-    await DbAlltransaksiBaru.db.getAllHistoryBaru().then((value) {
+    await DbAlltransaksi.db.getAllHistoryBaru().then((value) {
       setState(() {
         qtyProductHistory = value.length;
       });
@@ -2293,7 +2293,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // });
 
     //initial qty history
-    DbAlltransaksiBaru.db.getAllHistoryBaru().then((value) {
+    DbAlltransaksi.db.getAllHistoryBaru().then((value) {
       print('masuk get history');
       setState(() {
         qtyProductHistory = value.length;
@@ -2320,7 +2320,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     year = DateFormat('y').format(DateTime.now());
     //jan
-    DbAlltransaksiBaru.db
+    DbAlltransaksi.db
         .getAlltransaksiNominalByMonthBaru('1', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
@@ -2332,7 +2332,7 @@ class _HomeScreenState extends State<HomeScreen> {
       print('ini januari 2: $barJan');
     });
     //feb
-    DbAlltransaksiBaru.db
+    DbAlltransaksi.db
         .getAlltransaksiNominalByMonthBaru('2', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
@@ -2343,7 +2343,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //mar
-    DbAlltransaksiBaru.db
+    DbAlltransaksi.db
         .getAlltransaksiNominalByMonthBaru('3', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
@@ -2354,7 +2354,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //apr
-    DbAlltransaksiBaru.db
+    DbAlltransaksi.db
         .getAlltransaksiNominalByMonthBaru('4', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
@@ -2365,7 +2365,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //may
-    DbAlltransaksiBaru.db
+    DbAlltransaksi.db
         .getAlltransaksiNominalByMonthBaru('5', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
@@ -2376,7 +2376,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //jun
-    DbAlltransaksiBaru.db
+    DbAlltransaksi.db
         .getAlltransaksiNominalByMonthBaru('6', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
@@ -2387,7 +2387,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //jul
-    DbAlltransaksiBaru.db
+    DbAlltransaksi.db
         .getAlltransaksiNominalByMonthBaru('7', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
@@ -2398,7 +2398,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //agus
-    DbAlltransaksiBaru.db
+    DbAlltransaksi.db
         .getAlltransaksiNominalByMonthBaru('8', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
@@ -2409,7 +2409,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //sept
-    DbAlltransaksiBaru.db
+    DbAlltransaksi.db
         .getAlltransaksiNominalByMonthBaru('9', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
@@ -2420,7 +2420,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //okt
-    DbAlltransaksiBaru.db
+    DbAlltransaksi.db
         .getAlltransaksiNominalByMonthBaru('10', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
@@ -2431,7 +2431,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //nov
-    DbAlltransaksiBaru.db
+    DbAlltransaksi.db
         .getAlltransaksiNominalByMonthBaru('11', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
@@ -2442,7 +2442,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
     //desc
-    DbAlltransaksiBaru.db
+    DbAlltransaksi.db
         .getAlltransaksiNominalByMonthBaru('12', year)
         .then((value) {
       for (var i = 0; i < value.length; i++) {
@@ -2453,7 +2453,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
 
-    DbAlltransaksiBaru.db.getAlltransaksiNominalBaru(year).then((value) {
+    DbAlltransaksi.db.getAlltransaksiNominalBaru(year).then((value) {
       for (var i = 0; i < value.length; i++) {
         list += value[i].nett!; //menjumlahkan ke list
         listNominal.add(value[i].nett); //memasukan ke list

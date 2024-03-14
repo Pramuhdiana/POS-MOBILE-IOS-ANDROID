@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
@@ -17,6 +18,7 @@ import 'package:e_shop/global/global.dart';
 import 'package:e_shop/mainScreens/main_screen.dart';
 import 'package:e_shop/models/version_model.dart';
 import 'package:e_shop/provider/provider_cart.dart';
+import 'package:e_shop/widgets/custom_dialog.dart';
 import 'package:e_shop/widgets/loading_widget.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -55,14 +57,14 @@ class _MySplashScreenState extends State<MySplashScreen> {
       //! ambil versi
       try {
         await getVersion();
-      } catch (c) {
-        setState(() {
-          version = noBuild.toString();
-          sharedPreferences!.setString('version', noBuild.toString());
-          print('No Build DB : $noBuild (gagal)=> $c');
-          print('No version DB : $version (gagal)');
-        });
-        Fluttertoast.showToast(msg: "get version gagal");
+      } catch (e) {
+        //*HINTS Panggil fungsi showCustomDialog
+        showCustomDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Get Version',
+          description: '$e',
+        );
       }
 
       //user sudah login
@@ -72,62 +74,83 @@ class _MySplashScreenState extends State<MySplashScreen> {
         if (int.parse(version!) > noBuild) {
           try {
             loadListHistoryPrice(); //ambil data history price
-          } catch (c) {
-            print('err : load history price ($c)');
-            Fluttertoast.showToast(msg: "get history gagal");
+          } catch (e) {
+            //*HINTS Panggil fungsi showCustomDialog
+            showCustomDialog(
+              context: context,
+              dialogType: DialogType.error,
+              title: 'Error Get History Price',
+              description: '$e',
+            );
           }
           try {
             loadListEticketing(); //ambil data cart
-          } catch (c) {
-            print('err : load listEticketing ($c)');
-
-            Fluttertoast.showToast(msg: "get list e ticket gagal");
+          } catch (e) {
+            //*HINTS Panggil fungsi showCustomDialog
+            showCustomDialog(
+              context: context,
+              dialogType: DialogType.error,
+              title: 'Error Get List E-ticket',
+              description: '$e',
+            );
           }
           try {
             await loadListHistoryPrice(); //get data approved
-          } catch (c) {
-            Fluttertoast.showToast(msg: "get history price gagal");
+          } catch (e) {
+            //*HINTS Panggil fungsi showCustomDialog
+            showCustomDialog(
+              context: context,
+              dialogType: DialogType.error,
+              title: 'Error Get History Price',
+              description: '$e',
+            );
           }
           dialogBoxVersion();
         } else {
           try {
-            print('in function get user');
             await ApiServices().getUsers();
             setState(() {
               role =
                   int.parse(sharedPreferences!.getString('role_sales_brand')!);
               print('Role user : $role');
             });
-          } catch (c) {
-            print('Error ambil user : $c');
+          } catch (e) {
+            print('Error ambil user : $e');
             sharedPreferences!.setString('name', 'Failed To Load Data');
-            Fluttertoast.showToast(msg: "Failed To Load Data User");
+            showCustomDialog(
+              context: context,
+              dialogType: DialogType.error,
+              title: 'Error Get User',
+              description: '$e',
+            );
           }
 
           if (role == 15) {
+            try {
+              await loadListHistoryPrice(); //ambil data history price
+            } catch (e) {
+              showCustomDialog(
+                context: context,
+                dialogType: DialogType.error,
+                title: 'Error Get History Price',
+                description: '$e',
+              );
+            }
+            try {
+              await loadListEticketing(); //ambil data cart
+            } catch (e) {
+              showCustomDialog(
+                context: context,
+                dialogType: DialogType.error,
+                title: 'Error Get List E-Ticket',
+                description: '$e',
+              );
+            }
             // try {
-            //   loadListBRJ(); //ambil data cart
+            //   await loadListHistoryPrice(); //get data approved
             // } catch (c) {
-            //   throw Fluttertoast.showToast(msg: "Database Off");
+            //   Fluttertoast.showToast(msg: "get history price gagal");
             // }
-            try {
-              loadListHistoryPrice(); //ambil data history price
-            } catch (c) {
-              print('err : load history price ($c)');
-              Fluttertoast.showToast(msg: "get history gagal");
-            }
-            try {
-              loadListEticketing(); //ambil data cart
-            } catch (c) {
-              print('err : load listEticketing ($c)');
-
-              Fluttertoast.showToast(msg: "get list e ticket gagal");
-            }
-            try {
-              await loadListHistoryPrice(); //get data approved
-            } catch (c) {
-              Fluttertoast.showToast(msg: "get history price gagal");
-            }
             dialogBox();
           } else {
             try {
@@ -147,7 +170,13 @@ class _MySplashScreenState extends State<MySplashScreen> {
                 getToken();
                 Navigator.push(context,
                     MaterialPageRoute(builder: (c) => const MainScreen()));
-              } catch (c) {
+              } catch (e) {
+                showCustomDialog(
+                  context: context,
+                  dialogType: DialogType.error,
+                  title: 'Something Went Wrong',
+                  description: '$e',
+                );
                 sharedPreferences!.setString('newOpen', 'true');
                 sharedPreferences?.setBool('loading', true);
                 sharedPreferences!.setString('newOpenHome', 'true');
@@ -159,7 +188,12 @@ class _MySplashScreenState extends State<MySplashScreen> {
                     MaterialPageRoute(builder: (c) => const MainScreen()));
               }
             } catch (c) {
-              Fluttertoast.showToast(msg: "Failed To Load user data $c");
+              showCustomDialog(
+                context: context,
+                dialogType: DialogType.error,
+                title: 'Info',
+                description: 'Please Login',
+              );
               sharedPreferences?.setBool('dbDummy', false);
               Navigator.push(context,
                   MaterialPageRoute(builder: (c) => const AuthScreen()));
@@ -168,7 +202,12 @@ class _MySplashScreenState extends State<MySplashScreen> {
         }
       } else //user is NOT already Logged-in
       {
-        Fluttertoast.showToast(msg: "Failed To Load All Data");
+        showCustomDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Info',
+          description: 'Please Login',
+        );
         sharedPreferences?.setBool('dbDummy', false);
         Navigator.push(
             context, MaterialPageRoute(builder: (c) => const AuthScreen()));
@@ -251,9 +290,13 @@ class _MySplashScreenState extends State<MySplashScreen> {
 
     try {
       apiProvider.getAllItems();
-    } catch (c) {
-      print('Error all transaksi : $c');
-      Exception('error : $c');
+    } catch (e) {
+      showCustomDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'Error Get All Items',
+        description: '$e',
+      );
     }
     // try {
     //   apiProvider.getAllItemsToko();
@@ -268,22 +311,34 @@ class _MySplashScreenState extends State<MySplashScreen> {
     try {
       print('in function all transaksi');
       await apiProvider.getAllTransaksiBaru();
-    } catch (c) {
-      print('Error all transaksi : $c');
-      Exception('error : $c');
+    } catch (e) {
+      showCustomDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'Error Get All Transaksi',
+        description: '$e',
+      );
     }
     try {
       print('in function detail transaksi');
       await apiProvider.getAllDetailTransaksi();
-    } catch (c) {
-      print('Error detail transaksi : $c');
-      Exception('error : $c');
+    } catch (e) {
+      showCustomDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'Error Get Detail Transaksi',
+        description: '$e',
+      );
     }
     try {
       apiProvider.getAllKodekeluarbarang();
-    } catch (c) {
-      print('Error all kode keluar barang : $c');
-      Exception('error : $c');
+    } catch (e) {
+      showCustomDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'Error Get Kode Barang',
+        description: '$e',
+      );
     }
     // try {
     //   await apiProvider.getAllCustomer();
@@ -293,15 +348,23 @@ class _MySplashScreenState extends State<MySplashScreen> {
     // }
     try {
       apiProvider.getAllCustomer();
-    } catch (c) {
-      print('Error gett all customer : $c');
-      Exception('error : $c');
+    } catch (e) {
+      showCustomDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'Error Get Customer',
+        description: '$e',
+      );
     }
     try {
       apiProvider.getAllTCRM();
-    } catch (c) {
-      print('Error all crm : $c');
-      Exception('error : $c');
+    } catch (e) {
+      showCustomDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'Error Get Crm',
+        description: '$e',
+      );
     }
 
     loadCartFromApiPOSSALES();

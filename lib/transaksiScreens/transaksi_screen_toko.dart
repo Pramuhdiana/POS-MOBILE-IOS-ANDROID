@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, use_build_context_synchronously, non_constant_identifier_names
+// ignore_for_file: library_private_types_in_public_api, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, use_build_context_synchronously, non_constant_identifier_names, unused_import
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
@@ -6,6 +6,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/api/api_services.dart';
 import 'package:e_shop/database/db_alldetailtransaksi.dart';
+import 'package:e_shop/database/db_alltransaksi.dart';
 import 'package:e_shop/database/db_alltransaksi_baru.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
@@ -733,7 +734,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
       } else {
         context.read<PCartToko>().clearCart(); //clear cart
         await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-        await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
+        await DbAlltransaksi.db.deleteAlltransaksiBaru();
         var apiProvider = ApiServices();
         await apiProvider.getAllTransaksiBaru();
         await apiProvider.getAllDetailTransaksi();
@@ -807,7 +808,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
       } else {
         context.read<PCartToko>().clearCart(); //clear cart
         await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
-        await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
+        await DbAlltransaksi.db.deleteAlltransaksiBaru();
         var apiProvider = ApiServices();
         await apiProvider.getAllTransaksiBaru();
         await apiProvider.getAllDetailTransaksi();

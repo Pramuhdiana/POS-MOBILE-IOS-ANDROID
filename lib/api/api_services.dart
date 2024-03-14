@@ -123,18 +123,19 @@ class ApiServices {
   Future<List<Null>?> getAllTransaksiBaru() async {
     int? lengthIdSqlLite;
 
-    await DbAlltransaksiBaru.db.getAll().then((value) {
-      lengthIdSqlLite = value.length;
+    await DbAlltransaksi.db.getAll().then((value) {
+      lengthIdSqlLite = value.length + 1;
     });
     Response response = await Dio().get(
         ApiConstants.baseUrl + ApiConstants.GETtransaksiendpoint,
         options: Options(headers: {"Authorization": "Bearer $token"}));
     int? lengthIdApi = response.data.length;
     if (lengthIdSqlLite != lengthIdApi) {
-      await DbAlltransaksiBaru.db.deleteAlltransaksiBaru();
+      await DbAlltransaksi.db.closeDatabase();
+      await DbAlltransaksi.db.deleteAlltransaksiBaru();
 
       return (response.data as List).map((transaksi) {
-        DbAlltransaksiBaru.db
+        DbAlltransaksi.db
             .createAlltransaksiBaru(ModelAlltransaksiBaru.fromJson(transaksi));
       }).toList();
     } else {
