@@ -40,6 +40,10 @@ class _SetDiskonScreenState extends State<SetDiskonScreen> {
   bool isLoading = false;
   RoundedLoadingButtonController btnController =
       RoundedLoadingButtonController();
+  RoundedLoadingButtonController btnTambahVoucher =
+      RoundedLoadingButtonController();
+  RoundedLoadingButtonController btnControllerSimpanVoucher =
+      RoundedLoadingButtonController();
   List<List<bool>> selectedLists = List.generate(
     4, // Jumlah list dalam list utama
     (index) => List.generate(
@@ -75,6 +79,124 @@ class _SetDiskonScreenState extends State<SetDiskonScreen> {
       }
     });
     loadData();
+  }
+
+  simpanVoucherNew(String nama, nilai, minTransaksi) async {
+    try {
+      await updateVocher(
+          '', nama.toString(), nilai.toString(), minTransaksi.toString());
+    } catch (c) {
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (c) => TransaksiGagal(
+                    title: 'Save vocher gagal',
+                    err: '$c',
+                  )));
+    }
+    btnControllerSimpanVoucher.success();
+    // ignore: use_build_context_synchronously
+    Navigator.pop(context);
+    loadData();
+  }
+
+  addVoucherForm() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          TextEditingController namaVoucher = TextEditingController();
+          TextEditingController nilaiVoucher = TextEditingController();
+          TextEditingController minTransaksiVoucher = TextEditingController();
+
+          return StatefulBuilder(
+              builder: (context, setState) => AlertDialog(
+                      content:
+                          Stack(clipBehavior: Clip.none, children: <Widget>[
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextFormField(
+                            style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                            textInputAction: TextInputAction.next,
+                            controller: namaVoucher,
+                            decoration: InputDecoration(
+                              // hintText: "example: Cahaya Sanivokasi",
+                              labelText: "Nama Voucher",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0)),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                            textInputAction: TextInputAction.next,
+                            controller: nilaiVoucher,
+                            decoration: InputDecoration(
+                              // hintText: "example: Cahaya Sanivokasi",
+                              labelText: "Nilai Voucher",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0)),
+                            ),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                            textInputAction: TextInputAction.next,
+                            controller: minTransaksiVoucher,
+                            decoration: InputDecoration(
+                              // hintText: "example: Cahaya Sanivokasi",
+                              labelText: "Minimal Transaksi Voucher",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0)),
+                            ),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                  width: 250,
+                                  child: CustomLoadingButton(
+                                      controller: btnControllerSimpanVoucher,
+                                      child: const Text(
+                                        "Simpan Voucher",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        simpanVoucherNew(
+                                            namaVoucher.text,
+                                            nilaiVoucher.text,
+                                            minTransaksiVoucher.text);
+                                      })))
+                        ])
+                  ])));
+        });
   }
 
   updateDiskonDollar() async {
@@ -257,34 +379,42 @@ class _SetDiskonScreenState extends State<SetDiskonScreen> {
       isLoading = true;
     });
     await getDiskon();
-    // for (int i = 0; i < tanggalDiskonDollar.length; i++) {
-    //   for (int j = 0; j < tanggalDiskonDollar[i].length; j++) {
-    //     List<int> tanggalList = tanggalDiskonDollar[i][j]
-    //         .split(",")
-    //         .map((str) => int.parse(str))
-    //         .toList();
+    try {
+      for (int i = 0; i < tanggalDiskonDollar.length; i++) {
+        for (int j = 0; j < tanggalDiskonDollar[i].length; j++) {
+          List<int> tanggalList = tanggalDiskonDollar[i][j]
+              .split(",")
+              .map((str) => int.parse(str))
+              .toList();
 
-    //     // Lakukan sesuatu dengan tanggalList di sini
-    //     // Tandai tanggal yang ada dalam daftar tanggal
-    //     for (int tanggal in tanggalList) {
-    //       selectedLists[i][tanggal - 1] = true;
-    //     }
-    //   }
-    // }
-    // for (int i = 0; i < tanggalDiskonRupiah.length; i++) {
-    //   for (int j = 0; j < tanggalDiskonRupiah[i].length; j++) {
-    //     List<int> tanggalListRupiah = tanggalDiskonRupiah[i][j]
-    //         .split(",")
-    //         .map((str) => int.parse(str))
-    //         .toList();
+          // Lakukan sesuatu dengan tanggalList di sini
+          // Tandai tanggal yang ada dalam daftar tanggal
+          for (int tanggal in tanggalList) {
+            selectedLists[i][tanggal - 1] = true;
+          }
+        }
+      }
+    } catch (e) {
+      print('error loop dollar $e');
+    }
+    try {
+      for (int i = 0; i < tanggalDiskonRupiah.length; i++) {
+        for (int j = 0; j < tanggalDiskonRupiah[i].length; j++) {
+          List<int> tanggalListRupiah = tanggalDiskonRupiah[i][j]
+              .split(",")
+              .map((str) => int.parse(str))
+              .toList();
 
-    //     // Lakukan sesuatu dengan tanggalList di sini
-    //     // Tandai tanggal yang ada dalam daftar tanggal
-    //     for (int tanggal in tanggalListRupiah) {
-    //       selectedListsRupiah[i][tanggal - 1] = true;
-    //     }
-    //   }
-    // }
+          // Lakukan sesuatu dengan tanggalList di sini
+          // Tandai tanggal yang ada dalam daftar tanggal
+          for (int tanggal in tanggalListRupiah) {
+            selectedListsRupiah[i][tanggal - 1] = true;
+          }
+        }
+      }
+    } catch (e) {
+      print('err loop rupiah $e');
+    }
     await getVocher();
 
     setState(() {
@@ -1040,7 +1170,7 @@ class _SetDiskonScreenState extends State<SetDiskonScreen> {
                         ),
                         children: [
                           Container(
-                            height: 700,
+                            height: 1000,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               color: Colors.grey.shade500.withOpacity(0.2),
@@ -1146,8 +1276,22 @@ class _SetDiskonScreenState extends State<SetDiskonScreen> {
                                         ],
                                       ),
                                     ),
-                                  const SizedBox(
-                                    height: 20,
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: CustomLoadingButton(
+                                        backgroundColor: Colors.blue.shade200,
+                                        controller: btnTambahVoucher,
+                                        onPressed: () {
+                                          addVoucherForm();
+                                          btnTambahVoucher.reset();
+                                        },
+                                        child: const Text(
+                                          "Tambah Voucher",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                   Expanded(
                                     child: Padding(

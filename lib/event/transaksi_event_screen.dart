@@ -294,9 +294,7 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
   @override
   void initState() {
     super.initState();
-    if (isRupiah) {
-      isRupiah = true;
-    }
+
     DateTime today = DateTime.now();
     // tanggalNow = '1';
     tanggalNow = today.day.toString();
@@ -339,6 +337,9 @@ class _TransaksiScreenEventState extends State<TransaksiScreenEvent> {
     setState(() {
       isLoading = true;
     });
+    sharedPreferences!.getInt('panjangHarga')! > 17
+        ? isRupiah = true
+        : isRupiah = false;
     await cekBlacklist();
     await getLimitDiskon();
     await getVoucher();
