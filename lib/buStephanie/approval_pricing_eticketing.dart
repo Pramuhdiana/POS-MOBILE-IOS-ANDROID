@@ -2,15 +2,18 @@
 
 import 'dart:convert';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_bubbles/bubbles/bubble_special_three.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/global/global.dart';
+import 'package:e_shop/widgets/custom_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +32,7 @@ class ApprovalPricingEticketingScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
+  bool statusSendOk = false;
   String searchInput = '';
   bool isLoading = false;
   FocusNode numberFocusNode = FocusNode();
@@ -40,7 +44,8 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
   TextEditingController textInput = TextEditingController();
   List<String> listNamaSales = [];
   int valuePrice = 0;
-
+  RoundedLoadingButtonController btnControllerApproveIket =
+      RoundedLoadingButtonController();
   int hargaBaru = 0;
   int approveHargaBaru = 0;
   int hargaRevisi1 = 0;
@@ -56,6 +61,13 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
   String historyJenisPengajuan = '';
   String historyNamaCustomer = '';
   String historyKeterangan = '';
+  String priceApi = '0';
+
+  final NumberFormat _currencyFormatterRp =
+      NumberFormat.currency(symbol: 'Rp ', decimalDigits: 0, locale: 'id-ID');
+
+  final NumberFormat _currencyFormatterDollar =
+      NumberFormat.currency(symbol: '\$', decimalDigits: 0, locale: 'en_US');
 
   @override
   void initState() {
@@ -3271,9 +3283,6 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                               data.namaCustomer!
                                                                   .toString();
 
-                                                          RoundedLoadingButtonController
-                                                              btnController =
-                                                              RoundedLoadingButtonController();
                                                           showGeneralDialog(
                                                               transitionDuration:
                                                                   const Duration(
@@ -3440,19 +3449,25 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                           textInputAction: TextInputAction.next,
                                                                                           controller: price,
                                                                                           keyboardType: TextInputType.number,
-                                                                                          // focusNode: numberFocusNode,
-                                                                                          // inputFormatters: [
-                                                                                          //   FilteringTextInputFormatter.digitsOnly
-                                                                                          // ],
-                                                                                          // onChanged: (value) {
-                                                                                          //   try {
-                                                                                          //     valuePrice = int.parse(value);
-                                                                                          //   } catch (c) {
-                                                                                          //     valuePrice = data.estimasiHarga.round();
-                                                                                          //   }
-
-                                                                                          //   setState(() => valuePrice);
-                                                                                          // },
+                                                                                          inputFormatters: <TextInputFormatter>[
+                                                                                            FilteringTextInputFormatter.digitsOnly
+                                                                                          ],
+                                                                                          onChanged: (value) {
+                                                                                            if (value.isNotEmpty) {
+                                                                                              priceApi = value;
+                                                                                              print(data.estimasiHarga.toString().length);
+                                                                                              final numericValue = int.parse(value);
+                                                                                              data.estimasiHarga.toString().length > 6
+                                                                                                  ? price.value = price.value.copyWith(
+                                                                                                      text: _currencyFormatterRp.format(numericValue),
+                                                                                                      selection: TextSelection.collapsed(offset: _currencyFormatterRp.format(numericValue).length),
+                                                                                                    )
+                                                                                                  : price.value = price.value.copyWith(
+                                                                                                      text: _currencyFormatterDollar.format(numericValue),
+                                                                                                      selection: TextSelection.collapsed(offset: _currencyFormatterDollar.format(numericValue).length),
+                                                                                                    );
+                                                                                            }
+                                                                                          },
                                                                                           decoration: InputDecoration(
                                                                                             hintText: "Update Price (optional)",
                                                                                             // labelText: "Price",
@@ -3514,52 +3529,10 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
                                                                                       child: SizedBox(
                                                                                         width: 250,
                                                                                         child: CustomLoadingButton(
-                                                                                            controller: btnController,
+                                                                                            controller: btnControllerApproveIket,
                                                                                             child: const Text("Approve"),
                                                                                             onPressed: () async {
-                                                                                              Future.delayed(const Duration(seconds: 2)).then((value) async {
-                                                                                                try {
-                                                                                                  FirebaseFirestore.instance.collection("UserTokens").doc(data.namaSales!).snapshots().listen((event) {
-                                                                                                    setState(() {
-                                                                                                      fcmTokenSales = event.get("token");
-                                                                                                    });
-                                                                                                  });
-                                                                                                } catch (c) {
-                                                                                                  print(c);
-                                                                                                }
-                                                                                                setState(() {
-                                                                                                  try {
-                                                                                                    postApi(data.id!, awalPrice);
-                                                                                                  } catch (c) {
-                                                                                                    Fluttertoast.showToast(msg: "Failed to send database,Database off");
-                                                                                                  }
-                                                                                                  try {
-                                                                                                    postApiWeb(data.jenisPengajuan!, data.diambilId!, data.statusApproval!, data.statusGet!);
-                                                                                                  } catch (c) {
-                                                                                                    postApiHistoryApprove('gagal $c');
-                                                                                                    Fluttertoast.showToast(msg: "Failed to send database web,Database off");
-                                                                                                  }
-                                                                                                  notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
-                                                                                                  notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved', 'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
-                                                                                                  context.read<PApprovalEticketing>().removesItem();
-                                                                                                });
-                                                                                                btnController.success();
-                                                                                                Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                                  btnController.reset(); //reset
-                                                                                                  Navigator.of(context).pop();
-                                                                                                  setState(() {
-                                                                                                    textInput.text = '';
-                                                                                                    searchInput = '';
-                                                                                                    refresh();
-                                                                                                  });
-                                                                                                  showSimpleNotification(
-                                                                                                    const Text('Approve pricing success'),
-                                                                                                    // subtitle: const Text('sub'),
-                                                                                                    background: Colors.green,
-                                                                                                    duration: const Duration(seconds: 5),
-                                                                                                  );
-                                                                                                });
-                                                                                              });
+                                                                                              simpanForm(data);
                                                                                             }),
                                                                                       ),
                                                                                     ),
@@ -3621,11 +3594,69 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
               ));
   }
 
+  simpanForm(var data) async {
+    try {
+      FirebaseFirestore.instance
+          .collection("UserTokens")
+          .doc(data.namaSales!)
+          .snapshots()
+          .listen((event) {
+        setState(() {
+          fcmTokenSales = event.get("token");
+        });
+      });
+    } catch (c) {
+      print(c);
+    }
+
+    try {
+      await postApiWeb(data.jenisPengajuan!, data.diambilId!,
+          data.statusApproval!, data.statusGet!);
+    } catch (c) {
+      postApiHistoryApprove('gagal $c');
+      showCustomDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Send data',
+          description: '$c',
+          dismiss: false);
+    }
+    try {
+      await postApi(data.id!, awalPrice);
+    } catch (c) {
+      showCustomDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Send data',
+          description: '$c',
+          dismiss: false);
+    }
+    if (statusSendOk) {
+      notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved',
+          'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
+      notif.sendNotificationTo(fcmTokenSales, 'Pricing Approved',
+          'Id ${data.diambilId} and Customer ${data.namaCustomer} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
+      context.read<PApprovalEticketing>().removesItem();
+      btnControllerApproveIket.success();
+      btnControllerApproveIket.reset(); //reset
+      Navigator.of(context).pop();
+      textInput.text = '';
+      searchInput = '';
+      refresh();
+      showSimpleNotification(
+        const Text('Approve pricing success'),
+        // subtitle: const Text('sub'),
+        background: Colors.green,
+        duration: const Duration(seconds: 5),
+      );
+    }
+  }
+
 //method approve pricing
   postApi(lot, fixPrice) async {
     price.text.isEmpty
         ? awalPrice = awalPrice
-        : awalPrice = int.parse(price.text);
+        : awalPrice = int.parse(priceApi);
 
     print(awalPrice);
     print(notes.text);
@@ -3636,9 +3667,21 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
     };
     final response = await http.post(
         Uri.parse(
-            '${ApiConstants.baseUrlsandy}${ApiConstants.UPDATEapprovalPricingEticketing}'),
+            '${ApiConstants.baseUrlsandy}${ApiConstants.UPDATEapprovalPricingEticketing}dsadas'),
         body: body);
-    print(response.body);
+    if (response.statusCode == 200) {
+      statusSendOk = true;
+      print(response.body);
+    } else {
+      statusSendOk = false;
+      btnControllerApproveIket.reset();
+      showCustomDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Send data',
+          description: response.body,
+          dismiss: false);
+    }
   }
 
   //method approve pricing
@@ -3666,7 +3709,7 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
   postApiWeb(jenisPengajuan, diambilId, statusApproval, statusGet) async {
     price.text.isEmpty
         ? awalPrice = awalPrice
-        : awalPrice = int.parse(price.text);
+        : awalPrice = int.parse(priceApi);
     print(awalPrice);
     print(notes.text);
 
@@ -3677,27 +3720,40 @@ class _SearchScreenState extends State<ApprovalPricingEticketingScreen> {
       'approval_harga': awalPrice.toString(),
       'note_approve': notes.text,
     };
+    final http.Response response;
     if (jenisPengajuan.toString().toLowerCase() == 'baru') {
       var url = '${ApiConstants.baseUrlPricingWeb}/updatepricing';
       print('post baru');
       print(url);
-      final response = await http.post(Uri.parse(url), body: body);
+      response = await http.post(Uri.parse(url), body: body);
       print(response.body);
       postApiHistoryApprove('Berhasil');
     } else if (jenisPengajuan.toString().toLowerCase() == 'revisi 1') {
       var url = '${ApiConstants.baseUrlPricingWeb}/updatepricingrevisisatu';
       print('post revisi 1');
       print(url);
-      final response = await http.post(Uri.parse(url), body: body);
+      response = await http.post(Uri.parse(url), body: body);
       print(response.body);
       postApiHistoryApprove('Berhasil');
     } else {
       var url = '${ApiConstants.baseUrlPricingWeb}/updatepricingrevisidua';
       print('post revisi 2');
       print(url);
-      final response = await http.post(Uri.parse(url), body: body);
+      response = await http.post(Uri.parse(url), body: body);
       print(response.body);
       postApiHistoryApprove('Berhasil');
+    }
+    if (response.statusCode == 200) {
+      statusSendOk = true;
+    } else {
+      statusSendOk = false;
+
+      showCustomDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Send data',
+          description: response.body,
+          dismiss: false);
     }
   }
 }

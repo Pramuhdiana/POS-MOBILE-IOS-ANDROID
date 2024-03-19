@@ -15,7 +15,7 @@ void showCustomDialog({
             color: Colors.green,
             width: 2,
           ),
-          width: 280,
+          width: 350,
           buttonsBorderRadius: const BorderRadius.all(
             Radius.circular(2),
           ),
@@ -24,6 +24,7 @@ void showCustomDialog({
           headerAnimationLoop: true,
           animType: AnimType.bottomSlide,
           title: title,
+          btnCancelOnPress: () {},
           desc: description)
       .show();
 }

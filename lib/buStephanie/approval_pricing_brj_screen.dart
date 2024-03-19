@@ -15,6 +15,7 @@ import 'package:e_shop/widgets/custom_dialog.dart';
 import 'package:e_shop/widgets/keyboard_overlay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -46,7 +47,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   var baseUrlDinamis = sharedPreferences!.getString('urlDinamis');
   List<ApprovePricingModel>? filterPrice;
   List<ApprovePricingModel>? listHistory;
-
+  RoundedLoadingButtonController btnControllerApproveBRJ =
+      RoundedLoadingButtonController();
   int totalHistori = 0;
   int limitHistori = 0;
   String date = '';
@@ -58,15 +60,21 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   int hpp = 0;
   List<String> listTheme = [];
   bool isShowFilter = false;
+  bool statusSendOk = false;
+  String priceApi = '0';
+
+  final NumberFormat _currencyFormatterRp =
+      NumberFormat.currency(symbol: 'Rp ', decimalDigits: 0, locale: 'id-ID');
+
+  final NumberFormat _currencyFormatterDollar =
+      NumberFormat.currency(symbol: '\$', decimalDigits: 0, locale: 'en_US');
 
   @override
   void initState() {
     super.initState();
+    // ignore: unused_local_variable
     bool? isDinamis = sharedPreferences!.getBool('isDinamis');
     baseUrlDinamis = sharedPreferences!.getString('urlDinamis');
-    print('is Dinamis =  $isDinamis');
-    print(widget.dataApproved);
-    print('is base url =  $baseUrlDinamis');
     filterPrice = widget.dataApproved;
     numberFocusNode.addListener(() {
       bool hasFocus = numberFocusNode.hasFocus;
@@ -93,8 +101,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   }
 
   int get margin {
-    // print('margin price : $valuePrice');
-    // print('margin hpp : $hpp');
     int total;
     valuePrice == 0
         ? total = 0
@@ -117,7 +123,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   }
 
   _getDataByModel2(kode) async {
-    print(kode);
     String fixKode = kode.toString().substring(
         0, 11); //mengambil data hanya 9 character get data hanya 9 charackter
     var filterBykode = filterPrice!
@@ -132,7 +137,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   }
 
   Future _getData() async {
-    print('get data on');
     listTheme = [];
 
     bool? isDinamis = sharedPreferences!.getBool('isDinamis');
@@ -177,19 +181,19 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
         return g;
       } else {
         showCustomDialog(
-          context: context,
-          dialogType: DialogType.error,
-          title: 'Error Get All Data',
-          description: response.body,
-        );
+            context: context,
+            dialogType: DialogType.error,
+            title: 'Error Get All Data',
+            description: response.body,
+            dismiss: false);
       }
     } catch (e) {
       return showCustomDialog(
-        context: context,
-        dialogType: DialogType.error,
-        title: 'Error Get All Data',
-        description: '$e',
-      );
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Get All Data',
+          description: '$e',
+          dismiss: false);
     }
   }
 
@@ -265,18 +269,17 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                 .toString()
                 .toLowerCase()
                 .contains(search.toString().toLowerCase()));
-        print(modifiedUserData.toList());
         return modifiedUserData.toList();
       } else {
         throw Exception('Unexpected error occured!');
       }
     } catch (e) {
       return showCustomDialog(
-        context: context,
-        dialogType: DialogType.error,
-        title: 'Error Get All Data',
-        description: '$e',
-      );
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Get All Data',
+          description: '$e',
+          dismiss: false);
     }
   }
 
@@ -302,7 +305,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
     Response response = await Dio().get(
       url,
     );
-    print('load list brj');
     return (response.data as List).map((cart) {
       context.read<PApprovalBrj>().addItem(
             1,
@@ -560,7 +562,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                       onTap: () async {
                                         await _getDataByModel2(
                                             data.marketingCode);
-                                        print(limitHistori);
 
                                         hpp = int.parse(data
                                                 .grandSTDLabourPrice!
@@ -1564,9 +1565,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                   .grandSTDDiamondPrice!
                                                                   .round()
                                                                   .toString());
-                                                          RoundedLoadingButtonController
-                                                              btnController =
-                                                              RoundedLoadingButtonController();
+
                                                           showGeneralDialog(
                                                               pageBuilder: (context,
                                                                   animation1,
@@ -1677,7 +1676,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                       Align(
                                                                                                         alignment: Alignment.center,
                                                                                                         child: Text(
-                                                                                                          '\$ ${CurrencyFormat.convertToDollar(data.finalPrice3USD, 0)}',
+                                                                                                          data.finalPrice3USD.toString().length > 8 ? CurrencyFormat.convertToIdr(data.finalPrice3USD, 0) : '\$ ${CurrencyFormat.convertToDollar(data.finalPrice3USD, 0)}',
                                                                                                           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
                                                                                                         ),
                                                                                                       ),
@@ -1690,7 +1689,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                             Align(
                                                                                               alignment: Alignment.centerLeft,
                                                                                               child: Text(
-                                                                                                'Price : \$ ${CurrencyFormat.convertToDollar(data.finalPrice3USD, 0)}',
+                                                                                                data.finalPrice3USD.toString().length > 8 ? 'Price : ${CurrencyFormat.convertToIdr(data.finalPrice3USD, 0)}' : 'Price : \$ ${CurrencyFormat.convertToDollar(data.finalPrice3USD, 0)}',
                                                                                                 textAlign: TextAlign.left,
                                                                                                 style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                                                                                               ),
@@ -1710,19 +1709,24 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                                     textInputAction: TextInputAction.next,
                                                                                                     controller: price,
                                                                                                     keyboardType: TextInputType.number,
-                                                                                                    // focusNode: numberFocusNode,
-                                                                                                    // inputFormatters: [
-                                                                                                    //   FilteringTextInputFormatter.digitsOnly
-                                                                                                    // ],
-                                                                                                    // onChanged: (value) {
-                                                                                                    //   try {
-                                                                                                    //     valuePrice = int.parse(value);
-                                                                                                    //   } catch (c) {
-                                                                                                    //     valuePrice = data.finalPrice3USD.round();
-                                                                                                    //   }
-
-                                                                                                    //   setState(() => valuePrice);
-                                                                                                    // },
+                                                                                                    inputFormatters: <TextInputFormatter>[
+                                                                                                      FilteringTextInputFormatter.digitsOnly
+                                                                                                    ],
+                                                                                                    onChanged: (value) {
+                                                                                                      if (value.isNotEmpty) {
+                                                                                                        priceApi = value;
+                                                                                                        final numericValue = int.parse(value);
+                                                                                                        data.finalPrice3USD.toString().length > 8
+                                                                                                            ? price.value = price.value.copyWith(
+                                                                                                                text: _currencyFormatterRp.format(numericValue),
+                                                                                                                selection: TextSelection.collapsed(offset: _currencyFormatterRp.format(numericValue).length),
+                                                                                                              )
+                                                                                                            : price.value = price.value.copyWith(
+                                                                                                                text: _currencyFormatterDollar.format(numericValue),
+                                                                                                                selection: TextSelection.collapsed(offset: _currencyFormatterDollar.format(numericValue).length),
+                                                                                                              );
+                                                                                                      }
+                                                                                                    },
                                                                                                     decoration: InputDecoration(
                                                                                                       hintText: "Update Price (optional)",
                                                                                                       // labelText: "Price",
@@ -1779,51 +1783,10 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                                               child: SizedBox(
                                                                                                 width: 250,
                                                                                                 child: CustomLoadingButton(
-                                                                                                    controller: btnController,
+                                                                                                    controller: btnControllerApproveBRJ,
                                                                                                     child: const Text("Approve"),
-                                                                                                    onPressed: () async {
-                                                                                                      Future.delayed(const Duration(seconds: 2)).then((value) async {
-                                                                                                        setState(() {
-                                                                                                          try {
-                                                                                                            postApiWeb(data);
-                                                                                                          } catch (e) {
-                                                                                                            showCustomDialog(
-                                                                                                              context: context,
-                                                                                                              dialogType: DialogType.error,
-                                                                                                              title: 'Error Send data Web',
-                                                                                                              description: '$e',
-                                                                                                            );
-                                                                                                          }
-                                                                                                          try {
-                                                                                                            postApi(data.lotNo!);
-                                                                                                          } catch (e) {
-                                                                                                            showCustomDialog(
-                                                                                                              context: context,
-                                                                                                              dialogType: DialogType.error,
-                                                                                                              title: 'Error Send data Dekstop',
-                                                                                                              description: '$e',
-                                                                                                            );
-                                                                                                          }
-
-                                                                                                          notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved', 'Lot ${data.lotNo} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
-                                                                                                          context.read<PApprovalBrj>().removesItem();
-                                                                                                        });
-                                                                                                        btnController.success();
-                                                                                                        Future.delayed(const Duration(seconds: 1)).then((value) {
-                                                                                                          btnController.reset(); //reset
-                                                                                                          Navigator.of(context).pop();
-                                                                                                          setState(() {
-                                                                                                            refresh();
-                                                                                                            textInput.text = '';
-                                                                                                            searchInput = '';
-                                                                                                          });
-                                                                                                          showSimpleNotification(
-                                                                                                            const Text('Approve pricing success'),
-                                                                                                            background: Colors.green,
-                                                                                                            duration: const Duration(seconds: 5),
-                                                                                                          );
-                                                                                                        });
-                                                                                                      });
+                                                                                                    onPressed: () {
+                                                                                                      simpanForm(data);
                                                                                                     }),
                                                                                               ),
                                                                                             ),
@@ -1898,7 +1861,7 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
     String token = sharedPreferences!.getString("token").toString();
     price.text.isEmpty
         ? awalPrice = awalPrice
-        : awalPrice = double.parse(price.text);
+        : awalPrice = double.parse(priceApi);
     Map<String, String> body = {
       'lot': data.lotNo.toString(),
       'kode': data.marketingCode.toString(), //total item di cart
@@ -1907,15 +1870,55 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
       'ringSize': data.ringSize.toString(),
       'diamondQuality': data.diamondQuality.toString(),
     };
-    final response = await http.post(
-        Uri.parse(ApiConstants.baseUrl + ApiConstants.POSThargaApproved),
-        // Uri.parse(ApiConstants.baseUrl + ApiConstants.POSThargaApproved),
-        headers: <String, String>{
-          'Authorization': 'Bearer $token',
-        },
-        body: body);
+    try {
+      final response = await http.post(
+          Uri.parse(ApiConstants.baseUrl + ApiConstants.POSThargaApproved),
+          // Uri.parse(ApiConstants.baseUrl + ApiConstants.POSThargaApproved),
+          headers: <String, String>{
+            'Authorization': 'Bearer $token',
+          },
+          body: body);
+      if (response.statusCode == 200) {
+        print(response.body);
+      } else {
+        Navigator.of(context).pop();
+        showCustomDialog(
+            context: context,
+            dialogType: DialogType.error,
+            title: 'Error Send data',
+            description: response.body,
+            dismiss: false);
+      }
+    } catch (e) {
+      showCustomDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Send data',
+          description: '$e',
+          dismiss: false);
+    }
+  }
 
-    print(response.body);
+  simpanForm(var data) async {
+    await postApiWeb(data);
+    await postApi(data.lotNo!);
+    btnControllerApproveBRJ.reset();
+
+    if (statusSendOk) {
+      notif.sendNotificationTo(fcmTokensandy, 'Pricing Approved',
+          'Lot ${data.lotNo} has been approved\nPrice approved : ${CurrencyFormat.convertToDollar(awalPrice, 0)}\nNotes : ${notes.text}');
+      context.read<PApprovalBrj>().removesItem();
+      Navigator.of(context).pop();
+      refresh();
+      textInput.text = '';
+      searchInput = '';
+      showSimpleNotification(
+        const Text('Approve pricing success'),
+        background: Colors.green,
+        duration: const Duration(seconds: 5),
+      );
+    }
+    // setState(() {});
   }
 
 //method approve pricing
@@ -1924,10 +1927,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
     baseUrlDinamis = sharedPreferences!.getString('urlDinamis');
     price.text.isEmpty
         ? awalPrice = awalPrice
-        : awalPrice = double.parse(price.text);
+        : awalPrice = double.parse(priceApi);
 
-    print(awalPrice);
-    print(notes.text);
     Map<String, String> headersAPI = {
       'Content-Type': 'application/json',
     };
@@ -1936,13 +1937,36 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
       'approvalPrice': awalPrice,
       'ApprovedNotes': notes.text
     };
-    var url = isDinamis == true
-        ? '$baseUrlDinamis${ApiConstants.PUTapprovelPricing}$lot'
-        : '${ApiConstants.baseUrlPricing}${ApiConstants.PUTapprovelPricing}$lot';
-    final response = await http.put(Uri.parse(url),
-        headers: headersAPI, body: jsonEncode(bodyApi));
+    try {
+      var url = isDinamis == true
+          ? '$baseUrlDinamis${ApiConstants.PUTapprovelPricing}$lot'
+          : '${ApiConstants.baseUrlPricing}${ApiConstants.PUTapprovelPricing}$lot';
 
-    print(response.body);
+      final response = await http.put(Uri.parse(url),
+          headers: headersAPI, body: jsonEncode(bodyApi));
+      if (response.statusCode == 200) {
+        statusSendOk = true;
+        print(response.body);
+      } else {
+        // Navigator.of(context).pop();
+        statusSendOk = false;
+        btnControllerApproveBRJ.reset();
+        print(response.body);
+        showCustomDialog(
+            context: context,
+            dialogType: DialogType.error,
+            title: 'Error Send data',
+            description: response.body,
+            dismiss: false);
+      }
+    } catch (e) {
+      showCustomDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: 'Error Send data',
+          description: '$e',
+          dismiss: false);
+    }
   }
 
   showUrlDinamis() {
@@ -2026,11 +2050,6 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                 sharedPreferences!.setString(
                                                     'urlDinamis', url.text);
                                                 baseUrlDinamis = url.text;
-                                                print(
-                                                    'tersiman ? $baseUrlDinamis');
-                                                print(sharedPreferences!
-                                                    .setString('urlDinamis',
-                                                        url.text));
                                               });
                                               btnController.success();
                                               Future.delayed(const Duration(
