@@ -30,7 +30,7 @@ class _SearchScreenState extends State<NewSearchScreenRetur> {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.blue,
+            color: Colors.black,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -46,53 +46,53 @@ class _SearchScreenState extends State<NewSearchScreenRetur> {
             });
           },
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: Stack(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (c) => const CartScreenRetur()));
-                    // }
-                  },
-                  icon: Padding(
-                    padding: const EdgeInsets.all(2),
-                    child: badges.Badge(
-                      showBadge: context.read<PCartRetur>().getItems.isEmpty
-                          ? false
-                          : true,
-                      badgeStyle: const badges.BadgeStyle(
-                        badgeColor: Colors.green,
-                      ),
-                      badgeContent: Text(
-                        context.watch<PCartRetur>().getItems.length.toString(),
-                        style: const TextStyle(
-                          fontSize: 8,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      child: const Icon(
-                        Icons.shopping_cart_checkout,
-                        color: Colors.blue,
-                        size: 35,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 10),
+        //     child: Stack(
+        //       children: [
+        //         IconButton(
+        //           onPressed: () {
+        //             Navigator.push(
+        //                 context,
+        //                 MaterialPageRoute(
+        //                     builder: (c) => const CartScreenRetur()));
+        //             // }
+        //           },
+        //           icon: Padding(
+        //             padding: const EdgeInsets.all(2),
+        //             child: badges.Badge(
+        //               showBadge: context.read<PCartRetur>().getItems.isEmpty
+        //                   ? false
+        //                   : true,
+        //               badgeStyle: const badges.BadgeStyle(
+        //                 badgeColor: Colors.green,
+        //               ),
+        //               badgeContent: Text(
+        //                 context.watch<PCartRetur>().getItems.length.toString(),
+        //                 style: const TextStyle(
+        //                   fontSize: 8,
+        //                   fontWeight: FontWeight.w600,
+        //                 ),
+        //               ),
+        //               child: const Icon(
+        //                 Icons.shopping_cart_checkout,
+        //                 color: Colors.black,
+        //                 size: 35,
+        //               ),
+        //             ),
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ],
       ),
       body: searchInput == ''
           ? Center(
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.black,
                     borderRadius: BorderRadius.circular(25)),
                 height: 30,
                 width: MediaQuery.of(context).size.width * 0.7,
@@ -112,7 +112,8 @@ class _SearchScreenState extends State<NewSearchScreenRetur> {
             )
           : FutureBuilder(
               future: DbAllitemsRetur.db.getAllitemsReturBylot(
-                  sharedPreferences!.getString('customer_id'), searchInput),
+                  sharedPreferences!.getString('customer_id_retur'),
+                  searchInput),
               builder: (BuildContext context, AsyncSnapshot dataSnapshot) {
                 if (dataSnapshot.hasData) //if brands exists
                 {

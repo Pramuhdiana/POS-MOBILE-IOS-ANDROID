@@ -14,6 +14,7 @@ import 'package:e_shop/models/user_model.dart';
 import 'package:e_shop/posRetur/pos_retur_screen_ui.dart';
 import 'package:e_shop/provider/provider_cart_retur.dart';
 import 'package:e_shop/widgets/appbar_cart_pos_retur.dart';
+import 'package:e_shop/widgets/fake_search_retur.dart';
 // import 'package:e_shop/widgets/fake_search_retur.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -111,69 +112,103 @@ class _PosReturScreenState extends State<PosReturScreen> {
       appBar: AppbarCartRetur(
         title: '$qtyProduct product ',
       ),
-      body: Column(
-        children: <Widget>[
-          // if (sharedPreferences!.getString('customer_id').toString() !=
-          //     0.toString())
-          //   const Padding(
-          //     padding: EdgeInsets.all(8),
-          //     child: FakeSearchRetur(),
-          //   ),
-          Row(
-            children: [
-              const Padding(padding: EdgeInsets.all(4)),
-              Expanded(
-                child: DropdownSearch<UserModel>(
-                  asyncItems: (String? filter) => getData(filter),
-                  popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                    searchFieldProps: const TextFieldProps(
-                        decoration: InputDecoration(
-                      labelText: "Search..",
-                      prefixIcon: Icon(Icons.search),
-                    )),
-                    showSelectedItems: true,
-                    itemBuilder: _customPopupItemBuilderExample2,
-                    showSearchBox: true,
+      body: isLoading == true
+          ? Center(
+              child: Container(
+                  padding: const EdgeInsets.all(0),
+                  width: 90,
+                  height: 90,
+                  child: Lottie.asset("json/loading_black.json")))
+          : Column(
+              children: <Widget>[
+                if (idtoko != 99999)
+                  const Padding(
+                    padding: EdgeInsets.all(8),
+                    child: FakeSearchRetur(),
                   ),
-                  compareFn: (item, sItem) => item.id == sItem.id,
-                  onChanged: (item) {
-                    setState(() {
-                      context.read<PCartRetur>().clearCart();
-                      print('toko : ${item?.name}');
-                      print('id  : ${item?.id}');
-                      print('diskonnya  : ${item?.diskon_customer}');
-                      idtoko = item?.id; // menyimpan id toko
-                      toko = item?.name; // menyimpan nama toko
-                      sharedPreferences!
-                          .setString('customer_name_retur', toko.toString());
-                      sharedPreferences!
-                          .setString('customer_id_retur', idtoko.toString());
-                      // sharedPreferences!
-                      //     .setString('customer_id', idtoko.toString());
-                      loadCartFromApiPOSRetur(idtoko);
-                      DbAllitemsRetur.db.getAllitemsRetur(idtoko);
-                    });
-                  },
-                  dropdownDecoratorProps: const DropDownDecoratorProps(
-                    dropdownSearchDecoration: InputDecoration(
-                      labelText: 'Choose customer',
-                      filled: true,
-                      fillColor: Colors.white,
+                Row(
+                  children: [
+                    const Padding(padding: EdgeInsets.all(4)),
+                    Expanded(
+                      child: DropdownSearch<UserModel>(
+                        asyncItems: (String? filter) => getData(filter),
+                        popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                          searchFieldProps: const TextFieldProps(
+                              decoration: InputDecoration(
+                            labelText: "Search..",
+                            prefixIcon: Icon(Icons.search),
+                          )),
+                          showSelectedItems: true,
+                          itemBuilder: _customPopupItemBuilderExample2,
+                          showSearchBox: true,
+                        ),
+                        compareFn: (item, sItem) => item.id == sItem.id,
+                        onChanged: (item) {
+                          setState(() {
+                            context.read<PCartRetur>().clearCart();
+                            print('toko : ${item?.name}');
+                            print('id  : ${item?.id}');
+                            print('diskonnya  : ${item?.diskon_customer}');
+                            idtoko = item?.id; // menyimpan id toko
+                            toko = item?.name; // menyimpan nama toko
+                            sharedPreferences!.setString(
+                                'customer_name_retur', toko.toString());
+                            sharedPreferences!.setString(
+                                'customer_id_retur', idtoko.toString());
+                            // sharedPreferences!
+                            //     .setString('customer_id', idtoko.toString());
+                            loadCartFromApiPOSRetur(idtoko);
+                            DbAllitemsRetur.db.getAllitemsRetur(idtoko);
+                          });
+                        },
+                        dropdownDecoratorProps: const DropDownDecoratorProps(
+                          dropdownSearchDecoration: InputDecoration(
+                            labelText: 'Choose customer',
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: isLoading == true
-                ? Center(
-                    child: Container(
-                        padding: const EdgeInsets.all(0),
-                        width: 90,
-                        height: 90,
-                        child: Lottie.asset("json/loading_black.json")))
-                : RefreshIndicator(
+                // Row(
+                //   children: [
+                //     const Padding(padding: EdgeInsets.all(4)),
+                //     Expanded(
+                //       child: DropdownSearch<String>(
+                //         popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                //           searchFieldProps: const TextFieldProps(
+                //               decoration: InputDecoration(
+                //             labelText: "Search..",
+                //             prefixIcon: Icon(Icons.search),
+                //           )),
+                //           showSelectedItems: true,
+                //           showSearchBox: true,
+                //         ),
+                //         items: [
+                //           "Item 1",
+                //           "Item 2",
+                //           "Item 3",
+                //           "Item 4",
+                //           "Item 5"
+                //         ],
+                //         onChanged: (item) {
+                //           setState(() {});
+                //         },
+                //         dropdownDecoratorProps: const DropDownDecoratorProps(
+                //           dropdownSearchDecoration: InputDecoration(
+                //             labelText: 'Sort By',
+                //             filled: true,
+                //             fillColor: Colors.white,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                Expanded(
+                  child: RefreshIndicator(
                     onRefresh: refresh,
                     child: FutureBuilder(
                       future: DbAllitemsRetur.db
@@ -242,9 +277,9 @@ class _PosReturScreenState extends State<PosReturScreen> {
                       },
                     ),
                   ),
-          )
-        ],
-      ),
+                )
+              ],
+            ),
 
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {

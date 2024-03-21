@@ -129,6 +129,8 @@ class DbAllitemsRetur {
 
   //gett all items toko with search lot
   Future<List<ModelAllitemsRetur>> getAllitemsReturBylot(idtoko, name) async {
+    // ignore: prefer_interpolation_to_compose_strings
+    print('idToko : ' + idtoko);
     final db = await database;
     final res = await db.rawQuery(
         'SELECT * FROM allitemsretur WHERE name LIKE ? and customer_id=?',

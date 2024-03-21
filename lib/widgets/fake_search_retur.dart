@@ -16,38 +16,38 @@ class FakeSearchRetur extends StatelessWidget {
       child: Container(
         height: 35,
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.blue, width: 1.4),
+            border: Border.all(color: Colors.black, width: 1.4),
             borderRadius: BorderRadius.circular(25)),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Row(
+            Row(
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Icon(
                     Icons.search,
-                    color: Colors.blue,
+                    color: Colors.black,
                   ),
                 ),
                 Text(
-                  'What are you looking for?',
-                  style: TextStyle(fontSize: 18, color: Colors.blue),
+                  'Search lot by Toko...',
+                  style: TextStyle(fontSize: 18, color: Colors.black),
                 ),
               ],
             ),
-            Container(
-              height: 32,
-              width: 75,
-              decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(25)),
-              child: const Center(
-                child: Text(
-                  'Search',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-              ),
-            )
+            // Container(
+            //   height: 32,
+            //   width: 75,
+            //   decoration: BoxDecoration(
+            //       color: Colors.blue, borderRadius: BorderRadius.circular(25)),
+            //   child: const Center(
+            //     child: Text(
+            //       'Search',
+            //       style: TextStyle(fontSize: 16, color: Colors.white),
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),
