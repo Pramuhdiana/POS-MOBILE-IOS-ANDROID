@@ -5,10 +5,13 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'dart:ui' as ui;
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:e_shop/api/api_constant.dart';
 import 'package:e_shop/database/model_allcustomer.dart';
 import 'package:e_shop/global/currency_format.dart';
 import 'package:e_shop/global/global.dart';
+import 'package:e_shop/splashScreen/transaksi_gagal.dart';
+import 'package:e_shop/widgets/custom_dialog.dart';
 import 'package:e_shop/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -80,14 +83,34 @@ class HistoryModelNew extends StatelessWidget {
                                 message: "",
                               );
                             });
-                        Fluttertoast.showToast(
-                            msg: "Please wait this may take a few minutes ...");
-                        (allTransaksi.customer_id.toString() == '520' ||
-                                allTransaksi.customer_id.toString() == '522')
-                            ? await _createPdfHeniBerlian()
-                            : await _createPdf();
-                        printMessageAfterDelay(
-                            const Duration(seconds: 0), 'Delayed loading');
+                        try {
+                          Fluttertoast.showToast(
+                              msg:
+                                  "Please wait this may take a few minutes ...");
+                          (allTransaksi.customer_id.toString() == '520' ||
+                                  allTransaksi.customer_id.toString() == '522')
+                              ? await _createPdfHeniBerlian()
+                              : await _createPdf();
+                          printMessageAfterDelay(
+                              const Duration(seconds: 0), 'Delayed loading');
+                        } catch (e) {
+                          // ignore: use_build_context_synchronously
+                          // showCustomDialog(
+                          //     context: context,
+                          //     dialogType: DialogType.error,
+                          //     title: 'Error Generate PDF',
+                          //     description: '$e');
+                          // ignore: use_build_context_synchronously
+                          Navigator.pop(context);
+                          // ignore: use_build_context_synchronously
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (c) => TransaksiGagal(
+                                        err: '$e',
+                                        title: 'ERROR Generate PDF',
+                                      )));
+                        }
                       },
                       child: const Row(
                         children: [

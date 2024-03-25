@@ -61,6 +61,11 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
   List<String> listTheme = [];
   bool isShowFilter = false;
   bool statusSendOk = false;
+  String historyEstimasiHarga = '0';
+  String historyDiambilId = '0';
+  String historyJenisPengajuan = '';
+  String historyNamaCustomer = '';
+  String historyKeterangan = '';
   String priceApi = '0';
 
   final NumberFormat _currencyFormatterRp =
@@ -107,6 +112,26 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
         : total = (((valuePrice - (hpp)) / valuePrice) * 100).round();
 
     return total;
+  }
+
+  postApiHistoryApprove(keterangan) async {
+    price.text.isEmpty
+        ? awalPrice = awalPrice
+        : awalPrice = double.parse(price.text);
+
+    Map<String, String> body = {
+      'estimasiHarga': historyEstimasiHarga,
+      'diambil_id': historyDiambilId,
+      'approval_harga': awalPrice.toString(),
+      'jenis_pengajuan': historyJenisPengajuan,
+      'nama_customer': historyNamaCustomer,
+      'keterangan': keterangan,
+    };
+    final response = await http.post(
+        Uri.parse(
+            '${ApiConstants.baseUrlsandy}${ApiConstants.POSThistoryApprove}'),
+        body: body);
+    print(response.body);
   }
 
   loadListEticketing() async {
@@ -1566,6 +1591,19 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
                                                                   .round()
                                                                   .toString());
 
+                                                          //!init variable history
+                                                          historyEstimasiHarga =
+                                                              data.finalPrice3USD!
+                                                                  .toString();
+                                                          historyDiambilId =
+                                                              data.lotNo
+                                                                  .toString();
+                                                          historyJenisPengajuan =
+                                                              'BRJ';
+                                                          historyNamaCustomer =
+                                                              data.marketingCode!
+                                                                  .toString();
+
                                                           showGeneralDialog(
                                                               pageBuilder: (context,
                                                                   animation1,
@@ -1945,9 +1983,13 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
       final response = await http.put(Uri.parse(url),
           headers: headersAPI, body: jsonEncode(bodyApi));
       if (response.statusCode == 200) {
+        postApiHistoryApprove('Berhasil');
+
         statusSendOk = true;
         print(response.body);
       } else {
+        postApiHistoryApprove(response.body);
+
         // Navigator.of(context).pop();
         statusSendOk = false;
         btnControllerApproveBRJ.reset();
@@ -1960,6 +2002,8 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
             dismiss: false);
       }
     } catch (e) {
+      postApiHistoryApprove('{$e}');
+
       showCustomDialog(
           context: context,
           dialogType: DialogType.error,
@@ -2132,153 +2176,5 @@ class _SearchScreenState extends State<ApprovalPricingBrjScreen> {
         pageBuilder: (context, animation1, animation2) {
           return const Text('');
         });
-    // showDialog(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       final _formKey = GlobalKey<FormState>();
-    //       RoundedLoadingButtonController btnController =
-    //           RoundedLoadingButtonController();
-    //       return
-    //       AlertDialog(
-    //         content: Stack(
-    //           clipBehavior: Clip.none,
-    //           children: <Widget>[
-    //             Positioned(
-    //               right: -50.0,
-    //               top: -50.0,
-    //               child: InkResponse(
-    //                 onTap: () {
-    //                   Navigator.of(context).pop();
-    //                 },
-    //                 child: const CircleAvatar(
-    //                   backgroundColor: Colors.red,
-    //                   child: Icon(Icons.close),
-    //                 ),
-    //               ),
-    //             ),
-    //             Form(
-    //               key: _formKey,
-    //               child: SingleChildScrollView(
-    //                 scrollDirection: Axis.vertical,
-    //                 child: Column(
-    //                   mainAxisSize: MainAxisSize.min,
-    //                   children: <Widget>[
-    //                     Padding(
-    //                       padding: const EdgeInsets.all(8.0),
-    //                       child: TextFormField(
-    //                         style: const TextStyle(
-    //                             fontSize: 14,
-    //                             color: Colors.black,
-    //                             fontWeight: FontWeight.bold),
-    //                         textInputAction: TextInputAction.done,
-    //                         controller: url,
-    //                         keyboardType: TextInputType.text,
-    //                         decoration: InputDecoration(
-    //                           hintText: "http://110.5.102.154:4000/approvals",
-    //                           labelText: "Url Dinamis",
-    //                           border: OutlineInputBorder(
-    //                               borderRadius: BorderRadius.circular(5.0)),
-    //                         ),
-    //                       ),
-    //                     ),
-    //                     const Text(
-    //                       'Example :\n http://110.5.102.154:4000/approvals',
-    //                       style: TextStyle(fontSize: 12),
-    //                     ),
-    //                     Column(
-    //                       children: [
-    //                         Padding(
-    //                           padding: const EdgeInsets.all(8.0),
-    //                           child: SizedBox(
-    //                             width: 250,
-    //                             child: CustomLoadingButton(
-    //                                 controller: btnController,
-    //                                 child: const Text("Save Url"),
-    //                                 onPressed: () async {
-    //                                   Future.delayed(const Duration(seconds: 2))
-    //                                       .then((value) async {
-    //                                     setState(() {
-    //                                       sharedPreferences?.setBool(
-    //                                           'isDinamis', true);
-
-    //                                       sharedPreferences!.setString(
-    //                                           'urlDinamis', url.text);
-    //                                       baseUrlDinamis = url.text;
-    //                                       print('tersiman ? $baseUrlDinamis');
-    //                                       print(sharedPreferences!.setString(
-    //                                           'urlDinamis', url.text));
-    //                                     });
-    //                                     btnController.success();
-    //                                     Future.delayed(
-    //                                             const Duration(seconds: 1))
-    //                                         .then((value) {
-    //                                       btnController.reset(); //reset
-    //                                       Navigator.push(
-    //                                           context,
-    //                                           MaterialPageRoute(
-    //                                               builder: (c) =>
-    //                                                   const MainScreenApprovePricing()));
-
-    //                                       showDialog<String>(
-    //                                           context: context,
-    //                                           builder: (BuildContext context) =>
-    //                                               const AlertDialog(
-    //                                                 title: Text(
-    //                                                   'Save Database Berhasil',
-    //                                                 ),
-    //                                               ));
-    //                                     });
-    //                                   });
-    //                                 }),
-    //                           ),
-    //                         ),
-    //                         Padding(
-    //                           padding: const EdgeInsets.all(8.0),
-    //                           child: SizedBox(
-    //                             width: 250,
-    //                             child: CustomLoadingButton(
-    //                                 controller: btnController,
-    //                                 child: const Text("Reset Url"),
-    //                                 onPressed: () async {
-    //                                   Future.delayed(const Duration(seconds: 2))
-    //                                       .then((value) async {
-    //                                     setState(() {
-    //                                       sharedPreferences?.setBool(
-    //                                           'isDinamis', false);
-    //                                     });
-    //                                     btnController.success();
-    //                                     Future.delayed(
-    //                                             const Duration(seconds: 1))
-    //                                         .then((value) {
-    //                                       btnController.reset(); //reset
-    //                                       Navigator.push(
-    //                                           context,
-    //                                           MaterialPageRoute(
-    //                                               builder: (c) =>
-    //                                                   const MainScreenApprovePricing()));
-
-    //                                       showDialog<String>(
-    //                                           context: context,
-    //                                           builder: (BuildContext context) =>
-    //                                               const AlertDialog(
-    //                                                 title: Text(
-    //                                                   'Reset Database Berhasil',
-    //                                                 ),
-    //                                               ));
-    //                                     });
-    //                                   });
-    //                                 }),
-    //                           ),
-    //                         ),
-    //                       ],
-    //                     )
-    //                   ],
-    //                 ),
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       );
-    //     });
   }
 }

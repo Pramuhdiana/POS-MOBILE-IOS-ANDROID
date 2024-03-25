@@ -732,6 +732,7 @@ class _TransaksiScreenTokoState extends State<TransaksiScreenToko> {
                       err: '${response.body}',
                     )));
       } else {
+        print(response.body);
         context.read<PCartToko>().clearCart(); //clear cart
         await DbAlldetailtransaksi.db.deleteAlldetailtransaksi();
         await DbAlltransaksi.db.deleteAlltransaksiBaru();
